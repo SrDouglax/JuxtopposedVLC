@@ -188,7 +188,8 @@ T.Page {
             SubtitleLabel {
                 id: label
 
-                Layout.columnSpan: defaultPageHeader.stackActions ? 2 : 1
+                Layout.row: 0
+                Layout.column: 0
                 Layout.fillWidth: true
 
                 color: VLCStyle.redesign.color(VLCStyle.redesign.textSecondary, theme.fg.primary, theme.palette?.isDark ?? true)
@@ -200,12 +201,18 @@ T.Page {
                 sourceComponent: defaultPageHeader.headerAction
                 active: sourceComponent !== null
                 visible: active
+                Layout.row: defaultPageHeader.stackActions ? 1 : 0
+                Layout.column: defaultPageHeader.stackActions ? 0 : 1
+                Layout.columnSpan: defaultPageHeader.stackActions ? 2 : 1
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: defaultPageHeader.stackActions
             }
 
             GridSortFilterControls {
                 id: gridSortFilter
+                Layout.row: 0
+                Layout.column: defaultPageHeader.stackActions ? 1 : 2
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 focus: true
                 sort: _sortCtx
                 search: _searchCtx
