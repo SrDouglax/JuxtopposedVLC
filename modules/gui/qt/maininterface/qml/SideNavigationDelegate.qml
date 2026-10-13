@@ -32,8 +32,13 @@ T.ItemDelegate {
     // Properties
 
     property string iconTxt: ""
+    property string referenceIconName: ""
+    property var navigationUri: []
+    property int navigationDepth: 0
 
     readonly property url imageSource: {
+        if (referenceIconName.length > 0)
+            return "qrc:///redesign/" + referenceIconName + ".svg"
         const icons = {}
         icons[VLCIcons.home] = "home"
         icons[VLCIcons.topbar_video] = "video"
@@ -72,7 +77,7 @@ T.ItemDelegate {
 
     Accessible.onPressAction: control.clicked()
     AccessibleCompat.id: {
-        if (model.depth !== 0 || !model.uri || model.uri.length === 0) return "";
+        if (navigationDepth !== 0 || navigationUri.length === 0) return "";
         const navBarIds = {
             "home": "homeNavBar",
             "video": "videoNavBar",
@@ -80,7 +85,7 @@ T.ItemDelegate {
             "network": "browseNavBar",
             "discover": "discoverNavBar"
         }
-        const id = navBarIds[model.uri[0]]
+        const id = navBarIds[navigationUri[0]]
         if (id !== undefined)
             return id
         else
@@ -133,7 +138,7 @@ T.ItemDelegate {
         spacing: VLCStyle.margin_xsmall
 
         Item {
-            Layout.preferredWidth: VLCStyle.dp(30, VLCStyle.scale)
+            Layout.preferredWidth: VLCStyle.redesign.iconSize
             Layout.fillHeight: true
 
             Image {

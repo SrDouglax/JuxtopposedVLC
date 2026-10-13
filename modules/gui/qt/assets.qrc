@@ -132,6 +132,17 @@
         <file alias="addon_yellow.svg">pixmaps/addons/addon_yellow.svg</file>
     </qresource>
     <qresource prefix="/redesign">
+        <file alias="playlists.svg">pixmaps/redesign/playlists.svg</file>
+        <file alias="recent.svg">pixmaps/redesign/recent.svg</file>
+        <file alias="add.svg">pixmaps/redesign/add.svg</file>
+        <file alias="search.svg">pixmaps/redesign/search.svg</file>
+        <file alias="sort.svg">pixmaps/redesign/sort.svg</file>
+        <file alias="grid.svg">pixmaps/redesign/grid.svg</file>
+        <file alias="folder.svg">pixmaps/redesign/folder.svg</file>
+        <file alias="artist.svg">pixmaps/redesign/artist.svg</file>
+        <file alias="arrow-left.svg">pixmaps/redesign/arrow-left.svg</file>
+        <file alias="arrow-right.svg">pixmaps/redesign/arrow-right.svg</file>
+        <file alias="mini-queue.svg">pixmaps/redesign/mini-queue.svg</file>
         <file alias="logo.svg">pixmaps/redesign/logo.svg</file>
         <file alias="home.svg">pixmaps/redesign/home.svg</file>
         <file alias="video.svg">pixmaps/redesign/video.svg</file>

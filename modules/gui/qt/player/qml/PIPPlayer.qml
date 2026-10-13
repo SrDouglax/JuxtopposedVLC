@@ -36,6 +36,7 @@ T.Control {
     property real dragXMax: 0
     property real dragYMin: undefined
     property real dragYMax: undefined
+    property Item dragTarget: root
 
     property int textStyle: Text.Outline
 
@@ -49,12 +50,12 @@ T.Control {
     Drag.active: dragHandler.active
 
     Drag.onActiveChanged: {
-        root.anchors.left = undefined
-        root.anchors.right = undefined
-        root.anchors.top = undefined
-        root.anchors.bottom = undefined
-        root.anchors.verticalCenter = undefined
-        root.anchors.horizontalCenter = undefined
+        dragTarget.anchors.left = undefined
+        dragTarget.anchors.right = undefined
+        dragTarget.anchors.top = undefined
+        dragTarget.anchors.bottom = undefined
+        dragTarget.anchors.verticalCenter = undefined
+        dragTarget.anchors.horizontalCenter = undefined
     }
 
     DoubleClickIgnoringItem {
@@ -83,7 +84,7 @@ T.Control {
         DragHandler {
             id: dragHandler
 
-            target: root
+            target: root.dragTarget
 
             cursorShape: Qt.DragMoveCursor
 

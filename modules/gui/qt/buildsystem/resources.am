@@ -1,4 +1,15 @@
 libqt_plugin_la_RES = \
+	pixmaps/redesign/playlists.svg \
+	pixmaps/redesign/recent.svg \
+	pixmaps/redesign/add.svg \
+	pixmaps/redesign/search.svg \
+	pixmaps/redesign/sort.svg \
+	pixmaps/redesign/grid.svg \
+	pixmaps/redesign/folder.svg \
+	pixmaps/redesign/artist.svg \
+	pixmaps/redesign/arrow-left.svg \
+	pixmaps/redesign/arrow-right.svg \
+	pixmaps/redesign/mini-queue.svg \
 	pixmaps/redesign/logo.svg \
 	pixmaps/redesign/home.svg \
 	pixmaps/redesign/video.svg \

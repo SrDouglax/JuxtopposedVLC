@@ -39,7 +39,7 @@ FocusScope {
     property bool hasMiniPlayer: miniPlayer.visible
 
     // NOTE: The main view must be above the indexing bar and the mini player.
-    property real displayMargin: (height - miniPlayer.y) +
+    property real displayMargin: (miniPlayer.visible ? height - miniPlayer.y : 0) +
                                  (loaderUpdatePane.active ? loaderUpdatePane.height : 0)
 
     //MainDisplay behave as a PageLoader
@@ -632,7 +632,7 @@ FocusScope {
 
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.bottom: miniPlayer.top
+        anchors.bottom: miniPlayer.visible ? miniPlayer.top : parent.bottom
 
         readonly property bool updateModelIsAvailable: (typeof UpdateModel !== 'undefined')
 
@@ -804,17 +804,17 @@ FocusScope {
     Component {
         id: pipPlayerComponent
 
-        PIPPlayer {
+        LibraryMiniPlayer {
             id: playerPip
             anchors {
                 bottom: loaderUpdatePane.top
-                left: parent.left
-                bottomMargin: VLCStyle.margin_normal
-                leftMargin: VLCStyle.margin_normal + VLCStyle.applicationHorizontalMargin
+                right: parent.right
+                bottomMargin: VLCStyle.dp(6, VLCStyle.scale)
+                rightMargin: VLCStyle.dp(6, VLCStyle.scale)
             }
 
-            width: VLCStyle.dp(320, VLCStyle.scale)
-            height: VLCStyle.dp(180, VLCStyle.scale)
+            width: Math.min(implicitWidth, parent.width - VLCStyle.margin_normal * 2)
+            height: implicitHeight
             z: 4
             visible: g_mainDisplay._showMiniPlayer && MainCtx.hasEmbededVideo
             enabled: g_mainDisplay._showMiniPlayer && MainCtx.hasEmbededVideo
@@ -875,6 +875,8 @@ FocusScope {
 
     MiniPlayer {
         id: miniPlayer
+
+        visible: Player.isStarted && !g_mainDisplay._showMiniPlayer
 
         anchors.left: parent.left
         anchors.right: parent.right

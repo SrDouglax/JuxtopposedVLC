@@ -18,11 +18,9 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Templates as T
-import QtQml.Models
 
 import VLC.Style
 import VLC.Widgets as Widgets
-
 import VLC.MainInterface
 import VLC.Dialogs
 import VLC.Util
@@ -30,62 +28,60 @@ import VLC.Util
 T.Pane {
     id: root
 
-    signal itemClicked(uri : var, item : Item)
-
-    //safe area margins for delegate content,
-    //so the background of the delegates fills the available space
-    //but the content remains within the safe area
+    signal itemClicked(var uri, Item item)
     property int safeAreaLeftMargin: 0
     property int safeAreaRightMargin: 0
-
     property bool useAcrylic: true
-
     property bool delegateShowText: true
-
     property alias model: navigationModel
-
     readonly property int minimumWidth: VLCStyle.expandNavigationPaneWidth + safeAreaLeftMargin + safeAreaRightMargin
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             implicitContentHeight + topPadding + bottomPadding)
-
     padding: VLCStyle.margin_xsmall
+    implicitWidth: minimumWidth
+    implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
+    Accessible.name: qsTr("Sidebar")
 
     readonly property ColorContext colorContext: ColorContext {
         id: theme
         colorSet: ColorContext.Window
     }
 
-    Accessible.name: qsTr("Sidebar")
-
+    // Retain the controller model for the existing navigation context menu.
     NavigationModel {
         id: navigationModel
         hasMedialib: MainCtx.mediaLibraryAvailable
     }
 
+    readonly property var entries: {
+        const rows = [
+            {title: qsTr("Home"), uri: ["home"], icon: VLCIcons.home, asset: "home"},
+            {title: qsTr("Videos"), uri: ["video", "all"], icon: VLCIcons.topbar_video, asset: "video", library: true},
+            {title: qsTr("Music"), uri: ["music"], icon: VLCIcons.topbar_music, asset: "music", library: true}
+        ]
+        if (History.viewPath[0] === "music" && delegateShowText) {
+            for (const entry of [ ["artists", qsTr("Artists")], ["albums", qsTr("Albums")],
+                                  ["tracks", qsTr("Tracks")], ["genres", qsTr("Genres")],
+                                  ["playlists", qsTr("Playlists")] ])
+                rows.push({title: entry[1], uri: ["music", entry[0]], icon: "", asset: "", library: true, depth: 1})
+        }
+        rows.push({title: qsTr("Network"), uri: ["network"], icon: VLCIcons.topbar_network, asset: "network"})
+        rows.push({title: qsTr("Playlists"), uri: ["video", "playlists"], icon: VLCIcons.playlist, asset: "playlists", library: true})
+        rows.push({title: qsTr("Recent"), uri: ["home", "continueWatching"], icon: VLCIcons.history, asset: "recent", library: true})
+        return rows
+    }
+
+    function updateCurrentIndex() {
+        let matched = -1
+        for (let i = 0; i < entries.length; ++i) {
+            if (History.match(History.viewPath, entries[i].uri))
+                matched = i
+        }
+        listView.currentIndex = matched
+    }
+    onEntriesChanged: Qt.callLater(updateCurrentIndex)
     Connections {
         target: History
-
-        // NOTE: handles cases where the path changes not by clicking in the sidebar
-        function onViewPathChanged(viewPath) {
-            for (let i = 0; i < listView.count; ++i) {
-                const rowIndex = navigationModel.index(i, 0)
-                const uri = navigationModel.data(rowIndex, NavigationModel.URI)
-
-                if (uri && History.match(viewPath, uri)) {
-                    // handle back button
-                    listView.currentIndex = i
-
-                    // handle keyboard navigation
-                    if (!navigationModel.data(rowIndex, NavigationModel.EXPANDED))
-                        navigationModel.setData(rowIndex, true, NavigationModel.EXPANDED)
-
-                    return
-                }
-            }
-        }
+        function onViewPathChanged() { root.updateCurrentIndex() }
     }
 
     background: Rectangle {
@@ -98,207 +94,73 @@ T.Pane {
         }
     }
 
-    contentItem:  Item {
-        id: contentItemId
+    contentItem: ColumnLayout {
+        spacing: 0
 
-        //don't use Layout as top item as items put as children of the Control
-        //would be parented (and layouted) to the Layout
-        ColumnLayout {
-            anchors.fill: parent
-            spacing: VLCStyle.margin_xsmall
-            anchors.topMargin: VLCStyle.margin_small
+        Widgets.ListViewExt {
+            id: listView
+            Layout.fillWidth: true
+            Layout.preferredHeight: Math.min(contentHeight, root.availableHeight - addItem.implicitHeight)
+            clip: true
+            focus: true
+            model: root.entries
+            colorContext.colorSet: ColorContext.Window
+            T.ScrollBar.vertical.policy: T.ScrollBar.AsNeeded
+            Navigation.parentItem: root
+            Navigation.downItem: addItem
 
-            Widgets.ListViewExt {
-                id: listView
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-
-                clip: !fadingEdge.implicitClipping && (height < contentHeight)
-                focus: true
-
-                model: navigationModel
-
-                Binding {
-                    target: listView.T.ScrollBar.vertical
-                    property: "policy"
-                    when: listView.T.ScrollBar.vertical?.size > (1.0 - Number.EPSILON)
-                    value: T.ScrollBar.AlwaysOff
-                }
-
-                colorContext.colorSet: ColorContext.Window
-
-                fadingEdge.backgroundColor:  (root.background && (root.background.color.a >= 1.0)) ? root.background.color
-                                                                                                   : "transparent"
-
-                component DelegateAnimation : NumberAnimation {
-                    easing.type: Easing.InOutSine
-                    duration: VLCStyle.duration_long
-                }
-
-                reuseItems: false // Not relevant here, we disable it because of QTBUG-131106 when transition is involved.
-
-                // As the docs note, `ListView` transitions do not seem to handle height animation. For that reason,
-                // we animate the height directly in the delegate (Qt's recommended workaround). Because of this, we
-                // do not need to have `addDisplaced` transition here, but we can have `removeDisplaced` here:
-                removeDisplaced: Transition {
-                    DelegateAnimation { property: "y" }
-                }
-
-                onCurrentIndexChanged: {
-                    const rowIndex = navigationModel.index(currentIndex, 0)
-
-                    if (rowIndex.valid && !navigationModel.data(rowIndex, NavigationModel.EXPANDED)
-                            && History.match(History.viewPath, navigationModel.data(rowIndex, NavigationModel.URI)))
-                        navigationModel.setData(rowIndex, true, NavigationModel.EXPANDED)
-                }
-
-                property bool readyForAnimations: false
-
-                onModelChanged: {
-                    if (!listView.readyForAnimations)
-                        Qt.callLater(() => { listView.readyForAnimations = true })
-                }
-
-                Navigation.parentItem: root
-                Navigation.downItem: preferenceButton
-
-                delegate: SideNavigationDelegate {
-                    id: delegate
-
-                    width: ListView.view.contentWidth
-                    height: preferredHeight
-
-                    property real preferredHeight: shouldShow ? VLCStyle.buttonHeightNavigationPane : 0.0
-
-                    leftPadding: root.safeAreaLeftMargin + (root.delegateShowText ? VLCStyle.margin_large : VLCStyle.margin_xsmall)
-                    rightPadding: root.safeAreaRightMargin
-
-                    leftInset: root.safeAreaLeftMargin + implicitLeftInset
-                    rightInset: root.safeAreaRightMargin + implicitRightInset
-
-                    iconTxt: icon_alias
-                    text: title
-
-                    showText: root.delegateShowText
-
-                    required property string title
-                    required property var uri
-                    required property int depth
-                    // TODO: Qt 6.2 has property `icon` marked final, so we can't override it:
-                    required property string icon_alias
-                    required property bool expandable
-                    required property bool expanded
-
-                    required property int index
-
-                    visible: (height > 0.0)
-
-                    property bool shouldShow: showText || (iconTxt.length > 0)
-
-                    onShouldShowChanged: {
-                        if (listView.readyForAnimations)
-                            heightBehavior.enabled = true // At this point, it can keep being enabled for good.
-                    }
-
-                    Binding on highlighted {
-                        when: !!uri && History.match(History.viewPath, uri)
-                        value: true
-                    }
-                    checked: (!showText || !expanded) && highlighted
-
-                    onClicked: {
-                        itemClicked(uri, this)
-                        listView.currentIndex = index
-                        listView.forceActiveFocus(focusReason)
-                    }
-
-                    Behavior on height {
-                        id: heightBehavior
-
-                        enabled: false
-
-                        DelegateAnimation {
-                            onRunningChanged: {
-                                if (running) {
-                                    delegate.clip = true
-                                } else {
-                                    delegate.clip = false
-                                }
-                            }
-                        }
-                    }
-
-                    ListView.onAdd: {
-                        if (listView.readyForAnimations && delegate.showText) {
-                            heightBehavior.enabled = false
-                            delegate.height = 0.0
-                            heightBehavior.enabled = true
-                            delegate.height = Qt.binding(() => delegate.preferredHeight)
-                            heightBehavior.enabled = false
-                        }
-                    }
-                }
-            }
-
-            Loader {
-                id: loaderProgress
-
-                Layout.fillWidth: true
-
-                active: (MainCtx.mediaLibraryAvailable && MainCtx.mediaLibrary.idle === false)
-                visible: active
-
-                source: "qrc:///qt/qml/VLC/MediaLibrary/ScanProgressBar.qml"
-
-                onLoaded: {
-                    if (item.background) {
-                        item.background.opacity = 0.6
-                        item.background.radius = Qt.binding(() => VLCStyle.dp(4, VLCStyle.scale))
-                    }
-
-                    item.leftPadding = Qt.binding(function() { return root.safeAreaLeftMargin + VLCStyle.margin_small })
-                    item.rightPadding = Qt.binding(function() { return root.safeAreaRightMargin + VLCStyle.margin_small })
-
-                    item.leftInset = Qt.binding(() => { return VLCStyle.margin_xxsmall + root.safeAreaLeftMargin })
-                    item.rightInset = Qt.binding(() => { return VLCStyle.margin_xxsmall + root.safeAreaRightMargin })
-                }
-            }
-
-            SideNavigationDelegate {
-                id: preferenceButton
-
-                AccessibleCompat.id: "preferencesButton"
-
-                Layout.fillWidth: true
-                Layout.preferredHeight: VLCStyle.buttonHeightNavigationPane
-
-                leftPadding: root.safeAreaLeftMargin + (root.delegateShowText ? VLCStyle.margin_large : VLCStyle.margin_xsmall)
-                rightPadding: root.safeAreaRightMargin
-
-                leftInset: root.safeAreaLeftMargin + implicitLeftInset
-                rightInset: root.safeAreaRightMargin + implicitRightInset
-
-                iconTxt: VLCIcons.settings
-                text: qsTr("Preferences")
-
-                checked: DialogsProvider.prefsDialogVisible
-
+            delegate: SideNavigationDelegate {
+                required property var modelData
+                required property int index
+                readonly property var uri: modelData.uri
+                readonly property bool expandable: false
+                readonly property int depth: modelData.depth ?? 0
+                navigationUri: uri
+                navigationDepth: depth
+                width: ListView.view.width
+                height: VLCStyle.dp(38, VLCStyle.scale)
+                leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(16 + depth * 16, VLCStyle.scale)
+                rightPadding: root.safeAreaRightMargin + VLCStyle.margin_small
+                leftInset: root.safeAreaLeftMargin
+                rightInset: root.safeAreaRightMargin
+                iconTxt: modelData.icon
+                referenceIconName: modelData.asset
+                text: modelData.title
                 showText: root.delegateShowText
-
-                onClicked: DialogsProvider.prefsDialog()
-
-                //SideNavigationDelegate is an ItemDelegate and has NoFocus by default
-                focusPolicy: Qt.StrongFocus
-
-                Navigation.parentItem: root
-                Navigation.upItem: listView
-
-                Keys.priority: Keys.AfterItem
-                Keys.onPressed: (e) => Navigation.defaultKeyAction(e)
-                Keys.onReleased: (e) => Navigation.defaultKeyReleaseAction(e)
+                enabled: !modelData.library || MainCtx.mediaLibraryAvailable
+                checked: index === listView.currentIndex
+                onClicked: {
+                    root.itemClicked(uri, this)
+                    listView.currentIndex = index
+                    listView.forceActiveFocus(focusReason)
+                }
             }
+        }
 
+        SideNavigationDelegate {
+            id: addItem
+            Layout.fillWidth: true
+            Layout.preferredHeight: VLCStyle.dp(38, VLCStyle.scale)
+            leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(16, VLCStyle.scale)
+            rightPadding: root.safeAreaRightMargin
+            leftInset: root.safeAreaLeftMargin
+            rightInset: root.safeAreaRightMargin
+            iconTxt: VLCIcons.add
+            referenceIconName: "add"
+            text: qsTr("Add item")
+            showText: root.delegateShowText
+            focusPolicy: Qt.StrongFocus
+            onClicked: DialogsProvider.simpleOpenDialog()
+            Navigation.parentItem: root
+            Navigation.upItem: listView
+        }
+
+        Item { Layout.fillHeight: true }
+        Loader {
+            Layout.fillWidth: true
+            active: MainCtx.mediaLibraryAvailable && !MainCtx.mediaLibrary.idle
+            visible: active
+            source: "qrc:///qt/qml/VLC/MediaLibrary/ScanProgressBar.qml"
         }
     }
 }
