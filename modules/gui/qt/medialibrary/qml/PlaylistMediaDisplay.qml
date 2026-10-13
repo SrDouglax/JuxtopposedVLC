@@ -50,6 +50,9 @@ Widgets.PageExt {
 
     hasGridListMode: false
     isSearchable: true
+    title: root.isMusic ? "" : qsTr("Playlists")
+    libraryHeader: !root.isMusic
+    libraryItemCount: model.count
 
     headerAction: Component {
         RowLayout {

@@ -60,6 +60,8 @@ Widgets.PageLoader {
             property alias initialIndex: playlistView.initialIndex
 
             title: qsTr("Playlists")
+            libraryHeader: true
+            libraryItemCount: playlistView.model.count
 
             headerAction: Component {
                 RowLayout {

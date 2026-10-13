@@ -28,6 +28,7 @@ Widgets.GridItem {
     id: root
 
     property bool showNewIndicator: false
+    property bool redesignTitle: false
     
     property var labels
 
@@ -46,6 +47,17 @@ Widgets.GridItem {
     subtitle: model?.duration?.formatHMS() ?? ""
     pictureWidth: VLCStyle.gridCover_video_width
     pictureHeight: VLCStyle.gridCover_video_height
+    titleFontFamily: redesignTitle ? VLCStyle.redesign.fontFamily : ""
+    titleFontWeight: redesignTitle ? Font.Normal : Font.DemiBold
+    titleColor: redesignTitle
+                ? VLCStyle.redesign.color("#6B6B6B", colorContext.fg.primary,
+                                          colorContext.palette?.isDark ?? true)
+                : colorContext.fg.primary
+    selectedTitleColor: redesignTitle
+                        ? VLCStyle.redesign.color(VLCStyle.redesign.textSecondary,
+                                                  colorContext.fg.highlight,
+                                                  colorContext.palette?.isDark ?? true)
+                        : colorContext.fg.highlight
 
     // Bottom rounding is provided by the progress bar if it is visible:
     mediaCover.radiusBottomLeft: progressBar.visible ? 0.0 : mediaCover.radius

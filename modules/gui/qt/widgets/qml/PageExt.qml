@@ -46,6 +46,9 @@ T.Page {
 
     property Component headerAction: null
 
+    property bool libraryHeader: false
+    property int libraryItemCount: -1
+
     property int displayMarginBeginning: 0
     property int displayMarginEnd: 0
 
@@ -111,18 +114,13 @@ T.Page {
                              + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
                              + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
 
-    header: DefaultPageHeader {
-        text: root.title
-        headerAction: root.headerAction
-
-        leftPadding: VLCStyle.dynamicAppMargins(width) + VLCStyle.layout_left_margin + root.leftPadding
-        rightPadding: VLCStyle.dynamicAppMargins(width) + VLCStyle.layout_right_margin + root.rightPadding
-
-        sortMenu: root.sortMenu
-
-        search: _searchCtx
-        sort: _sortCtx
-
+    header: Loader {
+        id: pageHeader
+        focus: true
+        sourceComponent: root.libraryHeader ? libraryHeaderComponent : defaultHeaderComponent
+        implicitWidth: item?.implicitWidth ?? 0
+        implicitHeight: item?.implicitHeight ?? 0
+        Navigation.navigable: true
         Navigation.parentItem: root
         Navigation.downAction: function() {
             if (typeof root.setCurrentItemFocus === "function")
@@ -131,6 +129,33 @@ T.Page {
              root._firstChild.setCurrentItemFocus(Qt.TabFocusReason)
             else if (root._firstChild)
                 root._firstChild.forceActiveFocus(Qt.TabFocusReason)
+        }
+    }
+
+    Component {
+        id: defaultHeaderComponent
+        DefaultPageHeader {
+            text: root.title
+            headerAction: root.headerAction
+            leftPadding: VLCStyle.dynamicAppMargins(width) + VLCStyle.layout_left_margin + root.leftPadding
+            rightPadding: VLCStyle.dynamicAppMargins(width) + VLCStyle.layout_right_margin + root.rightPadding
+            sortMenu: root.sortMenu
+            search: _searchCtx
+            sort: _sortCtx
+            Navigation.parentItem: pageHeader
+        }
+    }
+
+    Component {
+        id: libraryHeaderComponent
+        LibraryHeader {
+            title: root.title
+            itemCount: root.libraryItemCount
+            headerAction: root.headerAction
+            sortMenu: root.sortMenu
+            search: _searchCtx
+            sort: _sortCtx
+            Navigation.parentItem: pageHeader
         }
     }
 

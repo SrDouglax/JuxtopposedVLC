@@ -44,9 +44,11 @@ Widgets.ExpandGridItemView {
 
     basePictureWidth: VLCStyle.dp(316, VLCStyle.scale)
     basePictureHeight: VLCStyle.dp(178, VLCStyle.scale)
+    fixedPictureWidth: true
     horizontalSpacing: VLCStyle.dp(20, VLCStyle.scale)
     verticalSpacing: VLCStyle.dp(40, VLCStyle.scale)
     titleTopMargin: VLCStyle.dp(20, VLCStyle.scale)
+    subtitleHeight: 0
 
     activeFocusOnTab: true
 
@@ -101,6 +103,8 @@ Widgets.ExpandGridItemView {
         pictureHeight: gridView.maxPictureHeight
         pictureRadius: VLCStyle.dp(12, VLCStyle.scale)
         titleFontPixelSize: VLCStyle.dp(16, VLCStyle.scale)
+        redesignTitle: true
+        subtitleVisible: false
 
         opacity: (gridView.expandIndex !== -1
                   &&

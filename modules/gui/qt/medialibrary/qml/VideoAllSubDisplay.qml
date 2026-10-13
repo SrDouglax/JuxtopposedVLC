@@ -70,6 +70,8 @@ Widgets.PageExt {
     // Functions
 
     title: qsTr("Videos")
+    libraryHeader: true
+    libraryItemCount: _meta?.model?.count ?? -1
     hasGridListMode: videoAll.hasGridListMode
     isSearchable: videoAll.isSearchable
     sortModel: videoAll.sortModel

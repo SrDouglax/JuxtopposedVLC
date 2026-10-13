@@ -37,6 +37,13 @@ Widgets.ExpandGridView {
     required property int basePictureWidth
     required property int basePictureHeight
 
+    property bool fixedPictureWidth: false
+
+    // The video layout uses 20px total side margins; the base view normally
+    // adds a responsive outer margin on top of layout_left_margin.
+    leftMargin: VLCStyle.layout_left_margin + leftPadding - (fixedPictureWidth ? extraMargin : 0)
+    rightMargin: VLCStyle.layout_right_margin + rightPadding - (fixedPictureWidth ? extraMargin : 0)
+
     // Aliases
 
     property alias titleTopMargin: gridHelper.titleTopMargin
@@ -66,6 +73,8 @@ Widgets.ExpandGridView {
         basePictureHeight: root.basePictureHeight
 
         availableWidth: root._availableContentWidth
+        fixedPictureWidth: root.fixedPictureWidth
+        horizontalSpacing: root.fixedPictureWidth ? root.horizontalSpacing : VLCStyle.column_spacing
 
         maxNbItemPerRow: basePictureWidth === basePictureHeight ? 10 : 6
     }

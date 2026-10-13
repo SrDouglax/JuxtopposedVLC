@@ -29,6 +29,9 @@ QtObject{
 
     required property int availableWidth
 
+    // Keep media artwork at its designed size instead of stretching it to fill a row.
+    property bool fixedPictureWidth: false
+
     property int titleTopMargin: VLCStyle.gridItemTitle_topMargin
     property int titleHeight: VLCStyle.gridItemTitle_height
 
@@ -45,13 +48,14 @@ QtObject{
                                                                              : _defaultHorizontalSpacing)
 
     readonly property int _defaultHorizontalSpacing: VLCStyle.column_spacing
+    readonly property int _spacingForCount: fixedPictureWidth ? horizontalSpacing : _defaultHorizontalSpacing
 
     property var maxNbItemPerRow
     readonly property int nbItemPerRow: {
         const _nbItemPerRow = Math.max(
             Math.floor(
-                (availableWidth + _defaultHorizontalSpacing) /
-                (basePictureWidth + _defaultHorizontalSpacing)
+                (availableWidth + _spacingForCount) /
+                (basePictureWidth + _spacingForCount)
             ), 1
         )
 
@@ -59,12 +63,14 @@ QtObject{
     }
 
     // NOTE: Responsive cell sizing based on available width
-    readonly property int cellWidth: (availableWidth + horizontalSpacing) / nbItemPerRow - horizontalSpacing
+    readonly property int cellWidth: fixedPictureWidth ? basePictureWidth
+        : (availableWidth + horizontalSpacing) / nbItemPerRow - horizontalSpacing
     readonly property int cellHeight: (basePictureHeight / basePictureWidth) * cellWidth + textHeight
 
     // NOTE: Find the maximum picture size for nbItemPerRow == 1, so that we downscale in most of the cases
     //       formula for maxPictureWidth depended on nbItemPerRow would be:
     //       (basePictureWidth + _defaultHorizontalSpacing) * (1 + 1 / nbItemPerRow) - _defaultHorizontalSpacing
-    readonly property int maxPictureWidth: (basePictureWidth + _defaultHorizontalSpacing) * (1 + 1 / 3) - _defaultHorizontalSpacing
+    readonly property int maxPictureWidth: fixedPictureWidth ? basePictureWidth
+        : (basePictureWidth + _defaultHorizontalSpacing) * (1 + 1 / 3) - _defaultHorizontalSpacing
     readonly property int maxPictureHeight: (basePictureHeight / basePictureWidth) * maxPictureWidth
 }

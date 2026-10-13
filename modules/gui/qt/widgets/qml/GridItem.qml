@@ -60,6 +60,10 @@ T.ItemDelegate {
 
     property alias title: titleLabel.text
     property int titleFontPixelSize: VLCStyle.fontSize_normal
+    property string titleFontFamily: ""
+    property int titleFontWeight: Font.DemiBold
+    property color titleColor: theme.fg.primary
+    property color selectedTitleColor: theme.fg.highlight
     property alias subtitle: subtitleTxt.text
     property alias subtitleVisible: subtitleTxt.visible
     property alias playCoverShowPlay: picture.playCoverShowPlay
@@ -357,11 +361,11 @@ T.ItemDelegate {
             Widgets.ListLabel {
                 id: titleLabel
                 font.pixelSize: root.titleFontPixelSize
+                font.family: root.titleFontFamily || Qt.application.font.family
+                font.weight: root.titleFontWeight
 
                 height: implicitHeight
-                color: root.selected
-                    ? theme.fg.highlight
-                    : theme.fg.primary
+                color: root.selected ? root.selectedTitleColor : root.titleColor
             }
         }
 

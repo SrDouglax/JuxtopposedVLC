@@ -38,6 +38,8 @@ Widgets.PageExt {
     property alias parentId: modelVideo.parentId
 
     title: qsTr("Videos")
+    libraryHeader: true
+    libraryItemCount: modelVideo.count
 
     sortMenu: SortMenuVideo {
         ctx: MainCtx

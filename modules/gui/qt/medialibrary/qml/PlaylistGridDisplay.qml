@@ -26,9 +26,11 @@ Widgets.ExpandGridItemView {
                                    : VLCStyle.dp(316, VLCStyle.scale)
     basePictureHeight: host.isMusic ? VLCStyle.gridCover_music_height
                                     : VLCStyle.dp(178, VLCStyle.scale)
+    fixedPictureWidth: !host.isMusic
     horizontalSpacing: VLCStyle.dp(20, VLCStyle.scale)
     verticalSpacing: VLCStyle.dp(40, VLCStyle.scale)
     titleTopMargin: VLCStyle.dp(20, VLCStyle.scale)
+    subtitleHeight: host.isMusic ? VLCStyle.gridItemSubtitle_height : 0
 
     model: host.model
 
@@ -59,6 +61,8 @@ Widgets.ExpandGridItemView {
         pictureHeight: gridView.maxPictureHeight
         pictureRadius: VLCStyle.dp(12, VLCStyle.scale)
         titleFontPixelSize: VLCStyle.dp(16, VLCStyle.scale)
+        redesignTitle: !host.isMusic
+        subtitleVisible: host.isMusic && subtitle !== ""
 
         title: (model.name) ? model.name
                             : qsTr("Unknown title")
