@@ -24,11 +24,22 @@ T.Popup {
 
     function openNative(page) {
         if (effects.transactionActive && !effects.cancel()) return
+        if (videoEffects.transactionActive && !videoEffects.cancel()) return
         root.close()
         DialogsProvider.nativeEffectsDialog(page)
     }
 
+    function switchTab(index) {
+        if (currentTab === index) return
+        if (currentTab === 0 && effects.transactionActive && !effects.cancel()) return
+        if (currentTab === 1 && videoEffects.transactionActive && !videoEffects.cancel()) return
+        currentTab = index
+        if (index === 0) effects.begin()
+        else videoEffects.begin()
+    }
+
     AudioEffects { id: effects; ctx: MainCtx }
+    VideoEffects { id: videoEffects; ctx: MainCtx }
 
     width: Math.min(VLCStyle.dp(400, VLCStyle.scale), parent ? parent.width : VLCStyle.dp(400, VLCStyle.scale))
     height: Math.min(VLCStyle.dp(780, VLCStyle.scale), parent ? Math.max(0, parent.height - VLCStyle.dp(48, VLCStyle.scale)) : VLCStyle.dp(780, VLCStyle.scale))
@@ -41,11 +52,13 @@ T.Popup {
     onOpened: {
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
         MainCtx.useGlobalShortcuts = false
-        effects.begin()
-        tabs.itemAt(0).forceActiveFocus()
+        if (currentTab === 0) effects.begin()
+        else videoEffects.begin()
+        tabs.itemAt(currentTab).forceActiveFocus()
     }
     onClosed: {
         if (effects.transactionActive) effects.cancel()
+        if (videoEffects.transactionActive) videoEffects.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
 
@@ -99,7 +112,7 @@ T.Popup {
                     Layout.fillWidth: true
                     implicitHeight: VLCStyle.dp(45, VLCStyle.scale)
                     focusPolicy: Qt.StrongFocus
-                    onClicked: root.currentTab = index
+                    onClicked: root.switchTab(index)
                     background: Rectangle {
                         color: tabButton.hovered ? VLCStyle.redesign.controlHoverBackground : "transparent"
                         Rectangle {
@@ -162,33 +175,26 @@ T.Popup {
                     }
                 }
 
+                Text {
+                    Layout.fillWidth: true
+                    visible: root.currentTab === 1 && !videoEffects.activeVideo
+                    text: videoEffects.lastError || qsTr("Play video to preview and edit effects.")
+                    color: VLCStyle.redesign.textSecondary
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                    wrapMode: Text.WordWrap
+                }
+
+                VideoEffectsPanel {
+                    Layout.fillWidth: true
+                    visible: root.currentTab === 1 && videoEffects.transactionActive
+                    effects: videoEffects
+                }
+
                 ColumnLayout {
                     Layout.fillWidth: true
                     visible: root.currentTab === 1
                     spacing: VLCStyle.dp(16, VLCStyle.scale)
-                    Text {
-                        Layout.fillWidth: true
-                        text: qsTr("Video color, crop and image effects are available in VLC's native extended controls.")
-                        color: VLCStyle.redesign.textSecondary
-                        font.family: VLCStyle.redesign.fontFamily
-                        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                        wrapMode: Text.WordWrap
-                    }
-                    T.Button {
-                        text: qsTr("Open native video effects")
-                        Layout.fillWidth: true
-                        implicitHeight: VLCStyle.dp(42, VLCStyle.scale)
-                        onClicked: root.openNative(1)
-                        background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(6, VLCStyle.scale) }
-                        contentItem: Text {
-                            text: parent.text
-                            color: VLCStyle.redesign.textPrimary
-                            font.family: VLCStyle.redesign.fontFamily
-                            font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                        }
-                    }
                     T.Button {
                         text: qsTr("Open synchronization")
                         Layout.fillWidth: true
@@ -212,8 +218,9 @@ T.Popup {
             Layout.fillWidth: true
             Layout.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
             Layout.rightMargin: VLCStyle.dp(16, VLCStyle.scale)
-            visible: effects.lastError.length > 0 && effects.transactionActive
-            text: effects.lastError
+            visible: root.currentTab === 0 ? effects.lastError.length > 0 && effects.transactionActive
+                                           : videoEffects.lastError.length > 0 && videoEffects.transactionActive
+            text: root.currentTab === 0 ? effects.lastError : videoEffects.lastError
             color: "#FF8989"
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -232,7 +239,9 @@ T.Popup {
                 text: qsTr("Cancel")
                 Layout.fillWidth: true
                 implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
-                onClicked: { if (effects.cancel()) root.close() }
+                onClicked: {
+                    if (root.currentTab === 0 ? effects.cancel() : videoEffects.cancel()) root.close()
+                }
                 background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(5, VLCStyle.scale) }
                 contentItem: Text {
                     text: parent.text
@@ -247,8 +256,10 @@ T.Popup {
                 text: qsTr("Save")
                 Layout.fillWidth: true
                 implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
-                enabled: effects.transactionActive && root.currentTab === 0
-                onClicked: { if (effects.save()) root.close() }
+                enabled: root.currentTab === 0 ? effects.transactionActive : videoEffects.transactionActive
+                onClicked: {
+                    if (root.currentTab === 0 ? effects.save() : videoEffects.save()) root.close()
+                }
                 background: Rectangle { color: parent.enabled ? VLCStyle.redesign.accent : VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(5, VLCStyle.scale) }
                 contentItem: Text {
                     text: parent.text
