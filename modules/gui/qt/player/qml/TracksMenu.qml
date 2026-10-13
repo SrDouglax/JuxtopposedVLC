@@ -24,13 +24,13 @@ import VLC.Dialogs
 import VLC.MainInterface
 import VLC.Player
 import VLC.Style
-import VLC.Widgets as Widgets
 
 T.Popup {
     id: root
     objectName: "tracksMenu"
 
     property int currentTab: 0
+    property bool previousGlobalShortcuts: true
     readonly property var tabNames: [qsTr("Subtitles"), qsTr("Audio"),
                                      qsTr("Video"), qsTr("Playback")]
 
@@ -49,7 +49,12 @@ T.Popup {
     focus: true
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutside
 
-    onOpened: tabs.itemAt(currentTab).forceActiveFocus()
+    onOpened: {
+        previousGlobalShortcuts = MainCtx.useGlobalShortcuts
+        MainCtx.useGlobalShortcuts = false
+        tabs.itemAt(currentTab).forceActiveFocus()
+    }
+    onClosed: MainCtx.useGlobalShortcuts = previousGlobalShortcuts
 
     background: Rectangle {
         color: VLCStyle.redesign.controlBackground
@@ -127,7 +132,7 @@ T.Popup {
                             for (let i = 0; i < subtitleRows.count; ++i) {
                                 const row = subtitleRows.itemAt(i)
                                 if (row && row.checked)
-                                    row.checked = false
+                                    row.disable()
                             }
                         }
                     }
@@ -141,6 +146,7 @@ T.Popup {
                         delegate: TrackChoice {
                             objectName: "subtitleTrack" + index
                             Layout.fillWidth: true
+                            allowOff: true
                         }
                     }
                     PanelButton {
@@ -311,21 +317,13 @@ T.Popup {
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
     }
 
-    component TrackChoice: Widgets.CheckedDelegate {
-        readonly property bool isModelChecked: model.checked
+    component TrackChoice: PanelButton {
+        property bool allowOff: false
+        function disable() { model.checked = false }
+
         text: model.display
-        implicitHeight: VLCStyle.dp(34, VLCStyle.scale)
-        focusPolicy: Qt.StrongFocus
-        onActiveFocusChanged: if (activeFocus) root.ensureVisible(this)
-        onIsModelCheckedChanged: {
-            if (checked !== isModelChecked)
-                checked = isModelChecked
-        }
-        onCheckedChanged: {
-            if (model.checked !== checked)
-                model.checked = checked
-        }
-        Component.onCompleted: checked = model.checked
+        checked: model.checked
+        onClicked: model.checked = allowOff ? !model.checked : true
     }
 
     component DelayControl: ColumnLayout {
