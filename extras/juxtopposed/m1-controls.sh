@@ -3,11 +3,24 @@ call "$player.Pause" >/dev/null
 xdotool windowsize "$window" 1280 760 windowmove "$window" 0 20
 sleep 1
 eval "$(xdotool getwindowgeometry --shell "$window")"
-px=$((X+55)); py=$((Y+HEIGHT-27))
-sx=$((X+470)); vx=$((X+957))
-xdotool mousemove "$px" "$py"
+py=$((Y+HEIGHT-27))
+sx=$((X+520)); vx=$((X+957))
+xdotool mousemove $((X+200)) "$py"
 sleep 1
 import -window root "$out/player-large.png"
+# Locate the solid orange play button within the left group, independently
+# of disabled previous/next controls and their native minimum widths.
+px=$(python3 - "$out/player-large.png" "$X" "$py" <<'PY'
+import subprocess, sys
+pixels = subprocess.check_output(['convert', sys.argv[1], '-crop',
+    f'220x1+{sys.argv[2]}+{sys.argv[3]}', '-depth', '8', 'rgb:-'])
+matches = [i // 3 for i in range(0, len(pixels), 3)
+           if pixels[i:i+3] == bytes((211, 121, 24))]
+assert len(matches) >= 20, 'Play button accent not rendered'
+print(int(sys.argv[2]) + (matches[0] + matches[-1]) // 2)
+PY
+)
+xdotool mousemove "$px" "$py"
 xdotool click 1
 sleep 1
 get PlaybackStatus | tee "$out/mouse-play.txt" | grep -q Playing
@@ -82,7 +95,11 @@ dialog=$(xdotool search --onlyvisible --name 'Select one or more files to open' 
 xdotool windowactivate --sync "$dialog"
 import -window root "$out/open-dialog.png"
 xdotool key ctrl+a
-xdotool type --clearmodifiers --delay 1 '/work/build-m0/fixtures/Vídeo M1.mkv'
+# Complete the existing Unicode filename through Qt. Xvfb's synthetic key
+# mapping does not reliably inject accented characters with xdotool type.
+xdotool type --clearmodifiers --delay 1 '/work/build-m0/fixtures/V'
+sleep 1
+xdotool key Down
 import -window root "$out/open-dialog-filled.png"
 xdotool key Return
 for attempt in $(seq 1 10); do
@@ -97,6 +114,7 @@ if [[ "$status" != *Playing* ]]; then
     exit 1
 fi
 get Metadata > "$out/open-dialog-metadata.txt"
+grep -q 'V%C3%ADdeo%20M1.mkv' "$out/open-dialog-metadata.txt"
 import -window root "$out/dialog-playing.png"
 
 call "$player.OpenUri" 'file:///work/build-m0/fixtures/does-not-exist.mkv' >/dev/null
