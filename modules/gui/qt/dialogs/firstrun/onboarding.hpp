@@ -29,6 +29,8 @@ class OnboardingController : public QObject
     Q_PROPERTY(int themeIndex READ themeIndex NOTIFY themeIndexChanged FINAL)
     Q_PROPERTY(bool busy READ busy NOTIFY busyChanged FINAL)
     Q_PROPERTY(QString error READ error NOTIFY errorChanged FINAL)
+    Q_PROPERTY(QUrl suggestedFolder READ suggestedFolder CONSTANT FINAL)
+    Q_PROPERTY(bool metadataNetworkAccess READ metadataNetworkAccess NOTIFY ctxChanged FINAL)
 
 public:
     explicit OnboardingController(QObject* parent = nullptr);
@@ -41,6 +43,8 @@ public:
     int themeIndex() const;
     bool busy() const { return m_busy; }
     QString error() const { return m_error; }
+    QUrl suggestedFolder() const;
+    bool metadataNetworkAccess() const;
 
     Q_INVOKABLE bool begin();
     Q_INVOKABLE bool previewTheme(int index);

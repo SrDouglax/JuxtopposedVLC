@@ -17,6 +17,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QVariantMap>
 
 #include <vlc_configuration.h>
@@ -72,6 +73,20 @@ bool OnboardingController::needsSetup() const
 int OnboardingController::themeIndex() const
 {
     return m_ctx ? m_ctx->getColorScheme()->currentIndex() : -1;
+}
+
+QUrl OnboardingController::suggestedFolder() const
+{
+    const QString path = QStandardPaths::writableLocation(QStandardPaths::MoviesLocation);
+    const QFileInfo folder(path);
+    if (folder.exists() && folder.isDir() && folder.isReadable())
+        return QUrl::fromLocalFile(folder.canonicalFilePath());
+    return {};
+}
+
+bool OnboardingController::metadataNetworkAccess() const
+{
+    return m_ctx && config_GetInt("metadata-network-access") != 0;
 }
 
 void OnboardingController::setBusy(bool busy)
