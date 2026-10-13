@@ -9,6 +9,7 @@
 import QtQuick
 
 import VLC.MainInterface
+import VLC.Util
 import VLC.Style
 import VLC.Player
 

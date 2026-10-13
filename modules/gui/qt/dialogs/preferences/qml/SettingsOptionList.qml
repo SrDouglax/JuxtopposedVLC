@@ -5,10 +5,11 @@
 import QtQuick
 import QtQuick.Controls
 import VLC.Style
-import "SettingsPresentation.js" as Presentation
+
 
 Column {
     id: root
+    SettingsPresentation { id: presentationData }
     property var settingsModel
     property string category: ""
     property string search: ""
@@ -22,9 +23,9 @@ Column {
         delegate: Column {
             width: root.width
             spacing: 0
-            readonly property var presentation: Presentation.entry(model.key, model.label)
+            readonly property var presentation: presentationData.entry(model.key, model.label)
             readonly property string previousSection: index > 0
-                ? Presentation.entry(root.settingsModel.keyAt(index - 1), "").section : ""
+                ? presentationData.entry(root.settingsModel.keyAt(index - 1), "").section : ""
 
             Label {
                 visible: index === 0 || presentation.section !== previousSection

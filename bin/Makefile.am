@@ -164,3 +164,14 @@ endif
 	fi
 
 include preparser/Makefile.am
+
+# Isolated local-audio analysis helper; the Qt plugin does not link LibVLC.
+if BUILD_VLC
+if ENABLE_QT
+bin_PROGRAMS += vlc-waveform
+endif
+endif
+vlc_waveform_SOURCES = $(top_srcdir)/extras/juxtopposed/waveform.c
+vlc_waveform_CPPFLAGS = $(AM_CPPFLAGS)
+vlc_waveform_CFLAGS = $(AM_CFLAGS) -std=c11 -D_DEFAULT_SOURCE
+vlc_waveform_LDADD = ../lib/libvlc.la -lm

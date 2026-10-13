@@ -148,3 +148,7 @@ T01/T02 podem ocorrer em paralelo. T03/T04 também: ambos provam a mesma base up
 | T09 | T04, T08 | integração → diff/build/fluxo | Consistente |
 
 Cada tarefa tem uma entrega coesa e sua própria verificação. Esta tabela verifica o planejamento; não registra execução ou testes aprovados.
+
+## Execução de M3
+
+[Tarefas, paralelização, contratos e critérios de aceite de M3](m3.md). Marco em execução; cobertura completa ainda não aprovada.

@@ -127,6 +127,15 @@ bool OnboardingController::previewTheme(int index)
     return true;
 }
 
+bool OnboardingController::acceptTheme()
+{
+    if (!m_ctx || m_busy || !m_previewActive) return false;
+    m_ctx->setSettingValue("MainWindow/color-scheme-index", themeIndex());
+    m_previewActive = false;
+    m_initialTheme = -1;
+    return true;
+}
+
 void OnboardingController::restoreTheme()
 {
     if (!m_previewActive)

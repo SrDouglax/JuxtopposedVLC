@@ -14,7 +14,7 @@
 #include <QTimer>
 
 class PlayerController;
-class PlaylistController;
+namespace vlc { namespace playlist { class PlaylistController; } }
 Q_MOC_INCLUDE("player/player_controller.hpp")
 Q_MOC_INCLUDE("playlist/playlist_controller.hpp")
 
@@ -22,7 +22,7 @@ class SleepTimerController : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(PlayerController* player READ player WRITE setPlayer NOTIFY playerChanged FINAL)
-    Q_PROPERTY(PlaylistController* playlist READ playlist WRITE setPlaylist NOTIFY playlistChanged FINAL)
+    Q_PROPERTY(vlc::playlist::PlaylistController* playlist READ playlist WRITE setPlaylist NOTIFY playlistChanged FINAL)
     Q_PROPERTY(bool active READ active NOTIFY activeChanged FINAL)
     Q_PROPERTY(int remainingSeconds READ remainingSeconds NOTIFY remainingSecondsChanged FINAL)
     Q_PROPERTY(Action action READ action NOTIFY actionChanged FINAL)
@@ -36,8 +36,8 @@ public:
 
     PlayerController* player() const;
     void setPlayer(PlayerController* player);
-    PlaylistController* playlist() const;
-    void setPlaylist(PlaylistController* playlist);
+    vlc::playlist::PlaylistController* playlist() const;
+    void setPlaylist(vlc::playlist::PlaylistController* playlist);
     bool active() const { return m_active; }
     int remainingSeconds() const { return m_remainingSeconds; }
     Action action() const { return m_action; }
@@ -61,7 +61,7 @@ private:
     void setRemainingSeconds(int seconds);
 
     QPointer<PlayerController> m_player;
-    QPointer<PlaylistController> m_playlist;
+    QPointer<vlc::playlist::PlaylistController> m_playlist;
     QMetaObject::Connection m_inputConnection;
     QTimer m_tick;
     QElapsedTimer m_elapsed;

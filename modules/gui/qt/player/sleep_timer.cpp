@@ -44,12 +44,12 @@ void SleepTimerController::setPlayer(PlayerController* player)
     emit playerChanged();
 }
 
-PlaylistController* SleepTimerController::playlist() const
+vlc::playlist::PlaylistController* SleepTimerController::playlist() const
 {
     return m_playlist;
 }
 
-void SleepTimerController::setPlaylist(PlaylistController* playlist)
+void SleepTimerController::setPlaylist(vlc::playlist::PlaylistController* playlist)
 {
     if (m_playlist == playlist)
         return;

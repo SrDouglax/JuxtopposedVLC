@@ -10,7 +10,7 @@ import VLC.Style
 
 Item {
     id: root
-    implicitHeight: VLCStyle.dp(178, VLCStyle.scale)
+    implicitHeight: VLCStyle.dp(210, VLCStyle.scale)
     property int selectedTheme: 0
     property int initialTheme: 0
     property color selectedAccent: VLCStyle.redesign.accent
@@ -24,12 +24,9 @@ Item {
         { text: qsTr("Light"), index: 1 },
         { text: qsTr("System"), index: 0 }
     ]
-    readonly property var accentChoices: [
-        "#D37918", "#A43C29", "#8D781B", "#126B2C", "#11829C",
-        "#194B9A", "#7030A6", "#A2417A", "#8A8A8A"
-    ]
+    readonly property var accentChoices: VLCStyle.redesign.accentChoices
 
-    OnboardingController { id: themeBridge }
+    OnboardingController { id: themeBridge; ctx: MainCtx }
 
     function begin() {
         themeBridge.begin()
@@ -62,7 +59,7 @@ Item {
     }
 
     function save() {
-        MainCtx.setSettingValue("MainWindow/color-scheme-index", selectedTheme)
+        themeBridge.acceptTheme()
         MainCtx.setSettingValue("redesign/accent", selectedAccent.toString())
         initialTheme = selectedTheme
         initialAccent = selectedAccent
@@ -76,26 +73,9 @@ Item {
         anchors.top: parent.top
     }
 
-    Label {
-        text: qsTr("Interface language")
-        color: root.dark ? "#777777" : "#555555"
-        font.family: VLCStyle.redesign.fontFamily
-        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-        anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(41, VLCStyle.scale)
-    }
-
-    Label {
-        text: qsTr("Language selection is available in Advanced Options")
-        color: root.dark ? "#666666" : "#666666"
-        font.family: VLCStyle.redesign.fontFamily
-        font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(43, VLCStyle.scale)
-        width: Math.min(330, parent.width * 0.47)
-        elide: Text.ElideRight
-        horizontalAlignment: Text.AlignRight
+    SettingsLanguageAction {
+        width: parent.width
+        y: VLCStyle.dp(34, VLCStyle.scale)
     }
 
     Label {
@@ -104,13 +84,13 @@ Item {
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(87, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(119, VLCStyle.scale)
     }
 
     Row {
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(73, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(105, VLCStyle.scale)
         spacing: 2
         Repeater {
             model: root.themeChoices
@@ -147,13 +127,13 @@ Item {
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(132, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(164, VLCStyle.scale)
     }
 
     Row {
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(124, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(156, VLCStyle.scale)
         spacing: 7
         Repeater {
             model: root.accentChoices

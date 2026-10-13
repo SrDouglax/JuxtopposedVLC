@@ -97,7 +97,7 @@ Item {
                                 height: width
                                 sourceSize: Qt.size(width, height)
                                 fillMode: Image.PreserveAspectFit
-                                source: "qrc:///redesign/icons/" + modelData.icon + "/"
+                                source: !modelData.icon ? "" : "qrc:///redesign/icons/" + modelData.icon + "/"
                                         + (root.category === modelData.key ? "active" : "default") + ".png"
                             }
                             Label {

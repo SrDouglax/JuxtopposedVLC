@@ -26,6 +26,7 @@
 #include "medialibrary/mlsubtitleassociations.hpp"
 
 #include "player/player_controller.hpp"
+#include "player/waveform.hpp"
 #include "player/player_controlbar_model.hpp"
 #include "player/control_list_model.hpp"
 #include "player/control_list_filter.hpp"
@@ -268,24 +269,7 @@ void MainUI::registerQMLTypes()
         qmlProtectModule(uri, versionMajor);
     }
 
-    {
-        const char* uri = "VLC.Dialogs";
-        const int versionMajor = 1;
-        const int versionMinor = 0;
-
-        // @uri VLC.Dialogs
-        qmlRegisterType<VLCDialog>( uri, versionMajor, versionMinor, "VLCDialog" );
-        assert(VLCDialogModel::getInstance<false>());
-        qmlRegisterSingletonInstance<VLCDialogModel>(uri, versionMajor, versionMinor, "VLCDialogModel", VLCDialogModel::getInstance<false>());
-        qmlRegisterUncreatableType<DialogId>( uri, versionMajor, versionMinor, "dialogId", "");
-        assert(DialogsProvider::getInstance());
-        qmlRegisterSingletonInstance<DialogsProvider>(uri, versionMajor, versionMinor, "DialogsProvider", DialogsProvider::getInstance());
-        assert(DialogErrorModel::getInstance<false>());
-        qmlRegisterSingletonInstance<DialogErrorModel>(uri, versionMajor, versionMinor, "DialogErrorModel", DialogErrorModel::getInstance<false>());
-
-        qmlRegisterModule(uri, versionMajor, versionMinor);
-        qmlProtectModule(uri, versionMajor);
-    }
+    registerDialogTypes();
 
     {
         const char* uri = "VLC.Menus";
@@ -310,6 +294,7 @@ void MainUI::registerQMLTypes()
         const int versionMinor = 0;
 
         // @uri VLC.Player
+        qmlRegisterType<Waveform>(uri, versionMajor, versionMinor, "Waveform");
         qmlRegisterUncreatableType<TrackListModel>(uri, versionMajor, versionMinor, "TrackListModel", "available tracks of a media (audio/video/sub)" );
         qmlRegisterUncreatableType<TitleListModel>(uri, versionMajor, versionMinor, "TitleListModel", "available titles of a media" );
         qmlRegisterUncreatableType<ChapterListModel>(uri, versionMajor, versionMinor, "ChapterListModel", "available chapters of a media" );

@@ -49,6 +49,8 @@ Item {
                                       && MainCtx.clientSideDecoration
                                       && (MainCtx.intfMainWindow.visibility === Window.Windowed)
 
+    SetupDialogs { anchors.fill: parent; z: 20 }
+
     Item {
         id: g_mainInterface
 

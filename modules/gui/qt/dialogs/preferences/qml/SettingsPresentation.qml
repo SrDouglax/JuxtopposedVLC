@@ -1,3 +1,6 @@
+import QtQuick
+
+QtObject {
 /* Labels and groups from the settings reference, for options backed by VLC. */
 function entry(key, fallback) {
     const items = {
@@ -73,4 +76,6 @@ function entry(key, fallback) {
     const item = items[key]
     return item ? { section: item[0], label: item[1], editor: item[2] || "" }
                 : { section: qsTr("More options"), label: fallback, editor: "" }
+}
+
 }

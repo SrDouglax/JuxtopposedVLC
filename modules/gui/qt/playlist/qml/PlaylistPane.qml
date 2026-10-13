@@ -69,6 +69,7 @@ T.Pane {
 
     readonly property ColorContext colorContext: ColorContext {
         id: theme
+        palette: VLCStyle.palette
         colorSet: ColorContext.View
 
         focused: root.activeFocus
@@ -110,7 +111,7 @@ T.Pane {
     }
 
     background: Rectangle {
-        color: VLCStyle.redesign.color(VLCStyle.redesign.sidebarBackground, theme.bg.primary, theme.palette?.isDark ?? true)
+        color: VLCStyle.redesign.color(VLCStyle.redesign.sidebarBackground, "#c2c2c1", VLCStyle.palette.isDark)
     }
 
     contentItem: ColumnLayout {

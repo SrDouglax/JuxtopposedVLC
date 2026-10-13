@@ -35,12 +35,16 @@ SliderBar {
             target: Player
             function onPositionChanged() { graph.requestPaint() }
         }
+        Connections {
+            target: VLCStyle.redesign
+            function onAccentChanged() { graph.requestPaint() }
+        }
         onPaint: {
             const bins = analysis.bins
             if (!analysis.ready || width <= 0 || height <= 0 || bins.length !== 512) return
             const paint = getContext("2d")
             paint.clearRect(0, 0, width, height)
-            paint.fillStyle = VLCStyle.redesign.windowBackground
+            paint.fillStyle = VLCStyle.redesign.color(VLCStyle.redesign.playerControlBackground, "#ababaa")
             paint.fillRect(0, 0, width, height)
             const columns = Math.max(1, Math.min(512, Math.floor(width / 2)))
             let largest = 0

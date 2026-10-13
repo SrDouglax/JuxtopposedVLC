@@ -44,6 +44,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QSet>
 #include <QMessageBox>
 
 #include <vlc_es.h>
@@ -193,6 +194,7 @@ private:
 
     QWidget* root;
     bool b_isDying;
+    QSet<QString> m_redesignDialogs;
 
     void openDialog( OpenDialog::OpenTab );
 
@@ -216,6 +218,11 @@ public slots:
                                               const QMessageBox::StandardButton defaultButton = QMessageBox::NoButton,
                                               const QMessageBox::Icon icon = QMessageBox::NoIcon);
     void prefsDialog();
+    void nativePrefsDialog();
+    void nativeEffectsDialog(int page = 0);
+    void playerMenuDialog();
+    void sleepTimerDialog();
+    void setRedesignDialogVisible(const QString& name, bool visible);
     void firstRunDialog();
     void extendedDialog();
     void synchroDialog();
@@ -286,6 +293,11 @@ public:
 #endif
 
 signals:
+    void preferencesRequested();
+    void playerMenuRequested();
+    void sleepTimerRequested();
+    void setupRequested();
+    void effectsRequested();
     void releaseMouseEvents();
     void showToolbarEditorDialog();
 

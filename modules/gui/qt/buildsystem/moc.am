@@ -1,4 +1,9 @@
 nodist_libqt_plugin_la_SOURCES = \
+	dialogs/extended/video_effects.moc.cpp \
+	dialogs/extended/audio_effects.moc.cpp \
+	dialogs/preferences/shortcuts_model.moc.cpp \
+	dialogs/preferences/config_model.moc.cpp \
+	dialogs/firstrun/onboarding.moc.cpp \
 	dialogs/bookmarks/bookmarks.moc.cpp \
 	dialogs/dialogs/dialogmodel.moc.cpp \
 	dialogs/dialogs_provider.moc.cpp \
@@ -90,6 +95,8 @@ nodist_libqt_plugin_la_SOURCES = \
 	style/vlcicons.moc.cpp \
 	player/delay_estimator.moc.cpp \
 	player/input_models.moc.cpp \
+	player/waveform.moc.cpp \
+	player/sleep_timer.moc.cpp \
 	player/player_controller.moc.cpp \
 	player/player_controlbar_model.moc.cpp \
 	player/control_list_model.moc.cpp \

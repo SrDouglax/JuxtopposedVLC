@@ -10,10 +10,7 @@ Item {
     signal themeRequested(int index)
     signal accentRequested(color colorValue)
 
-    readonly property var accentChoices: [
-        "#d37918", "#8d3525", "#826a1d", "#17652e", "#136b83",
-        "#1d4689", "#65318d", "#823760", "#707070"
-    ]
+    readonly property var accentChoices: VLCStyle.redesign.accentChoices
 
     Text {
         y: 180

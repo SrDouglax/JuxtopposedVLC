@@ -76,7 +76,7 @@ T.Pane {
         target: root.background
         property: "color"
         when: root.inlineTimeline && root.background !== null
-        value: VLCStyle.redesign.color(VLCStyle.redesign.playerControlBackground, theme.bg.primary, theme.palette?.isDark ?? VLCStyle.darkPalette.isDark)
+        value: VLCStyle.redesign.color(VLCStyle.redesign.playerControlBackground, "#ababaa", VLCStyle.palette.isDark)
         restoreMode: Binding.RestoreBinding
     }
 
@@ -138,6 +138,7 @@ T.Pane {
 
     readonly property ColorContext colorContext: ColorContext {
         id: theme
+        palette: VLCStyle.palette
         colorSet: ColorContext.Window
     }
 
@@ -254,7 +255,7 @@ T.Pane {
                     x: (parent.width - width) / 2
                 }
             },
-            SliderBar {
+            WaveformSlider {
                 id: trackPositionSlider
 
                 barHeight: root.sliderHeight

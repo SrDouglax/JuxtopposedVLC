@@ -34,12 +34,11 @@ Column {
                 font.pixelSize: 16
                 verticalAlignment: Text.AlignVCenter
             }
-            Text {
-                height: parent.height
-                text: "›"
-                color: "#969696"
-                font.pixelSize: 22
-                verticalAlignment: Text.AlignVCenter
+            Image {
+                width: 24
+                height: 24
+                anchors.verticalCenter: parent.verticalCenter
+                source: "qrc:///redesign/icons/chevron-right/default.png"
             }
         }
         onClicked: profilesMenu.open()
@@ -48,8 +47,8 @@ Column {
             id: profilesMenu
             parent: profileButton
             profileModel: root.profileModel
-            x: profileButton.width
-            y: 0
+            x: 0
+            y: profileButton.height
         }
     }
 

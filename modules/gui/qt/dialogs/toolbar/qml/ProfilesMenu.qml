@@ -48,18 +48,15 @@ Controls.Popup {
                 }
                 contentItem: Row {
                     spacing: 12
-                    Text {
-                        width: 20
-                        height: parent.height
-                        text: "✓"
+                    Image {
+                        width: 24
+                        height: 24
+                        anchors.verticalCenter: parent.verticalCenter
+                        source: "qrc:///redesign/icons/check/selected.png"
                         opacity: activeProfile ? 1 : 0
-                        color: VLCStyle.redesign.accent
-                        font.family: VLCStyle.redesign.fontFamily
-                        font.pixelSize: 19
-                        verticalAlignment: Text.AlignVCenter
                     }
                     Text {
-                        width: parent.width - 32
+                        width: parent.width - 36
                         height: parent.height
                         text: name
                         color: "#969696"

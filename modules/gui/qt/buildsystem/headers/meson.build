@@ -1,4 +1,9 @@
 moc_headers = files(
+    '../../dialogs/extended/video_effects.hpp',
+    '../../dialogs/extended/audio_effects.hpp',
+    '../../dialogs/preferences/shortcuts_model.hpp',
+    '../../dialogs/preferences/config_model.hpp',
+    '../../dialogs/firstrun/onboarding.hpp',
     '../../dialogs/bookmarks/bookmarks.hpp',
     '../../dialogs/dialogs/dialogmodel.hpp',
     '../../dialogs/dialogs_provider.hpp',
@@ -91,6 +96,8 @@ moc_headers = files(
     '../../style/colorcontext.hpp',
     '../../player/input_models.hpp',
     '../../player/delay_estimator.hpp',
+    '../../player/waveform.hpp',
+    '../../player/sleep_timer.hpp',
     '../../player/player_controller.hpp',
     '../../player/player_controlbar_model.hpp',
     '../../player/control_list_model.hpp',

@@ -110,46 +110,6 @@ DialogsProvider::~DialogsProvider()
     VLCMenuBar::freeRendererMenu();
 }
 
-QString DialogsProvider::getSaveFileName( QWidget *parent,
-                                          const QString &caption,
-                                          const QUrl &dir,
-                                          const QString &filter,
-                                          QString *selectedFilter )
-{
-    const QStringList schemes = QStringList(QStringLiteral("file"));
-    return QFileDialog::getSaveFileUrl( parent, caption, dir, filter, selectedFilter, QFileDialog::Options(), schemes).toLocalFile();
-}
-
-QVariant DialogsProvider::getTextDialog(QWidget *parent,
-                                        const QString &title,
-                                        const QString &label,
-                                        const QString &placeholder,
-                                        bool *ok)
-{
-    bool _ok = false;
-    QString ret = QInputDialog::getText(parent,
-                                        title,
-                                        label,
-                                        QLineEdit::Normal,
-                                        placeholder,
-                                        ok ? ok : &_ok);
-
-    if (!ok)
-    {
-        // When this function is called from the QML side, instead of setting `ok` parameter
-        // a QVariantMap with key `ok` and `text` is returned instead
-
-        QVariantMap map;
-        map["text"] = ret;
-        map["ok"] = _ok;
-        return map;
-    }
-    else
-    {
-        return ret;
-    }
-}
-
 void DialogsProvider::quit()
 {
     if (b_isDying)
@@ -287,37 +247,7 @@ bool DialogsProvider::eventFilter(QObject *watched, QEvent *event) {
 const QEvent::Type DialogEvent::DialogEvent_Type =
         (QEvent::Type)QEvent::registerEventType();
 
-void DialogsProvider::prefsDialog()
-{
-    if (Q_LIKELY(!m_prefsDialog))
-    {
-        m_prefsDialog = new PrefsDialog( nullptr, p_intf );
-        m_prefsDialog->setAttribute(Qt::WA_DeleteOnClose);
-        m_prefsDialog->installEventFilter(this);
-        m_prefsDialog->open();
-    }
-    else
-    {
-        m_prefsDialog->reject();
-    }
-}
-
-void DialogsProvider::firstRunDialog()
-{
-    ensureDialog(m_firstRunDialog);
-    QVLCDialog::setWindowTransientParent(m_firstRunDialog.get(), nullptr, p_intf);
-    m_firstRunDialog->show();
-}
-
-void DialogsProvider::extendedDialog()
-{
-    ensureDialog(m_extendedDialog);
-    if( !m_extendedDialog->isVisible() || /* Hidden */
-        m_extendedDialog->currentTab() != 0 )  /* wrong tab */
-        m_extendedDialog->showTab( 0 );
-    else
-        m_extendedDialog->hide();
-}
+void DialogsProvider::extendedDialog() { emit effectsRequested(); }
 
 void DialogsProvider::synchroDialog()
 {
@@ -664,45 +594,6 @@ void DialogsProvider::PLAppendDialog( OpenDialog::OpenTab tab )
 /**
  * Simple open
  ***/
-QStringList DialogsProvider::showSimpleOpen( const QString& help,
-                                             int filters,
-                                             const QUrl& path )
-{
-    QString fileTypes = "";
-    if( filters & EXT_FILTER_MEDIA ) {
-        ADD_EXT_FILTER( fileTypes, EXTENSIONS_MEDIA );
-    }
-    if( filters & EXT_FILTER_VIDEO ) {
-        ADD_EXT_FILTER( fileTypes, EXTENSIONS_VIDEO );
-    }
-    if( filters & EXT_FILTER_AUDIO ) {
-        ADD_EXT_FILTER( fileTypes, EXTENSIONS_AUDIO );
-    }
-    if( filters & EXT_FILTER_PLAYLIST ) {
-        ADD_EXT_FILTER( fileTypes, EXTENSIONS_PLAYLIST );
-    }
-    if( filters & EXT_FILTER_SUBTITLE ) {
-        ADD_EXT_FILTER( fileTypes, EXTENSIONS_SUBTITLE );
-    }
-    ADD_EXT_FILTER( fileTypes, EXTENSIONS_ALL );
-    fileTypes.replace( ";*", " *");
-    fileTypes.chop(2); //remove trailing ";;"
-
-    QList<QUrl> urls = QFileDialog::getOpenFileUrls( NULL,
-        help.isEmpty() ? qfut(I_OP_SEL_FILES ) : help,
-        path.isEmpty() ? p_intf->p_mi->getDialogFilePath() : path,
-        fileTypes );
-
-    if( !urls.isEmpty() )
-        p_intf->p_mi->setDialogFilePath(urls.last());
-
-    QStringList res;
-    foreach( const QUrl &url, urls )
-        res << url.toEncoded();
-
-    return res;
-}
-
 void DialogsProvider::simpleOpenDialog(bool start)
 {
     QStringList urls = DialogsProvider::showSimpleOpen();
@@ -1064,6 +955,8 @@ void DialogsProvider::toggleDialogVisible(std::unique_ptr<T>& dialog) {
 
 #define DIALOG_VISIBLE_GETTER(dialog) \
     bool DialogsProvider:: dialog ## Visible() const { \
+        if (m_redesignDialogs.contains(QStringLiteral(#dialog))) \
+            return true; \
         if (!m_ ## dialog) \
             return false; \
         return m_ ## dialog->isVisible(); \

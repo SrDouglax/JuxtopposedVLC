@@ -27,30 +27,31 @@ QtObject {
     readonly property real scale: MainCtx.intfScaleFactor
 
     // Dark reference: Player 187:328 and library shell 970:2703.
-    // Light keeps the existing palette until its design context is available.
+    // Light chrome values measured from the full exported Player - Light frame.
     readonly property QtObject redesign: QtObject {
         readonly property FontLoader regularFont: FontLoader {
             source: "qrc:///fonts/InterVariable.ttf"
         }
         readonly property string fontFamily: regularFont.name
+        readonly property var accentChoices: ["#d37918", "#a03b26", "#8c721b", "#147428", "#147a97", "#144497", "#6631b5", "#ab3c80", "#7e7e7e"]
         readonly property color logoColor: "#D37918"
-        readonly property color accent: "#D37918"
-        readonly property color accentDim: "#AB6314"
-        readonly property color accentBackground: "#371F06"
+        property color accent: MainCtx.settingValue("redesign/accent", "#D37918")
+        readonly property color accentDim: Qt.colorEqual(accent, "#D37918") ? "#AB6314" : Qt.darker(accent, 1.25)
+        readonly property color accentBackground: Qt.colorEqual(accent, "#D37918") ? "#371F06" : Qt.tint("#0E0E0E", Qt.rgba(accent.r, accent.g, accent.b, 0.25))
         readonly property color windowBackground: "#0E0E0E"
         readonly property color sidebarBackground: "#191919"
         readonly property color controlBackground: "#191919"
         readonly property color playerControlBackground: "#1B1B1B"
         readonly property color playerTopbarBackground: "#1B1B1B"
         readonly property color controlHoverBackground: "#222222"
-        readonly property color selectionBackground: "#371F06"
+        readonly property color selectionBackground: accentBackground
         readonly property color textPrimary: "#EAEAEA"
         readonly property color textSecondary: "#969696"
         readonly property color textMuted: "#8F8F8F"
         readonly property color textDisabled: "#404040"
         readonly property color separator: "#222222"
         readonly property color border: "#373737"
-        readonly property color focusColor: "#D37918"
+        readonly property color focusColor: accent
         readonly property int topbarHeight: MainCtx.dp(40, vlc_style.scale)
         readonly property int sidebarWidth: MainCtx.dp(217, vlc_style.scale)
         readonly property int navigationRowHeight: MainCtx.dp(46, vlc_style.scale)
@@ -76,7 +77,18 @@ QtObject {
         readonly property int timeWidth: MainCtx.dp(76, vlc_style.scale)
 
         function color(darkValue, fallback, isDark = vlc_style.palette.isDark) {
-            return isDark ? darkValue : fallback
+            if (isDark) return darkValue
+            if (Qt.colorEqual(darkValue, accent)) return accent
+            if (Qt.colorEqual(darkValue, accentDim)) return accentDim
+            if (Qt.colorEqual(darkValue, accentBackground))
+                return Qt.tint("#dedede", Qt.rgba(accent.r, accent.g, accent.b, 0.35))
+            const light = {
+                "#0e0e0e": "#c2c2c1", "#191919": "#ababaa", "#1b1b1b": "#ababaa",
+                "#222222": "#9c9c9b", "#eaeaea": "#2e2e2e", "#969696": "#4d4d4d",
+                "#8f8f8f": "#7c7c7b", "#404040": "#929291", "#373737": "#8e8e8d",
+                "#090909": "#dedede"
+            }
+            return light[darkValue.toString().toLowerCase()] || fallback
         }
     }
 

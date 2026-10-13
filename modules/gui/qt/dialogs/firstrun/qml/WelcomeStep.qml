@@ -66,7 +66,7 @@ Item {
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideMiddle
             text: root.folderUrl && root.folderUrl.toString() !== ""
-                  ? root.folderUrl.toLocalFile() : qsTr("No folder selected")
+                  ? decodeURIComponent(root.folderUrl.toString().replace(/^file:\/\//, "")) : qsTr("No folder selected")
             color: "#c6c6c6"
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: 16

@@ -49,6 +49,7 @@ public:
     Q_INVOKABLE bool begin();
     Q_INVOKABLE bool previewTheme(int index);
     Q_INVOKABLE bool cancel();
+    Q_INVOKABLE bool acceptTheme();
     Q_INVOKABLE bool finish(const QVariantList& folderUrls, bool metadataNetworkAccess);
     Q_INVOKABLE bool skip();
     Q_INVOKABLE QVariantList activeShortcuts() const;

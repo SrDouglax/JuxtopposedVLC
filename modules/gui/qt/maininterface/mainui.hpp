@@ -38,6 +38,7 @@ public:
 
 private:
     void registerQMLTypes();
+    void registerDialogTypes();
     static void clearQMLTypes();
     static QObject* getMainCtxInstance(QQmlEngine *, QJSEngine *);
 

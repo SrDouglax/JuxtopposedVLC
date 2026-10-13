@@ -76,7 +76,7 @@ Item {
                     width: VLCStyle.dp(27, VLCStyle.scale)
                     height: VLCStyle.dp(24, VLCStyle.scale)
                     radius: 3
-                    color: root.settingValue ? "#371f06" : "#4b4b4b"
+                    color: root.settingValue ? VLCStyle.redesign.accentBackground : "#4b4b4b"
                     Label {
                         anchors.centerIn: parent
                         text: root.settingValue ? qsTr("ON") : ""
@@ -88,7 +88,7 @@ Item {
                     width: VLCStyle.dp(27, VLCStyle.scale)
                     height: VLCStyle.dp(24, VLCStyle.scale)
                     radius: 3
-                    color: root.settingValue ? "#b6630a" : (root.dark ? "#252525" : "#dddddd")
+                    color: root.settingValue ? VLCStyle.redesign.accentDim : (root.dark ? "#252525" : "#dddddd")
                     Label {
                         anchors.centerIn: parent
                         text: root.settingValue ? "" : qsTr("OFF")

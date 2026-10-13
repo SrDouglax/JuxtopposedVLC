@@ -51,6 +51,17 @@ if build_vlc and (host_system != 'darwin' or have_osx) and not have_win_store an
         win_subsystem: 'windows'
     )
 
+    executable('vlc-waveform',
+        '../extras/juxtopposed/waveform.c',
+        link_with: [libvlc],
+        include_directories: [vlc_include_dirs],
+        dependencies: [m_lib],
+        c_args: ['-std=c11', '-D_DEFAULT_SOURCE'],
+        install: true,
+        install_dir: bindir_path,
+        win_subsystem: 'console'
+    )
+
     vlc_top_builddir_def = '-DTOP_BUILDDIR="@0@"'.format(vlc_build_root)
     vlc_top_srcdir_def = '-DTOP_SRCDIR="@0@"'.format(vlc_src_root)
 

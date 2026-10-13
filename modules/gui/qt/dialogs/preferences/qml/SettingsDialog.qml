@@ -38,20 +38,6 @@ Dialog {
         library: qsTr("Library Settings"), network: qsTr("Network Connections & Security"),
         performance: qsTr("Performance Settings"), recording: qsTr("Recording Settings")
     })
-    readonly property var availabilityNotes: ({
-        general: qsTr("Language and detailed diagnostics are available in Advanced Options. Developer mode is not a VLC setting here."),
-        interface: qsTr("Window and tray features depend on the current desktop environment. Advanced Options contains the remaining interface controls."),
-        privacy: qsTr("History filtering and Last.fm account settings are not available in this view. Clear history from the library's recent items."),
-        playback: qsTr("These are playback defaults. Current queue and player state are controlled in the player."),
-        video: qsTr("Crop, zoom and deinterlacing for the current video are in Adjustments and Effects."),
-        audio: qsTr("Equalizer and compressor for current playback are in Adjustments and Effects."),
-        subtitles: qsTr("Subtitle appearance for optional renderers is available in Advanced Options when the renderer is installed."),
-        controls: qsTr("Keyboard shortcuts and conflicts are edited in Advanced Options."),
-        library: qsTr("Indexed folders are managed from the library. These settings control defaults only."),
-        network: qsTr("Proxy and TLS controls depend on the platform and installed modules; unavailable controls are omitted."),
-        performance: qsTr("Decoder-specific controls are available only when that decoder is installed."),
-        recording: qsTr("Casting and streaming profiles use the dedicated Streaming dialog.")
-    })
 
     function openSettings(category) {
         selectedCategory = category || "general"
@@ -81,6 +67,8 @@ Dialog {
         }
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
+
+    ShortcutsDialog { id: shortcutsDialog; parent: root.parent }
 
     ConfigModel {
         id: config
@@ -221,47 +209,16 @@ Dialog {
                                        .includes(searchField.text.toLowerCase()))
                 }
 
-                Label {
-                    visible: optionRepeater.count > 0
-                    text: root.selectedCategory === "general" ? qsTr("Diagnostics")
-                          : root.selectedCategory === "privacy" ? qsTr("History & Network")
-                          : root.titles[root.selectedCategory] || qsTr("Options")
-                    color: root.dark ? "#cccccc" : "#303030"
-                    font.family: VLCStyle.redesign.fontFamily
-                    font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
-                    topPadding: VLCStyle.dp(11, VLCStyle.scale)
-                    bottomPadding: VLCStyle.dp(4, VLCStyle.scale)
-                }
-
-                Repeater {
-                    id: optionRepeater
-                    model: config
-                    delegate: SettingsOptionRow {
-                        width: contentColumn.width
-                        settingKey: model.key
-                        label: model.label
-                        help: model.help
-                        settingType: model.type
-                        settingValue: model.value
-                        choices: model.choices
-                        dirty: model.dirty
-                        onCommit: (value) => config.setValue(settingKey, value)
-                    }
-                }
-
-                Label {
-                    visible: searchField.text.length === 0
+                SettingsOptionList {
+                    id: optionList
                     width: parent.width
-                    topPadding: VLCStyle.dp(8, VLCStyle.scale)
-                    text: root.availabilityNotes[root.selectedCategory] || ""
-                    color: root.dark ? "#777777" : "#666666"
-                    wrapMode: Text.WordWrap
-                    font.family: VLCStyle.redesign.fontFamily
-                    font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+                    settingsModel: config
+                    category: root.selectedCategory
+                    search: searchField.text
                 }
 
                 Label {
-                    visible: optionRepeater.count === 0 && !appearance.visible
+                    visible: optionList.count === 0 && !appearance.visible
                     text: searchField.text.length > 0
                           ? qsTr("No matching settings")
                           : qsTr("No settings are available for this category on this VLC installation")
@@ -291,17 +248,31 @@ Dialog {
                     }
                 }
 
-                Button {
+                PersonalizationActions {
+                    width: Math.min(320, parent.width)
+                    visible: root.selectedCategory === "interface" && !searchField.text.length
+                }
+                ActionButton {
+                    visible: root.selectedCategory === "general" && !searchField.text.length
+                    text: qsTr("Welcome setup")
+                    onClicked: { root.reject(); DialogsProvider.firstRunDialog() }
+                }
+
+                ActionButton {
                     visible: root.selectedCategory === "audio" || root.selectedCategory === "video"
                     width: parent.width
                     text: qsTr("Adjustments and Effects")
-                    onClicked: DialogsProvider.extendedDialog()
+                    onClicked: {
+                        root.reject()
+                        if (root.selectedCategory === "video") DialogsProvider.nativeEffectsDialog(1)
+                        else DialogsProvider.extendedDialog()
+                    }
                 }
-                Button {
+                ActionButton {
                     visible: root.selectedCategory === "controls"
                     width: parent.width
-                    text: qsTr("Edit keyboard shortcuts in Advanced Options")
-                    onClicked: DialogsProvider.nativePrefsDialog()
+                    text: qsTr("Keyboard shortcuts")
+                    onClicked: shortcutsDialog.open()
                 }
             }
         }

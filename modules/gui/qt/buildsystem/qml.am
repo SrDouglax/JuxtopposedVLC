@@ -6,6 +6,38 @@ libqml_module_dialogs_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
 libqml_module_dialogs_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_dialogs_a_QML = \
 	dialogs/dialogs/qml/CustomDialog.qml \
+	dialogs/firstrun/qml/WelcomeStep.qml \
+	dialogs/firstrun/qml/OnboardingButton.qml \
+	dialogs/firstrun/qml/ThemeStep.qml \
+	dialogs/firstrun/qml/OnboardingDialog.qml \
+	dialogs/firstrun/qml/ShortcutsStep.qml \
+	dialogs/preferences/qml/SettingsAppearance.qml \
+	dialogs/preferences/qml/SettingsSidebar.qml \
+	dialogs/preferences/qml/ShortcutsDialog.qml \
+	dialogs/preferences/qml/SettingsOptionList.qml \
+	dialogs/preferences/qml/SettingsLanguageAction.qml \
+	dialogs/preferences/qml/SettingsPrivacyActions.qml \
+	dialogs/preferences/qml/ShortcutsRestartNotice.qml \
+	dialogs/preferences/qml/SettingsPresentation.qml \
+	dialogs/preferences/qml/ActionButton.qml \
+	dialogs/preferences/qml/ShortcutsCapturePopup.qml \
+	dialogs/preferences/qml/SettingsDialog.qml \
+	dialogs/preferences/qml/SettingsOptionRow.qml \
+	dialogs/toolbar/qml/PlayerMenu.qml \
+	player/qml/SleepTimerMenu.qml \
+	dialogs/dialogs/qml/SetupDialogs.qml \
+	dialogs/extended/qml/VideoOption.qml \
+	dialogs/extended/qml/VideoFilterSection.qml \
+	dialogs/extended/qml/CropInput.qml \
+	dialogs/extended/qml/CropPanel.qml \
+	dialogs/extended/qml/VideoEffectsPanel.qml \
+	dialogs/extended/qml/EffectsDialog.qml \
+	dialogs/extended/qml/EqualizerPanel.qml \
+	dialogs/extended/qml/FilterPanel.qml \
+	dialogs/extended/qml/FilterSection.qml \
+	dialogs/extended/qml/ValueSlider.qml \
+	dialogs/toolbar/qml/ProfilesMenu.qml \
+	dialogs/toolbar/qml/PersonalizationActions.qml \
 	dialogs/dialogs/qml/Dialogs.qml \
 	dialogs/dialogs/qml/ModalDialog.qml \
 	dialogs/dialogs/qml/WindowDialog.qml \
@@ -147,14 +179,21 @@ libqml_module_player_a_QML = \
 	player/qml/PlaybackSpeed.qml \
 	player/qml/LyricsFlickable.qml \
 	player/qml/MiniPlayer.qml \
+	player/qml/MiniPlayerQueue.qml \
+	player/qml/HideUIAction.qml \
 	player/qml/LibraryMiniPlayer.qml \
 	player/qml/PIPPlayer.qml \
+	player/qml/MusicView.qml \
+	player/qml/AudioContent.qml \
+	player/qml/ArtworkBackdrop.qml \
+	player/qml/TouchWheelHandler.qml \
 	player/qml/Player.qml \
 	player/qml/PlayerControlLayout.qml \
 	player/qml/PlayerPlaylistVisibilityFSM.qml \
 	player/qml/PlayerToolbarVisibilityFSM.qml \
 	player/qml/MinimalView.qml \
 	player/qml/ResumeDialog.qml \
+	player/qml/WaveformSlider.qml \
 	player/qml/SliderBar.qml \
 	player/qml/TopBar.qml \
 	player/qml/Title.qml \

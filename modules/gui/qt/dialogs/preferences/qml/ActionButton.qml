@@ -20,7 +20,7 @@ Button {
     background: Rectangle {
         radius: 4
         color: !control.enabled ? (control.dark ? "#1c1c1c" : "#eeeeee")
-               : control.primary ? (control.down ? "#4a2b0d" : "#371f06")
+               : control.primary ? (control.down ? Qt.lighter(VLCStyle.redesign.accentBackground, 1.2) : VLCStyle.redesign.accentBackground)
                : control.down ? (control.dark ? "#303030" : "#dddddd")
                : control.hovered ? (control.dark ? "#292929" : "#e8e8e8")
                : (control.dark ? "#202020" : "#f4f4f4")

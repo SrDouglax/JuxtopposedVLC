@@ -51,5 +51,5 @@ for item in "$@"; do
     media+=("$item")
 done
 exec docker run "${args[@]}" "$image" dbus-run-session -- ./vlc \
-    --ignore-config --no-one-instance --no-qt-privacy-ask --no-hw-dec --no-qt-titlebar \
+    --no-one-instance --no-hw-dec --no-qt-titlebar \
     "--qt-compositor=$compositor" "${media[@]}"

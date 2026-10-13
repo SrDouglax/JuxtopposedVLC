@@ -54,6 +54,7 @@ FocusScope{
 
     readonly property ColorContext colorContext: ColorContext {
         id: theme
+        palette: VLCStyle.palette
         colorSet: ColorContext.Window
     }
 
@@ -196,7 +197,7 @@ FocusScope{
     Rectangle {
         anchors.fill: parent
         z: -0.5
-        color: VLCStyle.redesign.color(VLCStyle.redesign.playerTopbarBackground, theme.bg.primary, (theme.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+        color: VLCStyle.redesign.color(VLCStyle.redesign.playerTopbarBackground, "#ababaa", VLCStyle.palette.isDark)
     }
 
     //drag and dbl click the titlebar in CSD mode

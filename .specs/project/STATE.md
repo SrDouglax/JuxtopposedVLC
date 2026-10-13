@@ -32,4 +32,4 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 
 ## Próxima ação
 
-M3: decompor a próxima fatia do redesign a partir do inventário e exports locais, incluindo preferências/perfis e os fluxos avançados previstos no roadmap. Windows/W01 permanece para a rodada final da interface. M1 e M2 têm resultados e limites em seus documentos; a fidelidade integral dos 103 frames continua pendente.
+M3 em execução na branch `feat/m3`: preferências, onboarding, música, efeitos, atalhos, perfis e temporizador em integração; miniplayer em implementação. [Tarefas, contratos, dependências e estado de prova](../features/redesign/m3.md). O export completo de 105 PNGs está disponível; a quota MCP não impede conferir essas referências. Windows/W01 permanece para a rodada final da interface. M1 e M2 têm resultados e limites em seus documentos; a fidelidade integral dos 103 frames continua pendente.
