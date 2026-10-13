@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 import QtQuick
+import QtQuick.Controls.impl as Impl
 import QtQuick.Templates as T
 
 import VLC.MainInterface
@@ -152,7 +153,8 @@ T.Control {
                 id: previousButton
                 width: VLCStyle.dp(32, VLCStyle.scale)
                 height: VLCStyle.dp(48, VLCStyle.scale)
-                contentItem: Image {
+                contentItem: Impl.IconImage {
+                    color: "#eaeaea"
                     source: "qrc:///redesign/icons/previous/default.png"
                     fillMode: Image.PreserveAspectFit
                     sourceSize: Qt.size(24, 24)
@@ -168,7 +170,8 @@ T.Control {
                 id: playButton
                 width: VLCStyle.dp(48, VLCStyle.scale)
                 height: width
-                contentItem: Image {
+                contentItem: Impl.IconImage {
+                    color: "#eaeaea"
                     source: "qrc:///redesign/icons/" +
                             (Player.playingState === Player.PLAYING_STATE_PLAYING ? "pause" : "play") +
                             "/default.png"
@@ -196,7 +199,8 @@ T.Control {
                 id: nextButton
                 width: VLCStyle.dp(32, VLCStyle.scale)
                 height: VLCStyle.dp(48, VLCStyle.scale)
-                contentItem: Image {
+                contentItem: Impl.IconImage {
+                    color: "#eaeaea"
                     source: "qrc:///redesign/icons/next/default.png"
                     fillMode: Image.PreserveAspectFit
                     sourceSize: Qt.size(24, 24)

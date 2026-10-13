@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 import QtQuick
+import QtQuick.Controls.impl as Impl
 import QtQuick.Layouts
 import QtQuick.Templates as T
 
@@ -78,10 +79,11 @@ T.Pane {
             contentItem: Item {
                 implicitWidth: VLCStyle.redesign.iconSize
                 implicitHeight: VLCStyle.redesign.iconSize
-                Image {
+                Impl.IconImage {
                     anchors.centerIn: parent
                     width: VLCStyle.redesign.iconSize
                     height: width
+                    color: VLCStyle.redesign.color(VLCStyle.redesign.textMuted, colorContext.fg.primary)
                     source: {
                         if (root._player.muted || root._player.volume === 0)
                             return "qrc:///redesign/volume-muted.png"

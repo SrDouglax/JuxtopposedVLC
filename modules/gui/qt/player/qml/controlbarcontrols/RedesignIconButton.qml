@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 import QtQuick
+import QtQuick.Controls.impl as Impl
 import VLC.Widgets as Widgets
 import VLC.Style
 
@@ -34,11 +35,12 @@ Widgets.IconToolButton {
     contentItem: Item {
         implicitWidth: VLCStyle.redesign.iconSize
         implicitHeight: VLCStyle.redesign.iconSize
-        Image {
+        Impl.IconImage {
             anchors.centerIn: parent
             width: VLCStyle.redesign.iconSize
             height: width
             source: root.iconSource
+            color: root.color
             opacity: root.enabled ? 1 : 0.4
         }
         Rectangle {
