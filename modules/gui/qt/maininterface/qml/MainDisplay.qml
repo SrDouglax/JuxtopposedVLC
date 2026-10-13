@@ -808,9 +808,9 @@ FocusScope {
             id: playerPip
             anchors {
                 bottom: loaderUpdatePane.top
-                right: parent.right
+                left: parent.left
                 bottomMargin: VLCStyle.dp(6, VLCStyle.scale)
-                rightMargin: VLCStyle.dp(6, VLCStyle.scale)
+                leftMargin: VLCStyle.dp(6, VLCStyle.scale)
             }
 
             width: Math.min(implicitWidth, parent.width < VLCStyle.dp(900, VLCStyle.scale)

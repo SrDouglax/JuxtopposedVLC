@@ -29,12 +29,12 @@ T.Control {
     }
 
     padding: VLCStyle.dp(8, VLCStyle.scale)
-    implicitWidth: VLCStyle.dp(300, VLCStyle.scale)
+    implicitWidth: VLCStyle.dp(390, VLCStyle.scale)
     implicitHeight: topPadding + bottomPadding +
                     (queueExpanded ? queueArea.height + VLCStyle.dp(6, VLCStyle.scale) : 0) +
                     video.height + VLCStyle.dp(6, VLCStyle.scale) + seek.height +
-                    VLCStyle.dp(8, VLCStyle.scale) + titleLabel.height +
-                    VLCStyle.dp(4, VLCStyle.scale) + details.height
+                    VLCStyle.dp(24, VLCStyle.scale) + titleLabel.height +
+                    VLCStyle.dp(18, VLCStyle.scale) + details.height
 
     background: Rectangle {
         color: root.lightTheme ? "#ababaa" : VLCStyle.redesign.playerControlBackground
@@ -68,7 +68,7 @@ T.Control {
             objectName: "miniPlayerSeek"
             y: video.y + video.height + VLCStyle.dp(6, VLCStyle.scale)
             width: parent.width
-            height: VLCStyle.dp(8, VLCStyle.scale)
+            height: VLCStyle.dp(14, VLCStyle.scale)
             padding: 0
             from: 0
             to: 1
@@ -105,23 +105,23 @@ T.Control {
         Text {
             id: titleLabel
             x: VLCStyle.dp(6, VLCStyle.scale)
-            y: seek.y + seek.height + VLCStyle.dp(8, VLCStyle.scale)
+            y: seek.y + seek.height + VLCStyle.dp(24, VLCStyle.scale)
             width: parent.width - x * 2
-            height: VLCStyle.dp(20, VLCStyle.scale)
+            height: VLCStyle.dp(24, VLCStyle.scale)
             text: Player.name
             color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
             elide: Text.ElideRight
             font.family: VLCStyle.redesign.fontFamily
-            font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
+            font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
             verticalAlignment: Text.AlignVCenter
         }
 
         Row {
             id: details
             x: VLCStyle.dp(6, VLCStyle.scale)
-            y: titleLabel.y + titleLabel.height + VLCStyle.dp(4, VLCStyle.scale)
+            y: titleLabel.y + titleLabel.height + VLCStyle.dp(18, VLCStyle.scale)
             width: parent.width - x * 2
-            height: VLCStyle.dp(23, VLCStyle.scale)
+            height: VLCStyle.dp(26, VLCStyle.scale)
             spacing: VLCStyle.dp(6, VLCStyle.scale)
 
             Image {
@@ -138,7 +138,7 @@ T.Control {
                 color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
                 elide: Text.ElideRight
                 font.family: VLCStyle.redesign.fontFamily
-                font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+                font.pixelSize: VLCStyle.dp(15, VLCStyle.scale)
                 verticalAlignment: Text.AlignVCenter
             }
             Image {
@@ -157,7 +157,7 @@ T.Control {
                 color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
                 elide: Text.ElideRight
                 font.family: VLCStyle.redesign.fontFamily
-                font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+                font.pixelSize: VLCStyle.dp(15, VLCStyle.scale)
                 verticalAlignment: Text.AlignVCenter
             }
         }
