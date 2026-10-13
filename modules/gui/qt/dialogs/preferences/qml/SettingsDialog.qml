@@ -114,14 +114,14 @@ Dialog {
                 radius: 4
                 color: root.dark ? "#181818" : "#eeeeee"
 
-                Label {
+                Image {
                     anchors.left: parent.left
                     anchors.leftMargin: 12
                     anchors.verticalCenter: parent.verticalCenter
-                    text: VLCIcons.search
-                    font.family: VLCIcons.fontFamily
-                    font.pixelSize: VLCStyle.dp(17, VLCStyle.scale)
-                    color: root.dark ? "#777777" : "#555555"
+                    width: VLCStyle.dp(20, VLCStyle.scale)
+                    height: width
+                    sourceSize: Qt.size(width, height)
+                    source: "qrc:///redesign/icons/search/default.png"
                 }
                 TextField {
                     id: searchField
@@ -159,12 +159,12 @@ Dialog {
                 height: 32
                 onClicked: root.reject()
                 background: Item {}
-                contentItem: Label {
-                    text: VLCIcons.close
-                    font.family: VLCIcons.fontFamily
-                    color: root.dark ? "#aaaaaa" : "#444444"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
+                contentItem: Image {
+                    anchors.centerIn: parent
+                    width: VLCStyle.dp(20, VLCStyle.scale)
+                    height: width
+                    sourceSize: Qt.size(width, height)
+                    source: "qrc:///redesign/icons/close/default.png"
                 }
             }
         }

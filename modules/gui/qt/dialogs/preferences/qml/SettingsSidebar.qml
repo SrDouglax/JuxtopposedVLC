@@ -15,21 +15,21 @@ Item {
 
     readonly property var entries: [
         { kind: "heading", label: qsTr("App") },
-        { key: "general", label: qsTr("General"), icon: VLCIcons.settings },
-        { key: "interface", label: qsTr("Interface"), icon: VLCIcons.panel_left },
-        { key: "privacy", label: qsTr("Privacy"), icon: VLCIcons.history },
-        { key: "controls", label: qsTr("Controls"), icon: VLCIcons.effect_filter },
+        { key: "general", label: qsTr("General"), icon: "preferences" },
+        { key: "interface", label: qsTr("Interface"), icon: "interface" },
+        { key: "privacy", label: qsTr("Privacy"), icon: "privacy" },
+        { key: "controls", label: qsTr("Controls"), icon: "hotkeys" },
         { kind: "heading", label: qsTr("Media") },
-        { key: "playback", label: qsTr("Playback"), icon: VLCIcons.play },
-        { key: "video", label: qsTr("Video"), icon: VLCIcons.topbar_video },
-        { key: "audio", label: qsTr("Audio"), icon: VLCIcons.volume_high },
-        { key: "subtitles", label: qsTr("Subtitles"), icon: VLCIcons.audiosub },
-        { key: "library", label: qsTr("Library"), icon: VLCIcons.playlist },
+        { key: "playback", label: qsTr("Playback"), icon: "playback" },
+        { key: "video", label: qsTr("Video"), icon: "video" },
+        { key: "audio", label: qsTr("Audio"), icon: "audio" },
+        { key: "subtitles", label: qsTr("Subtitles"), icon: "subtitles" },
+        { key: "library", label: qsTr("Library"), icon: "folder" },
         { kind: "heading", label: qsTr("System") },
-        { key: "network", label: qsTr("Network"), icon: VLCIcons.topbar_network },
-        { key: "performance", label: qsTr("Performance"), icon: VLCIcons.faster },
-        { key: "recording", label: qsTr("Recording"), icon: VLCIcons.record },
-        { key: "extensions", label: qsTr("Extensions"), icon: VLCIcons.add }
+        { key: "network", label: qsTr("Network"), icon: "streaming" },
+        { key: "performance", label: qsTr("Performance"), icon: "preferences" },
+        { key: "recording", label: qsTr("Recording"), icon: "record" },
+        { key: "extensions", label: qsTr("Extensions"), icon: "plugins" }
     ]
 
     Rectangle {
@@ -92,14 +92,13 @@ Item {
                             anchors.left: parent.left
                             anchors.leftMargin: 10
                             anchors.verticalCenter: parent.verticalCenter
-                            Label {
-                                text: modelData.icon || ""
-                                color: root.category === modelData.key
-                                       ? VLCStyle.redesign.accent
-                                       : (root.dark ? "#888888" : "#666666")
-                                font.family: VLCIcons.fontFamily
-                                font.pixelSize: VLCStyle.dp(20, VLCStyle.scale)
-                                width: 22
+                            Image {
+                                width: VLCStyle.dp(24, VLCStyle.scale)
+                                height: width
+                                sourceSize: Qt.size(width, height)
+                                fillMode: Image.PreserveAspectFit
+                                source: "qrc:///redesign/icons/" + modelData.icon + "/"
+                                        + (root.category === modelData.key ? "active" : "default") + ".png"
                             }
                             Label {
                                 text: modelData.label || ""
