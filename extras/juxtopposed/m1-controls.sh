@@ -123,5 +123,26 @@ get PlaybackStatus | tee "$out/invalid-status.txt" | grep -q Stopped
 kill -0 "$vlc_pid"
 import -window root "$out/invalid-file.png"
 xdotool key Escape
+# Exercise both video destinations and history after restoring
+# history. These checks cover the PageLoader forwarding contract.
+xdotool windowsize "$window" 1280 760
+sleep 1
+xdotool mousemove 22 40 click 1
+xdotool mousemove 40 140 click 1
+sleep 1
+import -window root "$out/video-all.png"
+call "$player.OpenUri" "file://$fixture" >/dev/null
+sleep 2
+get PlaybackStatus | grep -q Playing
+call "$player.OpenUri" 'file:///work/build-m0/fixtures/does-not-exist.mkv' >/dev/null
+sleep 2
+get PlaybackStatus | grep -q Stopped
+import -window root "$out/video-all-restored.png"
+xdotool mousemove 40 232 click 1
+sleep 1
+import -window root "$out/video-playlists-switch.png"
+xdotool mousemove 57 40 click 1
+sleep 1
+import -window root "$out/video-all-back.png"
 printf 'PASS: mouse playback, seek click/drag, volume, fullscreen, resize, file dialog, missing file; navigation captures recorded\n' \
     | tee "$out/ui-result.txt"

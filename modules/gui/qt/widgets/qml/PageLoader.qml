@@ -91,8 +91,13 @@ StackViewExt {
                     let pageProp = {
                         pagePrefix:[...pagePrefix, head]
                     }
-                    for (const key of properties.keys()) {
-                        pageProp[key] = properties[key]
+                    // History stores the destination's state. Intermediate
+                    // containers forward it below, without receiving the
+                    // destination's creation properties themselves.
+                    if (path.length === 1) {
+                        for (const key of properties.keys()) {
+                            pageProp[key] = properties[key]
+                        }
                     }
 
                     History.update([...pagePrefix, head])

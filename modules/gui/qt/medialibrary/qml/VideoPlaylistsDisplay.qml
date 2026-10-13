@@ -57,6 +57,8 @@ Widgets.PageLoader {
         Widgets.PageExt {
             id: playlistPage
 
+            property alias initialIndex: playlistView.initialIndex
+
             title: qsTr("Playlists")
 
             PlaylistMediaList {

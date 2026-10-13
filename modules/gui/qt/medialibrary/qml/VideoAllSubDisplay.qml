@@ -34,6 +34,7 @@ Widgets.PageExt {
     signal showList(var model, int reason)
 
     property alias currentIndex: videoAll.currentIndex
+    property alias initialIndex: videoAll.initialIndex
 
     // NOTE: We are exposing a custom SortMenu with grouping options.
     sortMenu: SortMenuVideo {
