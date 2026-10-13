@@ -172,10 +172,64 @@ Dialog {
                 height: VLCStyle.dp(34, VLCStyle.scale)
                 model: root.scopes
                 textRole: "text"
+                font.family: VLCStyle.redesign.fontFamily
+                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                leftPadding: 12
+                rightPadding: 34
+                contentItem: Label {
+                    text: scopePicker.displayText
+                    color: root.dark ? "#d4d4d4" : "#292929"
+                    font: scopePicker.font
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+                indicator: Image {
+                    x: scopePicker.width - width - 10
+                    y: (scopePicker.height - height) / 2
+                    width: 18
+                    height: 18
+                    source: "qrc:///redesign/icons/chevron-down/default.png"
+                }
                 background: Rectangle {
                     color: root.dark ? "#191919" : "#eeeeee"
-                    border.color: root.dark ? "#222222" : "#cccccc"
+                    border.color: scopePicker.activeFocus ? VLCStyle.redesign.accent
+                                                           : (root.dark ? "#333333" : "#cccccc")
                     radius: 4
+                }
+                delegate: ItemDelegate {
+                    required property var modelData
+                    width: scopePicker.width
+                    height: VLCStyle.dp(34, VLCStyle.scale)
+                    contentItem: Label {
+                        text: modelData.text
+                        color: root.dark ? "#d4d4d4" : "#292929"
+                        font: scopePicker.font
+                        verticalAlignment: Text.AlignVCenter
+                        elide: Text.ElideRight
+                    }
+                    background: Rectangle {
+                        color: parent.highlighted ? (root.dark ? "#303030" : "#e5e5e5")
+                                                  : (root.dark ? "#191919" : "#f7f7f7")
+                    }
+                }
+                popup: Popup {
+                    y: scopePicker.height
+                    width: scopePicker.width
+                    implicitHeight: Math.min(contentItem.implicitHeight,
+                                             VLCStyle.dp(180, VLCStyle.scale))
+                    padding: 1
+                    contentItem: ListView {
+                        clip: true
+                        implicitHeight: contentHeight
+                        model: scopePicker.popup.visible ? scopePicker.delegateModel : null
+                        currentIndex: scopePicker.highlightedIndex
+                        ScrollIndicator.vertical: ScrollIndicator {}
+                    }
+                    background: Rectangle {
+                        color: root.dark ? "#191919" : "#f7f7f7"
+                        border.color: root.dark ? "#383838" : "#cccccc"
+                        radius: 4
+                    }
                 }
             }
         }
@@ -350,7 +404,7 @@ Dialog {
                 elide: Text.ElideRight
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
             }
-            Button {
+            ActionButton {
                 id: cancelButton
                 objectName: "shortcutsCancel"
                 anchors.left: parent.left
@@ -359,13 +413,14 @@ Dialog {
                 text: qsTr("Cancel")
                 onClicked: root.reject()
             }
-            Button {
+            ActionButton {
                 id: saveButton
                 objectName: "shortcutsSave"
                 anchors.right: parent.right
                 anchors.rightMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Save")
+                primary: true
                 enabled: shortcuts.dirty
                 onClicked: {
                     if (!shortcuts.apply())
@@ -373,107 +428,27 @@ Dialog {
                     root.saved = true
                     restartNotice.open()
                 }
-                background: Rectangle {
-                    color: saveButton.enabled ? "#371f06" : "#1c1c1c"
-                    radius: 4
-                }
-                contentItem: Label {
-                    text: parent.text
-                    color: saveButton.enabled ? VLCStyle.redesign.accent : "#666666"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
             }
         }
     }
 
-    Popup {
+    ShortcutsCapturePopup {
         id: capturePopup
         objectName: "shortcutCapturePopup"
-        modal: true
-        focus: true
-        closePolicy: Popup.NoAutoClose
+        parent: root.contentItem
+        anchors.centerIn: parent
         width: Math.min(VLCStyle.dp(470, VLCStyle.scale), root.width - 30)
-        height: VLCStyle.dp(205, VLCStyle.scale)
-        x: (root.width - width) / 2
-        y: (root.height - height) / 2
-        onOpened: captureFocus.forceActiveFocus()
-        background: Rectangle {
-            color: root.dark ? "#1b1b1b" : "#f5f5f5"
-            border.color: "#555555"
-            radius: 6
+        captureGlobal: root.captureGlobal
+        captureAction: root.captureAction
+        conflictAction: root.conflictAction
+        errorText: shortcuts.error
+        onKeyCaptured: (key, modifiers) => root.assignCaptured(key, modifiers, false)
+        onClearRequested: {
+            shortcuts.clearKey(root.captureOption, root.captureGlobal)
+            capturePopup.close()
         }
-        contentItem: FocusScope {
-            id: captureFocus
-            focus: true
-            Keys.onPressed: (event) => {
-                event.accepted = true
-                if (root.conflictAction.length === 0)
-                    root.assignCaptured(event.key, event.modifiers, false)
-            }
-            Label {
-                anchors.top: parent.top
-                anchors.topMargin: 14
-                anchors.left: parent.left
-                anchors.leftMargin: 14
-                text: root.captureGlobal ? qsTr("Global Hotkey") : qsTr("Hotkey")
-                color: root.dark ? "#dddddd" : "#333333"
-                font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
-            }
-            Label {
-                anchors.top: parent.top
-                anchors.topMargin: 52
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: 14
-                anchors.rightMargin: 14
-                text: root.conflictAction.length > 0
-                      ? qsTr("This key is assigned to %1. Replace that assignment?").arg(root.conflictAction)
-                      : qsTr("Press a key combination for %1").arg(root.captureAction)
-                color: root.conflictAction.length > 0 ? "#df8950"
-                      : (root.dark ? "#aaaaaa" : "#555555")
-                wrapMode: Text.WordWrap
-                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-            }
-            Label {
-                visible: shortcuts.error.length > 0 && root.conflictAction.length === 0
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: 14
-                anchors.rightMargin: 14
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 61
-                text: shortcuts.error
-                color: "#df8950"
-                elide: Text.ElideRight
-                font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
-            }
-            Row {
-                anchors.right: parent.right
-                anchors.rightMargin: 14
-                anchors.bottom: parent.bottom
-                anchors.bottomMargin: 14
-                spacing: 10
-                Button {
-                    text: qsTr("Unset")
-                    visible: root.conflictAction.length === 0
-                    onClicked: {
-                        shortcuts.clearKey(root.captureOption, root.captureGlobal)
-                        capturePopup.close()
-                    }
-                }
-                Button {
-                    text: qsTr("Cancel")
-                    onClicked: capturePopup.close()
-                }
-                Button {
-                    text: qsTr("Replace")
-                    visible: root.conflictAction.length > 0
-                    onClicked: root.assignCaptured(root.capturedKey,
-                                                   root.capturedModifiers, true)
-                }
-            }
-        }
+        onReplaceRequested: root.assignCaptured(root.capturedKey,
+                                                 root.capturedModifiers, true)
     }
 
     ShortcutsRestartNotice {

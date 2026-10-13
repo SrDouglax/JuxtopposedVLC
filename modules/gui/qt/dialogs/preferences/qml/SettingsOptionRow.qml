@@ -116,11 +116,62 @@ Item {
             onActivated: (index) => root.commit(root.choices[index].value)
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+            leftPadding: 12
+            rightPadding: 34
+            contentItem: Label {
+                text: choiceControl.displayText
+                color: root.dark ? "#d4d4d4" : "#292929"
+                font: choiceControl.font
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+            }
+            indicator: Image {
+                x: choiceControl.width - width - 10
+                y: (choiceControl.height - height) / 2
+                width: 18
+                height: 18
+                source: "qrc:///redesign/icons/chevron-down/default.png"
+            }
             background: Rectangle {
                 color: root.dark ? "#171717" : "#f4f4f4"
                 border.color: choiceControl.activeFocus ? VLCStyle.redesign.accent
                                                         : (root.dark ? "#2b2b2b" : "#cccccc")
                 radius: 4
+            }
+            delegate: ItemDelegate {
+                required property var modelData
+                width: choiceControl.width
+                height: VLCStyle.dp(34, VLCStyle.scale)
+                contentItem: Label {
+                    text: modelData.label
+                    color: root.dark ? "#d4d4d4" : "#292929"
+                    font: choiceControl.font
+                    verticalAlignment: Text.AlignVCenter
+                    elide: Text.ElideRight
+                }
+                background: Rectangle {
+                    color: parent.highlighted ? (root.dark ? "#303030" : "#e5e5e5")
+                                              : (root.dark ? "#191919" : "#f7f7f7")
+                }
+            }
+            popup: Popup {
+                y: choiceControl.height
+                width: choiceControl.width
+                implicitHeight: Math.min(contentItem.implicitHeight,
+                                         VLCStyle.dp(280, VLCStyle.scale))
+                padding: 1
+                contentItem: ListView {
+                    clip: true
+                    implicitHeight: contentHeight
+                    model: choiceControl.popup.visible ? choiceControl.delegateModel : null
+                    currentIndex: choiceControl.highlightedIndex
+                    ScrollIndicator.vertical: ScrollIndicator {}
+                }
+                background: Rectangle {
+                    color: root.dark ? "#191919" : "#f7f7f7"
+                    border.color: root.dark ? "#383838" : "#cccccc"
+                    radius: 4
+                }
             }
         }
 
