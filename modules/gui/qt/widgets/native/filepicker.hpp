@@ -23,6 +23,7 @@ public:
     MainCtx* ctx() const { return m_ctx; }
     void setCtx(MainCtx* ctx) { m_ctx = ctx; }
     Q_INVOKABLE QVariantList chooseFiles(const QString& title = {});
+    Q_INVOKABLE QString chooseSaveFile(const QString& title, const QString& initialFile = {});
     Q_INVOKABLE QUrl chooseFolder(const QString& title = {});
 private:
     MainCtx* m_ctx = nullptr;

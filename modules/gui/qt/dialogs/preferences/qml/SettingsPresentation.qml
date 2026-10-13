@@ -4,7 +4,12 @@ QtObject {
 /* Labels and groups from the settings reference, for options backed by VLC. */
 function entry(key, fallback) {
     const items = {
-        "verbose": [qsTr("Diagnostics"), qsTr("Log details")],
+        "verbose": [qsTr("Diagnostics"), qsTr("General verbosity")],
+        "qt-error-dialogs": [qsTr("Startup"), qsTr("Show warning and error dialogs")],
+        "qt-updates-notif": [qsTr("Startup"), qsTr("Check for updates automatically")],
+        "file-logging": [qsTr("Diagnostics"), qsTr("Save a log")],
+        "logfile": [qsTr("Diagnostics"), qsTr("Log file"), "savefile"],
+        "log-verbose": [qsTr("Diagnostics"), qsTr("Log details")],
         "stats": [qsTr("Diagnostics"), qsTr("Collect statistics")],
         "embedded-video": [qsTr("Window"), qsTr("Play video inside main window")],
         "qt-video-autoresize": [qsTr("Window"), qsTr("Resize window to fit video")],

@@ -25,6 +25,7 @@ Item {
                                       && maximum !== undefined && maximum !== null
                                       && Number(minimum) < Number(maximum)
     signal commit(var value)
+    signal browseRequested()
 
     implicitHeight: VLCStyle.dp(46, VLCStyle.scale)
 
@@ -205,6 +206,7 @@ Item {
 
         TextField {
             id: textControl
+            anchors.rightMargin: root.editorKind === "savefile" ? 94 : 0
             objectName: "settingInput_" + root.settingKey
             visible: root.settingType !== "boolean" && root.choices.length === 0
                      && !root.useSlider
@@ -229,6 +231,14 @@ Item {
             }
             leftPadding: 12
             rightPadding: 12
+        }
+        ActionButton {
+            visible: root.editorKind === "savefile"
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            width: 88
+            text: qsTr("Browse")
+            onClicked: root.browseRequested()
         }
     }
 }

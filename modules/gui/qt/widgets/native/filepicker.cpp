@@ -41,3 +41,9 @@ QUrl FilePicker::chooseFolder(const QString& title)
     return QFileDialog::getExistingDirectoryUrl(nullptr, title, {},
                                                  QFileDialog::ShowDirsOnly, {"file"});
 }
+
+QString FilePicker::chooseSaveFile(const QString& title, const QString& initialFile)
+{
+    const ShortcutGuard guard(m_ctx);
+    return QFileDialog::getSaveFileName(nullptr, title, initialFile);
+}

@@ -5,10 +5,13 @@
 import QtQuick
 import QtQuick.Controls
 import VLC.Style
+import VLC.MainInterface
+import VLC.Widgets as Widgets
 
 
 Column {
     id: root
+    Widgets.FilePicker { id: filePicker; ctx: MainCtx }
     SettingsPresentation { id: presentationData }
     property var settingsModel
     property string category: ""
@@ -51,6 +54,21 @@ Column {
                 editorKind: presentation.editor
                 dirty: model.dirty
                 onCommit: (value) => root.settingsModel.setValue(settingKey, value)
+                onBrowseRequested: {
+                    const file = filePicker.chooseSaveFile(qsTr("Choose a log file"), String(settingValue || ""))
+                    if (file.length) root.settingsModel.setValue(settingKey, file)
+                }
+            }
+
+            Label {
+                visible: model.key === "file-logging"
+                width: parent.width
+                height: visible ? implicitHeight + 8 : 0
+                text: qsTr("Restart VLC to apply changes to file logging.")
+                wrapMode: Text.WordWrap
+                color: VLCStyle.redesign.textMuted
+                font.family: VLCStyle.redesign.fontFamily
+                font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
             }
 
             Loader {
