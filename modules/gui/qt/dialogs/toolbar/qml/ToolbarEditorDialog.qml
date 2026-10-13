@@ -148,7 +148,7 @@ WindowDialog {
                     implicitWidth: implicitContentWidth
                     font.pixelSize: VLCStyle.fontSize_normal
 
-                    delegate: ItemDelegate {
+                    delegate: T.ItemDelegate {
                         width: comboBox.width
                         leftPadding: comboBox.leftPadding
                         background: Item {}

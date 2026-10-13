@@ -255,6 +255,10 @@ Dialog {
                 PersonalizationActions {
                     width: Math.min(320, parent.width)
                     visible: root.selectedCategory === "interface" && !searchField.text.length
+                    onCustomizeRequested: {
+                        root.reject()
+                        DialogsProvider.showToolbarEditorDialog()
+                    }
                 }
                 ActionButton {
                     visible: root.selectedCategory === "general" && !searchField.text.length
@@ -268,8 +272,7 @@ Dialog {
                     text: qsTr("Adjustments and Effects")
                     onClicked: {
                         root.reject()
-                        if (root.selectedCategory === "video") DialogsProvider.nativeEffectsDialog(1)
-                        else DialogsProvider.extendedDialog()
+                        DialogsProvider.extendedDialog(root.selectedCategory === "video" ? 1 : 0)
                     }
                 }
                 ActionButton {

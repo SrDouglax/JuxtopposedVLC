@@ -9,6 +9,7 @@ Column {
     id: root
     objectName: "personalizationActions"
     property var profileModel: MainCtx.controlbarProfileModel
+    signal customizeRequested()
     width: 320
     spacing: 0
 
@@ -69,6 +70,6 @@ Column {
             verticalAlignment: Text.AlignVCenter
             leftPadding: 12
         }
-        onClicked: DialogsProvider.showToolbarEditorDialog()
+        onClicked: root.customizeRequested()
     }
 }

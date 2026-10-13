@@ -247,7 +247,7 @@ bool DialogsProvider::eventFilter(QObject *watched, QEvent *event) {
 const QEvent::Type DialogEvent::DialogEvent_Type =
         (QEvent::Type)QEvent::registerEventType();
 
-void DialogsProvider::extendedDialog() { emit effectsRequested(); }
+void DialogsProvider::extendedDialog(int page) { emit effectsRequested(page == 1 ? 1 : 0); }
 
 void DialogsProvider::synchroDialog()
 {

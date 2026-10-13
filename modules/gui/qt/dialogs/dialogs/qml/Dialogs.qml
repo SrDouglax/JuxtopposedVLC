@@ -598,13 +598,20 @@ Item {
         id: toolbarEditorDialogLoader
         active: false
         source: "qrc:///qt/qml/VLC/Dialogs/ToolbarEditorDialog.qml"
+        onLoaded: item.open()
+
+        Connections {
+            target: toolbarEditorDialogLoader.item
+            function onUnload() { toolbarEditorDialogLoader.active = false }
+        }
 
         Connections {
             target: DialogsProvider
 
             function onShowToolbarEditorDialog() {
                 toolbarEditorDialogLoader.active = true
-                toolbarEditorDialogLoader.item.open()
+                if (toolbarEditorDialogLoader.item)
+                    toolbarEditorDialogLoader.item.open()
             }
         }
     }

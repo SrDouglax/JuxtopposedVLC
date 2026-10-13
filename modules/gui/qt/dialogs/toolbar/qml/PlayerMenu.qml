@@ -21,7 +21,13 @@ Controls.Popup {
     background: Rectangle { color: "#1b1b1b"; radius: 11; border.color: "#252525" }
     contentItem: Column {
         spacing: 4
-        PersonalizationActions { width: parent.width }
+        PersonalizationActions {
+            width: parent.width
+            onCustomizeRequested: {
+                root.close()
+                DialogsProvider.showToolbarEditorDialog()
+            }
+        }
         HideUIAction { width: parent.width; onClicked: root.close() }
         Repeater {
             model: [qsTr("Sleep timer"), qsTr("Preferences")]

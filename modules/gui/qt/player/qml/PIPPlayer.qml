@@ -150,6 +150,13 @@ T.Control {
 
             Widgets.IconButton {
                 id: previousButton
+                width: VLCStyle.dp(32, VLCStyle.scale)
+                height: VLCStyle.dp(48, VLCStyle.scale)
+                contentItem: Image {
+                    source: "qrc:///redesign/icons/previous/default.png"
+                    fillMode: Image.PreserveAspectFit
+                    sourceSize: Qt.size(24, 24)
+                }
                 text: VLCIcons.previous
                 textStyle: root.textStyle
                 description: qsTr("Previous item")
@@ -159,6 +166,15 @@ T.Control {
 
             Widgets.IconButton {
                 id: playButton
+                width: VLCStyle.dp(48, VLCStyle.scale)
+                height: width
+                contentItem: Image {
+                    source: "qrc:///redesign/icons/" +
+                            (Player.playingState === Player.PLAYING_STATE_PLAYING ? "pause" : "play") +
+                            "/default.png"
+                    fillMode: Image.PreserveAspectFit
+                    sourceSize: Qt.size(48, 48)
+                }
 
                 font.pixelSize: VLCStyle.icon_large
 
@@ -178,6 +194,13 @@ T.Control {
 
             Widgets.IconButton {
                 id: nextButton
+                width: VLCStyle.dp(32, VLCStyle.scale)
+                height: VLCStyle.dp(48, VLCStyle.scale)
+                contentItem: Image {
+                    source: "qrc:///redesign/icons/next/default.png"
+                    fillMode: Image.PreserveAspectFit
+                    sourceSize: Qt.size(24, 24)
+                }
                 text: VLCIcons.next
                 textStyle: root.textStyle
                 description: qsTr("Next item")

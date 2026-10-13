@@ -27,7 +27,11 @@ Item {
         target: DialogsProvider
         function onPreferencesRequested() { root.show(preferences) }
         function onSetupRequested() { if (!setup.item || !setup.item.visible) root.show(setup) }
-        function onEffectsRequested() { root.show(effects) }
+        function onEffectsRequested(page) {
+            effects.requestedTab = page
+            if (effects.item) effects.item.switchTab(page)
+            root.show(effects)
+        }
         function onPlayerMenuRequested() { playerMenu.open() }
         function onSleepTimerRequested() { timerMenu.open() }
     }
@@ -47,10 +51,11 @@ Item {
     }
     Loader {
         id: effects
+        property int requestedTab: 0
         anchors.fill: parent
         active: false
         source: "qrc:/qt/qml/VLC/Dialogs/EffectsDialog.qml"
-        onLoaded: { item.parent = root; item.open() }
+        onLoaded: { item.parent = root; item.currentTab = requestedTab; item.open() }
     }
     Connections {
         target: setup.item

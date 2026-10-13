@@ -224,7 +224,7 @@ public slots:
     void sleepTimerDialog();
     void setRedesignDialogVisible(const QString& name, bool visible);
     void firstRunDialog();
-    void extendedDialog();
+    void extendedDialog(int page = 0);
     void synchroDialog();
     void messagesDialog( int page = 0 );
     void sendKey( int key );
@@ -297,7 +297,7 @@ signals:
     void playerMenuRequested();
     void sleepTimerRequested();
     void setupRequested();
-    void effectsRequested();
+    void effectsRequested(int page);
     void releaseMouseEvents();
     void showToolbarEditorDialog();
 
