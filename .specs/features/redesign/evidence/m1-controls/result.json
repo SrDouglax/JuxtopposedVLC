@@ -1,0 +1,39 @@
+{
+  "source_commit": "a8dd8192d51520e5cc777f129d9d1823e5b9483e",
+  "qt_plugin_sha256": "55ce7c918282cabc34601e3f9353513ad813a6fa342bfdec7bfeb89d7ee0a62e",
+  "validation": "Linux Qt 6.4.2; X11/Xvfb/Openbox; software renderer",
+  "result": "PASS: four distinct audio icons at approximately 24%, 50%, 100% and muted; mute preserves gain; minimize, maximize/restore, fullscreen, close; existing effects, tracks, preferences, queue actions",
+  "notes": [
+    "High-volume icon uses the horizontally mirrored Figma SVG; low/medium/muted reuse VLCIcons because Figma MCP Starter quota blocked further exports.",
+    "Final player and library header-right groups omit the legacy queue/menu shortcuts.",
+    "Earlier M1 playback/seek/fullscreen/file-dialog/history smoke passed after the default control replacement; later checks focused on the changed header and four audio states.",
+    "Native CSD actions were checked before the final audio rendering adjustment; the CSD implementation is unchanged."
+  ],
+  "not_proven": [
+    "Windows build/runtime",
+    "Original Figma SVGs for low, medium and muted",
+    "Complete redesign of internal dialogs",
+    "Complete fidelity of all 103 frames"
+  ],
+  "files": {
+    "volume-low.png": "3b8d8dfbd8de8d9d9a16a5e350dfaacccb2807e713f573600c1292940b10052e",
+    "volume-medium.png": "1493c6e54ba7e22abf5bf40c9308111e35fbd9ba9b064ac2095c05312138c090",
+    "volume-high.png": "9eba2265fccdb7ac125325ab21d0b6ae7271daa34a6f3298a2b0f94c01530cc2",
+    "volume-muted.png": "444f1a9d1832ed0a8c74441354bd7584d44d007062de112d94d34ce663887025",
+    "volume-unmuted.png": "12bc33dee40c2bab58d655eb7bce0c99f567df00f9c2047f21dc8c04bded048e",
+    "volume-low.txt": "b14841f9793f2425e04c50bb2891b8fc45138bdc2ba68ceacbba80906baf233d",
+    "volume-medium.txt": "b3f00efa73e4cb5ec114d7c41ad841cac8ff945f48eccfc1b3d1167995ef8e92",
+    "volume-high.txt": "50fb646cfe1b87c7c397cb349549f208493af008c250324eec73daa142454a3f",
+    "volume-muted.txt": "50fb646cfe1b87c7c397cb349549f208493af008c250324eec73daa142454a3f",
+    "shell.png": "431a73bf5ce7f2d3a442ceed23a11d3d2eb50e80be5a4c55e5aae8ce94b9c0ec",
+    "states.png": "6d9c6305e244d073dcece9874590754640bccfa1df0fec0b022380d2dfb3fe13",
+    "icons.png": "c815e7b029dd68ee669943eae5236e4f55aa06e0e73e631bf4eb042e2a470c6f",
+    "window-buttons.png": "bddf46a4946f579089656dcf4eea812aded9b77209c11b455af713ad65f833d2",
+    "close.txt": "bf5c167fe7017050343d66ab35614e29084285c49432f1315ca2cbdc00ec9249",
+    "maximize.txt": "7a53aa670f7b1d392d47e67ff149f06eb848dfda926bc80a75fb87460a577884",
+    "restore.txt": "0d9ac9de9e72639375cf9b248f7e706fab0d019cded8c240e88dbf3c18e14a4a",
+    "header-fullscreen.txt": "b47aab0773d9e29952e06bb1d2682843eb5c01d1258f5c0e7747c4b9dfa027ca",
+    "header-windowed.txt": "9383853adbc025374fad4f7d06fe68dcfb87fe956de7cc88695923d0f646a65e",
+    "player.png": "9eba2265fccdb7ac125325ab21d0b6ae7271daa34a6f3298a2b0f94c01530cc2"
+  }
+}
