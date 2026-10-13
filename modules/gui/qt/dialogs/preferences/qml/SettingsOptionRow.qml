@@ -19,7 +19,8 @@ Item {
     property string editorKind: ""
     property bool dirty: false
     readonly property bool dark: VLCStyle.palette.isDark
-    readonly property bool useSlider: editorKind === "slider" && choices.length === 0
+    readonly property bool useSlider: (editorKind === "slider" || editorKind === "opacity")
+                                      && choices.length === 0
                                       && (settingType === "integer" || settingType === "float")
                                       && minimum !== undefined && minimum !== null
                                       && maximum !== undefined && maximum !== null
@@ -197,7 +198,9 @@ Item {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             width: VLCStyle.dp(44, VLCStyle.scale)
-            text: root.settingType === "integer" ? String(root.settingValue)
+            text: root.editorKind === "opacity"
+                  ? Math.round(100 * Number(root.settingValue) / Number(root.maximum)) + "%"
+                  : root.settingType === "integer" ? String(root.settingValue)
                   : Number(root.settingValue).toFixed(2)
             color: root.dark ? "#999999" : "#555555"
             font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -206,7 +209,8 @@ Item {
 
         TextField {
             id: textControl
-            anchors.rightMargin: root.editorKind === "savefile" ? 94 : 0
+            anchors.rightMargin: root.editorKind === "savefile" || root.editorKind === "directory"
+                                 ? 94 : 0
             objectName: "settingInput_" + root.settingKey
             visible: root.settingType !== "boolean" && root.choices.length === 0
                      && !root.useSlider
@@ -216,6 +220,7 @@ Item {
             selectByMouse: true
             inputMethodHints: root.settingType === "integer" || root.settingType === "float"
                               ? Qt.ImhFormattedNumbersOnly : Qt.ImhNone
+            echoMode: root.editorKind === "password" ? TextInput.Password : TextInput.Normal
             onEditingFinished: {
                 if (text !== String(root.settingValue))
                     root.commit(text)
@@ -233,7 +238,7 @@ Item {
             rightPadding: 12
         }
         ActionButton {
-            visible: root.editorKind === "savefile"
+            visible: root.editorKind === "savefile" || root.editorKind === "directory"
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
             width: 88

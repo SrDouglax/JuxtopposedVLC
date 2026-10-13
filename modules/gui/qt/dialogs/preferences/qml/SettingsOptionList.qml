@@ -55,8 +55,14 @@ Column {
                 dirty: model.dirty
                 onCommit: (value) => root.settingsModel.setValue(settingKey, value)
                 onBrowseRequested: {
-                    const file = filePicker.chooseSaveFile(qsTr("Choose a log file"), String(settingValue || ""))
-                    if (file.length) root.settingsModel.setValue(settingKey, file)
+                    if (editorKind === "directory") {
+                        const folder = filePicker.chooseFolder(qsTr("Choose a recording folder"))
+                        if (folder.toString() !== "")
+                            root.settingsModel.setDirectoryUrl(settingKey, folder)
+                    } else if (editorKind === "savefile") {
+                        const file = filePicker.chooseSaveFile(qsTr("Choose a log file"), String(settingValue || ""))
+                        if (file.length) root.settingsModel.setValue(settingKey, file)
+                    }
                 }
             }
 

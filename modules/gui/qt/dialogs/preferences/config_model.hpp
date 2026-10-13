@@ -7,6 +7,7 @@
 #include <QAbstractListModel>
 #include <QPointer>
 #include <QStringList>
+#include <QUrl>
 #include <QVariantList>
 #include <QVector>
 
@@ -47,6 +48,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE bool setValue(const QString &key, const QVariant &value);
+    Q_INVOKABLE bool setDirectoryUrl(const QString &key, const QUrl &url);
     Q_INVOKABLE QString keyAt(int visibleRow) const;
     Q_INVOKABLE bool apply();
     Q_INVOKABLE void cancel();

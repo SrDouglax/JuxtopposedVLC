@@ -241,6 +241,22 @@ bool ConfigModel::setValue(const QString &key, const QVariant &value)
     return false;
 }
 
+bool ConfigModel::setDirectoryUrl(const QString &key, const QUrl &url)
+{
+    for (const Entry &entry : m_entries) {
+        if (entry.key != key)
+            continue;
+        if (entry.type != QLatin1String("directory") || !url.isLocalFile()
+            || url.toLocalFile().isEmpty()) {
+            setError(tr("Choose a local folder for %1.").arg(entry.label));
+            return false;
+        }
+        return setValue(key, url.toLocalFile());
+    }
+    setError(tr("Setting %1 is unavailable.").arg(key));
+    return false;
+}
+
 void ConfigModel::cancel()
 {
     const bool wasDirty = dirty();
