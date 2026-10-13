@@ -5,13 +5,13 @@
 | Marco | Resultado | Critério de saída |
 | --- | --- | --- |
 | M0 — Fundação | Base reproduzível e escopo mapeado | VLC original roda no Linux; build Windows produz artefato ou registra impedimento; SHA, toolchain, matriz Figma e baseline documentados |
-| M1 — Primeiro player | Janela, navegação e controles redesenhados | Vídeo real, abrir arquivo, play/pause, seek, volume, fullscreen e estado vazio; comparação visual com frames alvo; build Windows da mesma revisão |
+| M1 — Primeiro player | Janela, navegação e controles redesenhados | Vídeo real, abrir arquivo, play/pause, seek, volume, fullscreen e estado vazio; comparação visual com frames alvo; Windows fica para validação final |
 | M2 — Uso diário | Playlists, biblioteca, faixas, legendas, histórico | Fluxos persistem entre sessões, estados de erro funcionam, acentos/caminhos reais; primeiro smoke nativo Windows realizado ou explicitamente pendente |
 | M3 — Cobertura completa | Música, miniplayer, personalização, temas, onboarding e configurações | Todos os nodes inventariados classificados e tratados; nenhuma ação visível simulada; exceções somente por decisão explícita |
 | M4 — Distribuição Linux | Pacote instalável e mantível | Teste em ambiente limpo, plugins, recursos, perfil, atualização, regressão direcionada e desempenho frente ao baseline |
 | M5 — Distribuição Windows | Mesmo produto no Windows | Pacote e execução nativos, caminhos, fontes, DPI, vídeo, áudio e fullscreen testados; nenhuma promessa baseada apenas em cross-build |
 
-Windows participa de M0 em diante. M5 é empacotamento e acabamento de plataforma, não o momento de descobrir se a arquitetura é portável. Ausência de ambiente Windows não impede tarefas visuais independentes, mas impede afirmar compatibilidade nativa.
+Windows participa do desenho da arquitetura desde M0. Por decisão de 13/10/2026, builds e testes Windows ficam manuais e concentrados após a interface consolidada, antes da distribuição. Durante M1–M3, desenvolver e validar no Linux mantendo os manifests, recursos locais e código sem dependências exclusivas de Linux. A compatibilidade da revisão nova no Windows permanece pendente até essa rodada.
 
 ## Frentes de subagentes
 
@@ -32,7 +32,7 @@ As áreas são fronteiras iniciais. Cada tarefa recebe uma lista exata de arquiv
 ## Ordem de ativação
 
 1. M0: A estabelece a base; B inventaria o Figma e os componentes existentes. Sem implementação visual antes da prova do VLC original.
-2. M1: B entrega contrato visual e shell; C adapta controles dependentes desse contrato; A mantém builds. Validação de vídeo é serializada na máquina.
+2. M1: B entrega contrato visual e shell; C adapta controles dependentes desse contrato; A mantém build Linux e estrutura multiplataforma. Validação de vídeo é serializada na máquina.
 3. M2: C e D trabalham em fatias independentes; E pode mapear configurações, sem modificar componentes compartilhados.
 4. M3: B e E completam temas/personalização e preferências; C ou D completam recursos restantes conforme dependências reais.
 5. M4/M5: A prepara pacotes; F revisa a versão integrada; coordenador resolve pendências e registra evidência.

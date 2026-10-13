@@ -19,8 +19,8 @@ Este backlog detalha a fundação e a primeira fatia funcional. M2–M5 estão n
 | T06 | Implementada com cobertura parcial do shell | CSD, sidebar larga/recolhida, teclado, estado vazio e diálogo real validados; biblioteca mantém páginas atuais até M2 |
 | T07 | Não necessária | Player.qml permaneceu intacto; controles menores bastaram |
 | T08 | Implementada e validada no Linux | Mouse/teclado, seek clique/drag, cone volume, fullscreen, resize e erro de arquivo |
-| T09 | Em andamento | Linux PASS; build Windows da revisão integrada pendente |
-| W01 | Em validação | Link C com static libgcc + check imports e gate nativo; CI pendente |
+| T09 | Em andamento | Fluxos Linux aprovados; avisos de navegação em investigação. Windows adiado para validação final por decisão de 13/10/2026. |
+| W01 | Em validação | Link C com static libgcc + check imports e gate nativo; Rodada Windows final pendente |
 
 ## Ferramentas e política de testes
 
@@ -120,7 +120,7 @@ T01/T02 podem ocorrer em paralelo. T03/T04 também: ambos provam a mesma base up
 - **Onde:** branch de integração e evidência do marco.
 - **Reutiliza:** provas válidas das tarefas, sem repetir checks caros sem mudança que as invalide.
 - **Requisitos:** R01–R08 aplicáveis à primeira fatia.
-- **Aceite:** revisão dos diffs; build Linux e Windows da revisão integrada; abrir mídia → reproduzir → buscar → fullscreen → retornar → fechar; screenshot real comparada ao Figma. Registrar claramente a cobertura parcial de R02 e runtime Windows pendente, se for o caso.
+- **Aceite:** revisão dos diffs; build Linux da revisão integrada; Windows será validado na rodada final, antes da distribuição; abrir mídia → reproduzir → buscar → fullscreen → retornar → fechar; screenshot real comparada ao Figma. Registrar claramente a cobertura parcial de R02 e runtime Windows pendente, se for o caso.
 - **Verificação:** regressão direcionada às interações e fronteiras integradas; checks novos apenas onde a integração invalidou evidência anterior.
 - **Saída:** atualizar estado, registrar pendências e detalhar M2. Não marcar Figma completo por concluir M1.
 
