@@ -47,7 +47,7 @@ Item {
     property url source
     property alias sourceSize: image.sourceSize
     property alias sourceClipRect: image.sourceClipRect
-    readonly property int status: shaderEffect.source.status
+    readonly property int status: shaderEffect.source ? shaderEffect.source.status : Image.Null
     property alias shaderStatus: shaderEffect.status
     property alias cache: image.cache
 
@@ -155,14 +155,15 @@ Item {
         anchors.alignWhenCentered: true
         anchors.centerIn: parent
 
-        implicitWidth: (source.status === Image.Ready) ? source.implicitWidth : 64
-        implicitHeight: (source.status === Image.Ready) ? source.implicitHeight : 64
+        implicitWidth: (source && source.status === Image.Ready) ? source.implicitWidth : 64
+        implicitHeight: (source && source.status === Image.Ready) ? source.implicitHeight : 64
 
         width: paintedSize.width
         height: paintedSize.height
 
-        visible: (source.status === Image.Ready) &&
-                 (GraphicsInfo.shaderType === GraphicsInfo.RhiShader) &&
+        // Check the renderer before touching a texture provider that may not exist yet.
+        visible: (root.GraphicsInfo.shaderType === GraphicsInfo.RhiShader) &&
+                 (source && source.status === Image.Ready) &&
                  (root.radius > 0.0 ||
                   root.borderWidth > 0 ||
                   backgroundColor.a > 0.0 ||
@@ -207,7 +208,7 @@ Item {
             let ret = Qt.size(0.0, 0.0)
 
             // No need to calculate if the texture is not ready:
-            if (source.status !== Image.Ready)
+            if (!source || source.status !== Image.Ready)
                 return ret
 
             // NOTE: Calculations are based on `QQuickImage`,
@@ -240,7 +241,7 @@ Item {
         }
 
         // (2 / width) seems to be a good coefficient to make it similar to `Rectangle.border`:
-        readonly property double borderRange: (source.status === Image.Ready) ? (root.borderWidth / width * 2.) : 0.0 // no need for outlining if there is no image (nothing to outline)
+        readonly property double borderRange: (source && source.status === Image.Ready) ? (root.borderWidth / width * 2.) : 0.0 // no need for outlining if there is no image (nothing to outline)
         readonly property color borderColor: root.borderColor
 
         // QQuickImage as texture provider, no need for ShaderEffectSource.

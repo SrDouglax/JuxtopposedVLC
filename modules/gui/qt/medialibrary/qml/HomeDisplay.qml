@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  ******************************************************************************/
 import QtQuick
+import QtQuick.Layouts
 
 import VLC.MediaLibrary
 
@@ -62,6 +63,12 @@ Widgets.PageLoader {
 
         HomePage {
             focus: true
+            headerAction: Component {
+                RowLayout {
+                    OpenMediaButton {}
+                    LibrarySourceButton {}
+                }
+            }
 
             onSeeAllButtonClicked: (name, reason) => {
                 History.push([...root.pagePrefix, name], reason)

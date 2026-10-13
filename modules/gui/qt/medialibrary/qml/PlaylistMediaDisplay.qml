@@ -21,7 +21,6 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQml.Models
-import QtQuick.Dialogs
 
 import VLC.MainInterface
 import VLC.MediaLibrary
@@ -60,7 +59,17 @@ Widgets.PageExt {
                 objectName: "playlistAddFilesButton"
                 text: qsTr("Add files")
                 enabled: !model.transactionPending
-                onClicked: addFilesDialog.open()
+                onClicked: {
+                    const selected = filePicker.chooseFiles(qsTr("Add files to playlist"))
+                    if (selected.length > 0) model.insert(selected, model.count)
+                }
+            }
+
+            Widgets.ButtonExt {
+                objectName: "playlistSubtitlesButton"
+                text: qsTr("Subtitles…")
+                visible: !root.isMusic
+                onClicked: subtitleDialog.openFor(root.parentId)
             }
 
             Widgets.ButtonExt {
@@ -87,16 +96,12 @@ Widgets.PageExt {
         }
     }
 
-    readonly property int selectedRow: view.selectionModel.selectedIndexes.length === 1
-                                       ? view.selectionModel.selectedIndexes[0].row : -1
+    SubtitleAssociationsDialog { id: subtitleDialog; parent: root }
 
-    FileDialog {
-        id: addFilesDialog
-        objectName: "playlistAddFilesDialog"
-        title: qsTr("Add files to playlist")
-        fileMode: FileDialog.OpenFiles
-        onAccepted: if (selectedFiles.length > 0) model.insert(selectedFiles, model.count)
-    }
+    readonly property int selectedRow: view.selectionModel.selectedIndexesFlat.length === 1
+                                       ? view.selectionModel.selectedIndexesFlat[0] : -1
+
+    Widgets.FilePicker { id: filePicker; ctx: MainCtx }
 
     // Events
 

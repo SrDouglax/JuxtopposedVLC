@@ -70,6 +70,10 @@ Widgets.PageExt {
     // Functions
 
     title: qsTr("Videos")
+    hasGridListMode: videoAll.hasGridListMode
+    isSearchable: videoAll.isSearchable
+    sortModel: videoAll.sortModel
+    headerAction: Component { LibrarySourceButton {} }
 
     VideoAll {
         id: videoAll

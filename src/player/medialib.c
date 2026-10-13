@@ -36,7 +36,7 @@ vlc_player_input_AddMlSlaves(input_item_t* item, const vlc_ml_media_t* media)
     {
         const vlc_ml_file_t* file = &media->p_files->p_items[i];
         if (file->i_type != VLC_ML_FILE_TYPE_SUBTITLE || !file->psz_mrl ||
-            !file->b_present)
+            !file->b_present || !file->b_external)
             continue;
 
         bool exists = false;

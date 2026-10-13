@@ -23,6 +23,7 @@
 #include "medialibrary/mlplaylistmodel.hpp"
 #include "medialibrary/mlplaylist.hpp"
 #include "medialibrary/mlbookmarkmodel.hpp"
+#include "medialibrary/mlsubtitleassociations.hpp"
 
 #include "player/player_controller.hpp"
 #include "player/player_controlbar_model.hpp"
@@ -75,6 +76,7 @@
 #include "menus/qml_menu_wrapper.hpp"
 
 #include "widgets/native/csdthemeimage.hpp"
+#include "widgets/native/filepicker.hpp"
 #include "widgets/native/navigation_attached.hpp"
 #include "widgets/native/viewblockingrectangle.hpp"
 #if QT_VERSION < QT_VERSION_CHECK(6, 4, 0)
@@ -449,6 +451,7 @@ void MainUI::registerQMLTypes()
 
         // @uri VLC.Widgets
         qmlRegisterType<CSDThemeImage>(uri, versionMajor, versionMinor, "CSDThemeImage");
+        qmlRegisterType<FilePicker>(uri, versionMajor, versionMinor, "FilePicker");
         qmlRegisterType<ViewBlockingRectangle>( uri, versionMajor, versionMinor, "ViewBlockingRectangle" );
         qmlRegisterTypesAndRevisions<PointingToolTipAttached>( uri, versionMajor );
 
@@ -481,6 +484,7 @@ void MainUI::registerQMLTypes()
         qmlRegisterType<MLPlaylistListModel>( uri, versionMajor, versionMinor, "MLPlaylistListModel" );
         qmlRegisterType<MLPlaylistModel>( uri, versionMajor, versionMinor, "MLPlaylistModel" );
         qmlRegisterType<MLBookmarkModel>( uri, versionMajor, versionMinor, "MLBookmarkModel" );
+        qmlRegisterType<MLSubtitleAssociations>(uri, versionMajor, versionMinor, "MLSubtitleAssociations");
 
         qmlRegisterType<NetworkMediaModel>( uri, versionMajor, versionMinor, "NetworkMediaModel");
         qmlRegisterType<NetworkDeviceModel>( uri, versionMajor, versionMinor, "NetworkDeviceModel");

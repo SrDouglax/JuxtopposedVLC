@@ -37,6 +37,10 @@ NativeMenu {
 
     property bool showPlayAsAudioAction: false
 
+    property var subtitleDialog: null
+    property Component subtitleDialogComponent: Component { SubtitleAssociationsDialog {} }
+    Component.onDestruction: if (subtitleDialog) subtitleDialog.destroy()
+
     // This is only applicable when the model is `MLAudioModel`:
     property bool showPlayAsAlbumAction: implicitShowPlayAsAlbumAction
     property bool implicitShowPlayAsAlbumAction: !showPlayAsAudioAction
@@ -103,6 +107,14 @@ NativeMenu {
             "text": qsTr("Delete"),
             "action": deleteStream,
             "visible": _deleteStream
+        }, {
+            "text": qsTr("Add subtitles…"),
+            "action": function(dataList) {
+                if (!root.subtitleDialog)
+                    root.subtitleDialog = root.subtitleDialogComponent.createObject(g_mainDisplay)
+                root.subtitleDialog.openFor(dataList[0][root.idDataRole])
+            },
+            "visible": function(dataList) { return root.showPlayAsAudioAction && dataList.length === 1 }
         }, {
             "text": qsTr("Information"),
             "action": _signalShowInformation,

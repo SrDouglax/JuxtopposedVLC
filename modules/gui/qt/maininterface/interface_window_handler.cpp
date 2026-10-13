@@ -504,6 +504,9 @@ void InterfaceWindowHandler::setInterfaceAlwaysOnTop( bool on_top )
 
 bool InterfaceWindowHandler::applyKeyEvent(QKeyEvent * event) const
 {
+    if (!m_mainCtx->getUseGlobalShortcuts())
+        return false;
+
     int key = event->key();
 
     // NOTE: We have to make sure tab and backtab are never used as hotkeys. When browsing the
@@ -519,23 +522,15 @@ bool InterfaceWindowHandler::applyKeyEvent(QKeyEvent * event) const
     //       inherit from QQuickControl we have to declare the 'visualFocus' property ourselves.
     if (item)
     {
+        // Mouse focus is enough for text input; visualFocus only covers keyboard navigation.
+        if (item->inherits("QQuickTextInput") || item->inherits("QQuickTextEdit"))
+            return false;
 
         QVariant visualFocus = QQmlProperty::read(item, "visualFocus", qmlContext(item));
         if (visualFocus.isValid())
         {
             if (visualFocus.toBool())
                 return false;
-        }
-        //while being QuickControls TextField and TextArea don't provide visualFocus property
-        //here we check their (non control) parent class, this should cover all text input widgets
-        else if (item->inherits("QQuickTextInput") || item->inherits("QQuickTextEdit"))
-        {
-            QVariant activeFocus = QQmlProperty::read(item, "activeFocus", qmlContext(item));
-            if (activeFocus.isValid())
-            {
-                if (activeFocus.toBool())
-                    return false;
-            }
         }
     }
 

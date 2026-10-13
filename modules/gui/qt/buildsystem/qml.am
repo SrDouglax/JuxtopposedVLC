@@ -54,6 +54,8 @@ libqml_module_medialibrary_a_QML = \
 	medialibrary/qml/ArtistTopBanner.qml \
 	medialibrary/qml/AudioGridItem.qml \
 	medialibrary/qml/HomeDisplay.qml \
+	medialibrary/qml/LibrarySourceButton.qml \
+	medialibrary/qml/OpenMediaButton.qml \
 	medialibrary/qml/HomePage.qml \
 	medialibrary/qml/MediaView.qml \
 	medialibrary/qml/VideoGroupDisplay.qml \
@@ -77,6 +79,9 @@ libqml_module_medialibrary_a_QML = \
 	medialibrary/qml/VideoAllDisplay.qml \
 	medialibrary/qml/VideoAllSubDisplay.qml \
 	medialibrary/qml/PlaylistMediaList.qml \
+	medialibrary/qml/SubtitleAssociationsDialog.qml \
+	medialibrary/qml/PlaylistGridDisplay.qml \
+	medialibrary/qml/PlaylistCreateDialog.qml \
 	medialibrary/qml/PlaylistMedia.qml \
 	medialibrary/qml/PlaylistMediaDisplay.qml \
 	medialibrary/qml/VideoPlaylistsDisplay.qml \
@@ -232,6 +237,8 @@ libqml_module_playlist_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_playlist_a_QML = \
 	playlist/qml/PlaylistDelegate.qml \
 	playlist/qml/PlaylistPane.qml \
+	playlist/qml/QueueHeader.qml \
+	playlist/qml/QueueColumns.qml \
 	playlist/qml/PlaylistDetachedWindow.qml
 libqml_module_playlist_a_Singleton_QML =
 libqml_module_playlist_a_SOURCES = $(QML_MODULE_playlist_SRC)

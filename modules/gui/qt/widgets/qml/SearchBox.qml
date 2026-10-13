@@ -94,6 +94,7 @@ FocusScope {
 
         T.Popup {
             id: popup
+            focus: true
 
             x: -width + parent.width
             y: root.popBelow ? parent.height : -height

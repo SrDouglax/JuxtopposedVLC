@@ -10,18 +10,26 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Basic as Controls
-import QtQuick.Dialogs
 
+import VLC.MainInterface
 import VLC.MediaLibrary
 import VLC.Widgets as Widgets
 import VLC.Style
+import VLC.Util
 
 Controls.Popup {
     id: root
     objectName: "playlistCreateDialog"
 
+    readonly property ColorContext colorContext: ColorContext {
+        id: theme
+        colorSet: ColorContext.Window
+        palette: VLCStyle.palette
+    }
+
     required property MLPlaylistListModel playlistModel
     property var files: []
+    property bool previousGlobalShortcuts: true
 
     width: Math.min(parent ? parent.width - VLCStyle.margin_large * 2 : 440,
                     VLCStyle.dp(440, VLCStyle.scale))
@@ -31,17 +39,22 @@ Controls.Popup {
     closePolicy: Controls.Popup.CloseOnEscape
     anchors.centerIn: parent
 
-    onOpened: titleField.forceActiveFocus()
+    onOpened: {
+        previousGlobalShortcuts = MainCtx.useGlobalShortcuts
+        MainCtx.useGlobalShortcuts = false
+        titleField.forceActiveFocus()
+    }
     onClosed: {
+        MainCtx.useGlobalShortcuts = previousGlobalShortcuts
         titleField.clear()
         files = []
     }
 
     background: Rectangle {
         color: VLCStyle.redesign.color(VLCStyle.redesign.sidebarBackground,
-                                       VLCStyle.palette.base)
+                                       theme.bg.primary)
         border.color: VLCStyle.redesign.color(VLCStyle.redesign.border,
-                                              VLCStyle.palette.mid)
+                                              theme.border)
         radius: VLCStyle.redesign.controlRadius
     }
 
@@ -51,13 +64,14 @@ Controls.Popup {
         Text {
             text: qsTr("New playlist")
             color: VLCStyle.redesign.color(VLCStyle.redesign.textPrimary,
-                                           VLCStyle.palette.text)
+                                           theme.fg.primary)
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.fontSize_xlarge
             font.weight: Font.DemiBold
         }
 
         Widgets.TextFieldExt {
+            colorContext.palette: theme.palette
             id: titleField
             objectName: "playlistTitleField"
             Layout.fillWidth: true
@@ -67,9 +81,13 @@ Controls.Popup {
         }
 
         Widgets.ButtonExt {
+            colorContext.palette: theme.palette
             objectName: "playlistChooseFilesButton"
             text: qsTr("Choose files")
-            onClicked: fileDialog.open()
+            onClicked: {
+                const selected = filePicker.chooseFiles(qsTr("Add files to playlist"))
+                if (selected.length > 0) root.files = selected
+            }
         }
 
         Text {
@@ -78,7 +96,7 @@ Controls.Popup {
                   ? qsTr("Choose at least one file")
                   : qsTr("%1 file selected", "%1 files selected", root.files.length).arg(root.files.length)
             color: VLCStyle.redesign.color(VLCStyle.redesign.textSecondary,
-                                           VLCStyle.palette.text)
+                                           theme.fg.primary)
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.fontSize_normal
         }
@@ -88,11 +106,13 @@ Controls.Popup {
             Item { Layout.fillWidth: true }
 
             Widgets.ButtonExt {
+                colorContext.palette: theme.palette
                 text: qsTr("Cancel")
                 onClicked: root.close()
             }
 
             Widgets.ButtonExt {
+                colorContext.palette: theme.palette
                 id: createButton
                 objectName: "playlistCreateButton"
                 text: qsTr("Create playlist")
@@ -103,13 +123,7 @@ Controls.Popup {
         }
     }
 
-    FileDialog {
-        id: fileDialog
-        objectName: "playlistFilesDialog"
-        title: qsTr("Add files to playlist")
-        fileMode: FileDialog.OpenFiles
-        onAccepted: root.files = selectedFiles
-    }
+    Widgets.FilePicker { id: filePicker; ctx: MainCtx }
 
     function createPlaylist() {
         if (!createButton.enabled)

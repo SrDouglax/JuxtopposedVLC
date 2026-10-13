@@ -44,6 +44,8 @@ T.Page {
     //property is *not* readOnly, a PageLoader may define a localMenuDelegate common for its subviews (music, video)
     property SortMenu sortMenu: null
 
+    property Component headerAction: null
+
     property int displayMarginBeginning: 0
     property int displayMarginEnd: 0
 
@@ -111,6 +113,7 @@ T.Page {
 
     header: DefaultPageHeader {
         text: root.title
+        headerAction: root.headerAction
 
         leftPadding: VLCStyle.dynamicAppMargins(width) + VLCStyle.layout_left_margin + root.leftPadding
         rightPadding: VLCStyle.dynamicAppMargins(width) + VLCStyle.layout_right_margin + root.rightPadding
@@ -136,6 +139,7 @@ T.Page {
 
         // Properties
         property alias text: label.text
+        property Component headerAction: null
 
         property alias sortMenu: gridSortFilter.sortMenu
 
@@ -144,8 +148,8 @@ T.Page {
 
         position: T.ToolBar.Header
 
-        topPadding: VLCStyle.layoutTitle_top_padding
-        bottomPadding: VLCStyle.layoutTitle_bottom_padding
+        topPadding: VLCStyle.dp(12, VLCStyle.scale)
+        bottomPadding: VLCStyle.dp(12, VLCStyle.scale)
 
         // FIXME: `GridItem`'s background extends beyond its
         //        bounding rect, violating the hypothetical
@@ -159,7 +163,7 @@ T.Page {
         implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                                  implicitContentHeight + topPadding + bottomPadding)
 
-        Navigation.navigable: gridSortFilter.enabled
+        Navigation.navigable: gridSortFilter.enabled || actionLoader.active
 
         // Children
 
@@ -169,7 +173,7 @@ T.Page {
         }
 
         background: Rectangle {
-            color: theme.bg.primary
+            color: VLCStyle.redesign.color(VLCStyle.redesign.windowBackground, theme.bg.primary, theme.palette?.isDark ?? true)
         }
 
         RowLayout {
@@ -182,7 +186,16 @@ T.Page {
 
                 Layout.fillWidth: true
 
-                color: theme.fg.primary
+                color: VLCStyle.redesign.color(VLCStyle.redesign.textSecondary, theme.fg.primary, theme.palette?.isDark ?? true)
+                font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
+            }
+
+            Loader {
+                id: actionLoader
+                sourceComponent: defaultPageHeader.headerAction
+                active: sourceComponent !== null
+                visible: active
+                Layout.alignment: Qt.AlignVCenter
             }
 
             GridSortFilterControls {

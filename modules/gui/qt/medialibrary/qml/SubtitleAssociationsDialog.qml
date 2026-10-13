@@ -11,7 +11,9 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import VLC.MediaLibrary
+import VLC.Widgets as Widgets
 import VLC.Style
+import VLC.MainInterface
 
 Dialog {
     id: root
@@ -20,10 +22,17 @@ Dialog {
     readonly property ColorContext colorContext: ColorContext {
         id: theme
         colorSet: ColorContext.Window
+        palette: VLCStyle.palette
     }
 
     title: qsTr("Add subtitles")
     modal: true
+    focus: true
+    property bool previousGlobalShortcuts: true
+    onOpened: {
+        previousGlobalShortcuts = MainCtx.useGlobalShortcuts
+        MainCtx.useGlobalShortcuts = false
+    }
     closePolicy: associations.busy ? Popup.NoAutoClose : Popup.CloseOnEscape
     width: Math.min(VLCStyle.dp(620, VLCStyle.scale),
                     parent ? parent.width - VLCStyle.margin_normal * 2 : 620)
@@ -31,10 +40,11 @@ Dialog {
                      parent ? parent.height - VLCStyle.margin_normal * 2 : 460)
     anchors.centerIn: parent
     padding: VLCStyle.margin_normal
+    font.family: VLCStyle.redesign.fontFamily
     font.pixelSize: VLCStyle.fontSize_normal
 
     background: Rectangle {
-        color: theme.bg.primary
+        color: VLCStyle.redesign.color(VLCStyle.redesign.sidebarBackground, theme.bg.primary)
         border.color: theme.border
         radius: VLCStyle.dp(12, VLCStyle.scale)
     }
@@ -50,12 +60,24 @@ Dialog {
     }
 
     onRejected: associations.cancel()
-    onClosed: associations.cancel()
+    onClosed: {
+        associations.cancel()
+        MainCtx.useGlobalShortcuts = previousGlobalShortcuts
+    }
 
     MLSubtitleAssociations {
         id: associations
         ml: MediaLib
         onSaved: root.close()
+    }
+
+    header: Label {
+        text: root.title
+        color: theme.fg.primary
+        font.family: VLCStyle.redesign.fontFamily
+        font.weight: Font.DemiBold
+        padding: VLCStyle.margin_normal
+        background: Rectangle { color: VLCStyle.redesign.color(VLCStyle.redesign.sidebarBackground, theme.bg.primary) }
     }
 
     contentItem: ColumnLayout {
@@ -68,11 +90,17 @@ Dialog {
             color: theme.fg.primary
         }
 
-        Button {
+        Widgets.ButtonExt {
+            colorContext.palette: theme.palette
             objectName: "subtitleChooseFilesButton"
             text: qsTr("Choose subtitle files…")
             enabled: !associations.busy
-            onClicked: associations.chooseFiles()
+            onClicked: {
+                const previous = MainCtx.useGlobalShortcuts
+                MainCtx.useGlobalShortcuts = false
+                try { associations.chooseFiles() }
+                finally { MainCtx.useGlobalShortcuts = previous }
+            }
         }
 
         Label {
@@ -92,6 +120,7 @@ Dialog {
                 model: associations.sources
                 spacing: 8
                 delegate: RowLayout {
+                    id: sourceRow
                     required property int index
                     required property var modelData
                     width: ListView.view.width
@@ -114,7 +143,8 @@ Dialog {
                         }
                     }
 
-                    ComboBox {
+                    Widgets.ComboBoxExt {
+                        colorContext.palette: theme.palette
                         objectName: "subtitleDestinationSelector"
                         Layout.preferredWidth: 220
                         model: associations.destinations
@@ -122,7 +152,7 @@ Dialog {
                         currentIndex: modelData.destination
                         enabled: !associations.busy
                         displayText: currentIndex < 0 ? qsTr("Choose media") : currentText
-                        onActivated: associations.assign(index, currentIndex)
+                        onActivated: (destinationIndex) => associations.assign(sourceRow.index, destinationIndex)
                     }
                 }
             }
@@ -140,13 +170,15 @@ Dialog {
     footer: RowLayout {
         spacing: 8
         Item { Layout.fillWidth: true }
-        Button {
+        Widgets.ButtonExt {
+            colorContext.palette: theme.palette
             objectName: "subtitleCancelButton"
             text: qsTr("Cancel")
             enabled: !associations.busy
             onClicked: root.reject()
         }
-        Button {
+        Widgets.ButtonExt {
+            colorContext.palette: theme.palette
             objectName: "subtitleSaveButton"
             text: qsTr("Save associations")
             enabled: !associations.busy && associations.sources.length > 0

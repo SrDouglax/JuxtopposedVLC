@@ -52,6 +52,8 @@ qml_modules += {
         '../../medialibrary/qml/ArtistTopBanner.qml',
         '../../medialibrary/qml/AudioGridItem.qml',
         '../../medialibrary/qml/HomeDisplay.qml',
+    '../../medialibrary/qml/LibrarySourceButton.qml',
+    '../../medialibrary/qml/OpenMediaButton.qml',
         '../../medialibrary/qml/HomePage.qml',
         '../../medialibrary/qml/MediaView.qml',
         '../../medialibrary/qml/VideoGroupDisplay.qml',
@@ -75,6 +77,9 @@ qml_modules += {
         '../../medialibrary/qml/VideoAllDisplay.qml',
         '../../medialibrary/qml/VideoAllSubDisplay.qml',
         '../../medialibrary/qml/PlaylistMediaList.qml',
+    '../../medialibrary/qml/SubtitleAssociationsDialog.qml',
+    '../../medialibrary/qml/PlaylistGridDisplay.qml',
+    '../../medialibrary/qml/PlaylistCreateDialog.qml',
         '../../medialibrary/qml/PlaylistMedia.qml',
         '../../medialibrary/qml/PlaylistMediaDisplay.qml',
         '../../medialibrary/qml/VideoPlaylistsDisplay.qml',
@@ -221,6 +226,8 @@ qml_modules += {
     'sources': files(
         '../../playlist/qml/PlaylistDelegate.qml',
         '../../playlist/qml/PlaylistPane.qml',
+    '../../playlist/qml/QueueHeader.qml',
+    '../../playlist/qml/QueueColumns.qml',
         '../../playlist/qml/PlaylistDetachedWindow.qml',
     ),
 }

@@ -58,6 +58,7 @@ nodist_libqt_plugin_la_SOURCES = \
 	medialibrary/mlaudiomodel.moc.cpp \
 	medialibrary/mlartistmodel.moc.cpp \
 	medialibrary/mlbookmarkmodel.moc.cpp \
+	medialibrary/mlsubtitleassociations.moc.cpp \
 	medialibrary/mlbasemodel.moc.cpp \
 	medialibrary/mlfoldersmodel.moc.cpp \
 	medialibrary/mlgenremodel.moc.cpp \
@@ -131,6 +132,7 @@ nodist_libqt_plugin_la_SOURCES = \
 	util/pointingtooltipattached.moc.cpp \
 	widgets/native/animators.moc.cpp \
 	widgets/native/csdthemeimage.moc.cpp \
+	widgets/native/filepicker.moc.cpp \
 	widgets/native/customwidgets.moc.cpp \
 	widgets/native/interface_widgets.moc.cpp \
 	widgets/native/navigation_attached.moc.cpp \

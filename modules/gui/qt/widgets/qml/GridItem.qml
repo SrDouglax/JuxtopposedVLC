@@ -59,6 +59,7 @@ T.ItemDelegate {
     property alias fillMode: picture.fillMode
 
     property alias title: titleLabel.text
+    property int titleFontPixelSize: VLCStyle.fontSize_normal
     property alias subtitle: subtitleTxt.text
     property alias subtitleVisible: subtitleTxt.visible
     property alias playCoverShowPlay: picture.playCoverShowPlay
@@ -355,6 +356,7 @@ T.ItemDelegate {
 
             Widgets.ListLabel {
                 id: titleLabel
+                font.pixelSize: root.titleFontPixelSize
 
                 height: implicitHeight
                 color: root.selected
