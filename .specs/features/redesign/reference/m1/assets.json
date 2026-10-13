@@ -291,5 +291,67 @@
         "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
       }
     }
-  }
+  },
+  "rasterAssets": [
+    {
+      "name": "volume-high",
+      "originalFilename": "name=volume, direction=default, state=default, value=high, EQ=default, two-tone=no.png",
+      "source": "User-provided Figma Icon component exports",
+      "fileNode": "42:356",
+      "sha256": "53bbf6d4d191e496847d378b319fa873ec02523443cf5ce7a64d818abeb4a1f8",
+      "dimensions": [
+        24,
+        24
+      ],
+      "repositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-high.png",
+      "qrcURL": "qrc:/redesign/volume-high.png",
+      "orientation": "Export already correctly oriented; no mirror",
+      "note": "Medium/low/muted are labeled name=close in the original Figma variants; verified visually as volume icons"
+    },
+    {
+      "name": "volume-medium",
+      "originalFilename": "name=close, direction=default, state=default, value=medium, EQ=default, two-tone=no.png",
+      "source": "User-provided Figma Icon component exports",
+      "fileNode": "42:356",
+      "sha256": "602825e585aff9db1a8e3300c81660eae4e7cf0292bf3576d7eadec52fe1c0f6",
+      "dimensions": [
+        24,
+        24
+      ],
+      "repositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-medium.png",
+      "qrcURL": "qrc:/redesign/volume-medium.png",
+      "orientation": "Export already correctly oriented; no mirror",
+      "note": "Medium/low/muted are labeled name=close in the original Figma variants; verified visually as volume icons"
+    },
+    {
+      "name": "volume-low",
+      "originalFilename": "name=close, direction=default, state=default, value=low, EQ=default, two-tone=no.png",
+      "source": "User-provided Figma Icon component exports",
+      "fileNode": "42:356",
+      "sha256": "2b9082ff96d73b8ce472d6610a6c918a803301598c65312c7834d89cb72b9713",
+      "dimensions": [
+        24,
+        24
+      ],
+      "repositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-low.png",
+      "qrcURL": "qrc:/redesign/volume-low.png",
+      "orientation": "Export already correctly oriented; no mirror",
+      "note": "Medium/low/muted are labeled name=close in the original Figma variants; verified visually as volume icons"
+    },
+    {
+      "name": "volume-muted",
+      "originalFilename": "name=close, direction=default, state=default, value=none, EQ=default, two-tone=no.png",
+      "source": "User-provided Figma Icon component exports",
+      "fileNode": "42:356",
+      "sha256": "2b3333cf24d21d79fda1b0da359e041e911578285abb87048176799847a7bbc9",
+      "dimensions": [
+        24,
+        24
+      ],
+      "repositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-muted.png",
+      "qrcURL": "qrc:/redesign/volume-muted.png",
+      "orientation": "Export already correctly oriented; no mirror",
+      "note": "Medium/low/muted are labeled name=close in the original Figma variants; verified visually as volume icons"
+    }
+  ]
 }

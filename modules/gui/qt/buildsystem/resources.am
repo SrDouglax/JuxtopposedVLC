@@ -19,6 +19,10 @@ libqt_plugin_la_RES = \
 	pixmaps/redesign/volume-fill.svg \
 	pixmaps/redesign/volume-mask.svg \
 	pixmaps/redesign/volume.svg \
+	pixmaps/redesign/volume-high.png \
+	pixmaps/redesign/volume-medium.png \
+	pixmaps/redesign/volume-low.png \
+	pixmaps/redesign/volume-muted.png \
 	pixmaps/redesign/queue.svg \
 	pixmaps/redesign/player-settings.svg \
 	pixmaps/redesign/subtitles.svg \

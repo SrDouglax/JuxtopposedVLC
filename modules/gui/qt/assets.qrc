@@ -151,6 +151,10 @@
         <file alias="volume-fill.svg">pixmaps/redesign/volume-fill.svg</file>
         <file alias="volume-mask.svg">pixmaps/redesign/volume-mask.svg</file>
         <file alias="volume.svg">pixmaps/redesign/volume.svg</file>
+        <file alias="volume-high.png">pixmaps/redesign/volume-high.png</file>
+        <file alias="volume-medium.png">pixmaps/redesign/volume-medium.png</file>
+        <file alias="volume-low.png">pixmaps/redesign/volume-low.png</file>
+        <file alias="volume-muted.png">pixmaps/redesign/volume-muted.png</file>
         <file alias="queue.svg">pixmaps/redesign/queue.svg</file>
         <file alias="player-settings.svg">pixmaps/redesign/player-settings.svg</file>
         <file alias="subtitles.svg">pixmaps/redesign/subtitles.svg</file>

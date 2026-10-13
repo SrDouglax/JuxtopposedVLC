@@ -79,17 +79,18 @@ T.Pane {
                 implicitWidth: VLCStyle.redesign.iconSize
                 implicitHeight: VLCStyle.redesign.iconSize
                 Image {
-                    anchors.fill: parent
-                    source: "qrc:///redesign/volume.svg"
-                    mirror: true // Figma rotate(180deg) + scaleY(-1)
-                    visible: !root._player.muted && root._player.volume > .66
-                }
-                Widgets.IconLabel {
-                    anchors.fill: parent
-                    text: volumeBtn.text
-                    font: volumeBtn.font
-                    color: volumeBtn.color
-                    visible: root._player.muted || root._player.volume <= .66
+                    anchors.centerIn: parent
+                    width: VLCStyle.redesign.iconSize
+                    height: width
+                    source: {
+                        if (root._player.muted || root._player.volume === 0)
+                            return "qrc:///redesign/volume-muted.png"
+                        if (root._player.volume < .33)
+                            return "qrc:///redesign/volume-low.png"
+                        if (root._player.volume <= .66)
+                            return "qrc:///redesign/volume-medium.png"
+                        return "qrc:///redesign/volume-high.png"
+                    }
                 }
             }
             description: qsTr("Mute")
