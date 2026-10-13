@@ -165,6 +165,10 @@ T.Page {
 
         Navigation.navigable: gridSortFilter.enabled || actionLoader.active
 
+        readonly property bool stackActions: actionLoader.active &&
+            availableWidth < label.implicitWidth + actionLoader.implicitWidth +
+                             gridSortFilter.implicitWidth + VLCStyle.margin_normal * 2
+
         // Children
 
         readonly property ColorContext colorContext: ColorContext {
@@ -176,14 +180,15 @@ T.Page {
             color: VLCStyle.redesign.color(VLCStyle.redesign.windowBackground, theme.bg.primary, theme.palette?.isDark ?? true)
         }
 
-        RowLayout {
-            id: row
-
-            anchors.fill: parent
+        contentItem: GridLayout {
+            columns: defaultPageHeader.stackActions ? 2 : 3
+            columnSpacing: VLCStyle.margin_xsmall
+            rowSpacing: VLCStyle.margin_xsmall
 
             SubtitleLabel {
                 id: label
 
+                Layout.columnSpan: defaultPageHeader.stackActions ? 2 : 1
                 Layout.fillWidth: true
 
                 color: VLCStyle.redesign.color(VLCStyle.redesign.textSecondary, theme.fg.primary, theme.palette?.isDark ?? true)
@@ -196,6 +201,7 @@ T.Page {
                 active: sourceComponent !== null
                 visible: active
                 Layout.alignment: Qt.AlignVCenter
+                Layout.fillWidth: defaultPageHeader.stackActions
             }
 
             GridSortFilterControls {
