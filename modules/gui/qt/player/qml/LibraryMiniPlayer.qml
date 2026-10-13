@@ -22,6 +22,7 @@ T.Control {
     property real dragYMin: 0
     property real dragYMax: 0
     property bool queueExpanded: false
+    readonly property bool lightTheme: !VLCStyle.palette.isDark
     readonly property string folderName: {
         const parts = decodeURIComponent(Player.url.toString()).split("/")
         return parts.length > 1 ? parts[parts.length - 2] : ""
@@ -36,9 +37,9 @@ T.Control {
                     VLCStyle.dp(4, VLCStyle.scale) + details.height
 
     background: Rectangle {
-        color: VLCStyle.redesign.playerControlBackground
+        color: root.lightTheme ? "#ababaa" : VLCStyle.redesign.playerControlBackground
         radius: VLCStyle.dp(14, VLCStyle.scale)
-        border.color: VLCStyle.redesign.separator
+        border.color: root.lightTheme ? "#858585" : VLCStyle.redesign.separator
     }
     contentItem: Item {
         MiniPlayerQueue {
@@ -78,13 +79,16 @@ T.Control {
             Keys.onLeftPressed: Player.jumpBwd()
             Keys.onRightPressed: Player.jumpFwd()
             background: Rectangle {
-                color: VLCStyle.redesign.seekBackground
+                color: root.lightTheme ? "#dedede" : VLCStyle.redesign.seekBackground
                 radius: height / 2
                 Rectangle {
                     width: Math.max(0, parent.width * seek.visualPosition)
                     height: parent.height
                     radius: parent.radius
-                    color: VLCStyle.redesign.accentBackground
+                    color: root.lightTheme
+                           ? Qt.rgba(VLCStyle.redesign.accent.r, VLCStyle.redesign.accent.g,
+                                     VLCStyle.redesign.accent.b, 0.35)
+                           : VLCStyle.redesign.accentBackground
                 }
             }
             handle: Rectangle {
@@ -105,7 +109,7 @@ T.Control {
             width: parent.width - x * 2
             height: VLCStyle.dp(20, VLCStyle.scale)
             text: Player.name
-            color: VLCStyle.redesign.textSecondary
+            color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
             elide: Text.ElideRight
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
@@ -131,7 +135,7 @@ T.Control {
                 width: Math.min(70, implicitWidth)
                 height: parent.height
                 text: root.folderName
-                color: VLCStyle.redesign.textSecondary
+                color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
                 elide: Text.ElideRight
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -150,7 +154,7 @@ T.Control {
                 width: visible ? Math.max(0, details.width - 155) : 0
                 height: parent.height
                 text: Player.artist
-                color: VLCStyle.redesign.textSecondary
+                color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
                 elide: Text.ElideRight
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)

@@ -10,6 +10,7 @@ Item {
     id: root
     objectName: "miniPlayerQueue"
     implicitHeight: 228
+    readonly property bool lightTheme: !VLCStyle.palette.isDark
 
     PlaylistListModel {
         id: queueModel
@@ -19,7 +20,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#111111"
+        color: root.lightTheme ? "#c2c2c1" : "#111111"
         radius: VLCStyle.dp(8, VLCStyle.scale)
     }
 
@@ -28,7 +29,7 @@ Item {
         y: 10
         width: parent.width - 24
         text: qsTr("Queue")
-        color: VLCStyle.redesign.textSecondary
+        color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
         horizontalAlignment: Text.AlignHCenter
@@ -38,7 +39,7 @@ Item {
         y: 37
         width: parent.width
         height: 1
-        color: VLCStyle.redesign.separator
+        color: root.lightTheme ? "#858585" : VLCStyle.redesign.separator
     }
     Text {
         x: 12
@@ -47,7 +48,7 @@ Item {
         text: queueModel.count > 0
               ? qsTr("%1 items · %2").arg(queueModel.count).arg(queueModel.duration.formatLong())
               : qsTr("Queue is empty")
-        color: VLCStyle.redesign.textMuted
+        color: root.lightTheme ? "#7c7c7b" : VLCStyle.redesign.textMuted
         elide: Text.ElideRight
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(11, VLCStyle.scale)
@@ -84,7 +85,9 @@ Item {
             background: Item {}
             contentItem: Text {
                 text: parent.text
-                color: parent.enabled ? VLCStyle.redesign.textSecondary : VLCStyle.redesign.textDisabled
+                color: parent.enabled
+                       ? (root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary)
+                       : VLCStyle.redesign.textDisabled
                 font.pixelSize: 20
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -99,7 +102,7 @@ Item {
             background: Item {}
             contentItem: Text {
                 text: parent.text
-                color: VLCStyle.redesign.textSecondary
+                color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
                 font.pixelSize: 20
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -133,7 +136,8 @@ Item {
             leftPadding: 5
             rightPadding: 5
             background: Rectangle {
-                color: parent.hovered || parent.highlighted ? "#262626" : "transparent"
+                color: parent.hovered || parent.highlighted
+                       ? (root.lightTheme ? "#b0b0b0" : "#262626") : "transparent"
                 radius: 4
             }
             contentItem: Row {
@@ -142,7 +146,8 @@ Item {
                     width: 14
                     height: parent.height
                     text: isCurrent ? "▶" : "="
-                    color: isCurrent ? VLCStyle.redesign.accent : VLCStyle.redesign.textMuted
+                    color: isCurrent ? VLCStyle.redesign.accent
+                                     : (root.lightTheme ? "#7c7c7b" : VLCStyle.redesign.textMuted)
                     font.pixelSize: VLCStyle.dp(11, VLCStyle.scale)
                     verticalAlignment: Text.AlignVCenter
                 }
@@ -150,7 +155,7 @@ Item {
                     width: parent.width - 72
                     height: parent.height
                     text: title
-                    color: VLCStyle.redesign.textSecondary
+                    color: root.lightTheme ? "#4d4d4d" : VLCStyle.redesign.textSecondary
                     elide: Text.ElideRight
                     font.family: VLCStyle.redesign.fontFamily
                     font.pixelSize: VLCStyle.dp(11, VLCStyle.scale)
@@ -160,7 +165,7 @@ Item {
                     width: 43
                     height: parent.height
                     text: duration.formatHMS()
-                    color: VLCStyle.redesign.textMuted
+                    color: root.lightTheme ? "#7c7c7b" : VLCStyle.redesign.textMuted
                     font.family: VLCStyle.redesign.fontFamily
                     font.pixelSize: VLCStyle.dp(10, VLCStyle.scale)
                     horizontalAlignment: Text.AlignRight
