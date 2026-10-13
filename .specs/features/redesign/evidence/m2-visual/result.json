@@ -1,0 +1,57 @@
+{
+  "source": "665c0bffe43f111bf88f8f3d754ac4e4ab1f8708",
+  "qt_plugin_sha256": "7a1324ee07b4df0d81481cdb6586cb4ee0765a7906d1d89df18fce03d96e38c7",
+  "runtime": "Ubuntu 24.04, Qt 6.4.2, X11/Xvfb, Qt Quick software, scale 1",
+  "resolutions": [
+    [
+      1920,
+      1080
+    ],
+    [
+      1280,
+      720
+    ],
+    [
+      720,
+      540
+    ]
+  ],
+  "subtitle_cancel_preserved": true,
+  "subtitle_save_no_duplicates": true,
+  "subtitle_rows": [
+    [
+      "file:///work/build-m2/legendas/Epis%C3%B3dio%2001.srt",
+      2,
+      4
+    ],
+    [
+      "file:///work/build-m2/legendas/Epis%C3%B3dio%2002.srt",
+      3,
+      4
+    ]
+  ],
+  "native_errors": "No component unavailable, TypeError, binding loop or missing assets in final session. Existing MainDisplay.qml:120 scaleAxis warning remains.",
+  "evidence": [
+    "library-1920",
+    "library-1280",
+    "library-pip-720",
+    "playlist-720",
+    "subtitles-matched",
+    "subtitles-manual-720",
+    "subtitles-saved",
+    "tracks-audio-second",
+    "tracks-audio-none",
+    "tracks-subtitle-second",
+    "tracks-subtitle-off",
+    "tracks-720",
+    "tracks-playback-720",
+    "mini-queue"
+  ],
+  "reused_search_and_list": "visual-final session; later changes only playlist action Flow and compact PIP size",
+  "not_verified": [
+    "Windows runtime",
+    "GPU/RHI renderer",
+    "high DPI",
+    "all Figma frames"
+  ]
+}

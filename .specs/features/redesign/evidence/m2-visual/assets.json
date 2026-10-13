@@ -1,0 +1,212 @@
+[
+  {
+    "asset": "playlists.svg",
+    "sha256": "486900819c6fd18670e4898215acce32e990887ecf8ddf01f192ceb0c8225c8d",
+    "original": [
+      "c9326.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/playlists.svg"
+  },
+  {
+    "asset": "recent.svg",
+    "sha256": "e2d44d2f0fe7dad2a23cb0226ac748c20d6dc8e82ed835051a3e1f26f8e363fc",
+    "original": [
+      "50e8b.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/recent.svg"
+  },
+  {
+    "asset": "add.svg",
+    "sha256": "153af0590671ec1412b7046ae2c460836a9b8647d9db887b302b74f5fc6cb4d0",
+    "original": [
+      "bfdda.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/add.svg"
+  },
+  {
+    "asset": "search.svg",
+    "sha256": "0bb8c4d213d9a873b932594fbe0dfe63b0103fa0ec15463496156deab8266e15",
+    "original": [
+      "80d5a.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/search.svg"
+  },
+  {
+    "asset": "sort.svg",
+    "sha256": "39ed7e664c24d3a33441500575b1b2a1056daeb1acc5110c812fdc41e59268c8",
+    "original": [
+      "764ef.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/sort.svg"
+  },
+  {
+    "asset": "folder.svg",
+    "sha256": "fd2eb46f1e1081b85b92db3398d24b67027ca0cf75fbfb037efac72733fd4438",
+    "original": [
+      "cf6e1.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/folder.svg"
+  },
+  {
+    "asset": "artist.svg",
+    "sha256": "c2a5dca8b580970a3d315fc075b0e2c69a588f91edab3a1eeb0cb5f7b4526168",
+    "original": [
+      "7bb62.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/artist.svg"
+  },
+  {
+    "asset": "arrow-left.svg",
+    "sha256": "ca0b31d936b91ceb05fad47e6edf5ce2538ca965b0d73e4f7f3a5071a7d02183",
+    "original": [
+      "785d7.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/arrow-left.svg"
+  },
+  {
+    "asset": "arrow-right.svg",
+    "sha256": "1fbc77e07ddecd03e1b6d62d75b0d48e0000dfd08c155693d4c8a064361acb54",
+    "original": [
+      "a7541.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/arrow-right.svg"
+  },
+  {
+    "asset": "mini-queue.svg",
+    "sha256": "456d37af09e1d6b968e87f7e9cd53ff45bf1a8de6765e9eccfc0a7c3aee20e20",
+    "original": [
+      "0eda2.svg"
+    ],
+    "dimensions": null,
+    "qrc": "qrc:///redesign/mini-queue.svg"
+  },
+  {
+    "asset": "track-subtitles-active.png",
+    "sha256": "bb060988b17d63b89a5f9009da51502f893798cfc925cafada58dc31baabb9f4",
+    "original": [
+      "name=subtitles, direction=default, state=active, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/track-subtitles-active.png"
+  },
+  {
+    "asset": "track-subtitles.png",
+    "sha256": "4aac98845d26f4e54e961ea493a6b7263ada8f131f9164c8d439e72fefb51065",
+    "original": [
+      "name=subtitles, direction=default, state=default, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/track-subtitles.png"
+  },
+  {
+    "asset": "track-video.png",
+    "sha256": "ec48c037247978054f6d3d0b556cd1f6727cc3dee541a3d2808b36cd5dbac3ad",
+    "original": [
+      "name=video, direction=default, state=default, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/track-video.png"
+  },
+  {
+    "asset": "track-video-active.png",
+    "sha256": "ca466e9e995e66bcb088d98fa30ba20fd068a0017a68c7c5b4f359d4f63aa0ea",
+    "original": [
+      "name=video, direction=default, state=active, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/track-video-active.png"
+  },
+  {
+    "asset": "track-check-active.png",
+    "sha256": "0b6884570a132b52d447fc5a0292bc5010680e4e5dbed66002c3cdef97669461",
+    "original": [
+      "name=check, direction=default, state=active, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/track-check-active.png"
+  },
+  {
+    "asset": "track-audio-active.png",
+    "sha256": "a223d91624850c6eef5f5d3b21d2aaccf4a1750129840271ef1ef4441c7e8c85",
+    "original": [
+      "name=audio, direction=default, state=active, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/track-audio-active.png"
+  },
+  {
+    "asset": "track-audio.png",
+    "sha256": "c66aa66eabd83ba25f91682f296d11d023f3f91448f3412cae0b5c34b0374f27",
+    "original": [
+      "name=audio, direction=default, state=default, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/track-audio.png"
+  },
+  {
+    "asset": "grid.png",
+    "sha256": "0c69bf5fc0777fea79ed7be3851a16200569cd4546fb6a002043e21ca6d5513d",
+    "original": [
+      "name=grid, direction=default, state=default, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/grid.png"
+  },
+  {
+    "asset": "list.png",
+    "sha256": "d471e6be22dc7106e028ef5b010e69419af0d2a36afba76aa31727a51c8ae6c0",
+    "original": [
+      "name=list, direction=default, state=default, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/list.png"
+  },
+  {
+    "asset": "subtitle-file.png",
+    "sha256": "e385a0fd0d75c3ec2ecbb602e93ac9ce68bf095b68e2c1d1c10d1c3cd5741363",
+    "original": [
+      "name=subtitle, direction=default, state=default, value=default, EQ=default, two-tone=no.png"
+    ],
+    "dimensions": [
+      24,
+      24
+    ],
+    "qrc": "qrc:///redesign/subtitle-file.png"
+  }
+]
