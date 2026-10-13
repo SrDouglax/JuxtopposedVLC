@@ -1,0 +1,22 @@
+{
+  "source": "009ca20a7f111b1164ef0e0474e780e8d655af4a",
+  "qt_plugin_sha256": "45965a2d8f51f94cf4a452c9d9a0d845315bec00e094907d53d2346506fd4056",
+  "previous_selection_span": [
+    0,
+    215
+  ],
+  "corrected_selection_span": [
+    8,
+    207
+  ],
+  "outer_8px_background_preserved": true,
+  "native_verified": [
+    "1920x1080 expanded",
+    "720x540 expanded",
+    "Add item hover",
+    "collapsed navigation"
+  ],
+  "runtime": "Qt6.4.2/X11/Qt Quick software/scale1",
+  "build": "incremental Qt Autotools PASS",
+  "scope": "sidebar insets and icon wrappers only"
+}

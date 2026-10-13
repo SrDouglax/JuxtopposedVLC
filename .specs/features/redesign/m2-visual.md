@@ -1,7 +1,7 @@
 # M2 — Correção de fidelidade visual
 
 Correção Linux de 13/10/2026 em `feat/m2`. Código compilado e exercitado:
-`665c0bffe43f111bf88f8f3d754ac4e4ab1f8708`.
+`009ca20a7f111b1164ef0e0474e780e8d655af4a` (sidebar corrigida após a rodada `665c0bffe4`).
 A documentação posterior não altera o binário.
 
 ## Referências e resultado
@@ -22,7 +22,7 @@ A documentação posterior não altera o binário.
 
 | Área | Alteração aplicada | Evidência nativa |
 | --- | --- | --- |
-| Biblioteca | Sidebar 217 px, navegação plana; thumbnails 316×178, raio 12, margens/gaps horizontais 20, gap vertical 40, títulos Inter regular 16 com intervalo 20 | [1920×1080](evidence/m2-visual/library-1920.png) |
+| Biblioteca | Sidebar 217 px, navegação plana; thumbnails 316×178, raio 12, margens/gaps horizontais 20, gap vertical 40, títulos Inter regular 16 com intervalo 20 | [1920×1080 corrigida](evidence/m2-visual/sidebar-expanded.png) |
 | Cabeçalho | Breadcrumb, contagem real, sort, alternância de vista, busca permanente 325×34, adicionar pasta e abrir mídia com ações existentes | [Busca](evidence/m2-visual/library-search.png), [lista](evidence/m2-visual/library-list.png) |
 | Miniplayer | Card 391 px com padding 8, vídeo 375×211, seek e metadados; width reduzida abaixo de 900 px | [1280×720](evidence/m2-visual/library-1280.png), [720×540](evidence/m2-visual/library-pip-720.png) |
 | Playlist | Breadcrumb mantém a categoria e o nome da coleção; ações quebram linha quando necessário | [720×540](evidence/m2-visual/playlist-720.png) |
@@ -69,3 +69,17 @@ o serviço atual não fornece um caminho agregado para imitar o exemplo do Figma
 GPU/RHI, Wayland, outros temas, DPI 150%/200% e Windows não foram comprovados nesta
 rodada. A rodada Windows permanece para o final acordado; os caminhos comuns e
 os manifests foram preservados. Música e preferências completas seguem o escopo M3.
+
+## Correção do recuo da seleção da sidebar
+
+A captura anterior deixou passar um erro: o destaque ocupava x=0…215,
+fora do painel interno com margem de 8 px. O fundo dos delegates agora usa
+insets de 8 px dos dois lados; o conteúdo inclui o padding de 16 px do painel
+e wrappers de ícone 30/32 px presentes no contexto do Figma. O modo recolhido
+conserva um padding próprio para manter os ícones dentro da largura disponível.
+
+Build incremental passou. Pixels da captura nativa confirmam o destaque em
+x=8…207 e a margem externa preservada em 1920×1080 e 720×540. Hover de Add item
+e alternância expandido/recolhido também foram conferidos. Não foram repetidos
+os fluxos M2 sem relação com esse ajuste. [Captura pequena](evidence/m2-visual/sidebar-720.png),
+[resultado e hash do binário](evidence/m2-visual/sidebar-result.json).
