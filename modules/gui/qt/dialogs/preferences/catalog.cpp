@@ -49,6 +49,7 @@ static const Option entries[] = {
     {"recording", "input-record-native"},
     {"recording", "sout-display"}, {"recording", "sout-audio"},
     {"recording", "sout-video"},
+    {"extensions", "qt-autoload-extensions"},
 };
 
 const Option *options() { return entries; }
