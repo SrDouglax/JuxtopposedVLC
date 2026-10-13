@@ -51,7 +51,7 @@ T.Pane {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
-    padding: VLCStyle.margin_normal
+    padding: VLCStyle.margin_xsmall
 
     readonly property ColorContext colorContext: ColorContext {
         id: theme
@@ -88,9 +88,14 @@ T.Pane {
         }
     }
 
-    background: Widgets.AcrylicBackground {
-        enabled: root.useAcrylic
-        tintColor: theme.bg.primary
+    background: Rectangle {
+        color: VLCStyle.redesign.color(VLCStyle.redesign.windowBackground, theme.bg.primary)
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: VLCStyle.margin_xsmall
+            radius: VLCStyle.redesign.controlRadius
+            color: VLCStyle.redesign.color(VLCStyle.redesign.sidebarBackground, theme.bg.primary)
+        }
     }
 
     contentItem:  Item {
@@ -101,6 +106,7 @@ T.Pane {
         ColumnLayout {
             anchors.fill: parent
             spacing: VLCStyle.margin_xsmall
+            anchors.topMargin: VLCStyle.margin_small
 
             Widgets.ListViewExt {
                 id: listView
@@ -165,7 +171,7 @@ T.Pane {
 
                     property real preferredHeight: shouldShow ? VLCStyle.buttonHeightNavigationPane : 0.0
 
-                    leftPadding: root.safeAreaLeftMargin + VLCStyle.margin_xsmall
+                    leftPadding: root.safeAreaLeftMargin + (root.delegateShowText ? VLCStyle.margin_large : VLCStyle.margin_xsmall)
                     rightPadding: root.safeAreaRightMargin
 
                     leftInset: root.safeAreaLeftMargin + implicitLeftInset
@@ -267,7 +273,7 @@ T.Pane {
                 Layout.fillWidth: true
                 Layout.preferredHeight: VLCStyle.buttonHeightNavigationPane
 
-                leftPadding: root.safeAreaLeftMargin + VLCStyle.margin_xsmall
+                leftPadding: root.safeAreaLeftMargin + (root.delegateShowText ? VLCStyle.margin_large : VLCStyle.margin_xsmall)
                 rightPadding: root.safeAreaRightMargin
 
                 leftInset: root.safeAreaLeftMargin + implicitLeftInset

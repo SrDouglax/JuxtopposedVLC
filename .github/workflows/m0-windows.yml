@@ -1,4 +1,4 @@
-name: M0 Windows cross-build
+name: Qt Windows cross-build
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
         required: false
         type: string
   push:
-    branches: [master, chore/m0]
+    branches: [master, chore/m0, feat/m1]
     paths:
       - '.github/workflows/m0-windows.yml'
       - '.github/scripts/windows.sh'
@@ -170,6 +170,7 @@ jobs:
             }
           }
           if ($process.ExitCode -ne 0) { throw "Native executable exited with $($process.ExitCode)" }
+          if ($pluginErrors.Count -ne 0) { throw "Native plugin loading failed for $($pluginErrors.Count) modules" }
           if (-not (Select-String -LiteralPath native-evidence/version-stdout.txt -Pattern 'VLC version' -SimpleMatch)) {
             throw 'The native executable did not print the requested version'
           }

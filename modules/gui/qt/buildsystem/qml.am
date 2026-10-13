@@ -1,0 +1,430 @@
+QML_MODULE_LIBS =
+
+libqml_module_dialogs_a_Module = VLC.Dialogs
+libqml_module_dialogs_a_ModulePath = VLC/Dialogs
+libqml_module_dialogs_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_dialogs_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_dialogs_a_QML = \
+	dialogs/dialogs/qml/CustomDialog.qml \
+	dialogs/dialogs/qml/Dialogs.qml \
+	dialogs/dialogs/qml/ModalDialog.qml \
+	dialogs/dialogs/qml/WindowDialog.qml \
+	dialogs/toolbar/qml/EditorDNDDelegate.qml \
+	dialogs/toolbar/qml/EditorDNDView.qml\
+	dialogs/toolbar/qml/EditorDummyButton.qml \
+	dialogs/toolbar/qml/EditorTabButton.qml \
+	dialogs/toolbar/qml/ToolbarEditor.qml \
+	dialogs/toolbar/qml/ToolbarEditorDialog.qml \
+	dialogs/toolbar/qml/ToolbarEditorButtonList.qml
+libqml_module_dialogs_a_Singleton_QML =
+libqml_module_dialogs_a_SOURCES = $(QML_MODULE_dialogs_SRC)
+nodist_libqml_module_dialogs_a_SOURCES = dialogs/qmlassets.cpp $(QML_MODULE_dialogs_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_dialogs.a
+
+libqml_module_maininterface_a_Module = VLC.MainInterface
+libqml_module_maininterface_a_ModulePath = VLC/MainInterface
+libqml_module_maininterface_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_maininterface_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_maininterface_a_QML = \
+	maininterface/qml/MenuTopbar.qml \
+	maininterface/qml/LocalTopbar.qml \
+	maininterface/qml/MainInterface.qml \
+	maininterface/qml/MainViewLoader.qml \
+	maininterface/qml/MainDisplay.qml \
+	maininterface/qml/SideNavigationPane.qml \
+	maininterface/qml/Sidebar.qml \
+	maininterface/qml/PaneResizeHandle.qml \
+	maininterface/qml/SideNavigationDelegate.qml \
+	maininterface/qml/NoMedialibHome.qml
+
+if UPDATE_CHECK
+libqml_module_maininterface_a_QML += maininterface/qml/UpdatePane.qml
+endif
+
+libqml_module_maininterface_a_Singleton_QML =
+libqml_module_maininterface_a_SOURCES = $(QML_MODULE_maininterface_SRC)
+nodist_libqml_module_maininterface_a_SOURCES = maininterface/qmlassets.cpp $(QML_MODULE_maininterface_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_maininterface.a
+
+libqml_module_medialibrary_a_Module = VLC.MediaLibrary
+libqml_module_medialibrary_a_ModulePath = VLC/MediaLibrary
+libqml_module_medialibrary_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_medialibrary_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_medialibrary_a_QML = \
+	medialibrary/qml/ArtistTopBanner.qml \
+	medialibrary/qml/AudioGridItem.qml \
+	medialibrary/qml/HomeDisplay.qml \
+	medialibrary/qml/HomePage.qml \
+	medialibrary/qml/MediaView.qml \
+	medialibrary/qml/VideoGroupDisplay.qml \
+	medialibrary/qml/MusicAlbums.qml \
+	medialibrary/qml/MusicAlbumsDisplay.qml \
+	medialibrary/qml/MusicAlbumsGridExpandDelegate.qml \
+	medialibrary/qml/MusicArtist.qml \
+	medialibrary/qml/MusicArtistDelegate.qml \
+	medialibrary/qml/MusicArtistsAlbums.qml \
+	medialibrary/qml/MusicAllArtists.qml \
+	medialibrary/qml/MusicArtistsDisplay.qml \
+	medialibrary/qml/MusicDisplay.qml \
+	medialibrary/qml/MusicGenres.qml \
+	medialibrary/qml/MusicGenresDisplay.qml \
+	medialibrary/qml/MusicPlaylistsDisplay.qml \
+	medialibrary/qml/MusicTrackListDisplay.qml \
+	medialibrary/qml/MusicTracksDisplay.qml \
+	medialibrary/qml/UrlListDisplay.qml \
+	medialibrary/qml/VideoDisplay.qml \
+	medialibrary/qml/VideoAll.qml \
+	medialibrary/qml/VideoAllDisplay.qml \
+	medialibrary/qml/VideoAllSubDisplay.qml \
+	medialibrary/qml/PlaylistMediaList.qml \
+	medialibrary/qml/PlaylistMedia.qml \
+	medialibrary/qml/PlaylistMediaDisplay.qml \
+	medialibrary/qml/VideoPlaylistsDisplay.qml \
+	medialibrary/qml/VideoGridItem.qml \
+	medialibrary/qml/VideoInfoExpandPanel.qml \
+	medialibrary/qml/VideoListDisplay.qml \
+	medialibrary/qml/VideoGridDisplay.qml \
+	medialibrary/qml/MusicAlbumSectionDelegate.qml \
+	medialibrary/qml/MLGlobalShortcuts.qml \
+	medialibrary/qml/Bookmarks.qml \
+	medialibrary/qml/MLContextMenu.qml \
+	medialibrary/qml/MLDragItem.qml \
+	medialibrary/qml/MLTableColumns.qml \
+	medialibrary/qml/ScanProgressBar.qml
+libqml_module_medialibrary_a_Singleton_QML =
+libqml_module_medialibrary_a_SOURCES = $(QML_MODULE_medialibrary_SRC)
+nodist_libqml_module_medialibrary_a_SOURCES = medialibrary/qmlassets.cpp $(QML_MODULE_medialibrary_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_medialibrary.a
+
+libqml_module_menus_a_Module = VLC.Menus
+libqml_module_menus_a_ModulePath = VLC/Menus
+libqml_module_menus_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_menus_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_menus_a_QML = \
+	menus/qml/GlobalShortcuts.qml \
+	menus/qml/Menubar.qml \
+	menus/qml/ShortcutExt.qml
+libqml_module_menus_a_Singleton_QML =
+libqml_module_menus_a_SOURCES = $(QML_MODULE_menus_SRC)
+nodist_libqml_module_menus_a_SOURCES = menus/qmlassets.cpp $(QML_MODULE_menus_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_menus.a
+
+libqml_module_network_a_Module = VLC.Network
+libqml_module_network_a_ModulePath = VLC/Network
+libqml_module_network_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_network_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_network_a_QML = \
+	network/qml/AddressbarButton.qml \
+	network/qml/BrowseDeviceView.qml \
+	network/qml/BrowseDisplay.qml \
+	network/qml/BrowseHomeDisplay.qml \
+	network/qml/BrowseTreeDisplay.qml \
+	network/qml/BrowseTreeHeader.qml \
+	network/qml/DiscoverDisplay.qml \
+	network/qml/DiscoverUrlDisplay.qml \
+	network/qml/NetworkAddressbar.qml \
+	network/qml/NetworkGridItem.qml \
+	network/qml/NetworkThumbnailItem.qml \
+	network/qml/ServicesHomeDisplay.qml \
+	network/qml/ServicesManage.qml \
+	network/qml/ServicesSources.qml
+libqml_module_network_a_Singleton_QML =
+libqml_module_network_a_SOURCES = $(QML_MODULE_network_SRC)
+nodist_libqml_module_network_a_SOURCES = network/qmlassets.cpp $(QML_MODULE_network_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_network.a
+
+libqml_module_player_a_Module = VLC.Player
+libqml_module_player_a_ModulePath = VLC/Player
+libqml_module_player_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_player_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_player_a_QML = \
+	player/qml/ControlBar.qml \
+	player/qml/PlaybackSpeed.qml \
+	player/qml/LyricsFlickable.qml \
+	player/qml/MiniPlayer.qml \
+	player/qml/PIPPlayer.qml \
+	player/qml/Player.qml \
+	player/qml/PlayerControlLayout.qml \
+	player/qml/PlayerPlaylistVisibilityFSM.qml \
+	player/qml/PlayerToolbarVisibilityFSM.qml \
+	player/qml/MinimalView.qml \
+	player/qml/ResumeDialog.qml \
+	player/qml/SliderBar.qml \
+	player/qml/TopBar.qml \
+	player/qml/Title.qml \
+	player/qml/TracksMenu.qml \
+	player/qml/TracksPage.qml \
+	player/qml/TracksPageAudio.qml \
+	player/qml/TracksPageSpeed.qml \
+	player/qml/TracksPageSubtitle.qml \
+	player/qml/TracksListPage.qml \
+	player/qml/ControlLayout.qml \
+	player/qml/ControlRepeater.qml \
+	player/qml/NavigationBox.qml
+
+libqml_module_player_a_Singleton_QML = \
+	player/qml/PlayerControlbarControls.qml
+libqml_module_player_a_SOURCES = $(QML_MODULE_player_SRC)
+nodist_libqml_module_player_a_SOURCES = player/qmlassets.cpp $(QML_MODULE_player_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_player.a
+
+libqml_module_playercontrols_a_Module = VLC.PlayerControls
+libqml_module_playercontrols_a_ModulePath = VLC/PlayerControls
+libqml_module_playercontrols_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_playercontrols_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_playercontrols_a_QML = \
+	player/qml/controlbarcontrols/HighResolutionTimeWidget.qml \
+	player/qml/controlbarcontrols/ArtworkInfoWidget.qml \
+	player/qml/controlbarcontrols/AspectRatioWidget.qml \
+	player/qml/controlbarcontrols/AtoBButton.qml \
+	player/qml/controlbarcontrols/BackButton.qml \
+	player/qml/controlbarcontrols/BookmarkButton.qml \
+	player/qml/controlbarcontrols/ChapterNextButton.qml \
+	player/qml/controlbarcontrols/ChapterPreviousButton.qml \
+	player/qml/controlbarcontrols/DvdMenuButton.qml \
+	player/qml/controlbarcontrols/ExpandingSpacerWidget.qml \
+	player/qml/controlbarcontrols/ExtendedSettingsButton.qml \
+	player/qml/controlbarcontrols/FasterButton.qml \
+	player/qml/controlbarcontrols/FrameNextButton.qml \
+	player/qml/controlbarcontrols/FramePrevButton.qml \
+	player/qml/controlbarcontrols/FullscreenButton.qml \
+	player/qml/controlbarcontrols/InfoButton.qml \
+	player/qml/controlbarcontrols/LangButton.qml \
+	player/qml/controlbarcontrols/LoopButton.qml \
+	player/qml/controlbarcontrols/MenuButton.qml \
+	player/qml/controlbarcontrols/NavigationBoxButton.qml \
+	player/qml/controlbarcontrols/NavigationWidget.qml \
+	player/qml/controlbarcontrols/NextButton.qml \
+	player/qml/controlbarcontrols/OpenButton.qml \
+	player/qml/controlbarcontrols/PlaybackSpeedButton.qml \
+	player/qml/controlbarcontrols/PlayButton.qml \
+	player/qml/controlbarcontrols/PlayerSwitchButton.qml \
+	player/qml/controlbarcontrols/PlaylistButton.qml \
+	player/qml/controlbarcontrols/PreviousButton.qml \
+	player/qml/controlbarcontrols/ProgramButton.qml \
+	player/qml/controlbarcontrols/QuitButton.qml \
+	player/qml/controlbarcontrols/RandomButton.qml \
+	player/qml/controlbarcontrols/RendererButton.qml \
+	player/qml/controlbarcontrols/RecordButton.qml \
+	player/qml/controlbarcontrols/ReverseButton.qml \
+	player/qml/controlbarcontrols/SkipBackButton.qml \
+	player/qml/controlbarcontrols/SkipForwardButton.qml \
+	player/qml/controlbarcontrols/SlowerButton.qml \
+	player/qml/controlbarcontrols/SnapshotButton.qml \
+	player/qml/controlbarcontrols/SpacerWidget.qml \
+	player/qml/controlbarcontrols/StopButton.qml \
+	player/qml/controlbarcontrols/TeletextButton.qml \
+	player/qml/controlbarcontrols/TeletextColorButton.qml \
+	player/qml/controlbarcontrols/TeletextWidget.qml \
+	player/qml/controlbarcontrols/VolumeWidget.qml \
+	player/qml/controlbarcontrols/Fallback.qml
+libqml_module_playercontrols_a_Singleton_QML =
+libqml_module_playercontrols_a_SOURCES = $(QML_MODULE_playercontrols_SRC)
+nodist_libqml_module_playercontrols_a_SOURCES = playercontrols/qmlassets.cpp $(QML_MODULE_playercontrols_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_playercontrols.a
+
+libqml_module_playlist_a_Module = VLC.Playlist
+libqml_module_playlist_a_ModulePath = VLC/Playlist
+libqml_module_playlist_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_playlist_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_playlist_a_QML = \
+	playlist/qml/PlaylistDelegate.qml \
+	playlist/qml/PlaylistPane.qml \
+	playlist/qml/PlaylistDetachedWindow.qml
+libqml_module_playlist_a_Singleton_QML =
+libqml_module_playlist_a_SOURCES = $(QML_MODULE_playlist_SRC)
+nodist_libqml_module_playlist_a_SOURCES = playlist/qmlassets.cpp $(QML_MODULE_playlist_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_playlist.a
+
+libqml_module_style_a_Module = VLC.Style
+libqml_module_style_a_ModulePath = VLC/Style
+libqml_module_style_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_style_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_style_a_QML =
+libqml_module_style_a_Singleton_QML = \
+	style/AcrylicController.qml \
+	style/VLCStyle.qml
+libqml_module_style_a_SOURCES = $(QML_MODULE_style_SRC)
+nodist_libqml_module_style_a_SOURCES = style/qmlassets.cpp $(QML_MODULE_style_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_style.a
+
+libqml_module_util_a_Module = VLC.Util
+libqml_module_util_a_ModulePath = VLC/Util
+libqml_module_util_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_util_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_util_a_QML = \
+	util/qml/ModelSortSettingHandler.qml \
+	util/qml/DefaultFlickableScrollHandler.qml \
+	util/qml/ViewDragAutoScrollHandler.qml \
+	util/qml/FSM.qml \
+	util/qml/FSMState.qml \
+	util/qml/NativeMenu.qml \
+	util/qml/FadeControllerStateGroup.qml \
+	util/qml/GridSizeHelper.qml \
+	util/qml/DelayedBehavior.qml \
+	util/qml/DelegateTouchTapHandler.qml
+libqml_module_util_a_Singleton_QML = \
+	util/qml/Helpers.qml
+libqml_module_util_a_SOURCES = $(QML_MODULE_util_SRC)
+nodist_libqml_module_util_a_SOURCES = util/qmlassets.cpp $(QML_MODULE_util_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_util.a
+
+libqml_module_widgets_a_Module = VLC.Widgets
+libqml_module_widgets_a_ModulePath = VLC/Widgets
+libqml_module_widgets_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
+libqml_module_widgets_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
+libqml_module_widgets_a_QML = \
+	widgets/qml/LabelExt.qml \
+	widgets/qml/ActionButtonOverlay.qml \
+	widgets/qml/ActionButtonPrimary.qml \
+	widgets/qml/BannerTabButton.qml \
+	widgets/qml/BannerCone.qml \
+	widgets/qml/BusyIndicatorExt.qml \
+	widgets/qml/CaptionLabel.qml \
+	widgets/qml/CheckButton.qml \
+	widgets/qml/CheckedDelegate.qml \
+	widgets/qml/ComboBoxExt.qml \
+	widgets/qml/AcrylicBackground.qml \
+	widgets/qml/FloatingNotification.qml \
+	widgets/qml/AnimatedBackground.qml \
+	widgets/qml/CSDThemeButton.qml \
+	widgets/qml/CSDThemeButtonSet.qml \
+	widgets/qml/CSDWindowButton.qml \
+	widgets/qml/CSDWindowButtonSet.qml \
+	widgets/qml/CSDTitlebarTapNDrapHandler.qml \
+	widgets/qml/CSDMouseStealer.qml \
+	widgets/qml/CurrentIndicator.qml \
+	widgets/qml/DragItem.qml \
+	widgets/qml/DrawerExt.qml \
+	widgets/qml/ExpandGridView.qml \
+	widgets/qml/ExpandGridItemView.qml \
+	widgets/qml/EmptyLabel.qml \
+	widgets/qml/EmptyLabelButton.qml \
+	widgets/qml/EmptyLabelHint.qml \
+	widgets/qml/GridItem.qml \
+	widgets/qml/GridSortFilterControls.qml \
+	widgets/qml/HorizontalResizeHandle.qml \
+	widgets/qml/IconLabel.qml \
+	widgets/qml/IconButton.qml \
+	widgets/qml/IconToolButton.qml \
+	widgets/qml/IconTrackButton.qml \
+	widgets/qml/ImageToolButton.qml \
+	widgets/qml/ListViewExt.qml \
+	widgets/qml/TableViewExt.qml \
+	widgets/qml/TableViewDelegateExt.qml \
+	widgets/qml/TableRowDelegate.qml \
+	widgets/qml/TableHeaderDelegate.qml \
+	widgets/qml/DefaultShadow.qml \
+	widgets/qml/ListLabel.qml \
+	widgets/qml/MediaCover.qml \
+	widgets/qml/SubtitleLabel.qml \
+	widgets/qml/MenuCaption.qml \
+	widgets/qml/MenuLabel.qml \
+	widgets/qml/NavigableCol.qml \
+	widgets/qml/NavigableRow.qml \
+	widgets/qml/PlayCover.qml \
+	widgets/qml/RoundButtonExt.qml \
+	widgets/qml/ScaledImage.qml \
+	widgets/qml/TextAutoScroller.qml \
+	widgets/qml/SearchBox.qml \
+	widgets/qml/SliderExt.qml \
+	widgets/qml/SortControl.qml \
+	widgets/qml/SpinBoxExt.qml \
+	widgets/qml/StackViewExt.qml \
+	widgets/qml/PageLoader.qml \
+	widgets/qml/PageExt.qml \
+	widgets/qml/ButtonExt.qml \
+	widgets/qml/TableColumns.qml \
+	widgets/qml/TextFieldExt.qml \
+	widgets/qml/TextToolButton.qml \
+	widgets/qml/TrackDelayButton.qml \
+	widgets/qml/VideoProgressBar.qml \
+	widgets/qml/VideoQualityLabels.qml \
+	widgets/qml/ListSubtitleLabel.qml \
+	widgets/qml/PointingTooltip.qml \
+	widgets/qml/FrostedGlassEffect.qml \
+	widgets/qml/ToolTipExt.qml \
+	widgets/qml/DropShadowImage.qml \
+	widgets/qml/DoubleShadow.qml \
+	widgets/qml/FadingEdge.qml \
+	widgets/qml/FadingEdgeForItemView.qml \
+	widgets/qml/PopupIconToolButton.qml \
+	widgets/qml/PartialEffect.qml \
+	widgets/qml/ViewHeader.qml \
+	widgets/qml/ProgressIndicator.qml \
+	widgets/qml/ImageExt.qml \
+	widgets/qml/EnhancedImageExt.qml \
+	widgets/qml/ScrollBarExt.qml \
+	widgets/qml/FastBlend.qml \
+	widgets/qml/RadioButtonExt.qml \
+	widgets/qml/RoundedRectangleShadow.qml \
+	widgets/qml/VoronoiSnow.qml \
+	widgets/qml/DualKawaseBlur.qml \
+	widgets/qml/CheckBoxExt.qml \
+	widgets/qml/ProgressBarExt.qml
+libqml_module_widgets_a_Singleton_QML =
+libqml_module_widgets_a_SOURCES = $(QML_MODULE_widgets_SRC)
+nodist_libqml_module_widgets_a_SOURCES = widgets/qmlassets.cpp $(QML_MODULE_widgets_NODIST_EXTRA)
+QML_MODULE_LIBS += libqml_module_widgets.a
+
+if ENABLE_QT
+libqt_plugin_la_LIBADD += $(QML_MODULE_LIBS)
+noinst_LIBRARIES += $(QML_MODULE_LIBS)
+endif
+
+if HAVE_QMLCACHEGEN
+QML_MODULE_dialogs_SRC = $(libqml_module_dialogs_a_QML) $(libqml_module_dialogs_a_Singleton_QML)
+QML_MODULE_dialogs_NODIST_EXTRA = dialogs/qmlcache_loader.cpp
+QML_MODULE_maininterface_SRC = $(libqml_module_maininterface_a_QML) $(libqml_module_maininterface_a_Singleton_QML)
+QML_MODULE_maininterface_NODIST_EXTRA = maininterface/qmlcache_loader.cpp
+QML_MODULE_medialibrary_SRC = $(libqml_module_medialibrary_a_QML) $(libqml_module_medialibrary_a_Singleton_QML)
+QML_MODULE_medialibrary_NODIST_EXTRA = medialibrary/qmlcache_loader.cpp
+QML_MODULE_menus_SRC = $(libqml_module_menus_a_QML) $(libqml_module_menus_a_Singleton_QML)
+QML_MODULE_menus_NODIST_EXTRA = menus/qmlcache_loader.cpp
+QML_MODULE_network_SRC = $(libqml_module_network_a_QML) $(libqml_module_network_a_Singleton_QML)
+QML_MODULE_network_NODIST_EXTRA = network/qmlcache_loader.cpp
+QML_MODULE_player_SRC = $(libqml_module_player_a_QML) $(libqml_module_player_a_Singleton_QML)
+QML_MODULE_player_NODIST_EXTRA = player/qmlcache_loader.cpp
+QML_MODULE_playercontrols_SRC = $(libqml_module_playercontrols_a_QML) $(libqml_module_playercontrols_a_Singleton_QML)
+QML_MODULE_playercontrols_NODIST_EXTRA = playercontrols/qmlcache_loader.cpp
+QML_MODULE_playlist_SRC = $(libqml_module_playlist_a_QML) $(libqml_module_playlist_a_Singleton_QML)
+QML_MODULE_playlist_NODIST_EXTRA = playlist/qmlcache_loader.cpp
+QML_MODULE_style_SRC = $(libqml_module_style_a_QML) $(libqml_module_style_a_Singleton_QML)
+QML_MODULE_style_NODIST_EXTRA = style/qmlcache_loader.cpp
+QML_MODULE_util_SRC = $(libqml_module_util_a_QML) $(libqml_module_util_a_Singleton_QML)
+QML_MODULE_util_NODIST_EXTRA = util/qmlcache_loader.cpp
+QML_MODULE_widgets_SRC = $(libqml_module_widgets_a_QML) $(libqml_module_widgets_a_Singleton_QML)
+QML_MODULE_widgets_NODIST_EXTRA = widgets/qmlcache_loader.cpp
+endif
+
+
+libqt_plugin_la_QML_MODULES = \
+	dialogs \
+	maininterface \
+	medialibrary \
+	menus \
+	network \
+	player \
+	playercontrols \
+	playlist \
+	style \
+	util \
+	widgets
+
+libqt_plugin_la_ALL_QML = \
+	$(libqml_module_dialogs_a_QML) \
+	$(libqml_module_maininterface_a_QML) \
+	$(libqml_module_medialibrary_a_QML) \
+	$(libqml_module_menus_a_QML) \
+	$(libqml_module_network_a_QML) \
+	$(libqml_module_player_a_QML) \
+	$(libqml_module_player_a_Singleton_QML) \
+	$(libqml_module_playercontrols_a_QML) \
+	$(libqml_module_playlist_a_QML) \
+	$(libqml_module_style_a_QML) \
+	$(libqml_module_style_a_Singleton_QML) \
+	$(libqml_module_util_a_QML) \
+	$(libqml_module_util_a_Singleton_QML) \
+	$(libqml_module_widgets_a_QML)
+
+# Shaders:

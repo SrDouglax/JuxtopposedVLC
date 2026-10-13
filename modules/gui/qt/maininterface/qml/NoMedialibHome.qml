@@ -38,6 +38,27 @@ FocusScope {
     Accessible.name: qsTr("Home View")
 
 
+    Rectangle {
+        anchors.fill: parent
+        color: VLCStyle.redesign.color(VLCStyle.redesign.windowBackground, theme.bg.primary)
+    }
+
+    component OpenButton: Widgets.ActionButtonPrimary {
+        id: control
+        font.family: VLCStyle.redesign.fontFamily
+        font.pixelSize: VLCStyle.redesign.fontNormal
+        radius: VLCStyle.redesign.controlRadius
+        color: VLCStyle.redesign.color(VLCStyle.redesign.textPrimary, colorContext.fg.primary)
+        background: Rectangle {
+            radius: control.radius
+            color: VLCStyle.redesign.color(!control.enabled ? VLCStyle.redesign.controlBackground
+                                                           : control.down ? VLCStyle.redesign.accentDim : VLCStyle.redesign.accent,
+                                           control.colorContext.bg.primary)
+            border.width: VLCStyle.focus_border
+            border.color: control.visualFocus ? VLCStyle.redesign.color(VLCStyle.redesign.textPrimary, control.colorFocus) : "transparent"
+        }
+    }
+
     component ConeNButtons: FocusScope {
         id: coneNButtons
 
@@ -130,7 +151,7 @@ FocusScope {
 
             spacing: coneNButtons.spacing
 
-            Widgets.ActionButtonPrimary {
+            OpenButton {
                 id: fileButton
 
                 AccessibleCompat.id: "openFileButton"
@@ -154,7 +175,7 @@ FocusScope {
                 onClicked: DialogsProvider.simpleOpenDialog()
             }
 
-            Widgets.ActionButtonPrimary {
+            OpenButton {
                 id: discButton
 
                 AccessibleCompat.id: "discButton"

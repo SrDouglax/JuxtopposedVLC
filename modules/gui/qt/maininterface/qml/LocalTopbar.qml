@@ -26,6 +26,7 @@ import QtQuick.Window
 import VLC.MainInterface
 import VLC.Style
 import VLC.Playlist
+import VLC.Player
 import VLC.Widgets as Widgets
 import VLC.Menus as Menus
 import VLC.Util
@@ -68,12 +69,13 @@ T.ToolBar {
 
     background:  Widgets.AcrylicBackground {
         enabled: root.useAcrylic
-        tintColor: theme.bg.primary
+        tintColor: VLCStyle.redesign.color(VLCStyle.redesign.controlBackground, theme.bg.primary)
+        alternativeColor: tintColor
     }
 
     contentItem: Item {
 
-        implicitHeight: VLCStyle.globalToolbar_height
+        implicitHeight: VLCStyle.redesign.topbarHeight
         implicitWidth: navigationButtons.implicitWidth
                      + playqueueButtonsTop.implicitWidth
                      + VLCStyle.margin_xsmall * 2
@@ -96,13 +98,24 @@ T.ToolBar {
                 id: navigationButtonsRow
 
                 anchors.verticalCenter: parent.verticalCenter
-                spacing: VLCStyle.margin_normal
+                spacing: VLCStyle.dp(7, VLCStyle.scale)
 
                 Navigation.parentItem: root
                 Navigation.rightItem: playqueueButtonsTop
 
                 Widgets.IconToolButton {
                     id: navigationVisibilty
+                    contentItem: Image {
+                        source: "qrc:///redesign/sidebar.svg"
+                        sourceSize: Qt.size(VLCStyle.redesign.iconSize, VLCStyle.redesign.iconSize)
+                        fillMode: Image.PreserveAspectFit
+                        opacity: parent.enabled ? 1.0 : 0.4
+                    }
+                    color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
+                                                   colorContext.fg.primary)
+                    backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
+                                                             colorContext.bg.primary)
+                    radius: VLCStyle.redesign.controlRadius
 
                     focus: true
 
@@ -111,7 +124,7 @@ T.ToolBar {
 
                     AccessibleCompat.id: "sidebarToggleButton"
 
-                    font.pixelSize: VLCStyle.icon_banner
+                    font.pixelSize: VLCStyle.redesign.iconSize
                     height: VLCStyle.bannerButton_height
                     width: VLCStyle.bannerButton_width
 
@@ -123,8 +136,13 @@ T.ToolBar {
 
                 Widgets.IconToolButton {
                     id: historyBack
+                    color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
+                                                   colorContext.fg.primary)
+                    backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
+                                                             colorContext.bg.primary)
+                    radius: VLCStyle.redesign.controlRadius
 
-                    font.pixelSize: VLCStyle.icon_banner
+                    font.pixelSize: VLCStyle.redesign.iconSize
                     text: VLCIcons.back
                     description: qsTr("Previous")
 
@@ -148,10 +166,11 @@ T.ToolBar {
 
                 Widgets.BannerCone {
                     id: logo
+                    source: "qrc:///redesign/logo.svg"
 
                     sourceSize.width: VLCStyle.bannerButton_height
                     sourceSize.height: VLCStyle.bannerButton_height
-                    color: theme.accent
+                    color: VLCStyle.redesign.logoColor
                 }
             }
         }
@@ -197,9 +216,20 @@ T.ToolBar {
 
                 Widgets.IconToolButton {
                     id: menuBtn
+                    contentItem: Image {
+                        source: "qrc:///redesign/menu.svg"
+                        sourceSize: Qt.size(VLCStyle.redesign.iconSize, VLCStyle.redesign.iconSize)
+                        fillMode: Image.PreserveAspectFit
+                        opacity: parent.enabled ? 1.0 : 0.4
+                    }
+                    color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
+                                                   colorContext.fg.primary)
+                    backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
+                                                             colorContext.bg.primary)
+                    radius: VLCStyle.redesign.controlRadius
 
                     visible: !MainCtx.hasToolbarMenu
-                    font.pixelSize: VLCStyle.icon_banner
+                    font.pixelSize: VLCStyle.redesign.iconSize
                     text: VLCIcons.more
                     description: qsTr("Menu")
                     width: VLCStyle.bannerButton_width
@@ -217,6 +247,19 @@ T.ToolBar {
                     }
                 }
             }
+        }
+
+        Text {
+            anchors.centerIn: parent
+            width: Math.max(0, parent.width - 2 * Math.max(navigationButtons.width, playqueueButtonsTop.width)
+                            - 2 * VLCStyle.margin_normal)
+            text: Player.title || qsTr("VLC media player")
+            color: VLCStyle.redesign.color(VLCStyle.redesign.textMuted, theme.fg.primary)
+            font.family: VLCStyle.redesign.fontFamily
+            font.pixelSize: VLCStyle.redesign.fontNormal
+            horizontalAlignment: Text.AlignHCenter
+            elide: Text.ElideRight
+            Accessible.ignored: true
         }
 
         Loader {
@@ -239,7 +282,7 @@ T.ToolBar {
             top: parent.top
         }
 
-        height: VLCStyle.globalToolbar_height
+        height: VLCStyle.redesign.topbarHeight
         active: root._showCSD
         source: VLCStyle.palette.hasCSDImage
                   ? "qrc:///qt/qml/VLC/Widgets/CSDThemeButtonSet.qml"

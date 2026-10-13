@@ -1,6 +1,6 @@
 # Tarefas de M0 e M1
 
-Status: M0 entregue na branch `chore/m0`, com limitações do baseline Windows registradas; M1 ainda planejado. A [transcrição do vídeo](video.md) complementa os critérios visuais/funcionais.
+Status: M0 entregue na branch `chore/m0`, com limitações do baseline Windows registradas; M1 em execução na branch `feat/m1`. A [transcrição do vídeo](video.md) complementa os critérios visuais/funcionais.
 
 | Entrega de M0 | Estado em 13/10/2026 | Evidência |
 | --- | --- | --- |
@@ -10,6 +10,17 @@ Status: M0 entregue na branch `chore/m0`, com limitações do baseline Windows r
 | T04 | Concluída como baseline | Cross-build, pacote e versão/exit 0 nativos comprovados; quatro plugins Windows pendentes em W01 |
 
 Este backlog detalha a fundação e a primeira fatia funcional. M2–M5 estão no roadmap; serão decompostos a partir do inventário real, antes de executar cada marco. Evitar uma lista fictícia de centenas de tarefas antes de conhecer o código.
+
+## Execução de M1 em 13/10/2026
+
+| Tarefa | Estado | Prova atual |
+| --- | --- | --- |
+| T05 | Implementada na fatia Dark | Fonte Inter local/OFL, SVGs originais, tokens, build Qt6 e captura nativa |
+| T06 | Implementada com cobertura parcial do shell | CSD, sidebar larga/recolhida, teclado, estado vazio e diálogo real validados; biblioteca mantém páginas atuais até M2 |
+| T07 | Não necessária | Player.qml permaneceu intacto; controles menores bastaram |
+| T08 | Implementada e validada no Linux | Mouse/teclado, seek clique/drag, cone volume, fullscreen, resize e erro de arquivo |
+| T09 | Em andamento | Linux PASS; build Windows da revisão integrada pendente |
+| W01 | Em validação | Link C com static libgcc + check imports e gate nativo; CI pendente |
 
 ## Ferramentas e política de testes
 
@@ -120,7 +131,7 @@ T01/T02 podem ocorrer em paralelo. T03/T04 também: ambos provam a mesma base up
 - **Onde:** flags e comandos de link Windows derivados da cadeia upstream. Não enfraquecer o carregador nem instalar runtimes em diretórios do sistema.
 - **Aceite:** linkagem apropriada do runtime, novo cross-build/pacote e carregamento nativo sem os quatro erros. Confirmar ordem/flags de libtool no link C antes de alterar; a flag atual `-static-libgcc` está em CXXFLAGS.
 - **Verificação:** imports dos quatro módulos, versão/exit 0 e contador de falhas de plugins. Depois, smoke Windows real de GUI/vídeo/áudio, separado da prova de compilação.
-- **Estado:** não implementada. Obrigatória antes do aceite completo Windows e distribuição; não impede T05/T06/T07 no Linux.
+- **Estado:** flag `-static-libgcc` acrescentada ao estágio final de link C, com check dos imports e gate nativo de falhas. Novo cross-build e verificação nativa pendentes. Obrigatória antes do aceite completo Windows e distribuição; não impede T05/T06/T07 no Linux.
 
 ## Validação do próprio plano
 

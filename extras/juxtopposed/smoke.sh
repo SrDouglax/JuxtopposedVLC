@@ -2,12 +2,13 @@
 # Run inside the Linux build container, under dbus-run-session.
 set -euo pipefail
 cd /work
-out=/work/build-m0/evidence
-mkdir -p "$out" /work/build-m0/fixtures /work/build-m0/profile/runtime
-export XDG_CONFIG_HOME=/work/build-m0/profile/config
-export XDG_CACHE_HOME=/work/build-m0/profile/cache
-export XDG_DATA_HOME=/work/build-m0/profile/data
-export XDG_RUNTIME_DIR=/work/build-m0/profile/runtime
+out=${SMOKE_OUT:-/work/build-m0/evidence}
+profile=${SMOKE_PROFILE:-/work/build-m0/profile}
+mkdir -p "$out" /work/build-m0/fixtures "$profile/runtime"
+export XDG_CONFIG_HOME="$profile/config"
+export XDG_CACHE_HOME="$profile/cache"
+export XDG_DATA_HOME="$profile/data"
+export XDG_RUNTIME_DIR="$profile/runtime"
 chmod 700 "$XDG_RUNTIME_DIR"
 export QT_QPA_PLATFORM=xcb DISPLAY=:98
 # Xvfb has no physical GPU. This selects the Qt Quick test renderer only.
@@ -43,9 +44,11 @@ sleep 1
 openbox > "$out/openbox.log" 2>&1 &
 wm_pid=$!
 cd /work/build-m0/linux
+decoration=()
+[[ "${SMOKE_CSD:-0}" != 1 ]] || decoration+=(--no-qt-titlebar)
 ./vlc --ignore-config --no-qt-privacy-ask --no-one-instance --extraintf=dbus \
     --aout=pulse --sub-file=/work/build-m0/fixtures/baseline.srt \
-    --qt-compositor=x11 --verbose=2 > "$out/vlc.log" 2>&1 &
+    --qt-compositor=x11 --verbose=2 "${decoration[@]}" > "$out/vlc.log" 2>&1 &
 vlc_pid=$!
 bus=org.mpris.MediaPlayer2.vlc
 path=/org/mpris/MediaPlayer2
@@ -129,6 +132,9 @@ xdotool key f
 sleep 1
 call org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2 Fullscreen \
     | tee "$out/windowed.txt" | grep -q false
+if [[ -n "${SMOKE_HOOK:-}" ]]; then
+    source "$SMOKE_HOOK"
+fi
 call org.mpris.MediaPlayer2.Quit > "$out/quit.txt"
 wait "$vlc_pid"
 vlc_pid=

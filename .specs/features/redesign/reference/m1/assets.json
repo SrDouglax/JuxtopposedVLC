@@ -1,0 +1,250 @@
+{
+  "nodes": [
+    "187:328",
+    "970:2703"
+  ],
+  "status": "local resources bundled for M1; full frames not implemented",
+  "svgAssets": [
+    {
+      "name": "logo",
+      "originalFilename": "29ba5.svg",
+      "originalSymbol": "imgFrame5",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/29ba5.svg",
+      "sha256": "b28cdbc9bd29fbfb9259d7c635491b5ffdefe32b8df0d4156c7b400b86a7cff5",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/logo.svg",
+      "proposedQrcURL": "qrc:/redesign/logo.svg"
+    },
+    {
+      "name": "home",
+      "originalFilename": "27471.svg",
+      "originalSymbol": "imgFrame10",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/27471.svg",
+      "sha256": "ffaafbacfe785b0c9337f52ae4aded6cbc4d4c1bdf9ad9a601847be70875394e",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/home.svg",
+      "proposedQrcURL": "qrc:/redesign/home.svg"
+    },
+    {
+      "name": "video",
+      "originalFilename": "b610e.svg",
+      "originalSymbol": "imgFrame11",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/b610e.svg",
+      "sha256": "b92c9ac905d80a2b36076c39d70993287fbb0566c2452cc030c2aa0e47049133",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/video.svg",
+      "proposedQrcURL": "qrc:/redesign/video.svg"
+    },
+    {
+      "name": "network",
+      "originalFilename": "6db55.svg",
+      "originalSymbol": "imgFrame12",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/6db55.svg",
+      "sha256": "a698452dbfbdf4c977f84a2d67acacea3a16c81f0887e450331cb298bc47c764",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/network.svg",
+      "proposedQrcURL": "qrc:/redesign/network.svg"
+    },
+    {
+      "name": "menu",
+      "originalFilename": "54fdc.svg",
+      "originalSymbol": "imgFrame50",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/54fdc.svg",
+      "sha256": "c5713ee955f5fb3a7f8980a41d6bd056158df6072c5885c94d4b2aa61d00971b",
+      "rootDimensions": [
+        "18",
+        "18"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/menu.svg",
+      "proposedQrcURL": "qrc:/redesign/menu.svg"
+    },
+    {
+      "name": "sidebar",
+      "originalFilename": "d7959.svg",
+      "originalSymbol": "imgFrame49",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/d7959.svg",
+      "sha256": "f31551ed015cc8be030d9eaeddfc9854407e025ffd3d1bf473b8c8e2abe2f82e",
+      "rootDimensions": [
+        "18",
+        "18"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/sidebar.svg",
+      "proposedQrcURL": "qrc:/redesign/sidebar.svg"
+    },
+    {
+      "name": "minimize",
+      "originalFilename": "928df.svg",
+      "originalSymbol": "imgFrame6",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/928df.svg",
+      "sha256": "4a0735f6911decdbc34af47f3ddbc1faa6ccca1c33baeeacbbf7593b841f1684",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/minimize.svg",
+      "proposedQrcURL": "qrc:/redesign/minimize.svg"
+    },
+    {
+      "name": "maximize",
+      "originalFilename": "dccb1.svg",
+      "originalSymbol": "imgFrame7",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/dccb1.svg",
+      "sha256": "7f9dcefccf1e1c57093fd31e92980aaad71dacf7486eb2509579314db6d40e14",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/maximize.svg",
+      "proposedQrcURL": "qrc:/redesign/maximize.svg"
+    },
+    {
+      "name": "fullscreen",
+      "originalFilename": "d41b8.svg",
+      "originalSymbol": "imgFrame8",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/d41b8.svg",
+      "sha256": "89438e334ab0eea50ee88c00e0c0e911d666968cd1a205ce64c1f01d4770df32",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/fullscreen.svg",
+      "proposedQrcURL": "qrc:/redesign/fullscreen.svg"
+    },
+    {
+      "name": "close",
+      "originalFilename": "9c2da.svg",
+      "originalSymbol": "imgFrame9",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/9c2da.svg",
+      "sha256": "c9b833efe92ee91a4c5b58132adebd5588649ad55bbc1fe15c37394a7b95fba7",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/close.svg",
+      "proposedQrcURL": "qrc:/redesign/close.svg"
+    },
+    {
+      "name": "settings",
+      "originalFilename": "1b0f7.svg",
+      "originalSymbol": "imgFrame1",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1a8e86d4-28f2-4144-82bc-367da6d98efc/1b0f7.svg",
+      "sha256": "bcf3dfcc00e219e04441b10a858de5543ac36b2aad3630f14d2f2a00a5c6c0c3",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/settings.svg",
+      "proposedQrcURL": "qrc:/redesign/settings.svg"
+    },
+    {
+      "name": "play",
+      "originalFilename": "4ecaf.svg",
+      "originalSymbol": "imgFrame47",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/4ecaf.svg",
+      "sha256": "8dea52e8a5e430639e30580dc7c5073f9ad8c435e7dbab3f5d0129d763553d1e",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/play.svg",
+      "proposedQrcURL": "qrc:/redesign/play.svg"
+    },
+    {
+      "name": "previous",
+      "originalFilename": "1f761.svg",
+      "originalSymbol": "imgFrame18",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/1f761.svg",
+      "sha256": "85c1e56019dd75147fa0eacc59671c9e1ec78f45d35cd3b406d6fa16d1d11119",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/previous.svg",
+      "proposedQrcURL": "qrc:/redesign/previous.svg"
+    },
+    {
+      "name": "next",
+      "originalFilename": "617e8.svg",
+      "originalSymbol": "imgFrame17",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/617e8.svg",
+      "sha256": "a4c9fc6995c57b2bd58ec7742231f76cac51bc0224a0141d97b095122719789a",
+      "rootDimensions": [
+        "24",
+        "24"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/next.svg",
+      "proposedQrcURL": "qrc:/redesign/next.svg"
+    },
+    {
+      "name": "volume-background",
+      "originalFilename": "07eaa.svg",
+      "originalSymbol": "imgRectangle6",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/07eaa.svg",
+      "sha256": "66ddd1f28b5719d24eb727be8e4374bd4df01bc55c5147b4418d50c2a7555cf8",
+      "rootDimensions": [
+        "89",
+        "27.3633"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-background.svg",
+      "proposedQrcURL": "qrc:/redesign/volume-background.svg"
+    },
+    {
+      "name": "volume-mask",
+      "originalFilename": "f1da4.svg",
+      "originalSymbol": "imgRectangle7",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/f1da4.svg",
+      "sha256": "fd5d59a978656dbe48261e830eff0a33d32d87306174d70414fb9ab300300eaa",
+      "rootDimensions": [
+        "33",
+        "30"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-mask.svg",
+      "proposedQrcURL": "qrc:/redesign/volume-mask.svg"
+    },
+    {
+      "name": "volume-fill",
+      "originalFilename": "2be1c.svg",
+      "originalSymbol": "imgRectangle8",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/2be1c.svg",
+      "sha256": "c10db43b935701e6b37762a4af99367703e137cb5e92d90b9301298f4b8c756e",
+      "rootDimensions": [
+        "86",
+        "24.56"
+      ],
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-fill.svg",
+      "proposedQrcURL": "qrc:/redesign/volume-fill.svg"
+    }
+  ],
+  "font": {
+    "officialProject": "https://rsms.me/inter/",
+    "repository": "https://github.com/rsms/inter",
+    "commit": "353b61b9f4430d5f420d56605a6e7993e0941470",
+    "license": "SIL Open Font License 1.1",
+    "files": {
+      "InterVariable.ttf": {
+        "url": "https://raw.githubusercontent.com/rsms/inter/353b61b9f4430d5f420d56605a6e7993e0941470/docs/font-files/InterVariable.ttf",
+        "bytes": 879708,
+        "sha256": "4989b125924991b90d05b2d16e0e388c48f7d5bb8b30539bbf9c755278d0ccaf",
+        "status": 200
+      },
+      "LICENSE.txt": {
+        "url": "https://raw.githubusercontent.com/rsms/inter/353b61b9f4430d5f420d56605a6e7993e0941470/LICENSE.txt",
+        "status": 200,
+        "bytes": 4380,
+        "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+      }
+    }
+  }
+}

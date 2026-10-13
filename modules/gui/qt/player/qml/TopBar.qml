@@ -61,7 +61,7 @@ FocusScope{
 
     property bool _showTopBar: (pinControls === false || showToolbar === false)
 
-    property bool _showCenterText: (pinControls && showToolbar === false && showCSD)
+    property bool _showCenterText: showToolbar === false
 
     readonly property int _sideMargin: VLCStyle.margin_small + sideMargin
 
@@ -137,17 +137,19 @@ FocusScope{
             //place everything on one line
             //csdDecorations.implicitHeight gets overwritten when the height is set,
             //VLCStyle.icon_normal is its initial value
-            const lineHeight = Math.max(logoOrResume.implicitHeight, playlistGroup.implicitHeight, VLCStyle.icon_normal)
+            const lineHeight = Math.max(VLCStyle.redesign.topbarHeight, logoOrResume.implicitHeight, playlistGroup.implicitHeight)
 
-            centerTitleText.y = 0
+            centerTitleText.y = topMargin
             centerTitleText.height = lineHeight
 
             csdDecorations.height  = lineHeight
+            csdDecorations.anchors.topMargin = topMargin
 
-            logoOrResume.height =  lineHeight
+            logoOrResume.height = lineHeight
+            logoOrResume.anchors.topMargin = topMargin
 
             playlistGroup.height = lineHeight
-            playlistGroup.anchors.topMargin = 0
+            playlistGroup.anchors.topMargin = topMargin
             playlistGroup.extraRightMargin = Qt.binding(function() { return width - csdDecorations.x })
 
 
@@ -200,6 +202,12 @@ FocusScope{
     }
 
     // Children
+
+    Rectangle {
+        anchors.fill: parent
+        z: -0.5
+        color: VLCStyle.redesign.color(VLCStyle.redesign.playerTopbarBackground, theme.bg.primary, (theme.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+    }
 
     //drag and dbl click the titlebar in CSD mode
     Loader {
@@ -269,17 +277,22 @@ FocusScope{
 
             visible: (root._showTopBar && root.resumeVisible === false)
 
-            implicitHeight: VLCStyle.icon_banner + VLCStyle.margin_xxsmall * 2
+            implicitHeight: VLCStyle.redesign.topbarHeight
             implicitWidth: backBtn.implicitWidth + logo.implicitWidth + VLCStyle.margin_xxsmall
 
             Widgets.IconToolButton {
                 id: backBtn
+                color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
+                                               colorContext.fg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+                backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
+                                                         colorContext.bg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+                radius: VLCStyle.redesign.controlRadius
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
 
                 objectName: "IconToolButton"
-                font.pixelSize: VLCStyle.icon_banner
+                font.pixelSize: VLCStyle.redesign.iconSize
                 text: VLCIcons.back
                 description: qsTr("Back")
 
@@ -296,12 +309,13 @@ FocusScope{
 
             Widgets.BannerCone {
                 id: logo
+                source: "qrc:///redesign/logo.svg"
 
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: backBtn.right
                 anchors.leftMargin: VLCStyle.margin_xxsmall
 
-                color: theme.accent
+                color: VLCStyle.redesign.logoColor
             }
         }
 
@@ -332,70 +346,30 @@ FocusScope{
         }
     }
 
-    //FIXME use the the right class
-    T.Label {
+    Title {
         id: centerTitleText
-
-        readonly property int _leftLimit: logoOrResume.x + logoOrResume.width
-        readonly property int _rightLimit: playlistGroup.x
-        readonly property int _availableWidth: _rightLimit - _leftLimit
-        readonly property int _centerX: ((root.width - centerTitleText.implicitWidth) / 2)
-        readonly property bool _alignHCenter: _centerX > _leftLimit
-                                              && _centerX + centerTitleText.implicitWidth < _rightLimit
-
-        visible: (_showCenterText && root.resumeVisible === false)
-
+        centerWithinBounds: true
+        leftLimit: logoOrResume.x + logoOrResume.width
+        rightLimit: playlistGroup.x
+        visible: root._showCenterText && !root.resumeVisible
         enabled: visible
-
-        width: Math.min(centerTitleText._availableWidth, centerTitleText.implicitWidth)
-
-        leftPadding: VLCStyle.margin_small
-        rightPadding: VLCStyle.margin_small
-
-        text: root.title
-        color: theme.fg.primary
-        font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
-        font.weight: Font.DemiBold
-        elide: Text.ElideRight
-        verticalAlignment: Text.AlignVCenter
-
-        on_AlignHCenterChanged: _layout()
-        Component.onCompleted: _layout()
-
-        function _layout() {
-            if (_alignHCenter) {
-                centerTitleText.x = 0
-                centerTitleText.anchors.horizontalCenter = root.horizontalCenter
-            } else {
-                centerTitleText.anchors.horizontalCenter = undefined
-                centerTitleText.x = Qt.binding(function() { return centerTitleText._leftLimit })
-            }
-        }
+        text: qsTr("VLC Media Player")
+        Accessible.name: root.title || text
+        colorContext.palette: theme.palette
     }
 
-    //FIXME use the the right class
-    T.Label {
+    Title {
         id: leftTitleText
-
         anchors.left: parent.left
         anchors.top: logoOrResume.bottom
         anchors.leftMargin: root._sideMargin
-
         width: root.textWidth - VLCStyle.margin_normal
-
-        visible: !root.pinControls
-
+        visible: !root.pinControls && !root._showCenterText
         enabled: visible
-
         topPadding: VLCStyle.margin_large
         leftPadding: logo.x
-
         text: root.title
-        horizontalAlignment: Text.AlignLeft
-        color: theme.fg.primary
-        font.weight: Font.DemiBold
-        font.pixelSize: VLCStyle.dp(18, VLCStyle.scale)
-        elide: Text.ElideRight
+        colorContext.palette: theme.palette
     }
 
     Loader {
@@ -436,12 +410,22 @@ FocusScope{
 
         Widgets.IconToolButton {
             id: menuSelector
+            color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
+                                           colorContext.fg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+            backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
+                                                     colorContext.bg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+            radius: VLCStyle.redesign.controlRadius
+            contentItem: Image {
+                source: "qrc:///redesign/menu.svg"
+                sourceSize: Qt.size(VLCStyle.redesign.iconSize, VLCStyle.redesign.iconSize)
+                fillMode: Image.PreserveAspectFit
+            }
 
             anchors.verticalCenter: parent.verticalCenter
             visible: !root.showToolbar
             enabled: visible
             focus: visible
-            font.pixelSize: VLCStyle.icon_banner
+            font.pixelSize: VLCStyle.redesign.iconSize
 
             width: VLCStyle.bannerButton_width
             height: VLCStyle.bannerButton_height
@@ -481,10 +465,15 @@ FocusScope{
 
         PlaylistPane.PlaylistToggleButton {
             id: playlistButton
+            color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
+                                           colorContext.fg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+            backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
+                                                     colorContext.bg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
+            radius: VLCStyle.redesign.controlRadius
 
             anchors.verticalCenter: parent.verticalCenter
             objectName: ControlListModel.PLAYLIST_BUTTON
-            font.pixelSize: VLCStyle.icon_banner
+            font.pixelSize: VLCStyle.redesign.iconSize
             text: VLCIcons.playlist
             description: qsTr("Play Queue")
 

@@ -36,6 +36,13 @@ FocusScope {
 
     property int identifier: -1
 
+    // A default profile with an empty center leaves room for the timeline.
+    readonly property Item inlineContentHost: (width >= VLCStyle.dp(950, VLCStyle.scale))
+                                             ? (loaderLeftRight.item?.inlineContentHost ?? null) : null
+    property Item inlineFocusItem: null
+    readonly property Item inlineLeftItem: loaderLeftRight.item?.lastLeftControl ?? null
+    readonly property Item inlineRightItem: loaderLeftRight.item?.firstRightControl ?? null
+
     readonly property PlayerControlbarModel model: {
         if (!!MainCtx.controlbarProfileModel.currentModel)
             return MainCtx.controlbarProfileModel.currentModel.getModel(identifier)
@@ -82,6 +89,10 @@ FocusScope {
         focus: active
 
         sourceComponent: RowLayout {
+            property alias inlineContentHost: inlineContentHost
+            readonly property Item lastLeftControl: leftRepeater.itemAt(leftRepeater.count - 1)
+            readonly property Item firstRightControl: rightRepeater.itemAt(0)
+
             spacing: playerControlLayout.spacing
 
             focus: true
@@ -100,6 +111,10 @@ FocusScope {
 
                 Navigation.parentItem: playerControlLayout
                 Navigation.rightAction: function() {
+                    if (playerControlLayout.inlineContentHost && playerControlLayout.inlineFocusItem) {
+                        playerControlLayout.inlineFocusItem.forceActiveFocus(Qt.TabFocusReason)
+                        return true
+                    }
                     const item = rightRepeater.itemAt(0)
                     if (item)
                         item.forceActiveFocus(Qt.TabFocusReason)
@@ -118,6 +133,8 @@ FocusScope {
             }
 
             Item {
+                id: inlineContentHost
+
                 function containsVisibleItem(repeater) {
                     for (let i = 0; i < repeater.count; ++i) {
                         const item = repeater.itemAt(i)
@@ -133,6 +150,7 @@ FocusScope {
                                                                                                                : 0
 
                 Layout.fillWidth: true
+                Layout.fillHeight: true
                 visible: true
             }
 
@@ -147,6 +165,10 @@ FocusScope {
 
                 Navigation.parentItem: playerControlLayout
                 Navigation.leftAction: function() {
+                    if (playerControlLayout.inlineContentHost && playerControlLayout.inlineFocusItem) {
+                        playerControlLayout.inlineFocusItem.forceActiveFocus(Qt.BacktabFocusReason)
+                        return true
+                    }
                     const item = leftRepeater.itemAt(leftRepeater.count - 1)
                     if (item)
                         item.forceActiveFocus(Qt.BacktabFocusReason)

@@ -98,7 +98,7 @@ T.Pane {
             id: volControl
 
             // FIXME: use VLCStyle
-            implicitWidth: VLCStyle.dp(100, VLCStyle.scale)
+            implicitWidth: VLCStyle.redesign.volumeWidth
 
             // WARNING: Directly setting the insets break handle and background positioning.
             Binding on topInset {
@@ -126,6 +126,43 @@ T.Pane {
             property bool filterEvents: false
 
             color: root.sliderColor
+
+            handleWidth: 0
+            background: Item {
+                implicitWidth: VLCStyle.redesign.volumeWidth
+                implicitHeight: VLCStyle.redesign.volumeHeight
+                width: volControl.availableWidth
+                height: volControl.availableHeight
+
+                Image {
+                    anchors.centerIn: parent
+                    source: "qrc:/redesign/volume-background.svg"
+                    width: VLCStyle.dp(89, VLCStyle.scale)
+                    height: VLCStyle.dp(27.3633, VLCStyle.scale)
+                }
+
+                Item {
+                    x: VLCStyle.dp(1.5, VLCStyle.scale)
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: VLCStyle.dp(86, VLCStyle.scale) * volControl.position
+                    height: VLCStyle.dp(24.56, VLCStyle.scale)
+                    clip: true
+
+                    Image {
+                        source: "qrc:/redesign/volume-fill.svg"
+                        width: VLCStyle.dp(86, VLCStyle.scale)
+                        height: VLCStyle.dp(24.56, VLCStyle.scale)
+                    }
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    color: "transparent"
+                    radius: VLCStyle.redesign.controlRadius
+                    border.width: volControl.visualFocus ? VLCStyle.dp(1, VLCStyle.scale) : 0
+                    border.color: volControl.colorContext.visualFocus
+                }
+            }
 
             from: 0
             to: root._maxvolpos

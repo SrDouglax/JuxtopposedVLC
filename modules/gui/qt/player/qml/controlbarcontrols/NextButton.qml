@@ -31,5 +31,13 @@ Widgets.IconToolButton {
     onClicked: MainPlaylistController.next()
     description: qsTr("Next")
 
+    contentItem: Image {
+        source: "qrc:/redesign/next.svg"
+        implicitWidth: VLCStyle.redesign.iconSize
+        implicitHeight: VLCStyle.redesign.iconSize
+        fillMode: Image.PreserveAspectFit
+        opacity: parent.enabled ? 1 : 0.4
+    }
+
     AccessibleCompat.id: "nextButton"
 }

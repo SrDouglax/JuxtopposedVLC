@@ -104,29 +104,7 @@ FocusScope {
             MainCtx.sendHotkey(event.key, event.modifiers);
     }
 
-    readonly property var pageModel: [
-        {
-            name: "home",
-            url: MainCtx.mediaLibraryAvailable ?
-                 "qrc:///qt/qml/VLC/MediaLibrary/HomeDisplay.qml" :
-                 "qrc:///qt/qml/VLC/MainInterface/NoMedialibHome.qml"
-        }, {
-            name: "video",
-            url: "qrc:///qt/qml/VLC/MediaLibrary/VideoDisplay.qml"
-        }, {
-            name: "music",
-            url: "qrc:///qt/qml/VLC/MediaLibrary/MusicDisplay.qml"
-        }, {
-            name: "network",
-            url: "qrc:///qt/qml/VLC/Network/BrowseDisplay.qml"
-        }, {
-            name: "discover",
-            url: "qrc:///qt/qml/VLC/Network/DiscoverDisplay.qml"
-        }, {
-            name: "mlsettings",
-            url: "qrc:///qt/qml/VLC/MediaLibrary/MLFoldersSettings.qml"
-        }
-    ]
+    readonly property var pageModel: sidebar.pageModel
 
     PinchHandler {
         id: interfaceScalePinchHandler
@@ -316,7 +294,7 @@ FocusScope {
             implicitWidth: stackView.implicitWidth
             implicitHeight: stackView.implicitHeight
 
-            color: theme.bg.primary
+            color: VLCStyle.redesign.color(VLCStyle.redesign.windowBackground, theme.bg.primary)
 
             layer.enabled: MainCtx.backdropBlurRequested() &&
                            (GraphicsInfo.shaderType === GraphicsInfo.RhiShader) &&
@@ -454,7 +432,7 @@ FocusScope {
 
                 // Prevent animating x on collapse with overlayed side navigation bar:
                 Binding on anchors.leftMargin {
-                    when: (VLCStyle.isScreenSmall && sidebar.state === "" && sidebarTransition.running)
+                    when: (VLCStyle.isScreenSmall && sidebar.state === "" && sidebar.transitioning)
                     value: 0.0
                 }
 
@@ -523,168 +501,15 @@ FocusScope {
             }
         }
 
-        Rectangle {
-            id: smallScreenOverlay
-
-            // overlay for smallscreens
-            z: 2
-
-            anchors.top: parent.top
-            anchors.left: parent.left
-            anchors.right: parent.right
-
-            height: parent.height - g_mainDisplay.displayMargin
-
-            visible: VLCStyle.isScreenSmall && (playlistLoader.shown || (sidebar.visible && (sidebar.state === "expanded")))
-            color: "black"
-            opacity: 0.4
-
-            MouseArea {
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked:  pannelVisiblity.hideVisiblePanels()
-
-                // Capture WheelEvents before they reach stackView
-                onWheel: (wheel) => {
-                    wheel.accepted = true
-                }
-            }
-        }
-
-        SideNavigationPane {
+        Sidebar {
             id: sidebar
-
-            z: 3
-
-            anchors {
-                top : parent.top
-                left: parent.left
-            }
-
-            width: VLCStyle.isScreenReallySmall ? 0.0 : collapsedWidth
-
-            property real collapsedWidth: VLCStyle.icon_normal + VLCStyle.margin_small + VLCStyle.margin_xsmall + VLCStyle.applicationHorizontalMargin
-
-            delegateShowText: (state === "expanded")
-
-            visible: (width > 0.0)
-
-            height: parent.height - g_mainDisplay.displayMargin
-
-            property int maximumWidth: Math.max(minimumWidth, (g_mainDisplay.width + sidebarResizeHandle.width) / 3)
-
-            topPadding: 0
-            leftPadding: 0
-            rightPadding: sidebarResizeHandle.visible ? sidebarResizeHandle.visualBorder.width : 0.0
-            bottomPadding: VLCStyle.applicationVerticalMargin + VLCStyle.margin_small
-
-            safeAreaLeftMargin: VLCStyle.applicationHorizontalMargin
-
-            useAcrylic: (VLCStyle.isScreenSmall ? (sidebar.state === "") : true) // See `694d51a7` for the reasoning.
-
-            NavigationBarContextMenu {
-                id: navigationBarContextMenu
-
-                ctx: MainCtx
-
-                model: sidebar.model
-
-                onPageRequested: (uri) => {
-                    if (stackView.isDefaulLoadedForPath([...uri]) ||
-                        History.exactMatch(History.viewPath, uri)) {
-                        stackView.positionContentAtBeginning()
-                        return
-                    }
-
-                    History.push(uri)
-                }
-            }
-
-            onItemClicked: (modelUri, item) => {
-                console.assert(modelUri)
-
-                console.assert(item)
-                if ((sidebar.state !== 'expanded') && item.expandable) {
-                    // TODO: Investigate opening the menu on hover, if
-                    //       we switch to `Popup.Item` type of menus.
-                    const mappedPos = item.mapToGlobal(item.width, 0)
-                    navigationBarContextMenu.popup(item.index, mappedPos, !item.hovered)
-
-                    return
-                }
-
-                if (stackView.isDefaulLoadedForPath([...modelUri]) ||
-                    !!modelUri.length && History.exactMatch(History.viewPath, modelUri)) {
-                    stackView.positionContentAtBeginning()
-                    return
-                }
-
-                History.push(modelUri)
-            }
-
-            implicitWidth: Math.round(Helpers.clamp(MainCtx.navigationPanel.width, minimumWidth, maximumWidth))
-
-            Navigation.parentItem: g_mainDisplay
-            Navigation.upItem: localTopbar
-            Navigation.downItem: loaderUpdatePane
-            Navigation.rightItem: stackView.currentItem
-
-            state: pannelVisiblity.showNavigation ? "expanded" : ""
-
-            onVisibleChanged: {
-                if (!visible) {
-                    stackView.focus = true
-                }
-            }
-
-            Component.onCompleted: {
-                Qt.callLater(() => { sidebarTransition.enabled = true; })
-            }
-
-            states: State {
-                name: "expanded"
-                PropertyChanges {
-                    target: sidebar
-                    width: sidebar.implicitWidth
-                }
-            }
-
-            transitions: Transition {
-                id: sidebarTransition
-                enabled: false
-
-                from: ""; to: "expanded";
-                reversible: true
-
-                NumberAnimation {
-                    property: "width"
-                    duration: VLCStyle.duration_short
-                    easing.type: Easing.InOutSine
-                }
-            }
-
-            PaneResizeHandle {
-                id: sidebarResizeHandle
-
-                parent: sidebar
-                target: sidebar
-
-                panelObject: MainCtx.navigationPanel
-                atRight: true
-
-                resizeHandle.visible: (sidebar.state === "expanded") && !VLCStyle.isScreenSmall
-                visualBorder.visible: !topLeftCornerBackground.visible
-
-                minimumWidth: sidebar.minimumWidth
-                maximumWidth: sidebar.maximumWidth
-
-                anchors {
-                    top: parent.top
-                    bottom: parent.bottom
-                    right: parent.right
-                }
-
-            }
+            mainDisplay: g_mainDisplay
+            view: stackView
+            toolbar: localTopbar
+            updatePane: loaderUpdatePane
+            panels: pannelVisiblity
+            playqueueShown: playlistLoader.shown
+            roundedCornerVisible: topLeftCornerBackground.visible
         }
 
         Loader {
@@ -1078,77 +903,6 @@ FocusScope {
                 MainCtx.playerView = true
             } else {
                 _showMiniPlayer = false;
-            }
-        }
-    }
-
-    component PaneResizeHandle: Item {
-        id: paneResizeHandle
-        required property Item target
-        required property QtObject panelObject
-        property alias atRight: resizeHandle.atRight
-
-        property alias visualBorder: visualBorder
-        property alias resizeHandle: resizeHandle
-
-        property alias minimumWidth: resizeHandle.minimumWidth
-        property alias maximumWidth: resizeHandle.maximumWidth
-
-        implicitWidth: resizeHandle.width
-
-        Rectangle {
-            id: visualBorder
-
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-                left: resizeHandle.atRight ? undefined : parent.left
-                right: resizeHandle.atRight ? parent.right: undefined
-            }
-
-            width: VLCStyle.border
-            color: theme.separator
-        }
-
-        Widgets.HorizontalResizeHandle {
-            id: resizeHandle
-
-            property bool _inhibitMainInterfaceUpdate: false
-
-            anchors {
-                top: parent.top
-                bottom: parent.bottom
-                left: resizeHandle.atRight ? undefined : parent.left
-                right: resizeHandle.atRight ? parent.right: undefined
-            }
-
-            atRight: false
-            currentWidth: target.width
-
-            visible: !VLCStyle.isScreenSmall
-
-            onRequestedWidthChanged: {
-                if (!_inhibitMainInterfaceUpdate)
-                    paneResizeHandle.panelObject.width = requestedWidth
-            }
-
-            Component.onCompleted:  _updateFromMainInterface()
-
-            function _updateFromMainInterface() {
-                if (requestedWidth === paneResizeHandle.panelObject.width)
-                    return
-
-                _inhibitMainInterfaceUpdate = true
-                requestedWidth = paneResizeHandle.panelObject.width
-                _inhibitMainInterfaceUpdate = false
-            }
-
-            Connections {
-                target: paneResizeHandle.panelObject
-
-                function onWidthChanged() {
-                    resizeHandle._updateFromMainInterface()
-                }
             }
         }
     }

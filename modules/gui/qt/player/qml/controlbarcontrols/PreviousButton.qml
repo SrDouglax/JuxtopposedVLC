@@ -31,5 +31,13 @@ Widgets.IconToolButton {
     onClicked: MainPlaylistController.prev()
     description: qsTr("Previous")
 
+    contentItem: Image {
+        source: "qrc:/redesign/previous.svg"
+        implicitWidth: VLCStyle.redesign.iconSize
+        implicitHeight: VLCStyle.redesign.iconSize
+        fillMode: Image.PreserveAspectFit
+        opacity: parent.enabled ? 1 : 0.4
+    }
+
     AccessibleCompat.id: "previousButton"
 }

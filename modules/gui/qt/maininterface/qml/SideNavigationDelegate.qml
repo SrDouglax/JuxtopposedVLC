@@ -33,9 +33,19 @@ T.ItemDelegate {
 
     property string iconTxt: ""
 
+    readonly property url imageSource: {
+        const icons = {}
+        icons[VLCIcons.home] = "home"
+        icons[VLCIcons.topbar_video] = "video"
+        icons[VLCIcons.topbar_music] = "music"
+        icons[VLCIcons.topbar_network] = "network"
+        icons[VLCIcons.settings] = "settings"
+        return icons[iconTxt] ? "qrc:///redesign/" + icons[iconTxt] + ".svg" : ""
+    }
+
     property bool showText: true
 
-    property real radius: VLCStyle.button_radius
+    property real radius: VLCStyle.redesign.controlRadius
 
     // Settings
 
@@ -99,8 +109,10 @@ T.ItemDelegate {
 
     background: Widgets.AnimatedBackground {
         enabled: theme.initialized
-        color: theme.bg.primary
-        border.color: visualFocus ? theme.visualFocus : "transparent"
+        color: VLCStyle.redesign.color(control.down || control.checked ? VLCStyle.redesign.selectionBackground
+                                                                       : control.hovered ? VLCStyle.redesign.controlHoverBackground
+                                                                                         : "transparent", theme.bg.primary)
+        border.color: visualFocus ? VLCStyle.redesign.color(VLCStyle.redesign.focusColor, theme.visualFocus) : "transparent"
 
         radius: control.radius
 
@@ -111,7 +123,7 @@ T.ItemDelegate {
                 verticalCenter: parent.verticalCenter
             }
             implicitHeight: parent.height / 2
-            visible: control.checked
+            visible: control.checked && !VLCStyle.palette.isDark
 
             radius: control.radius / 2
         }
@@ -121,13 +133,25 @@ T.ItemDelegate {
         spacing: VLCStyle.margin_xsmall
 
         Item {
-            Layout.preferredWidth: VLCStyle.icon_banner
+            Layout.preferredWidth: VLCStyle.dp(30, VLCStyle.scale)
             Layout.fillHeight: true
+
+            Image {
+                id: referenceIcon
+                anchors.centerIn: parent
+                width: VLCStyle.redesign.iconSize
+                height: width
+                sourceSize: Qt.size(width, height)
+                source: control.imageSource
+                visible: VLCStyle.palette.isDark && source.toString().length > 0 && status === Image.Ready
+                opacity: control.enabled ? 1.0 : 0.4
+                fillMode: Image.PreserveAspectFit
+            }
 
             Widgets.IconLabel {
                 id: iconLabel
 
-                visible: text.length > 0
+                visible: text.length > 0 && !referenceIcon.visible
 
                 anchors.centerIn: parent
 
@@ -136,9 +160,12 @@ T.ItemDelegate {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
-                color: (control.highlighted || control.checked) ? theme.accent : theme.fg.primary
+                color: VLCStyle.redesign.color(!control.enabled ? VLCStyle.redesign.textDisabled
+                                                               : control.checked ? VLCStyle.redesign.accent
+                                                                                 : VLCStyle.redesign.textMuted,
+                                             (control.highlighted || control.checked) ? theme.accent : theme.fg.primary)
 
-                font.pixelSize: VLCStyle.icon_banner
+                font.pixelSize: VLCStyle.redesign.iconSize
             }
         }
 
@@ -152,15 +179,19 @@ T.ItemDelegate {
 
             verticalAlignment: Text.AlignVCenter
 
-            color: control.checked ? theme.fg.secondary : theme.fg.primary
+            color: VLCStyle.redesign.color(!control.enabled ? VLCStyle.redesign.textDisabled
+                                                           : control.checked ? VLCStyle.redesign.textPrimary
+                                                                             : VLCStyle.redesign.textMuted,
+                                           control.checked ? theme.fg.secondary : theme.fg.primary)
 
             elide: Text.ElideRight
 
             visible: control.showText
 
-            font.pixelSize: VLCStyle.fontSize_normal
+            font.family: VLCStyle.redesign.fontFamily
+            font.pixelSize: VLCStyle.redesign.fontNormal
 
-            font.weight: control.checked ? Font.DemiBold : Font.Normal
+            font.weight: Font.Normal
 
             //button text is already exposed
             Accessible.ignored: true

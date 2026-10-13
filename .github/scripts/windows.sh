@@ -59,12 +59,25 @@ export JOBS VLC_PREBUILT_CONTRIBS_URL="$contrib_url"
 } > "$M0_OUTPUT/build-environment.txt"
 
 # Autotools, full Qt GUI, portable package; no release installer or LTO.
+# C plugins need the GCC runtime at final link too. The upstream CXXFLAGS
+# already select static libgcc, but C link commands otherwise import a DLL
+# that the restricted Windows plugin loader cannot search in the package.
+export LDFLAGS="${LDFLAGS:-} -static-libgcc"
 sh "$generated" -a x86_64 -p -x -o "$M0_OUTPUT/windows"
 test -s "$M0_OUTPUT/windows/vlc.exe"
 test -s "$M0_OUTPUT/windows/libvlc.dll"
 test -s "$M0_OUTPUT/windows/libvlccore.dll"
 test -s "$M0_OUTPUT/windows/plugins/gui/libqt_plugin.dll"
 test -s "$M0_OUTPUT/windows/plugins/codec/libavcodec_plugin.dll"
+for plugin in access/libaccess_srt_plugin.dll access_output/libaccess_output_srt_plugin.dll \
+    codec/libx265_plugin.dll demux/libgme_plugin.dll; do
+    imports=$(x86_64-w64-mingw32-objdump -p "$M0_OUTPUT/windows/plugins/$plugin")
+    printf 'IMPORTS %s\n%s\n' "$plugin" "$imports" >> "$M0_OUTPUT/plugin-imports.txt"
+    if printf '%s\n' "$imports" | grep -qi 'DLL Name: libgcc_s'; then
+        echo "Dynamic GCC runtime remains in $plugin" >&2
+        exit 1
+    fi
+done
 file "$M0_OUTPUT/windows/vlc.exe" | tee "$M0_OUTPUT/executable.txt"
 file "$M0_OUTPUT/windows/vlc.exe" | grep -q 'PE32+.*x86-64'
 find "$M0_OUTPUT/windows" -type f -name '*.dll' -printf '%P\n' | sort > "$M0_OUTPUT/plugins.txt"

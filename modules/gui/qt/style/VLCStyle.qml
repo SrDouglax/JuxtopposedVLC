@@ -26,6 +26,60 @@ QtObject {
 
     readonly property real scale: MainCtx.intfScaleFactor
 
+    // Dark reference: Player 187:328 and library shell 970:2703.
+    // Light keeps the existing palette until its design context is available.
+    readonly property QtObject redesign: QtObject {
+        readonly property FontLoader regularFont: FontLoader {
+            source: "qrc:///fonts/InterVariable.ttf"
+        }
+        readonly property string fontFamily: regularFont.name
+        readonly property color logoColor: "#D37918"
+        readonly property color accent: "#D37918"
+        readonly property color accentDim: "#AB6314"
+        readonly property color accentBackground: "#371F06"
+        readonly property color windowBackground: "#0E0E0E"
+        readonly property color sidebarBackground: "#191919"
+        readonly property color controlBackground: "#191919"
+        readonly property color playerControlBackground: "#1B1B1B"
+        readonly property color playerTopbarBackground: "#1B1B1B"
+        readonly property color controlHoverBackground: "#222222"
+        readonly property color selectionBackground: "#371F06"
+        readonly property color textPrimary: "#EAEAEA"
+        readonly property color textSecondary: "#969696"
+        readonly property color textMuted: "#8F8F8F"
+        readonly property color textDisabled: "#404040"
+        readonly property color separator: "#222222"
+        readonly property color border: "#373737"
+        readonly property color focusColor: "#D37918"
+        readonly property int topbarHeight: MainCtx.dp(40, vlc_style.scale)
+        readonly property int sidebarWidth: MainCtx.dp(217, vlc_style.scale)
+        readonly property int navigationRowHeight: MainCtx.dp(46, vlc_style.scale)
+        readonly property int iconSize: MainCtx.dp(24, vlc_style.scale)
+        readonly property int controlRadius: MainCtx.dp(6, vlc_style.scale)
+        readonly property int fontSmall: MainCtx.dp(12, vlc_style.scale)
+        readonly property int fontNormal: MainCtx.dp(14, vlc_style.scale)
+        readonly property int fontMedium: MainCtx.dp(15, vlc_style.scale)
+        readonly property int fontControl: fontMedium
+        readonly property int controlHeight: MainCtx.dp(54, vlc_style.scale)
+        readonly property int controlPadding: MainCtx.dp(20, vlc_style.scale)
+        readonly property int controlSpacing: MainCtx.dp(20, vlc_style.scale)
+        readonly property int controlInnerSpacing: MainCtx.dp(8, vlc_style.scale)
+        readonly property int playWidth: MainCtx.dp(54, vlc_style.scale)
+        readonly property int playHeight: MainCtx.dp(28, vlc_style.scale)
+        readonly property int seekHeight: MainCtx.dp(28, vlc_style.scale)
+        readonly property int seekHandleWidth: MainCtx.dp(8, vlc_style.scale)
+        readonly property int seekInset: MainCtx.dp(2, vlc_style.scale)
+        readonly property color seekBackground: "#090909"
+        readonly property color seekFill: accentBackground
+        readonly property int volumeWidth: MainCtx.dp(88, vlc_style.scale)
+        readonly property int volumeHeight: MainCtx.dp(28, vlc_style.scale)
+        readonly property int timeWidth: MainCtx.dp(76, vlc_style.scale)
+
+        function color(darkValue, fallback, isDark = vlc_style.palette.isDark) {
+            return isDark ? darkValue : fallback
+        }
+    }
+
     readonly property FontMetrics fontMetrics_xxsmall  : FontMetrics { font.pixelSize: MainCtx.dp(6, scale);  }
     readonly property FontMetrics fontMetrics_xsmall   : FontMetrics { font.pixelSize: MainCtx.dp(8, scale);  }
     readonly property FontMetrics fontMetrics_small    : FontMetrics { font.pixelSize: MainCtx.dp(10, scale); }
@@ -148,8 +202,8 @@ QtObject {
     readonly property int defaultWidthPlaylist: MainCtx.dp(300, scale);
     readonly property int closedWidthPlaylist: MainCtx.dp(20, scale);
 
-    readonly property int expandNavigationPaneWidth: MainCtx.dp(160, scale);
-    readonly property int buttonHeightNavigationPane: MainCtx.dp(35, scale);
+    readonly property int expandNavigationPaneWidth: redesign.sidebarWidth;
+    readonly property int buttonHeightNavigationPane: redesign.navigationRowHeight;
 
     readonly property int widthSearchInput: MainCtx.dp(200, scale);
     readonly property int widthSortBox: MainCtx.dp(150, scale);

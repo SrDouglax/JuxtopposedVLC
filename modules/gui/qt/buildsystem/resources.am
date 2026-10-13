@@ -1,0 +1,260 @@
+libqt_plugin_la_RES = \
+	pixmaps/redesign/logo.svg \
+	pixmaps/redesign/home.svg \
+	pixmaps/redesign/video.svg \
+	pixmaps/redesign/music.svg \
+	pixmaps/redesign/network.svg \
+	pixmaps/redesign/settings.svg \
+	pixmaps/redesign/menu.svg \
+	pixmaps/redesign/sidebar.svg \
+	pixmaps/redesign/minimize.svg \
+	pixmaps/redesign/maximize.svg \
+	pixmaps/redesign/fullscreen.svg \
+	pixmaps/redesign/close.svg \
+	pixmaps/fonts/InterVariable.ttf \
+	pixmaps/redesign/play.svg \
+	pixmaps/redesign/previous.svg \
+	pixmaps/redesign/next.svg \
+	pixmaps/redesign/volume-background.svg \
+	pixmaps/redesign/volume-fill.svg \
+	pixmaps/redesign/volume-mask.svg \
+	pixmaps/VLCIcons.ttf \
+	pixmaps/addons/addon_default.svg \
+	pixmaps/addons/addon_broken.svg \
+	pixmaps/addons/addon_blue.svg \
+	pixmaps/addons/addon_cyan.svg \
+	pixmaps/addons/addon_green.svg \
+	pixmaps/addons/addon_magenta.svg \
+	pixmaps/addons/addon_red.svg \
+	pixmaps/addons/addon_yellow.svg \
+	pixmaps/addons/addon_score.svg \
+	pixmaps/icons/active_indicator.svg \
+	pixmaps/icons/add.svg \
+	pixmaps/icons/ic_album_cover.svg \
+	pixmaps/icons/ic_aspect_ratio.svg \
+	pixmaps/icons/atob.svg \
+	pixmaps/icons/ic_audiosub.svg \
+	pixmaps/icons/back.svg \
+	pixmaps/icons/ic_fluent_bookmark.svg \
+	pixmaps/icons/breadcrumb_prev.svg \
+	pixmaps/icons/breadcrumb_sep.svg \
+	pixmaps/icons/check.svg \
+	pixmaps/icons/clear.svg \
+	pixmaps/icons/close.svg \
+	pixmaps/icons/ic_fluent_full_screen_minimize.svg \
+	pixmaps/icons/del.svg \
+	pixmaps/icons/download.svg \
+	pixmaps/icons/dropzone.svg \
+	pixmaps/icons/dvd_menu.svg \
+	pixmaps/icons/dvd_next.svg \
+	pixmaps/icons/dvd_prev.svg \
+	pixmaps/icons/ic_fluent_arrow_eject.svg \
+	pixmaps/icons/ellipsis.svg \
+	pixmaps/icons/ic_playlist_add.svg \
+	pixmaps/icons/expand_inverted.svg \
+	pixmaps/icons/expand.svg \
+	pixmaps/icons/ic_fluent_options.svg \
+	pixmaps/icons/ic_fluent_fast_forward.svg \
+	pixmaps/icons/ic_fluent_next_frame.svg \
+	pixmaps/icons/ic_fluent_previous_frame.svg \
+	pixmaps/icons/ic_fluent_full_screen_maximize.svg \
+	pixmaps/icons/ic_fluent_grid.svg \
+	pixmaps/icons/history.svg \
+	pixmaps/icons/ic_fluent_home.svg \
+	pixmaps/icons/ic_fluent_info.svg \
+	pixmaps/icons/ic_fluent_apps_list.svg \
+	pixmaps/icons/ic_fluent_more_vertical.svg \
+	pixmaps/icons/multiselect.svg \
+	pixmaps/icons/ok.svg \
+	pixmaps/icons/ic_fluent_next.svg \
+	pixmaps/icons/ic_pause_filled.svg \
+	pixmaps/icons/pip.svg \
+	pixmaps/icons/ic_playlist_clear.svg \
+	pixmaps/icons/ic_playlist.svg \
+	pixmaps/icons/ic_fluent_play.svg \
+	pixmaps/icons/ic_fluent_play_reverse_filled.svg \
+	pixmaps/icons/ic_fluent_arrow_move.svg \
+	pixmaps/icons/ic_fluent_chevron_down_24.svg \
+	pixmaps/icons/ic_fluent_chevron_left_24.svg \
+	pixmaps/icons/ic_fluent_chevron_right_24.svg \
+	pixmaps/icons/ic_fluent_chevron_up_24.svg \
+	pixmaps/icons/ic_fluent_play_filled.svg \
+	pixmaps/icons/podcast.svg \
+	pixmaps/icons/ic_fluent_previous.svg \
+	pixmaps/icons/profile_new.svg \
+	pixmaps/icons/ic_fluent_record.svg \
+	pixmaps/icons/remove.svg \
+	pixmaps/icons/ic_fluent_cast.svg \
+	pixmaps/icons/ic_fluent_arrow_repeat_all.svg \
+	pixmaps/icons/ic_fluent_arrow_repeat_1.svg \
+	pixmaps/icons/ic_fluent_rewind.svg \
+	pixmaps/icons/ic_fluent_search.svg \
+	pixmaps/icons/ic_fluent_arrow_shuffle.svg \
+	pixmaps/icons/ic_fluent_skip_back_10.svg \
+	pixmaps/icons/ic_fluent_skip_forward_10.svg \
+	pixmaps/icons/ic_fluent_camera.svg \
+	pixmaps/icons/ic_fluent_spacebar.svg \
+	pixmaps/icons/ic_fluent_stop.svg \
+	pixmaps/icons/stream.svg \
+	pixmaps/icons/sync.svg \
+	pixmaps/icons/ic_fluent_clock.svg \
+	pixmaps/icons/ic_fluent_globe.svg \
+	pixmaps/icons/topbar_filter.svg \
+	pixmaps/icons/ic_fluent_music_note_2.svg \
+	pixmaps/icons/ic_fluent_wifi_1.svg \
+	pixmaps/icons/ic_fluent_arrow_sort.svg \
+	pixmaps/icons/ic_fluent_filmstrip.svg \
+	pixmaps/icons/ic_fluent_chevron_up.svg \
+	pixmaps/icons/ic_fluent_chevron_down.svg \
+	pixmaps/icons/ic_fluent_tv.svg \
+	pixmaps/icons/ic_tvtelx.svg \
+	pixmaps/icons/visualization.svg \
+	pixmaps/icons/volume_high.svg \
+	pixmaps/icons/volume_low.svg \
+	pixmaps/icons/volume_medium.svg \
+	pixmaps/icons/volume_muted.svg \
+	pixmaps/icons/volume_zero.svg \
+	pixmaps/icons/window_close.svg \
+	pixmaps/icons/window_maximize.svg \
+	pixmaps/icons/window_minimize.svg \
+	pixmaps/icons/window_restore.svg \
+	pixmaps/icons/ic_fluent_arrow_download_24_regular.svg \
+	pixmaps/icons/ic_fluent_arrow_sync_24_regular.svg \
+	pixmaps/icons/regex.svg \
+	pixmaps/icons/ic_fluent_text_change_case_24_regular.svg \
+	pixmaps/menu/add.svg \
+	pixmaps/menu/capture-card.svg \
+	pixmaps/menu/clear.svg \
+	pixmaps/menu/disc.svg \
+	pixmaps/menu/download.svg \
+	pixmaps/menu/ic_fluent_arrow_eject.svg \
+	pixmaps/menu/exit.svg \
+	pixmaps/menu/ic_fluent_fast_forward.svg \
+	pixmaps/menu/file.svg \
+	pixmaps/menu/folder.svg \
+	pixmaps/menu/help.svg \
+	pixmaps/menu/info.svg \
+	pixmaps/menu/media_library.svg \
+	pixmaps/menu/messages.svg \
+	pixmaps/menu/movie.svg \
+	pixmaps/menu/music.svg \
+	pixmaps/menu/network.svg \
+	pixmaps/menu/ic_playlist.svg \
+	pixmaps/menu/ic_fluent_next.svg \
+	pixmaps/menu/ic_pause_filled.svg \
+	pixmaps/menu/ic_fluent_play_filled.svg \
+	pixmaps/menu/preferences.svg \
+	pixmaps/menu/ic_fluent_previous.svg \
+	pixmaps/menu/profile_new.svg \
+	pixmaps/menu/ic_fluent_record.svg \
+	pixmaps/menu/remove.svg \
+	pixmaps/menu/ic_fluent_arrow_repeat_all.svg \
+	pixmaps/menu/repeat_off.svg \
+	pixmaps/menu/ic_fluent_arrow_repeat_1.svg \
+	pixmaps/menu/ic_fluent_rewind.svg \
+	pixmaps/menu/search_clear.svg \
+	pixmaps/menu/ic_fluent_options.svg \
+	pixmaps/menu/ic_fluent_skip_back_10.svg \
+	pixmaps/menu/ic_fluent_skip_forward_10.svg \
+	pixmaps/menu/ic_fluent_arrow_shuffle.svg \
+	pixmaps/menu/ic_fluent_stop.svg \
+	pixmaps/menu/stream.svg \
+	pixmaps/menu/sync.svg \
+	pixmaps/menu/update.svg \
+	pixmaps/menu/volume-high.svg \
+	pixmaps/menu/volume-low.svg \
+	pixmaps/menu/volume-muted.svg \
+	pixmaps/misc/cone.svg \
+	pixmaps/misc/new_indicator.svg \
+	pixmaps/misc/theme_dark.svg \
+	pixmaps/misc/theme_daynight.svg \
+	pixmaps/misc/theme_light.svg \
+	pixmaps/misc/wait1.svg \
+	pixmaps/misc/wait2.svg \
+	pixmaps/misc/wait3.svg \
+	pixmaps/misc/wait4.svg \
+	pixmaps/placeholder/add_service.svg \
+	pixmaps/placeholder/noart.png \
+	pixmaps/placeholder/noart_album.svg \
+	pixmaps/placeholder/noart_albumCover.svg \
+	pixmaps/placeholder/noart_artist.svg \
+	pixmaps/placeholder/noart_artistCover.svg \
+	pixmaps/placeholder/noart_artist_small.svg \
+	pixmaps/placeholder/noart_videoCover.svg \
+	pixmaps/prefs/advprefs_audio.svg \
+	pixmaps/prefs/advprefs_codec.svg \
+	pixmaps/prefs/advprefs_extended.svg \
+	pixmaps/prefs/advprefs_intf.svg \
+	pixmaps/prefs/advprefs_playlist.svg \
+	pixmaps/prefs/advprefs_sout.svg \
+	pixmaps/prefs/advprefs_video.svg \
+	pixmaps/prefs/sample_complete.png \
+	pixmaps/prefs/sample_minimal.png \
+	pixmaps/prefs/sample_skins.png \
+	pixmaps/prefs/spref_audio.png \
+	pixmaps/prefs/spref_hotkeys.png \
+	pixmaps/prefs/spref_input.png \
+	pixmaps/prefs/spref_interface.png \
+	pixmaps/prefs/spref_medialibrary.png \
+	pixmaps/prefs/spref_subtitles.png \
+	pixmaps/prefs/spref_video.png \
+	pixmaps/sd/assembleenationale.svg \
+	pixmaps/sd/capture-card.svg \
+	pixmaps/sd/directory.svg \
+	pixmaps/sd/disc.svg \
+	pixmaps/sd/file.svg \
+	pixmaps/sd/fmc.svg \
+	pixmaps/sd/frenchtv.svg \
+	pixmaps/sd/harddisk.svg \
+	pixmaps/sd/icecast.svg \
+	pixmaps/sd/jamendo.svg \
+	pixmaps/sd/katsomo.svg \
+	pixmaps/sd/lan.svg \
+	pixmaps/sd/library.svg \
+	pixmaps/sd/metachannels.svg \
+	pixmaps/sd/mtp.svg \
+	pixmaps/sd/network.svg \
+	pixmaps/sd/node.svg \
+	pixmaps/sd/pictures.svg \
+	pixmaps/sd/playlist.svg \
+	pixmaps/sd/podcast.svg \
+	pixmaps/sd/radio.svg \
+	pixmaps/sd/screen.svg \
+	pixmaps/sd/stream.svg \
+	pixmaps/sd/unknown.svg
+
+if HAVE_WIN32
+libqt_plugin_la_RES += \
+	pixmaps/win7/pause.svg \
+	pixmaps/win7/prev.svg \
+	pixmaps/win7/next.svg \
+	pixmaps/win7/play.svg
+endif
+
+# QML modules
+#
+# Each QML module has a small section below. To add a new module "foo", append
+# a section following this template:
+#
+#   libqml_module_foo_a_Module     = VLC.Foo
+#   libqml_module_foo_a_ModulePath = VLC/Foo
+#   libqml_module_foo_a_CXXFLAGS   = $(libqt_plugin_la_CXXFLAGS)
+#   libqml_module_foo_a_CPPFLAGS   = $(libqt_plugin_la_CPPFLAGS)
+#   libqml_module_foo_a_SOURCES    = $(QML_MODULE_foo_SRC)
+#   libqml_module_foo_a_QML 			 = foo/qml/Bar.qml # ...
+#   libqml_module_foo_a_Singleton_QML  = foo/qml/SingletonBar.qml # only when there are Singletons
+#   nodist_libqml_module_foo_a_SOURCES = foo/qmlassets.cpp $(QML_MODULE_foo_NODIST_EXTRA)
+#   QML_MODULE_LIBS += libqml_module_foo.a
+#
+# When exposing singletons, list those QML files in the proper variable so that
+# they are declared as singletons in the generated qmldir.
+#
+# Then:
+#   1. Add "foo" to libqt_plugin_la_QML_MODULES.
+#   2. Add the QML file lists to libqt_plugin_la_ALL_QML.
+#   3. Add a QML_MODULE_foo_SRC / QML_MODULE_foo_NODIST_EXTRA pair to the
+#      "if HAVE_QMLCACHEGEN" block below.
+#
+noinst_LIBRARIES =
+
+EXTRA_DIST += pixmaps/fonts/LICENSE.txt
