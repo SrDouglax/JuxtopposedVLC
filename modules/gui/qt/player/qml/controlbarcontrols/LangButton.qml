@@ -54,7 +54,18 @@ RedesignIconButton {
 
     // Events
 
-    onClicked: menuLoader.item.open()
+    onClicked: {
+        const menu = menuLoader.item
+        if (menu.opened) {
+            menu.close()
+            return
+        }
+        const position = root.mapToItem(root._parentItem, 0, 0)
+        menu.x = Math.max(0, Math.min(root._parentItem.width - menu.width,
+                                      position.x + root.width - menu.width))
+        menu.y = Math.max(0, root._parentItem.positionSliderY - menu.height)
+        menu.open()
+    }
 
     // Children
 
@@ -66,13 +77,9 @@ RedesignIconButton {
 
             parent: root._parentItem
 
-            x: 0
-            y: (parent.positionSliderY - height)
             z: 1
 
             focus: true
-
-            colorContext.palette: root.colorContext.palette
 
             onOpened: {
                 root.requestLockUnlockAutoHide(true)
