@@ -1,0 +1,265 @@
+/*****************************************************************************
+ * Copyright (C) 2026 VLC authors and VideoLAN
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 or later.
+ *****************************************************************************/
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Templates as T
+import VLC.Dialogs
+import VLC.MainInterface
+import VLC.Style
+
+T.Popup {
+    id: root
+    objectName: "audioEffectsDialog"
+    property int currentTab: 0
+    property bool previousGlobalShortcuts: true
+    readonly property var filterTabs: [
+        { id: "equalizer", title: qsTr("Equalizer") },
+        { id: "compressor", title: qsTr("Compressor") },
+        { id: "spatializer", title: qsTr("Spatializer") },
+        { id: "stereo_widen", title: qsTr("Stereo Widener") }
+    ]
+
+    function openNative(page) {
+        if (effects.transactionActive && !effects.cancel()) return
+        root.close()
+        DialogsProvider.nativeEffectsDialog(page)
+    }
+
+    AudioEffects { id: effects; ctx: MainCtx }
+
+    width: Math.min(VLCStyle.dp(400, VLCStyle.scale), parent ? parent.width : VLCStyle.dp(400, VLCStyle.scale))
+    height: Math.min(VLCStyle.dp(780, VLCStyle.scale), parent ? Math.max(0, parent.height - VLCStyle.dp(48, VLCStyle.scale)) : VLCStyle.dp(780, VLCStyle.scale))
+    padding: 0
+    modal: true
+    focus: true
+    closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutside
+    anchors.centerIn: T.Overlay.overlay
+
+    onOpened: {
+        previousGlobalShortcuts = MainCtx.useGlobalShortcuts
+        MainCtx.useGlobalShortcuts = false
+        effects.begin()
+        tabs.itemAt(0).forceActiveFocus()
+    }
+    onClosed: {
+        if (effects.transactionActive) effects.cancel()
+        MainCtx.useGlobalShortcuts = previousGlobalShortcuts
+    }
+
+    background: Rectangle {
+        color: VLCStyle.redesign.windowBackground
+        radius: VLCStyle.dp(6, VLCStyle.scale)
+        border.color: VLCStyle.redesign.separator
+    }
+
+    contentItem: ColumnLayout {
+        spacing: 0
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.preferredHeight: VLCStyle.dp(54, VLCStyle.scale)
+            Layout.leftMargin: VLCStyle.dp(20, VLCStyle.scale)
+            Layout.rightMargin: VLCStyle.dp(12, VLCStyle.scale)
+            Text {
+                text: qsTr("Effects")
+                Layout.fillWidth: true
+                color: VLCStyle.redesign.textPrimary
+                font.family: VLCStyle.redesign.fontFamily
+                font.pixelSize: VLCStyle.dp(18, VLCStyle.scale)
+                font.weight: Font.Medium
+            }
+            T.Button {
+                text: qsTr("Close")
+                focusPolicy: Qt.StrongFocus
+                onClicked: root.close()
+                contentItem: Text {
+                    text: parent.text
+                    color: VLCStyle.redesign.textSecondary
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
+                }
+                background: Item {}
+            }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            spacing: 0
+            Repeater {
+                id: tabs
+                model: [qsTr("Audio"), qsTr("Video")]
+                delegate: T.Button {
+                    id: tabButton
+                    required property int index
+                    required property string modelData
+                    objectName: index === 0 ? "effectsAudioTab" : "effectsVideoTab"
+                    Layout.fillWidth: true
+                    implicitHeight: VLCStyle.dp(45, VLCStyle.scale)
+                    focusPolicy: Qt.StrongFocus
+                    onClicked: root.currentTab = index
+                    background: Rectangle {
+                        color: tabButton.hovered ? VLCStyle.redesign.controlHoverBackground : "transparent"
+                        Rectangle {
+                            anchors.bottom: parent.bottom
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: parent.width - VLCStyle.dp(32, VLCStyle.scale)
+                            height: VLCStyle.dp(2, VLCStyle.scale)
+                            color: root.currentTab === index ? VLCStyle.redesign.accent : "transparent"
+                        }
+                    }
+                    contentItem: Text {
+                        text: tabButton.modelData
+                        color: root.currentTab === index ? VLCStyle.redesign.accent : VLCStyle.redesign.textMuted
+                        font.family: VLCStyle.redesign.fontFamily
+                        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+            }
+        }
+
+        Rectangle { Layout.fillWidth: true; height: 1; color: VLCStyle.redesign.separator }
+
+        Flickable {
+            id: scroll
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            clip: true
+            contentWidth: width
+            contentHeight: body.implicitHeight + VLCStyle.dp(32, VLCStyle.scale)
+            boundsBehavior: Flickable.StopAtBounds
+            T.ScrollBar.vertical: T.ScrollBar {}
+
+            ColumnLayout {
+                id: body
+                width: scroll.width - VLCStyle.dp(32, VLCStyle.scale)
+                x: VLCStyle.dp(16, VLCStyle.scale)
+                y: VLCStyle.dp(16, VLCStyle.scale)
+                spacing: VLCStyle.dp(20, VLCStyle.scale)
+
+                Text {
+                    Layout.fillWidth: true
+                    visible: root.currentTab === 0 && !effects.activeAudio
+                    text: effects.lastError || qsTr("Play audio to preview and edit effects.")
+                    color: VLCStyle.redesign.textSecondary
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                    wrapMode: Text.WordWrap
+                }
+
+                Repeater {
+                    model: root.currentTab === 0 && effects.transactionActive ? root.filterTabs : []
+                    FilterSection {
+                        required property var modelData
+                        Layout.fillWidth: true
+                        effects: effects
+                        filterId: modelData.id
+                        title: modelData.title
+                    }
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    visible: root.currentTab === 1
+                    spacing: VLCStyle.dp(16, VLCStyle.scale)
+                    Text {
+                        Layout.fillWidth: true
+                        text: qsTr("Video color, crop and image effects are available in VLC's native extended controls.")
+                        color: VLCStyle.redesign.textSecondary
+                        font.family: VLCStyle.redesign.fontFamily
+                        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                        wrapMode: Text.WordWrap
+                    }
+                    T.Button {
+                        text: qsTr("Open native video effects")
+                        Layout.fillWidth: true
+                        implicitHeight: VLCStyle.dp(42, VLCStyle.scale)
+                        onClicked: root.openNative(1)
+                        background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(6, VLCStyle.scale) }
+                        contentItem: Text {
+                            text: parent.text
+                            color: VLCStyle.redesign.textPrimary
+                            font.family: VLCStyle.redesign.fontFamily
+                            font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+                    T.Button {
+                        text: qsTr("Open synchronization")
+                        Layout.fillWidth: true
+                        implicitHeight: VLCStyle.dp(42, VLCStyle.scale)
+                        onClicked: root.openNative(2)
+                        background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(6, VLCStyle.scale) }
+                        contentItem: Text {
+                            text: parent.text
+                            color: VLCStyle.redesign.textPrimary
+                            font.family: VLCStyle.redesign.fontFamily
+                            font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                    }
+                }
+            }
+        }
+
+        Text {
+            Layout.fillWidth: true
+            Layout.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
+            Layout.rightMargin: VLCStyle.dp(16, VLCStyle.scale)
+            visible: effects.lastError.length > 0 && effects.transactionActive
+            text: effects.lastError
+            color: "#FF8989"
+            font.family: VLCStyle.redesign.fontFamily
+            font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+            wrapMode: Text.WordWrap
+            Accessible.role: Accessible.AlertMessage
+        }
+
+        Rectangle { Layout.fillWidth: true; height: 1; color: VLCStyle.redesign.separator }
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.preferredHeight: VLCStyle.dp(60, VLCStyle.scale)
+            Layout.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
+            Layout.rightMargin: VLCStyle.dp(16, VLCStyle.scale)
+            spacing: VLCStyle.dp(8, VLCStyle.scale)
+            T.Button {
+                text: qsTr("Cancel")
+                Layout.fillWidth: true
+                implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
+                onClicked: { if (effects.cancel()) root.close() }
+                background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(5, VLCStyle.scale) }
+                contentItem: Text {
+                    text: parent.text
+                    color: VLCStyle.redesign.textSecondary
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+            T.Button {
+                text: qsTr("Save")
+                Layout.fillWidth: true
+                implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
+                enabled: effects.transactionActive && root.currentTab === 0
+                onClicked: { if (effects.save()) root.close() }
+                background: Rectangle { color: parent.enabled ? VLCStyle.redesign.accent : VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(5, VLCStyle.scale) }
+                contentItem: Text {
+                    text: parent.text
+                    color: parent.enabled ? "#0E0E0E" : VLCStyle.redesign.textDisabled
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                    font.weight: Font.Medium
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+        }
+    }
+}
