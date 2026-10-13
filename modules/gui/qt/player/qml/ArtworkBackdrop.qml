@@ -19,6 +19,7 @@ import QtQuick
 
 import VLC.MainInterface
 import VLC.Style
+import VLC.Util
 import VLC.Widgets as Widgets
 
 Widgets.DualKawaseBlur {
@@ -41,6 +42,23 @@ Widgets.DualKawaseBlur {
     backgroundColor: bgtheme.bg.primary
     viewportRect: Qt.rect((width - parent.width) / 2,
                           (height - parent.height) / 2, parent.width, parent.height)
+
+    // The software renderer cannot execute DualKawaseBlur's shader. Reuse the
+    // loaded cover URL and blur a bounded thumbnail in the image provider.
+    Image {
+        anchors.fill: parent
+        visible: blurredBackground.GraphicsInfo.api === GraphicsInfo.Software
+        asynchronous: true
+        cache: true
+        fillMode: Image.PreserveAspectCrop
+        sourceSize: Qt.size(320, 320)
+        source: visible && blurredBackground.coverItem
+                ? Effects.url(Effects.ArtworkBlur, {
+                    "source": blurredBackground.coverItem.source,
+                    "tint": bgtheme.palette.isDark ? "black" : "white",
+                    "tintStrength": 0.5
+                }) : ""
+    }
 
     readonly property ColorContext colorContext: ColorContext {
         id: bgtheme

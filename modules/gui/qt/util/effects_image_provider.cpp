@@ -22,6 +22,9 @@
 #include <QUrl>
 #include <QUrlQuery>
 #include <QPainterPath>
+#include <QImageReader>
+#include <QFileInfo>
+#include <QQmlFile>
 
 #include <memory>
 
@@ -199,6 +202,76 @@ protected:
     RoundedRectDropShadowEffect shadow2;
 };
 
+class ArtworkBlurEffect : public IEffect
+{
+public:
+    explicit ArtworkBlurEffect(const QVariantMap& settings)
+        : m_source(settings.value("source").toString())
+        , m_tint(settings.value("tint").toString())
+        , m_tintStrength(qBound(0.0, settings.value("tintStrength", 0.5).toDouble(), 1.0))
+    { }
+
+    QImage generate(const QSize& requestedSize) const override
+    {
+        constexpr int maxSide = 384;
+        constexpr qint64 maxPixels = 32LL * 1024LL * 1024LL;
+        constexpr qint64 maxFileBytes = 16LL * 1024LL * 1024LL;
+        const QSize target = requestedSize.boundedTo(QSize(maxSide, maxSide));
+        if (!target.isValid() || m_source.isEmpty()) return {};
+
+        const QUrl sourceUrl(m_source);
+        QString path;
+        if (sourceUrl.isLocalFile() || sourceUrl.scheme() == QLatin1String("qrc"))
+            path = QQmlFile::urlToLocalFileOrQrc(sourceUrl);
+        else if (sourceUrl.scheme().isEmpty() && m_source.startsWith(QLatin1Char('/')))
+            path = m_source;
+        else
+            return {};
+
+        const QFileInfo file(path);
+        if (!file.isFile() || file.size() <= 0 || file.size() > maxFileBytes) return {};
+        QImageReader reader(path);
+        reader.setAutoTransform(true);
+        const QSize dimensions = reader.size();
+        if (!dimensions.isValid() || dimensions.width() > 8192 || dimensions.height() > 8192 ||
+            qint64(dimensions.width()) * dimensions.height() > maxPixels) return {};
+        reader.setScaledSize(dimensions.scaled(target, Qt::KeepAspectRatio));
+        QImage thumbnail = reader.read();
+        if (thumbnail.isNull()) return {};
+        if (thumbnail.width() > maxSide || thumbnail.height() > maxSide)
+            thumbnail = thumbnail.scaled(target, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        thumbnail = thumbnail.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+
+        const int bytes = thumbnail.width() * thumbnail.height() * 4;
+        unsigned char* rawSource = static_cast<unsigned char*>(malloc(bytes));
+        unsigned char* rawDest = static_cast<unsigned char*>(malloc(bytes));
+        if (!rawSource || !rawDest) {
+            free(rawSource);
+            free(rawDest);
+            return {};
+        }
+        memcpy(rawSource, thumbnail.constBits(), bytes);
+        fast_gaussian_blur(rawSource, rawDest, thumbnail.width(), thumbnail.height(), 4,
+                           25.0f, 3, Border::kMirror);
+        free(rawSource);
+        QImage result(rawDest, thumbnail.width(), thumbnail.height(), thumbnail.width() * 4,
+                      QImage::Format_ARGB32_Premultiplied, free, rawDest);
+        if (m_tint.isValid() && m_tintStrength > 0) {
+            QColor tint = m_tint;
+            tint.setAlphaF(m_tintStrength);
+            QPainter painter(&result);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceAtop);
+            painter.fillRect(result.rect(), tint);
+        }
+        return result;
+    }
+
+private:
+    QString m_source;
+    QColor m_tint;
+    double m_tintStrength;
+};
+
 }
 
 QImage EffectsImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize)
@@ -241,6 +314,10 @@ QImage EffectsImageProvider::requestImage(const QString &id, QSize *size, const 
 
         case EffectsImageProvider::DoubleRoundedRectDropShadow:
             effect = std::make_unique<DoubleShadowEffect>(queryToVariantMap(query));
+            break;
+
+        case EffectsImageProvider::ArtworkBlur:
+            effect = std::make_unique<ArtworkBlurEffect>(queryToVariantMap(query));
             break;
 
         default:
