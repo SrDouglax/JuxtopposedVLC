@@ -1,0 +1,31 @@
+{
+  "source_commit": "3846d60f3ce875200f8c17bdac9f1d0f176e33be",
+  "qt_plugin_sha256": "e85bb7ea35f221abe440438ba6c01fa66b9e35f68a56452ff490bbfccacf4a99",
+  "environment": "Linux Qt 6.4.2/X11/Xvfb/Openbox/software; incremental Qt module over existing M0 core",
+  "result": "PASS: all four original Figma PNGs rendered at 24x24; native pixels match original assets within alpha rounding; real cone clicks at approximately 24%, 50%, 100%; mute preserves gain; unmute restores gain; zero renders muted",
+  "assets": "User export VLC Redesign (Community) (1), four individual 24x24 PNGs; original names and hashes in reference/m1/assets.json",
+  "limitations": [
+    "Raster 1x exports; vector variants and higher DPI are not validated",
+    "Windows build/runtime not run"
+  ],
+  "known_unchanged_warnings": [
+    "ImageExt null status on teardown",
+    "MainDisplay scaleAxis ReferenceError"
+  ],
+  "files": {
+    "icons.png": "e939b60dfad4d3a26fd4143e10dc4d407b5d67a8ca2097999ed3e36cb850fd7c",
+    "states.png": "cf849f9de1844c4e4e47c6538a0f0646fdbbc95949179bbfa3ffb7ac9dbbe303",
+    "rendered-geometry.json": "3824d6de6aa8ebbd66cc70d04d4bebf45b576296beed31d8007ca86ad3929662",
+    "volume-low.png": "640cc0b79060e067a303d986c6adb24ae34ad9f9d27443d2f13b77185918dbb2",
+    "volume-medium.png": "0e94146022b11909106f4e0a03bdc2b35bcdd20419ca972479f234a149a2e92b",
+    "volume-high.png": "d2bc1bf5663891ea98eee6485df04ac1eff6f96d86f931ccb1106da90dfa34f8",
+    "volume-muted.png": "4421eea1f56e37e22d1afaf91905206ce0363de2cc15e2c870ae88db7f228c36",
+    "volume-zero.png": "097f88d3bb0b9cef8d9c2c4d4166076e525d96a6400c1771f10524235fe94820",
+    "volume-low.txt": "b14841f9793f2425e04c50bb2891b8fc45138bdc2ba68ceacbba80906baf233d",
+    "volume-medium.txt": "b3f00efa73e4cb5ec114d7c41ad841cac8ff945f48eccfc1b3d1167995ef8e92",
+    "volume-high.txt": "50fb646cfe1b87c7c397cb349549f208493af008c250324eec73daa142454a3f",
+    "volume-muted.txt": "50fb646cfe1b87c7c397cb349549f208493af008c250324eec73daa142454a3f",
+    "volume-unmuted.txt": "50fb646cfe1b87c7c397cb349549f208493af008c250324eec73daa142454a3f",
+    "volume-zero.txt": "44d251cbc6bbc6f5f3cf97a8789382a57ad81a855f8031b6af3e6924040a755c"
+  }
+}

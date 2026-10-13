@@ -1,0 +1,34 @@
+[
+  {
+    "state": "low",
+    "x": 988,
+    "y": 741,
+    "width": 24,
+    "height": 24,
+    "max_channel_difference": 1
+  },
+  {
+    "state": "medium",
+    "x": 988,
+    "y": 741,
+    "width": 24,
+    "height": 24,
+    "max_channel_difference": 1
+  },
+  {
+    "state": "high",
+    "x": 988,
+    "y": 741,
+    "width": 24,
+    "height": 24,
+    "max_channel_difference": 1
+  },
+  {
+    "state": "muted",
+    "x": 988,
+    "y": 741,
+    "width": 24,
+    "height": 24,
+    "max_channel_difference": 1
+  }
+]
