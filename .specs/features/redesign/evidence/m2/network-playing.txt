@@ -1,0 +1,2 @@
+(<'Playing'>,)
+(<{'mpris:trackid': <objectpath '/org/videolan/vlc/playlist/2'>, 'xesam:url': <'http://127.0.0.1:8776/Epis%C3%B3dio%2001.mkv'>, 'vlc:time': <uint32 120>, 'mpris:length': <int64 120021000>, 'vlc:length': <int64 120021>, 'vlc:publisher': <1>}>,)

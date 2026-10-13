@@ -1,0 +1,50 @@
+{
+  "playlists": [
+    {
+      "id_playlist": 2,
+      "name": "Série M2",
+      "nb_video": 2,
+      "nb_audio": 0,
+      "duration": 240042
+    }
+  ],
+  "playlist_items": [
+    {
+      "name": "Série M2",
+      "title": "Episódio 01",
+      "position": 0
+    },
+    {
+      "name": "Série M2",
+      "title": "Episódio 02",
+      "position": 1
+    }
+  ],
+  "external_subtitles": [
+    {
+      "media_id": 2,
+      "mrl": "file:///work/build-m2/legendas/Epis%C3%B3dio%2001.srt",
+      "is_external": 1
+    },
+    {
+      "media_id": 3,
+      "mrl": "file:///work/build-m2/legendas/Epis%C3%B3dio%2002.srt",
+      "is_external": 1
+    }
+  ],
+  "bookmarks": [
+    {
+      "media_id": 2,
+      "time": 35,
+      "name": "Bookmark at 35 ms"
+    }
+  ],
+  "resume": [
+    {
+      "id_media": 2,
+      "title": "Episódio 01",
+      "last_position": 0.35796022415161133,
+      "last_time": 42962
+    }
+  ]
+}

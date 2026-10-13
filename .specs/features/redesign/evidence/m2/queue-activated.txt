@@ -1,0 +1,1 @@
+(<{'mpris:trackid': <objectpath '/org/videolan/vlc/playlist/1'>, 'xesam:url': <'file:///work/build-m2/fixtures/Epis%C3%B3dio%2002.mkv'>, 'vlc:time': <uint32 120>, 'mpris:length': <int64 120021000>, 'vlc:length': <int64 120021>, 'vlc:publisher': <5>}>,)

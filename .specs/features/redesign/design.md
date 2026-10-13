@@ -22,7 +22,7 @@ Manter uma UI comum a Linux e Windows. Detalhes de janela, sistema de arquivos, 
 - Empacotar fontes, ícones e recursos de forma comum às plataformas, respeitando as permissões dos assets.
 - Preservar navegação por teclado, acessibilidade, tradução e escalas de DPI; não depender das fontes instaladas nesta máquina.
 - Código específico de plataforma fica nos pontos existentes de integração ou em adaptação pequena e delimitada.
-- Compilar Windows desde M0/M1; manter jobs em mudanças de C++, recursos, dependências ou build. Executar smoke nativo em marcos de janela/vídeo e antes de distribuição.
+- M0 comprovou o baseline Windows. Por decisão de 13/10/2026, o workflow é manual e novos builds/execução Windows ficam para a rodada final da interface. Durante as fatias Linux, manter APIs portáveis e manifests/recursos comuns. A validação final inclui smoke Windows nativo antes de distribuição.
 - Wine/cross-build podem ajudar no diagnóstico, mas não substituem teste Windows nativo.
 
 ## Build e base

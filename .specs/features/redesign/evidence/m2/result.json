@@ -1,0 +1,62 @@
+{
+  "source_sha": "3df9b58d8e85811ce9d888ee134b170b429c3c6d",
+  "baseline": "b67e651749",
+  "environment": "Ubuntu 24.04 / GCC 13.3 / Qt 6.4.2 / medialibrary 0.13.2 / X11 Xvfb / Qt Quick software / Pulse null sink",
+  "build": "Autotools: modules/gui/qt + src; Meson manifest parity only",
+  "ui_sources": {
+    "library-grid.png": "session7/library.png",
+    "playlist-create.png": "session10/create-ready.png",
+    "playlist-created.png": "session10/playlist-created.png",
+    "playlist-order.png": "session7/reordered.png",
+    "playlist-remove.png": "session7/remove-confirmation.png",
+    "playlist-rename.png": "session9/rename-dialog.png",
+    "playlist-delete.png": "session9/delete-playlist-dialog.png",
+    "audio.png": "session8/audio-track2-delay.png",
+    "subtitle-track.png": "session8/subtitle-track2-delay.png",
+    "chapters.png": "session8/playback-chapters.png",
+    "bookmarks.png": "session8/bookmark-reopened.png",
+    "popup-small.png": "session8/small-tracks.png",
+    "library-search.png": "session11/library-filter.png",
+    "subtitle-folder.png": "session11/folder-subtitles-matched-final.png",
+    "subtitle-manual.png": "session9/subtitle-manual-target.png",
+    "subtitle-one.png": "session14/associated-one.png",
+    "subtitle-two.png": "session14/queue-before.png",
+    "queue-search.png": "session14/filter-row-focus.png",
+    "queue-sort.png": "session14/queue-sorted.png",
+    "queue-remove.png": "session14/queue-removed.png",
+    "open-media.png": "session14/open-media-menu.png",
+    "network.png": "session14/network-dialog.png",
+    "playlist-small.png": "session16/items-small.png",
+    "playlist-wide.png": "session16/items-wide.png",
+    "subtitle-invalid-batch.png": "session16/invalid-batch.png",
+    "subtitle-missing-before-save.png": "session16/missing-before-save.png",
+    "resume-offered.png": "session16/resume-offered.png",
+    "resume-restored.png": "session16/resume-restored.png",
+    "resume-after-restart.png": "session17/resume-after-restart.png",
+    "home.png": "session18/home.png"
+  },
+  "state": "isolated fixture profile, populated through native VLC UI/controllers; SQL is read-only",
+  "not_proven": [
+    "Windows M2 build/runtime",
+    "Wayland M2",
+    "GPU renderer / hardware decoding / physical audio",
+    "DPI variations",
+    "native queue drag/touch",
+    "capture/disc/conversion output",
+    "full fidelity of all Figma frames"
+  ],
+  "binaries": {
+    "build-m0/linux/modules/gui/qt/.libs/libqt_plugin.so": "63fcfa04c6be8e113d1264bc301b0574a62b2085b60859ff9cafbdcbe7354f96",
+    "build-m0/linux/src/.libs/libvlccore.so.9.0.0": "525a52a1ae4fcb2c0230b58105a5817bee183ec8154e6c3b155533732d7ef3bc"
+  },
+  "build_result": "PASS Qt + libvlccore",
+  "new_manifests_parity": "PASS: 11 new Qt/QML source files in Autotools + Meson",
+  "native_checks_result": "PASS exercised flows; unproven cases listed in m2.md",
+  "known_qml_warnings": [
+    "MainDisplay.qml scaleAxis on Qt 6.4",
+    "legacy PlayerControls/PlaylistButton.qml playlistWidget in earlier sessions"
+  ],
+  "ui_source_note": "Earlier UI captures remain valid for unchanged flows; session16 validates header layout, session17 restart/resume, session18 unknown duration.",
+  "final_native_exit": "PASS sessions16/17/18 exit 0",
+  "final_unknown_duration": "PASS known durations 02:00, unknown --:--"
+}

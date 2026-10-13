@@ -1,6 +1,6 @@
 # Estado
 
-Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limites de Windows registrados. M1 entregue como primeira fatia Linux na branch `feat/m1`, com cobertura visual parcial explícita.
+Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limites de Windows registrados. M1 entregue como primeira fatia Linux na branch `feat/m1`. M2 funcional entregue no Linux na branch `feat/m2`, com cobertura visual parcial explícita.
 
 ## Comprovado
 
@@ -13,6 +13,8 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 - T02: inventário de 103 frames (57 telas/variantes + 46 grupos), IDs e candidatos reais Qt/QML; 11 inspeções visuais, 92 entradas estruturais.
 - Windows: cross-build e pacote portátil comprovados no [run 38341757506](https://github.com/SrDouglax/JuxtopposedVLC/actions/runs/38341757506). Carregamento nativo de versão/exit 0 aprovado no [run 38343492003](https://github.com/SrDouglax/JuxtopposedVLC/actions/runs/38343492003), com quatro plugins em aviso.
 - Transcrição do vídeo fornecida em 13/10/2026 incorporada à [referência de intenção e comportamento](../features/redesign/video.md), complementar ao Figma.
+
+- M2: biblioteca, playlists persistentes, painel de faixas/capítulos/bookmarks, associação persistente de legendas locais, fila filtrada e retomada validados na aplicação Qt nativa. Build Qt + núcleo aprovado; perfis isolados, caminhos acentuados, reinício e erros de legendas conferidos. [Entrega e limites](../features/redesign/m2.md).
 
 ## Em execução / pendente
 
@@ -30,4 +32,4 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 
 ## Próxima ação
 
-M2 deve detalhar biblioteca, playlists e fluxos de áudio/legendas a partir do inventário, mantendo o backend do VLC. Windows/W01 será validado somente na rodada final da interface. M1 e suas capturas estão em `features/redesign/m1.md`.
+M3: decompor a próxima fatia do redesign a partir do inventário e exports locais, incluindo preferências/perfis e os fluxos avançados previstos no roadmap. Windows/W01 permanece para a rodada final da interface. M1 e M2 têm resultados e limites em seus documentos; a fidelidade integral dos 103 frames continua pendente.

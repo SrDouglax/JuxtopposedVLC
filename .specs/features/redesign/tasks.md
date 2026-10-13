@@ -1,6 +1,6 @@
-# Tarefas de M0 e M1
+# Tarefas de M0, M1 e M2
 
-Status: M0 entregue na branch `chore/m0`, com limitações do baseline Windows registradas; M1 em execução na branch `feat/m1`. A [transcrição do vídeo](video.md) complementa os critérios visuais/funcionais.
+Status: M0 entregue na branch `chore/m0`, com limitações do baseline Windows registradas; M1 entregue como fatia Linux na branch `feat/m1`; M2 funcional Linux entregue na branch `feat/m2` ([tarefas, paralelização e provas](m2.md)). A [transcrição do vídeo](video.md) complementa os critérios visuais/funcionais.
 
 | Entrega de M0 | Estado em 13/10/2026 | Evidência |
 | --- | --- | --- |
@@ -9,7 +9,7 @@ Status: M0 entregue na branch `chore/m0`, com limitações do baseline Windows r
 | T03 | Concluída com limites registrados | Smoke X11 PASS, captura, áudio PCM, recursos e prova Wayland em foundation.md |
 | T04 | Concluída como baseline | Cross-build, pacote e versão/exit 0 nativos comprovados; quatro plugins Windows pendentes em W01 |
 
-Este backlog detalha a fundação e a primeira fatia funcional. M2–M5 estão no roadmap; serão decompostos a partir do inventário real, antes de executar cada marco. Evitar uma lista fictícia de centenas de tarefas antes de conhecer o código.
+Este backlog detalha a fundação e a primeira fatia funcional. M2 está decomposto e verificado em [m2.md](m2.md). M3–M5 estão no roadmap; serão decompostos a partir do inventário real, antes de executar cada marco. Evitar uma lista fictícia de centenas de tarefas antes de conhecer o código.
 
 ## Execução de M1 em 13/10/2026
 
