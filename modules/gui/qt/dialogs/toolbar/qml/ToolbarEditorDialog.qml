@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 import QtQuick
+import QtQuick.Window
 import QtQuick.Templates as T
 import QtQuick.Layouts
 
@@ -27,15 +28,20 @@ import VLC.Dialogs
 
 WindowDialog {
     id: root
+    objectName: "toolbarEditorDialog"
 
-    width: minimumWidth
-    height: 600
+    width: Math.max(minimumWidth, Math.min(VLCStyle.dp(1048, VLCStyle.scale),
+                                          Screen.availableWidth - VLCStyle.dp(40, VLCStyle.scale)))
+    height: Math.max(minimumHeight, Math.min(VLCStyle.dp(700, VLCStyle.scale),
+                                            Screen.availableHeight - VLCStyle.dp(40, VLCStyle.scale)))
 
-    minimumWidth: 825
-    minimumHeight: 400
+    minimumWidth: VLCStyle.dp(640, VLCStyle.scale)
+    minimumHeight: VLCStyle.dp(480, VLCStyle.scale)
 
     modal: true
-    title: qsTr("Toolbar Editor")
+    title: qsTr("Customize Player")
+    color: VLCStyle.redesign.color("#0e0e0e", root.colorContext.bg.primary)
+    standardButtons: 0
 
     signal unload()
 
@@ -46,12 +52,14 @@ WindowDialog {
 
     onAccepted: {
         MainCtx.controlbarProfileModel.save()
+        hide()
         unload()
     }
 
     onRejected: (byButton) => {
         // Load saved to discard the changes
         MainCtx.controlbarProfileModel.reload()
+        hide()
         unload()
     }
 
@@ -84,7 +92,35 @@ WindowDialog {
         ColumnLayout {
             anchors.fill: parent
 
-            spacing: VLCStyle.margin_small
+            spacing: VLCStyle.dp(12, VLCStyle.scale)
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.preferredHeight: VLCStyle.dp(32, VLCStyle.scale)
+
+                Text {
+                    Layout.fillWidth: true
+                    text: qsTr("Customize Player")
+                    color: VLCStyle.redesign.color("#969696", root.colorContext.fg.primary)
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.redesign.fontNormal
+                }
+
+                Widgets.IconToolButton {
+                    description: qsTr("Cancel and close")
+                    text: VLCIcons.clear
+                    onClicked: root.rejected(true)
+                }
+            }
+
+            Text {
+                Layout.fillWidth: true
+                wrapMode: Text.WordWrap
+                text: qsTr("Drag controls between the player sections to reorder them. Drag controls into the list to remove them from the player.")
+                color: VLCStyle.redesign.color("#969696", root.colorContext.fg.secondary)
+                font.family: VLCStyle.redesign.fontFamily
+                font.pixelSize: VLCStyle.redesign.fontNormal
+            }
 
             RowLayout {
                 Layout.fillHeight: false
@@ -92,15 +128,15 @@ WindowDialog {
                 spacing: VLCStyle.margin_xsmall
 
                 Widgets.MenuLabel {
-                    Layout.fillWidth: true
                     Layout.minimumWidth: implicitWidth
 
-                    color: root.colorContext.fg.primary
+                    color: VLCStyle.redesign.color("#969696", root.colorContext.fg.primary)
                     text: qsTr("Select profile:")
                 }
 
                 Widgets.ComboBoxExt {
                     id: comboBox
+                    objectName: "toolbarEditorProfile"
 
                     Layout.fillWidth: (implicitWidth > Layout.minimumWidth)
                     Layout.minimumWidth: VLCStyle.combobox_width_large
@@ -188,6 +224,61 @@ WindowDialog {
 
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+            }
+
+            RowLayout {
+                Layout.fillWidth: true
+                Layout.preferredHeight: VLCStyle.dp(42, VLCStyle.scale)
+
+                T.Button {
+                    objectName: "toolbarEditorCancel"
+                    Layout.preferredWidth: VLCStyle.dp(100, VLCStyle.scale)
+                    Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
+                    text: qsTr("Cancel")
+                    activeFocusOnTab: true
+                    onClicked: root.rejected(true)
+
+                    background: Rectangle {
+                        radius: VLCStyle.redesign.controlRadius
+                        color: "#1b1b1b"
+                        border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : "transparent"
+                    }
+
+                    contentItem: Text {
+                        text: parent.text
+                        color: "#969696"
+                        font.family: VLCStyle.redesign.fontFamily
+                        font.pixelSize: VLCStyle.redesign.fontNormal
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
+
+                Item { Layout.fillWidth: true }
+
+                T.Button {
+                    objectName: "toolbarEditorSave"
+                    Layout.preferredWidth: VLCStyle.dp(100, VLCStyle.scale)
+                    Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
+                    text: qsTr("Save")
+                    activeFocusOnTab: true
+                    onClicked: root.accepted()
+
+                    background: Rectangle {
+                        radius: VLCStyle.redesign.controlRadius
+                        color: VLCStyle.redesign.accentBackground
+                        border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : "transparent"
+                    }
+
+                    contentItem: Text {
+                        text: parent.text
+                        color: VLCStyle.redesign.accent
+                        font.family: VLCStyle.redesign.fontFamily
+                        font.pixelSize: VLCStyle.redesign.fontNormal
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                }
             }
         }
     }

@@ -28,6 +28,7 @@ import VLC.Util
 
 GridView {
     id: root
+    objectName: "toolbarEditorControlCatalog"
 
     clip: true
 
@@ -37,8 +38,11 @@ GridView {
     currentIndex: -1
     highlightFollowsCurrentItem: false
 
-    cellWidth: VLCStyle.cover_small
-    cellHeight: cellWidth
+    // Nine controls fit the 1048px reference dialog; narrower windows retain
+    // usable drag targets instead of clipping columns.
+    cellWidth: Math.max(VLCStyle.dp(94, VLCStyle.scale),
+                        Math.floor(width / Math.max(1, Math.floor(width / VLCStyle.dp(108, VLCStyle.scale)))))
+    cellHeight: VLCStyle.dp(108, VLCStyle.scale)
 
     boundsBehavior: Flickable.StopAtBounds
 
@@ -188,34 +192,47 @@ GridView {
 
             color: "transparent"
 
+            radius: VLCStyle.redesign.controlRadius
             border.width: VLCStyle.dp(1, VLCStyle.scale)
-            border.color: containsMouse && !buttonDragItem.Drag.active ? colorContext.border
+            border.color: containsMouse && !buttonDragItem.Drag.active ? VLCStyle.redesign.accent
                                                                        : "transparent"
             border.pixelAligned: (radius < Number.EPSILON)
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: VLCStyle.dp(6, VLCStyle.scale)
+                spacing: VLCStyle.dp(8, VLCStyle.scale)
 
-                EditorDummyButton {
-                    Layout.preferredWidth: VLCStyle.icon_medium
-                    Layout.preferredHeight: VLCStyle.icon_medium
+                Rectangle {
+                    Layout.preferredWidth: VLCStyle.dp(32, VLCStyle.scale)
+                    Layout.preferredHeight: VLCStyle.dp(32, VLCStyle.scale)
                     Layout.alignment: Qt.AlignHCenter
+                    Layout.topMargin: VLCStyle.dp(8, VLCStyle.scale)
+                    color: "transparent"
+                    border.width: VLCStyle.dp(1, VLCStyle.scale)
+                    border.color: VLCStyle.redesign.color("#6b6b6b", colorContext.border)
 
-                    color: colorContext.fg.primary
-                    text: PlayerControlbarControls.controlList[model.index].label
+                    EditorDummyButton {
+                        anchors.centerIn: parent
+                        color: VLCStyle.redesign.color("#969696", colorContext.fg.primary)
+                        text: PlayerControlbarControls.controlList[model.index].label
+                        font.pixelSize: VLCStyle.dp(23, VLCStyle.scale)
+                    }
                 }
 
-                Widgets.ListSubtitleLabel {
+                Text {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    color: colorContext.fg.secondary
-                    elide: Text.ElideNone
-                    fontSizeMode: Text.Fit
+                    color: VLCStyle.redesign.color("#969696", colorContext.fg.secondary)
+                    elide: Text.ElideRight
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.redesign.fontNormal
                     text: PlayerControlbarControls.controlList[model.index].text
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignTop
+                    maximumLineCount: 2
                 }
             }
         }

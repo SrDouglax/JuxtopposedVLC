@@ -43,7 +43,7 @@ Item {
         colorSet: ColorContext.View
     }
 
-    ColumnLayout{
+    ColumnLayout {
         anchors.fill: parent
         spacing: 0
 
@@ -52,10 +52,10 @@ Item {
             z: 1
 
             background: Rectangle {
-                color: theme.bg.primary
+                color: VLCStyle.redesign.color("#0e0e0e", theme.bg.primary)
             }
 
-            readonly property int currentIdentifier: currentItem.identifier
+            readonly property int currentIdentifier: currentItem ? currentItem.identifier : -1
 
             Repeater {
                 model: PlayerListModel.model
@@ -70,7 +70,8 @@ Item {
                     text: {
                         const text = modelData.name
 
-                        if (MainCtx.controlbarProfileModel.currentModel?.getModel(identifier).dirty)
+                        const profile = MainCtx.controlbarProfileModel.currentModel
+                        if (profile && profile.getModel(identifier).dirty)
                             return _markDirty(text)
                         else
                             return text
@@ -187,12 +188,12 @@ Item {
                                                                                                       rightMetric.width) * 1.25
                                                                                              : 0
 
-                            readonly property int count: item?.count ?? 0
+                            readonly property int count: item ? item.count : 0
 
                             sourceComponent: Rectangle {
-                                color: theme.bg.primary
+                                color: VLCStyle.redesign.color("#151515", theme.bg.primary)
 
-                                border.color: theme.border
+                                border.color: VLCStyle.redesign.color("#373737", theme.border)
                                 border.width: VLCStyle.border
                                 border.pixelAligned: (radius < Number.EPSILON)
 
@@ -240,7 +241,7 @@ Item {
                                         text: repeater.getMetric(index).text
                                         verticalAlignment: Text.AlignVCenter
                                         font.pixelSize: VLCStyle.fontSize_xxlarge
-                                        color: theme.fg.secondary
+                                        color: VLCStyle.redesign.color("#969696", theme.fg.secondary)
                                         horizontalAlignment: Text.AlignHCenter
                                         visible: (count === 0)
                                     }
@@ -257,8 +258,8 @@ Item {
             Layout.fillWidth: true
             Layout.topMargin: VLCStyle.margin_xxsmall
 
-            color: buttonList.colorContext.bg.primary
-            border.color: theme.border
+            color: VLCStyle.redesign.color("#151515", buttonList.colorContext.bg.primary)
+            border.color: VLCStyle.redesign.color("#222222", theme.border)
             border.width: VLCStyle.border
             border.pixelAligned: (radius < Number.EPSILON)
 
@@ -267,8 +268,8 @@ Item {
 
                 Widgets.MenuCaption {
                     Layout.margins: VLCStyle.margin_xxsmall
-                    text: qsTr("Drag items below to add them above: ")
-                    color: buttonList.colorContext.fg.primary
+                    text: qsTr("Available controls — drag into a player section to add; drag a placed control here to remove")
+                    color: VLCStyle.redesign.color("#969696", buttonList.colorContext.fg.primary)
                 }
 
                 ToolbarEditorButtonList {
@@ -305,6 +306,6 @@ Item {
     ViewDragAutoScrollHandler {
         id: dragAutoScrollHandler
 
-        view: _viewThatContainsDrag ?? null
+        view: _viewThatContainsDrag ? _viewThatContainsDrag : null
     }
 }
