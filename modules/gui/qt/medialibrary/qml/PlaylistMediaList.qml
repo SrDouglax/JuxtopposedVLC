@@ -219,7 +219,7 @@ MainViewLoader {
     PlaylistCreateDialog {
         id: createDialog
         parent: root
-        playlistModel: playlistModel
+        playlistModel: root.model
     }
 
     DropArea {
