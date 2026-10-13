@@ -7,6 +7,9 @@ namespace PrefsCatalog
 {
 static const Option entries[] = {
     {"general", "verbose"}, {"general", "stats"},
+    {"general", "qt-error-dialogs"}, {"general", "qt-updates-notif"},
+    {"general", "file-logging"}, {"general", "logfile"},
+    {"general", "log-verbose"},
     {"interface", "embedded-video"}, {"interface", "qt-video-autoresize"},
     {"interface", "qt-fullscreen-screennumber"},
     {"interface", "qt-opacity"}, {"interface", "qt-auto-raise"},
