@@ -102,6 +102,13 @@ QHash<int, QByteArray> ConfigModel::roleNames() const
             {DirtyRole, "dirty"}};
 }
 
+QString ConfigModel::keyAt(int visibleRow) const
+{
+    if (visibleRow < 0 || visibleRow >= m_rows.size())
+        return {};
+    return m_entries[m_rows[visibleRow]].key;
+}
+
 bool ConfigModel::visible(const Entry &entry) const
 {
     if (!m_category.isEmpty() && entry.category != m_category)

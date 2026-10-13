@@ -71,6 +71,7 @@ Dialog {
     }
     onClosed: {
         capturePopup.close()
+        restartNotice.close()
         if (!saved)
             shortcuts.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
@@ -370,7 +371,7 @@ Dialog {
                     if (!shortcuts.apply())
                         return
                     root.saved = true
-                    root.close()
+                    restartNotice.open()
                 }
                 background: Rectangle {
                     color: saveButton.enabled ? "#371f06" : "#1c1c1c"
@@ -473,5 +474,12 @@ Dialog {
                 }
             }
         }
+    }
+
+    ShortcutsRestartNotice {
+        id: restartNotice
+        parent: root.parent
+        anchors.centerIn: parent
+        onAccepted: root.close()
     }
 }

@@ -14,8 +14,16 @@ Item {
     property string settingType
     property var settingValue
     property var choices: []
+    property var minimum
+    property var maximum
+    property string editorKind: ""
     property bool dirty: false
     readonly property bool dark: VLCStyle.palette.isDark
+    readonly property bool useSlider: editorKind === "slider" && choices.length === 0
+                                      && (settingType === "integer" || settingType === "float")
+                                      && minimum !== undefined && minimum !== null
+                                      && maximum !== undefined && maximum !== null
+                                      && Number(minimum) < Number(maximum)
     signal commit(var value)
 
     implicitHeight: VLCStyle.dp(46, VLCStyle.scale)
@@ -116,10 +124,39 @@ Item {
             }
         }
 
+        Slider {
+            id: rangeControl
+            objectName: "settingRange_" + root.settingKey
+            visible: root.useSlider
+            anchors.left: parent.left
+            anchors.right: rangeValue.left
+            anchors.rightMargin: 8
+            anchors.verticalCenter: parent.verticalCenter
+            from: Number(root.minimum || 0)
+            to: Number(root.maximum || 1)
+            value: Number(root.settingValue)
+            stepSize: root.settingType === "integer" ? 1 : 0.01
+            snapMode: Slider.SnapAlways
+            onMoved: root.commit(root.settingType === "integer" ? Math.round(value) : value)
+        }
+        Label {
+            id: rangeValue
+            visible: root.useSlider
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            width: VLCStyle.dp(44, VLCStyle.scale)
+            text: root.settingType === "integer" ? String(root.settingValue)
+                  : Number(root.settingValue).toFixed(2)
+            color: root.dark ? "#999999" : "#555555"
+            font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+            horizontalAlignment: Text.AlignRight
+        }
+
         TextField {
             id: textControl
             objectName: "settingInput_" + root.settingKey
             visible: root.settingType !== "boolean" && root.choices.length === 0
+                     && !root.useSlider
             anchors.fill: parent
             text: root.settingValue === undefined || root.settingValue === null
                   ? "" : String(root.settingValue)

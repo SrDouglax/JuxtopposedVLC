@@ -47,6 +47,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
     Q_INVOKABLE bool setValue(const QString &key, const QVariant &value);
+    Q_INVOKABLE QString keyAt(int visibleRow) const;
     Q_INVOKABLE bool apply();
     Q_INVOKABLE void cancel();
     Q_INVOKABLE void resetCategory();
