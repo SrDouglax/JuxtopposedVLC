@@ -96,7 +96,8 @@ StackViewExt {
                     // destination's creation properties themselves.
                     if (path.length === 1) {
                         for (const key of properties.keys()) {
-                            pageProp[key] = properties[key]
+                            if (properties[key] !== undefined)
+                                pageProp[key] = properties[key]
                         }
                     }
 

@@ -51,50 +51,62 @@ Widgets.PageExt {
     hasGridListMode: false
     isSearchable: true
     title: root.isMusic ? "" : qsTr("Playlists")
+    libraryTitle: qsTr("Playlists")
     libraryHeader: !root.isMusic
     libraryItemCount: model.count
 
     headerAction: Component {
-        RowLayout {
-            spacing: VLCStyle.margin_xsmall
+        Item {
+            implicitWidth: {
+                let total = 0
+                for (let i = 0; i < actions.children.length; ++i)
+                    total += actions.children[i].implicitWidth
+                return total + actions.spacing * (actions.children.length - 1)
+            }
+            implicitHeight: actions.implicitHeight
+            Flow {
+                id: actions
+                width: parent.width
+                spacing: VLCStyle.margin_xsmall
 
-            Widgets.ButtonExt {
-                objectName: "playlistAddFilesButton"
-                text: qsTr("Add files")
-                enabled: !model.transactionPending
-                onClicked: {
-                    const selected = filePicker.chooseFiles(qsTr("Add files to playlist"))
-                    if (selected.length > 0) model.insert(selected, model.count)
+                Widgets.ButtonExt {
+                    objectName: "playlistAddFilesButton"
+                    text: qsTr("Add files")
+                    enabled: !model.transactionPending
+                    onClicked: {
+                        const selected = filePicker.chooseFiles(qsTr("Add files to playlist"))
+                        if (selected.length > 0) model.insert(selected, model.count)
+                    }
                 }
-            }
 
-            Widgets.ButtonExt {
-                objectName: "playlistSubtitlesButton"
-                text: qsTr("Subtitles…")
-                visible: !root.isMusic
-                onClicked: subtitleDialog.openFor(root.parentId)
-            }
+                Widgets.ButtonExt {
+                    objectName: "playlistSubtitlesButton"
+                    text: qsTr("Subtitles…")
+                    visible: !root.isMusic
+                    onClicked: subtitleDialog.openFor(root.parentId)
+                }
 
-            Widgets.ButtonExt {
-                objectName: "playlistMoveUpButton"
-                text: qsTr("Move up")
-                enabled: root.selectedRow > 0 && !model.transactionPending
-                onClicked: model.move(view.selectionModel.selectedRows(), root.selectedRow - 1)
-            }
+                Widgets.ButtonExt {
+                    objectName: "playlistMoveUpButton"
+                    text: qsTr("Move up")
+                    enabled: root.selectedRow > 0 && !model.transactionPending
+                    onClicked: model.move(view.selectionModel.selectedRows(), root.selectedRow - 1)
+                }
 
-            Widgets.ButtonExt {
-                objectName: "playlistMoveDownButton"
-                text: qsTr("Move down")
-                enabled: root.selectedRow >= 0 && root.selectedRow < model.count - 1
-                         && !model.transactionPending
-                onClicked: model.move(view.selectionModel.selectedRows(), root.selectedRow + 2)
-            }
+                Widgets.ButtonExt {
+                    objectName: "playlistMoveDownButton"
+                    text: qsTr("Move down")
+                    enabled: root.selectedRow >= 0 && root.selectedRow < model.count - 1
+                             && !model.transactionPending
+                    onClicked: model.move(view.selectionModel.selectedRows(), root.selectedRow + 2)
+                }
 
-            Widgets.ButtonExt {
-                objectName: "playlistRemoveItemButton"
-                text: qsTr("Remove")
-                enabled: view.selectionModel.hasSelection && !model.transactionPending
-                onClicked: root.onDelete()
+                Widgets.ButtonExt {
+                    objectName: "playlistRemoveItemButton"
+                    text: qsTr("Remove")
+                    enabled: view.selectionModel.hasSelection && !model.transactionPending
+                    onClicked: root.onDelete()
+                }
             }
         }
     }

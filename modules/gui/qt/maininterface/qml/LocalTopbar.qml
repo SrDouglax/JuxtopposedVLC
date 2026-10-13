@@ -101,6 +101,15 @@ T.ToolBar {
 
                 Navigation.parentItem: root
 
+                Widgets.BannerCone {
+                    id: logo
+                    source: "qrc:///redesign/logo.svg"
+
+                    sourceSize.width: VLCStyle.bannerButton_height
+                    sourceSize.height: VLCStyle.bannerButton_height
+                    color: VLCStyle.redesign.logoColor
+                }
+
                 Widgets.IconToolButton {
                     id: navigationVisibilty
                     contentItem: Image {
@@ -134,6 +143,7 @@ T.ToolBar {
 
                 Widgets.IconToolButton {
                     id: historyBack
+                    visible: false
                     color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
                                                    colorContext.fg.primary)
                     backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
@@ -161,14 +171,7 @@ T.ToolBar {
                     Navigation.leftItem: navigationVisibilty
                 }
 
-                Widgets.BannerCone {
-                    id: logo
-                    source: "qrc:///redesign/logo.svg"
 
-                    sourceSize.width: VLCStyle.bannerButton_height
-                    sourceSize.height: VLCStyle.bannerButton_height
-                    color: VLCStyle.redesign.logoColor
-                }
             }
         }
 

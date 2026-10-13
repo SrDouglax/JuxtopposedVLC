@@ -34,7 +34,7 @@ T.Pane {
     property bool useAcrylic: true
     property bool delegateShowText: true
     property alias model: navigationModel
-    readonly property int minimumWidth: VLCStyle.expandNavigationPaneWidth + safeAreaLeftMargin + safeAreaRightMargin
+    readonly property int minimumWidth: VLCStyle.expandNavigationPaneWidth
 
     padding: VLCStyle.margin_xsmall
     implicitWidth: minimumWidth
@@ -105,7 +105,6 @@ T.Pane {
             focus: true
             model: root.entries
             colorContext.colorSet: ColorContext.Window
-            T.ScrollBar.vertical.policy: T.ScrollBar.AsNeeded
             Navigation.parentItem: root
             Navigation.downItem: addItem
 

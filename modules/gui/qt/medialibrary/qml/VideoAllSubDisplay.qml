@@ -19,6 +19,7 @@
  *****************************************************************************/
 
 import QtQuick
+import QtQuick.Layouts
 
 import VLC.MainInterface
 import VLC.MediaLibrary
@@ -71,11 +72,17 @@ Widgets.PageExt {
 
     title: qsTr("Videos")
     libraryHeader: true
-    libraryItemCount: _meta?.model?.count ?? -1
+    libraryItemCount: videoAll.model?.count ?? -1
     hasGridListMode: videoAll.hasGridListMode
     isSearchable: videoAll.isSearchable
     sortModel: videoAll.sortModel
-    headerAction: Component { LibrarySourceButton {} }
+    headerAction: Component {
+        RowLayout {
+            spacing: VLCStyle.dp(12, VLCStyle.scale)
+            LibrarySourceButton { iconOnly: true }
+            OpenMediaButton { iconOnly: true }
+        }
+    }
 
     VideoAll {
         id: videoAll

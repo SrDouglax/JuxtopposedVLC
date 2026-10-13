@@ -103,6 +103,44 @@ Widgets.GridItem {
         implicitWidth: root.pictureWidth
         implicitHeight: root.pictureHeight
 
+        Rectangle {
+            anchors.fill: parent
+            color: "#33000000"
+            radius: root.pictureRadius
+            visible: VLCStyle.palette.isDark
+        }
+
+        // Software Qt Quick cannot run the image rounding shader. Paint only
+        // the four exterior corners, leaving the actual thumbnail unchanged.
+        Canvas {
+            anchors.fill: parent
+            visible: root.GraphicsInfo.shaderType !== GraphicsInfo.RhiShader
+            onWidthChanged: requestPaint()
+            onHeightChanged: requestPaint()
+            onPaint: {
+                const ctx = getContext("2d")
+                ctx.clearRect(0, 0, width, height)
+                ctx.fillStyle = VLCStyle.redesign.windowBackground
+                const corners = [ [0, 0, 0, root.mediaCover.radiusTopLeft],
+                                  [width, 0, 90, root.mediaCover.radiusTopRight],
+                                  [width, height, 180, root.mediaCover.radiusBottomRight],
+                                  [0, height, 270, root.mediaCover.radiusBottomLeft] ]
+                for (const corner of corners) {
+                    const r = Math.min(corner[3], width / 2, height / 2)
+                    ctx.save()
+                    ctx.translate(corner[0], corner[1])
+                    ctx.rotate(corner[2] * Math.PI / 180)
+                    ctx.beginPath()
+                    ctx.moveTo(0, 0)
+                    ctx.lineTo(r, 0)
+                    ctx.arcTo(0, 0, 0, r, r)
+                    ctx.closePath()
+                    ctx.fill()
+                    ctx.restore()
+                }
+            }
+        }
+
         Widgets.ScaledImage {
             id: image
 

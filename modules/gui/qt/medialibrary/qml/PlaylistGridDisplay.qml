@@ -61,6 +61,7 @@ Widgets.ExpandGridItemView {
         pictureHeight: gridView.maxPictureHeight
         pictureRadius: VLCStyle.dp(12, VLCStyle.scale)
         titleFontPixelSize: VLCStyle.dp(16, VLCStyle.scale)
+        titleTopMargin: gridView.titleTopMargin
         redesignTitle: !host.isMusic
         subtitleVisible: host.isMusic && subtitle !== ""
 

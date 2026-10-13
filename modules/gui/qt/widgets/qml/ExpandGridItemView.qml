@@ -41,8 +41,9 @@ Widgets.ExpandGridView {
 
     // The video layout uses 20px total side margins; the base view normally
     // adds a responsive outer margin on top of layout_left_margin.
-    leftMargin: VLCStyle.layout_left_margin + leftPadding - (fixedPictureWidth ? extraMargin : 0)
-    rightMargin: VLCStyle.layout_right_margin + rightPadding - (fixedPictureWidth ? extraMargin : 0)
+    leftMargin: (fixedPictureWidth ? VLCStyle.dp(20, VLCStyle.scale) - extraMargin : VLCStyle.layout_left_margin) + leftPadding
+    rightMargin: (fixedPictureWidth ? VLCStyle.dp(20, VLCStyle.scale) - extraMargin : VLCStyle.layout_right_margin) + rightPadding
+    topMargin: fixedPictureWidth ? VLCStyle.dp(20, VLCStyle.scale) : 0
 
     // Aliases
 

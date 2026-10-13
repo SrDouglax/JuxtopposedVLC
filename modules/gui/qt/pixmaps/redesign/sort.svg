@@ -1,5 +1,7 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g id="Frame 1">
-<path id="Ellipse 5" d="M14.8451 14.8451C15.9948 13.6955 16.7059 12.1073 16.7059 10.3529C16.7059 6.84431 13.8616 4 10.3529 4C6.84431 4 4 6.84431 4 10.3529C4 13.8616 6.84431 16.7059 10.3529 16.7059C12.1073 16.7059 13.6955 15.9948 14.8451 14.8451ZM14.8451 14.8451L19 19" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector 42" d="M17.5 19L17.5 6M14 9.5L17.5 6L21 9.5" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 43" d="M6.5 7L6.5 20M10 16.5L6.5 20L3 16.5" stroke="#6B6B6B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle id="Ellipse 6" cx="24" cy="2" r="2" fill="#D37918"/>
 </g>
 </svg>

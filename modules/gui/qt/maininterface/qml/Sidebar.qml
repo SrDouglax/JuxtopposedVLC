@@ -83,7 +83,7 @@ SideNavigationPane {
 
     property int maximumWidth: Math.max(minimumWidth, (sidebar.mainDisplay.width + sidebarResizeHandle.width) / 3)
 
-    topPadding: 0
+    topPadding: VLCStyle.dp(20, VLCStyle.scale)
     leftPadding: 0
     rightPadding: sidebarResizeHandle.visible ? sidebarResizeHandle.visualBorder.width : 0.0
     bottomPadding: VLCStyle.applicationVerticalMargin + VLCStyle.margin_small

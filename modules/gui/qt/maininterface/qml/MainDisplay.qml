@@ -813,7 +813,8 @@ FocusScope {
                 rightMargin: VLCStyle.dp(6, VLCStyle.scale)
             }
 
-            width: Math.min(implicitWidth, parent.width - VLCStyle.margin_normal * 2)
+            width: Math.min(implicitWidth, parent.width < VLCStyle.dp(900, VLCStyle.scale)
+                            ? parent.width * 0.42 : parent.width - VLCStyle.margin_normal * 2)
             height: implicitHeight
             z: 4
             visible: g_mainDisplay._showMiniPlayer && MainCtx.hasEmbededVideo

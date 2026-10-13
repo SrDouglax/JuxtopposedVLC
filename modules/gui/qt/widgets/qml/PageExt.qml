@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 import QtQuick
+import QtQuick as Quick
 import QtQuick.Layouts
 import QtQuick.Templates as T
 
@@ -47,6 +48,7 @@ T.Page {
     property Component headerAction: null
 
     property bool libraryHeader: false
+    property string libraryTitle: title
     property int libraryItemCount: -1
 
     property int displayMarginBeginning: 0
@@ -114,12 +116,10 @@ T.Page {
                              + (implicitHeaderHeight > 0 ? implicitHeaderHeight + spacing : 0)
                              + (implicitFooterHeight > 0 ? implicitFooterHeight + spacing : 0))
 
-    header: Loader {
+    header: Quick.Loader {
         id: pageHeader
         focus: true
         sourceComponent: root.libraryHeader ? libraryHeaderComponent : defaultHeaderComponent
-        implicitWidth: item?.implicitWidth ?? 0
-        implicitHeight: item?.implicitHeight ?? 0
         Navigation.navigable: true
         Navigation.parentItem: root
         Navigation.downAction: function() {
@@ -149,7 +149,7 @@ T.Page {
     Component {
         id: libraryHeaderComponent
         LibraryHeader {
-            title: root.title
+            title: root.libraryTitle
             itemCount: root.libraryItemCount
             headerAction: root.headerAction
             sortMenu: root.sortMenu

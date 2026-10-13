@@ -132,6 +132,16 @@
         <file alias="addon_yellow.svg">pixmaps/addons/addon_yellow.svg</file>
     </qresource>
     <qresource prefix="/redesign">
+        <file alias="track-video.png">pixmaps/redesign/track-video.png</file>
+        <file alias="track-video-active.png">pixmaps/redesign/track-video-active.png</file>
+        <file alias="track-audio.png">pixmaps/redesign/track-audio.png</file>
+        <file alias="track-audio-active.png">pixmaps/redesign/track-audio-active.png</file>
+        <file alias="track-subtitles.png">pixmaps/redesign/track-subtitles.png</file>
+        <file alias="track-subtitles-active.png">pixmaps/redesign/track-subtitles-active.png</file>
+        <file alias="track-check-active.png">pixmaps/redesign/track-check-active.png</file>
+        <file alias="grid.png">pixmaps/redesign/grid.png</file>
+        <file alias="list.png">pixmaps/redesign/list.png</file>
+        <file alias="subtitle-file.png">pixmaps/redesign/subtitle-file.png</file>
         <file alias="playlists.svg">pixmaps/redesign/playlists.svg</file>
         <file alias="recent.svg">pixmaps/redesign/recent.svg</file>
         <file alias="add.svg">pixmaps/redesign/add.svg</file>

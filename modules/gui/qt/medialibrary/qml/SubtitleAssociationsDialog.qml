@@ -131,7 +131,8 @@ Dialog {
             spacing: VLCStyle.dp(12, VLCStyle.scale)
 
             Label {
-                Layout.preferredWidth: Math.min(VLCStyle.dp(200, VLCStyle.scale), root.width * 0.24)
+                Layout.minimumWidth: Math.min(VLCStyle.dp(200, VLCStyle.scale), root.width * 0.24)
+                Layout.preferredWidth: Layout.minimumWidth
                 Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
                 text: root.targetKind
                 color: "#d0d0d0"
@@ -143,7 +144,8 @@ Dialog {
 
             Button {
                 objectName: "subtitleChooseFilesButton"
-                Layout.preferredWidth: Math.min(VLCStyle.dp(200, VLCStyle.scale), root.width * 0.24)
+                Layout.minimumWidth: Math.min(VLCStyle.dp(200, VLCStyle.scale), root.width * 0.24)
+                Layout.preferredWidth: Layout.minimumWidth
                 Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
                 text: qsTr("From Computer")
                 enabled: !associations.busy
@@ -160,10 +162,12 @@ Dialog {
 
             Label {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
+                Layout.preferredWidth: 0
                 Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
                 text: associations.destinations.length === 1
                       ? associations.destinations[0].label
-                      : qsTr("%n media file(s)", "", associations.destinations.length)
+                      : qsTr("%1 media file", "%1 media files", associations.destinations.length).arg(associations.destinations.length)
                 color: "#8f8f8f"
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                 elide: Text.ElideMiddle
@@ -214,6 +218,17 @@ Dialog {
                             enabled: !associations.busy
                             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                             displayText: currentIndex < 0 ? qsTr("Choose media") : currentText
+                            background: Rectangle {
+                                color: parent.hovered || parent.activeFocus ? "#151515" : "transparent"
+                                radius: VLCStyle.dp(4, VLCStyle.scale)
+                            }
+                            contentItem: Label {
+                                text: parent.displayText
+                                color: "#8f8f8f"
+                                font: parent.font
+                                elide: Text.ElideMiddle
+                                verticalAlignment: Text.AlignVCenter
+                            }
                             onActivated: (destinationIndex) => associations.assign(sourceRow.index, destinationIndex)
                         }
 
@@ -236,7 +251,7 @@ Dialog {
                         Image {
                             Layout.preferredWidth: VLCStyle.dp(24, VLCStyle.scale)
                             Layout.preferredHeight: width
-                            source: "qrc:///redesign/subtitles.svg"
+                            source: "qrc:///redesign/subtitle-file.png"
                             fillMode: Image.PreserveAspectFit
                         }
 

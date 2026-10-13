@@ -27,7 +27,8 @@ T.ToolBar {
     required property SearchCtx search
     required property SortCtx sort
 
-    readonly property bool compact: width < VLCStyle.dp(1320, VLCStyle.scale)
+    readonly property bool compact: width < VLCStyle.dp(760, VLCStyle.scale) ||
+        (actionLoader.active && availableWidth < actionLoader.implicitWidth + VLCStyle.dp(680, VLCStyle.scale))
     readonly property string breadcrumb: {
         const detail = History.viewProp && History.viewProp.title ? History.viewProp.title : ""
         return detail && detail !== title ? title + "  ›  " + detail : title
@@ -105,17 +106,17 @@ T.ToolBar {
                 elide: Text.ElideMiddle
                 font.family: VLCStyle.redesign.fontFamily
                 font.weight: Font.Normal
-                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
                 color: VLCStyle.redesign.color(VLCStyle.redesign.textSecondary,
                                                theme.fg.primary, root.darkTheme)
             }
         }
 
         Widgets.MenuCaption {
-            Layout.row: root.compact ? 1 : 0
-            Layout.column: root.compact ? 0 : 1
+            Layout.row: 0
+            Layout.column: 1
             visible: root.itemCount >= 0
-            text: qsTr("%n items", "", root.itemCount)
+            text: qsTr("%1 item", "%1 items", root.itemCount).arg(root.itemCount)
             color: VLCStyle.redesign.color("#6B6B6B", theme.fg.secondary,
                                            root.darkTheme)
             font.family: VLCStyle.redesign.fontFamily
@@ -125,7 +126,9 @@ T.ToolBar {
         Loader {
             id: actionLoader
             Layout.row: root.compact ? 1 : 0
-            Layout.column: root.compact ? 1 : 2
+            Layout.column: root.compact ? 0 : 3
+            Layout.columnSpan: root.compact ? 2 : 1
+            Layout.preferredWidth: root.compact ? Math.min(implicitWidth, root.availableWidth) : implicitWidth
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             sourceComponent: root.headerAction
             active: sourceComponent !== null
@@ -134,7 +137,7 @@ T.ToolBar {
 
         RowLayout {
             Layout.row: root.compact ? 2 : 0
-            Layout.column: root.compact ? 0 : 3
+            Layout.column: root.compact ? 0 : 2
             Layout.columnSpan: root.compact ? 2 : 1
             Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
             spacing: VLCStyle.dp(10, VLCStyle.scale)
@@ -162,7 +165,7 @@ T.ToolBar {
                 width: VLCStyle.dp(24, VLCStyle.scale)
                 height: width
                 contentItem: Widgets.ScaledImage {
-                    source: "qrc:///redesign/grid.svg"
+                    source: MainCtx.gridView ? "qrc:///redesign/grid.png" : "qrc:///redesign/list.png"
                     fillMode: Image.PreserveAspectFit
                 }
                 onClicked: MainCtx.gridView = !MainCtx.gridView
@@ -206,7 +209,18 @@ T.ToolBar {
                     font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                     Accessible.searchEdit: true
 
-                    onActiveFocusChanged: MainCtx.useGlobalShortcuts = !activeFocus
+                    property bool previousGlobalShortcuts: true
+                    onActiveFocusChanged: {
+                        if (activeFocus) {
+                            previousGlobalShortcuts = MainCtx.useGlobalShortcuts
+                            MainCtx.useGlobalShortcuts = false
+                        } else {
+                            MainCtx.useGlobalShortcuts = previousGlobalShortcuts
+                        }
+                    }
+                    Component.onDestruction: {
+                        if (activeFocus) MainCtx.useGlobalShortcuts = previousGlobalShortcuts
+                    }
                 }
 
                 Binding {

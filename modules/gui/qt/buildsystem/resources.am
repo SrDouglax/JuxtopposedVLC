@@ -1,4 +1,14 @@
 libqt_plugin_la_RES = \
+	pixmaps/redesign/track-video.png \
+	pixmaps/redesign/track-video-active.png \
+	pixmaps/redesign/track-audio.png \
+	pixmaps/redesign/track-audio-active.png \
+	pixmaps/redesign/track-subtitles.png \
+	pixmaps/redesign/track-subtitles-active.png \
+	pixmaps/redesign/track-check-active.png \
+	pixmaps/redesign/grid.png \
+	pixmaps/redesign/list.png \
+	pixmaps/redesign/subtitle-file.png \
 	pixmaps/redesign/playlists.svg \
 	pixmaps/redesign/recent.svg \
 	pixmaps/redesign/add.svg \

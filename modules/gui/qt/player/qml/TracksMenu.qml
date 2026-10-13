@@ -32,9 +32,9 @@ T.Popup {
     property int currentTab: 0
     property bool previousGlobalShortcuts: true
     readonly property var trackTabs: [
-        { title: qsTr("Video"), icon: "qrc:///redesign/video.svg", tab: 2 },
-        { title: qsTr("Audio"), icon: "qrc:///redesign/volume-medium.png", tab: 1 },
-        { title: qsTr("Subtitles"), icon: "qrc:///redesign/subtitles.svg", tab: 0 }
+        { title: qsTr("Video"), icon: "qrc:///redesign/track-video.png", activeIcon: "qrc:///redesign/track-video-active.png", tab: 2 },
+        { title: qsTr("Audio"), icon: "qrc:///redesign/track-audio.png", activeIcon: "qrc:///redesign/track-audio-active.png", tab: 1 },
+        { title: qsTr("Subtitles"), icon: "qrc:///redesign/track-subtitles.png", activeIcon: "qrc:///redesign/track-subtitles-active.png", tab: 0 }
     ]
 
     function ensureVisible(item) {
@@ -94,7 +94,7 @@ T.Popup {
                         spacing: VLCStyle.dp(8, VLCStyle.scale)
                         Item { Layout.fillWidth: true }
                         Image {
-                            source: modelData.icon
+                            source: root.currentTab === modelData.tab ? modelData.activeIcon : modelData.icon
                             visible: root.width >= VLCStyle.dp(320, VLCStyle.scale)
                             sourceSize.width: VLCStyle.dp(24, VLCStyle.scale)
                             sourceSize.height: VLCStyle.dp(24, VLCStyle.scale)
@@ -356,6 +356,7 @@ T.Popup {
     }
 
     component FooterButton: T.Button {
+        implicitWidth: implicitContentWidth
         property bool selected: false
         implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
         focusPolicy: Qt.StrongFocus
@@ -426,14 +427,14 @@ T.Popup {
             radius: VLCStyle.dp(4, VLCStyle.scale)
         }
         contentItem: Item {
-            Text {
+            Image {
                 anchors.left: parent.left
-                anchors.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
+                anchors.leftMargin: VLCStyle.dp(12, VLCStyle.scale)
                 anchors.verticalCenter: parent.verticalCenter
-                text: "✓"
+                source: "qrc:///redesign/track-check-active.png"
                 visible: parent.parent.checked
-                color: VLCStyle.redesign.accent
-                font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
+                width: VLCStyle.dp(24, VLCStyle.scale)
+                height: width
             }
             Text {
                 anchors.left: parent.left
