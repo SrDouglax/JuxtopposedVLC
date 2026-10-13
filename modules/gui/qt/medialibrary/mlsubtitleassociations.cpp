@@ -81,6 +81,8 @@ void MLSubtitleAssociations::setError(const QString& error)
 
 void MLSubtitleAssociations::cancel()
 {
+    if (m_saving)
+        return;
     ++m_revision;
     m_destinations.clear();
     m_sources.clear();
@@ -91,6 +93,8 @@ void MLSubtitleAssociations::cancel()
 
 void MLSubtitleAssociations::open(const MLItemId& target)
 {
+    if (m_saving)
+        return;
     cancel();
     if (!m_ml || !target.isValid() ||
         (target.type != VLC_ML_PARENT_UNKNOWN && target.type != VLC_ML_PARENT_FOLDER &&
@@ -158,6 +162,8 @@ void MLSubtitleAssociations::open(const MLItemId& target)
 
 void MLSubtitleAssociations::openUrl(const QUrl& target)
 {
+    if (m_saving)
+        return;
     cancel();
     const QUrl url = fileUrl(target);
     if (url.isEmpty() || !QFileInfo(url.toLocalFile()).isFile())
@@ -171,13 +177,21 @@ void MLSubtitleAssociations::openUrl(const QUrl& target)
 
 void MLSubtitleAssociations::addFiles(const QVariantList& urls)
 {
+    if (m_busy)
+        return;
     QSet<QString> seen;
+    QVector<Source> pending;
     for (const auto& source : m_sources)
         seen.insert(source.url.toString(QUrl::FullyEncoded));
     for (const auto& value : urls)
     {
         const QUrl url = fileUrl(value);
-        if (url.isEmpty() || seen.contains(url.toString(QUrl::FullyEncoded)))
+        if (url.isEmpty())
+        {
+            setError(tr("Choose existing local subtitle files only."));
+            return;
+        }
+        if (seen.contains(url.toString(QUrl::FullyEncoded)))
             continue;
         const QFileInfo info(url.toLocalFile());
         if (!info.isFile() || !info.isReadable())
@@ -193,8 +207,10 @@ void MLSubtitleAssociations::addFiles(const QVariantList& urls)
             return;
         }
         seen.insert(url.toString(QUrl::FullyEncoded));
-        m_sources.push_back({url, -1, {}});
+        pending.push_back({url, -1, {}});
     }
+    for (const auto& source : pending)
+        m_sources.push_back(source);
     m_error.clear();
     match();
 }
@@ -277,12 +293,24 @@ void MLSubtitleAssociations::save()
     }
 
     m_busy = true;
+    m_saving = true;
     m_error.clear();
     emit changed();
     const quint64 revision = m_revision;
     struct Context { int saved = 0; QString error; };
     m_ml->runOnMLThread<Context>(this,
         [assignments](vlc_medialibrary_t* ml, Context& ctx) {
+            for (const auto& assignment : assignments)
+            {
+                const QUrl subtitle = QUrl::fromEncoded(assignment.subtitleMrl);
+                const QFileInfo file(subtitle.toLocalFile());
+                if (!subtitle.isLocalFile() || !file.isFile() || !file.isReadable())
+                {
+                    ctx.error = QObject::tr("A subtitle file is missing or unreadable: %1")
+                                    .arg(file.fileName());
+                    return;
+                }
+            }
             for (const auto& assignment : assignments)
             {
                 ml_unique_ptr<vlc_ml_media_t> media(assignment.id ?
@@ -320,9 +348,11 @@ void MLSubtitleAssociations::save()
             if (revision != m_revision)
                 return;
             m_busy = false;
+            m_saving = false;
             m_error = ctx.error;
             if (!m_error.isEmpty() && ctx.saved > 0)
-                m_error += tr(" %n earlier association(s) were saved.", nullptr, ctx.saved);
+                m_error += tr(" %n association(s) were saved before this error; those changes remain saved.",
+                              nullptr, ctx.saved);
             emit changed();
             if (ctx.error.isEmpty())
                 emit saved(ctx.saved);

@@ -70,5 +70,6 @@ private:
     QVector<Source> m_sources;
     QString m_error;
     bool m_busy = false;
+    bool m_saving = false;
     quint64 m_revision = 0;
 };
