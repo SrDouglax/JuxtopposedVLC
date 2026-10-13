@@ -1,10 +1,18 @@
 import QtQuick
 import QtQuick.Controls.Basic as Controls
 
+import VLC.MainInterface
 import VLC.Style
 
 Controls.Popup {
     id: root
+    focus: true
+    property bool previousGlobalShortcuts: true
+    onOpened: {
+        previousGlobalShortcuts = MainCtx.useGlobalShortcuts
+        MainCtx.useGlobalShortcuts = false
+    }
+    onClosed: MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     objectName: "sleepTimerMenu"
     required property var timerController
     property int selectedAction: 0

@@ -2,11 +2,19 @@
 import QtQuick
 import QtQuick.Controls.Basic as Controls
 import VLC.Dialogs
+import VLC.MainInterface
 import VLC.Style
 import VLC.Player
 
 Controls.Popup {
     id: root
+    focus: true
+    property bool previousGlobalShortcuts: true
+    onOpened: {
+        previousGlobalShortcuts = MainCtx.useGlobalShortcuts
+        MainCtx.useGlobalShortcuts = false
+    }
+    onClosed: MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     width: 344
     padding: 12
     closePolicy: Controls.Popup.CloseOnEscape | Controls.Popup.CloseOnPressOutside
