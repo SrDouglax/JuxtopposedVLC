@@ -343,7 +343,7 @@ FocusScope{
         rightLimit: root.showCSD ? csdDecorations.x : root.width
         visible: root._showCenterText && !root.resumeVisible
         enabled: visible
-        text: qsTr("VLC Media Player")
+        text: root.title || (Player.isStarted && Player.name.length ? Player.name : qsTr("VLC Media Player"))
         Accessible.name: root.title || text
         colorContext.palette: theme.palette
     }

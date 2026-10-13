@@ -63,7 +63,7 @@ Column {
             Label {
                 visible: model.key === "file-logging"
                 width: parent.width
-                height: visible ? implicitHeight + 8 : 0
+                height: visible ? VLCStyle.dp(30, VLCStyle.scale) : 0
                 text: qsTr("Restart VLC to apply changes to file logging.")
                 wrapMode: Text.WordWrap
                 color: VLCStyle.redesign.textMuted

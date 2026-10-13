@@ -34,6 +34,8 @@ ColumnLayout {
             font.weight: Font.Medium
         }
         T.CheckBox {
+            implicitWidth: VLCStyle.dp(36, VLCStyle.scale)
+            implicitHeight: VLCStyle.dp(20, VLCStyle.scale)
             id: enabledCheck
             objectName: "fxEnabled-" + root.filterId
             focusPolicy: Qt.StrongFocus

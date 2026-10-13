@@ -13,7 +13,19 @@ Dialog {
     focus: true
     closePolicy: Popup.NoAutoClose
     title: qsTr("Shortcuts saved")
-    standardButtons: Dialog.Ok
+    background: Rectangle { color: VLCStyle.palette.isDark ? "#1b1b1b" : "#f4f4f4"; radius: 6; border.color: "#555555" }
+    header: Label {
+        text: root.title
+        color: VLCStyle.palette.isDark ? "#eaeaea" : "#333333"
+        padding: 16
+        font.family: VLCStyle.redesign.fontFamily
+        font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
+    }
+    footer: ActionButton {
+        text: qsTr("OK")
+        primary: true
+        onClicked: root.accept()
+    }
     width: VLCStyle.dp(420, VLCStyle.scale)
     contentItem: Label {
         text: qsTr("Restart VLC to use the new keyboard shortcuts.")

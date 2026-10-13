@@ -23,7 +23,7 @@ T.Popup {
     ]
 
     function openNative(page) {
-        if (effects.transactionActive && !effects.cancel()) return
+        if (audioBridge.transactionActive && !audioBridge.cancel()) return
         if (videoEffects.transactionActive && !videoEffects.cancel()) return
         root.close()
         DialogsProvider.nativeEffectsDialog(page)
@@ -31,14 +31,14 @@ T.Popup {
 
     function switchTab(index) {
         if (currentTab === index) return
-        if (currentTab === 0 && effects.transactionActive && !effects.cancel()) return
+        if (currentTab === 0 && audioBridge.transactionActive && !audioBridge.cancel()) return
         if (currentTab === 1 && videoEffects.transactionActive && !videoEffects.cancel()) return
         currentTab = index
-        if (index === 0) effects.begin()
+        if (index === 0) audioBridge.begin()
         else videoEffects.begin()
     }
 
-    AudioEffects { id: effects; ctx: MainCtx }
+    AudioEffects { id: audioBridge; ctx: MainCtx }
     VideoEffects { id: videoEffects; ctx: MainCtx }
 
     width: Math.min(VLCStyle.dp(400, VLCStyle.scale), parent ? parent.width : VLCStyle.dp(400, VLCStyle.scale))
@@ -52,12 +52,12 @@ T.Popup {
     onOpened: {
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
         MainCtx.useGlobalShortcuts = false
-        if (currentTab === 0) effects.begin()
+        if (currentTab === 0) audioBridge.begin()
         else videoEffects.begin()
         tabs.itemAt(currentTab).forceActiveFocus()
     }
     onClosed: {
-        if (effects.transactionActive) effects.cancel()
+        if (audioBridge.transactionActive) audioBridge.cancel()
         if (videoEffects.transactionActive) videoEffects.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
@@ -85,6 +85,8 @@ T.Popup {
                 font.weight: Font.Medium
             }
             T.Button {
+                implicitWidth: 32
+                implicitHeight: 32
                 text: qsTr("Close")
                 focusPolicy: Qt.StrongFocus
                 onClicked: root.close()
@@ -156,8 +158,8 @@ T.Popup {
 
                 Text {
                     Layout.fillWidth: true
-                    visible: root.currentTab === 0 && !effects.activeAudio
-                    text: effects.lastError || qsTr("Play audio to preview and edit effects.")
+                    visible: root.currentTab === 0 && !audioBridge.activeAudio
+                    text: audioBridge.lastError || qsTr("Play audio to preview and edit audioBridge.")
                     color: VLCStyle.redesign.textSecondary
                     font.family: VLCStyle.redesign.fontFamily
                     font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
@@ -165,11 +167,11 @@ T.Popup {
                 }
 
                 Repeater {
-                    model: root.currentTab === 0 && effects.transactionActive ? root.filterTabs : []
+                    model: root.currentTab === 0 && audioBridge.transactionActive ? root.filterTabs : []
                     FilterSection {
                         required property var modelData
                         Layout.fillWidth: true
-                        effects: effects
+                        effects: audioBridge
                         filterId: modelData.id
                         title: modelData.title
                     }
@@ -178,7 +180,7 @@ T.Popup {
                 Text {
                     Layout.fillWidth: true
                     visible: root.currentTab === 1 && !videoEffects.activeVideo
-                    text: videoEffects.lastError || qsTr("Play video to preview and edit effects.")
+                    text: videoEffects.lastError || qsTr("Play video to preview and edit audioBridge.")
                     color: VLCStyle.redesign.textSecondary
                     font.family: VLCStyle.redesign.fontFamily
                     font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
@@ -218,9 +220,9 @@ T.Popup {
             Layout.fillWidth: true
             Layout.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
             Layout.rightMargin: VLCStyle.dp(16, VLCStyle.scale)
-            visible: root.currentTab === 0 ? effects.lastError.length > 0 && effects.transactionActive
+            visible: root.currentTab === 0 ? audioBridge.lastError.length > 0 && audioBridge.transactionActive
                                            : videoEffects.lastError.length > 0 && videoEffects.transactionActive
-            text: root.currentTab === 0 ? effects.lastError : videoEffects.lastError
+            text: root.currentTab === 0 ? audioBridge.lastError : videoEffects.lastError
             color: "#FF8989"
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -240,7 +242,7 @@ T.Popup {
                 Layout.fillWidth: true
                 implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
                 onClicked: {
-                    if (root.currentTab === 0 ? effects.cancel() : videoEffects.cancel()) root.close()
+                    if (root.currentTab === 0 ? audioBridge.cancel() : videoEffects.cancel()) root.close()
                 }
                 background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(5, VLCStyle.scale) }
                 contentItem: Text {
@@ -256,9 +258,9 @@ T.Popup {
                 text: qsTr("Save")
                 Layout.fillWidth: true
                 implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
-                enabled: root.currentTab === 0 ? effects.transactionActive : videoEffects.transactionActive
+                enabled: root.currentTab === 0 ? audioBridge.transactionActive : videoEffects.transactionActive
                 onClicked: {
-                    if (root.currentTab === 0 ? effects.save() : videoEffects.save()) root.close()
+                    if (root.currentTab === 0 ? audioBridge.save() : videoEffects.save()) root.close()
                 }
                 background: Rectangle { color: parent.enabled ? VLCStyle.redesign.accent : VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(5, VLCStyle.scale) }
                 contentItem: Text {
