@@ -42,6 +42,7 @@ public:
 
     Q_INVOKABLE void reload();
     Q_INVOKABLE void cancel();
+    Q_INVOKABLE void resetAll();
     Q_INVOKABLE bool apply();
     Q_INVOKABLE QVariantMap stageKey(const QString &option, bool global,
                                     int qtKey, int modifiers, bool replaceConflict = false);
@@ -57,7 +58,7 @@ signals:
 private:
     struct Entry {
         QString key, globalKey, action, group;
-        QString current, staged, globalCurrent, globalStaged;
+        QString current, staged, defaults, globalCurrent, globalStaged, globalDefaults;
     };
     struct Change { QString key, before, after; };
 

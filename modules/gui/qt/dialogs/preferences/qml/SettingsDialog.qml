@@ -281,6 +281,12 @@ Dialog {
                     text: qsTr("Keyboard shortcuts")
                     onClicked: shortcutsDialog.open()
                 }
+                ActionButton {
+                    visible: root.selectedCategory === "controls" && !searchField.text.length
+                    width: parent.width
+                    text: qsTr("Reset all keyboard shortcuts")
+                    onClicked: shortcutsDialog.openReset()
+                }
             }
         }
 

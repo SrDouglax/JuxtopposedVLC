@@ -208,9 +208,14 @@ void ShortcutsModel::reload()
                     entry.group = groupFor(entry.key);
                     entry.current = readKey(entry.key);
                     entry.staged = entry.current;
+                    entry.defaults = QString::fromUtf8(item.orig.psz ? item.orig.psz : "");
                     if (!entry.globalKey.isEmpty()) {
                         entry.globalCurrent = readKey(entry.globalKey);
                         entry.globalStaged = entry.globalCurrent;
+                        const QByteArray globalName = entry.globalKey.toUtf8();
+                        const module_config_t *globalItem = config_FindConfig(globalName.constData());
+                        entry.globalDefaults = QString::fromUtf8(
+                            globalItem && globalItem->orig.psz ? globalItem->orig.psz : "");
                     }
                     m_entries.append(entry);
                 }
@@ -251,6 +256,24 @@ void ShortcutsModel::cancel()
         notifyEntry(i);
     }
     if (wasDirty)
+        emit dirtyChanged();
+    setError({});
+    rebuildRows();
+}
+
+void ShortcutsModel::resetAll()
+{
+    if (!m_ctx)
+        return;
+    const bool wasDirty = dirty();
+    for (int i = 0; i < m_entries.size(); ++i) {
+        Entry &entry = m_entries[i];
+        entry.staged = entry.defaults;
+        if (!entry.globalKey.isEmpty())
+            entry.globalStaged = entry.globalDefaults;
+        notifyEntry(i);
+    }
+    if (wasDirty != dirty())
         emit dirtyChanged();
     setError({});
     rebuildRows();

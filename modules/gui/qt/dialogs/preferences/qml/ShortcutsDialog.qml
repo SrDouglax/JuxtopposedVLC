@@ -24,6 +24,7 @@ Dialog {
     anchors.centerIn: parent
 
     property bool saved: false
+    property bool resetRequested: false
     property bool previousGlobalShortcuts: true
     property string captureOption: ""
     property string captureAction: ""
@@ -61,6 +62,11 @@ Dialog {
         }
     }
 
+    function openReset() {
+        if (visible) resetConfirmation.open()
+        else { resetRequested = true; open() }
+    }
+
     onOpened: {
         saved = false
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
@@ -68,9 +74,12 @@ Dialog {
         shortcuts.reload()
         searchField.text = ""
         scopePicker.currentIndex = 0
+        if (resetRequested) resetConfirmation.open()
+        resetRequested = false
     }
     onClosed: {
         capturePopup.close()
+        resetConfirmation.close()
         restartNotice.close()
         if (!saved)
             shortcuts.cancel()
@@ -393,7 +402,7 @@ Dialog {
             height: VLCStyle.dp(60, VLCStyle.scale)
             color: "transparent"
             Label {
-                anchors.left: cancelButton.right
+                anchors.left: resetButton.right
                 anchors.leftMargin: 12
                 anchors.right: saveButton.left
                 anchors.rightMargin: 12
@@ -412,6 +421,15 @@ Dialog {
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Cancel")
                 onClicked: root.reject()
+            }
+            ActionButton {
+                id: resetButton
+                objectName: "shortcutsResetAll"
+                anchors.left: cancelButton.right
+                anchors.leftMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                text: qsTr("Reset all")
+                onClicked: resetConfirmation.open()
             }
             ActionButton {
                 id: saveButton
@@ -449,6 +467,19 @@ Dialog {
         }
         onReplaceRequested: root.assignCaptured(root.capturedKey,
                                                  root.capturedModifiers, true)
+    }
+
+    ShortcutsResetPopup {
+        id: resetConfirmation
+        objectName: "shortcutsResetConfirmation"
+        parent: root.contentItem
+        anchors.centerIn: parent
+        width: Math.min(VLCStyle.dp(420, VLCStyle.scale), root.width - 30)
+        onConfirmed: shortcuts.resetAll()
+        onClosed: {
+            if (root.visible)
+                resetButton.forceActiveFocus(Qt.PopupFocusReason)
+        }
     }
 
     ShortcutsRestartNotice {

@@ -180,7 +180,7 @@ T.Popup {
                 Text {
                     Layout.fillWidth: true
                     visible: root.currentTab === 1 && !videoEffects.activeVideo
-                    text: videoEffects.lastError || qsTr("Play video to preview and edit audioBridge.")
+                    text: videoEffects.lastError || qsTr("Play video to preview and edit effects.")
                     color: VLCStyle.redesign.textSecondary
                     font.family: VLCStyle.redesign.fontFamily
                     font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
