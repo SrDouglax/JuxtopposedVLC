@@ -31,8 +31,11 @@ T.Popup {
 
     property int currentTab: 0
     property bool previousGlobalShortcuts: true
-    readonly property var tabNames: [qsTr("Subtitles"), qsTr("Audio"),
-                                     qsTr("Video"), qsTr("Playback")]
+    readonly property var trackTabs: [
+        { title: qsTr("Video"), icon: "qrc:///redesign/video.svg", tab: 2 },
+        { title: qsTr("Audio"), icon: "qrc:///redesign/volume-medium.png", tab: 1 },
+        { title: qsTr("Subtitles"), icon: "qrc:///redesign/subtitles.svg", tab: 0 }
+    ]
 
     function ensureVisible(item) {
         const top = item.mapToItem(scroll, 0, 0).y
@@ -43,50 +46,69 @@ T.Popup {
                                        scroll.contentY + top + item.height - scroll.height)
     }
 
-    width: Math.min(VLCStyle.dp(388, VLCStyle.scale), parent ? parent.width : VLCStyle.dp(388, VLCStyle.scale))
+    width: Math.min(VLCStyle.dp(400, VLCStyle.scale), parent ? parent.width : VLCStyle.dp(400, VLCStyle.scale))
     height: Math.min(VLCStyle.dp(500, VLCStyle.scale), parent ? Math.max(0, parent.height - VLCStyle.dp(48, VLCStyle.scale)) : VLCStyle.dp(500, VLCStyle.scale))
-    padding: VLCStyle.dp(12, VLCStyle.scale)
+    padding: 0
     focus: true
     closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutside
 
     onOpened: {
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
         MainCtx.useGlobalShortcuts = false
-        tabs.itemAt(currentTab).forceActiveFocus()
+        tabs.itemAt(currentTab === 3 ? 0 : 2 - currentTab).forceActiveFocus()
     }
     onClosed: MainCtx.useGlobalShortcuts = previousGlobalShortcuts
 
     background: Rectangle {
-        color: VLCStyle.redesign.controlBackground
+        color: VLCStyle.redesign.windowBackground
         radius: VLCStyle.dp(6, VLCStyle.scale)
-        border.width: VLCStyle.dp(1, VLCStyle.scale)
-        border.color: VLCStyle.redesign.border
     }
 
     contentItem: ColumnLayout {
-        spacing: VLCStyle.dp(10, VLCStyle.scale)
-
-        Text {
-            Layout.fillWidth: true
-            text: qsTr("Tracks and playback")
-            color: VLCStyle.redesign.textPrimary
-            font.family: VLCStyle.redesign.fontFamily
-            font.pixelSize: VLCStyle.dp(15, VLCStyle.scale)
-            font.weight: Font.DemiBold
-        }
+        spacing: 0
 
         RowLayout {
             Layout.fillWidth: true
-            spacing: VLCStyle.dp(4, VLCStyle.scale)
+            spacing: 0
             Repeater {
                 id: tabs
-                model: root.tabNames
-                delegate: PanelButton {
-                    objectName: "tracksTab" + index
+                model: root.trackTabs
+                delegate: T.Button {
+                    objectName: "tracksTab" + modelData.tab
                     Layout.fillWidth: true
-                    text: modelData
-                    checked: root.currentTab === index
-                    onClicked: root.currentTab = index
+                    implicitHeight: VLCStyle.dp(58, VLCStyle.scale)
+                    focusPolicy: Qt.StrongFocus
+                    Accessible.name: modelData.title
+                    onClicked: root.currentTab = modelData.tab
+                    background: Rectangle {
+                        color: parent.hovered ? "#151515" : "transparent"
+                        Rectangle {
+                            anchors.bottom: parent.bottom
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            width: parent.width - VLCStyle.dp(24, VLCStyle.scale)
+                            height: VLCStyle.dp(2, VLCStyle.scale)
+                            color: root.currentTab === modelData.tab ? VLCStyle.redesign.accent : "transparent"
+                        }
+                    }
+                    contentItem: RowLayout {
+                        spacing: VLCStyle.dp(8, VLCStyle.scale)
+                        Item { Layout.fillWidth: true }
+                        Image {
+                            source: modelData.icon
+                            visible: root.width >= VLCStyle.dp(320, VLCStyle.scale)
+                            sourceSize.width: VLCStyle.dp(24, VLCStyle.scale)
+                            sourceSize.height: VLCStyle.dp(24, VLCStyle.scale)
+                            Layout.preferredWidth: VLCStyle.dp(24, VLCStyle.scale)
+                            Layout.preferredHeight: VLCStyle.dp(24, VLCStyle.scale)
+                        }
+                        Text {
+                            text: modelData.title
+                            color: root.currentTab === modelData.tab ? VLCStyle.redesign.accent : VLCStyle.redesign.textMuted
+                            font.family: VLCStyle.redesign.fontFamily
+                            font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                        }
+                        Item { Layout.fillWidth: true }
+                    }
                 }
             }
         }
@@ -101,6 +123,8 @@ T.Popup {
             id: scroll
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.leftMargin: VLCStyle.dp(12, VLCStyle.scale)
+            Layout.rightMargin: VLCStyle.dp(12, VLCStyle.scale)
             clip: true
             contentHeight: page.implicitHeight
             boundsBehavior: Flickable.StopAtBounds
@@ -115,8 +139,8 @@ T.Popup {
                     Layout.fillWidth: true
                     spacing: VLCStyle.dp(8, VLCStyle.scale)
 
-                    SectionTitle { text: qsTr("Subtitle track") }
-                    PanelButton {
+                    SectionTitle { text: qsTr("Embedded tracks") }
+                    TrackRow {
                         objectName: "subtitleOffButton"
                         Layout.fillWidth: true
                         text: qsTr("Off")
@@ -149,6 +173,7 @@ T.Popup {
                             allowOff: true
                         }
                     }
+                    SectionDivider { }
                     PanelButton {
                         objectName: "addSubtitleButton"
                         Layout.fillWidth: true
@@ -169,18 +194,41 @@ T.Popup {
                     Layout.fillWidth: true
                     spacing: VLCStyle.dp(8, VLCStyle.scale)
 
-                    SectionTitle { text: qsTr("Audio track") }
+                    SectionTitle { text: qsTr("Embedded tracks") }
+                    TrackRow {
+                        objectName: "audioOffButton"
+                        Layout.fillWidth: true
+                        text: qsTr("None")
+                        checked: {
+                            for (let i = 0; i < audioRows.count; ++i) {
+                                const row = audioRows.itemAt(i)
+                                if (row && row.checked)
+                                    return false
+                            }
+                            return true
+                        }
+                        onClicked: {
+                            for (let i = 0; i < audioRows.count; ++i) {
+                                const row = audioRows.itemAt(i)
+                                if (row && row.checked)
+                                    row.disable()
+                            }
+                        }
+                    }
                     EmptyLabel {
                         visible: Player.audioTracks.count === 0
                         text: qsTr("No audio tracks in this media")
                     }
                     Repeater {
+                        id: audioRows
                         model: Player.audioTracks
                         delegate: TrackChoice {
                             objectName: "audioTrack" + index
                             Layout.fillWidth: true
+                            allowOff: true
                         }
                     }
+                    SectionDivider { }
                     SectionTitle { text: qsTr("Output device") }
                     EmptyLabel {
                         visible: outputRows.count === 0
@@ -194,6 +242,7 @@ T.Popup {
                             Layout.fillWidth: true
                         }
                     }
+                    SectionDivider { }
                     DelayControl {
                         objectName: "audioDelayControl"
                         Layout.fillWidth: true
@@ -208,7 +257,7 @@ T.Popup {
                     Layout.fillWidth: true
                     spacing: VLCStyle.dp(8, VLCStyle.scale)
 
-                    SectionTitle { text: qsTr("Video track") }
+                    SectionTitle { text: qsTr("Embedded tracks") }
                     EmptyLabel {
                         visible: Player.videoTracks.count === 0
                         text: qsTr("No video tracks in this media")
@@ -277,6 +326,52 @@ T.Popup {
                 }
             }
         }
+
+        Rectangle {
+            Layout.fillWidth: true
+            height: VLCStyle.dp(1, VLCStyle.scale)
+            color: VLCStyle.redesign.separator
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.leftMargin: VLCStyle.dp(12, VLCStyle.scale)
+            Layout.rightMargin: VLCStyle.dp(12, VLCStyle.scale)
+            Layout.bottomMargin: VLCStyle.dp(8, VLCStyle.scale)
+            spacing: VLCStyle.dp(8, VLCStyle.scale)
+
+            FooterButton {
+                objectName: "playbackFooterButton"
+                text: qsTr("Playback")
+                selected: root.currentTab === 3
+                onClicked: root.currentTab = 3
+            }
+            Item { Layout.fillWidth: true }
+            FooterButton {
+                objectName: "showPreferencesButton"
+                text: qsTr("Show Preferences")
+                onClicked: DialogsProvider.prefsDialog()
+            }
+        }
+    }
+
+    component FooterButton: T.Button {
+        property bool selected: false
+        implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
+        focusPolicy: Qt.StrongFocus
+        background: Rectangle {
+            color: parent.hovered || parent.activeFocus ? "#151515" : "transparent"
+            radius: VLCStyle.dp(4, VLCStyle.scale)
+        }
+        contentItem: Text {
+            text: parent.text
+            color: parent.selected ? VLCStyle.redesign.accent : VLCStyle.redesign.textMuted
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: VLCStyle.dp(8, VLCStyle.scale)
+            rightPadding: VLCStyle.dp(8, VLCStyle.scale)
+            font.family: VLCStyle.redesign.fontFamily
+            font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
+        }
     }
 
     component PanelButton: T.Button {
@@ -303,10 +398,15 @@ T.Popup {
     }
 
     component SectionTitle: Text {
-        color: VLCStyle.redesign.textPrimary
+        color: "#6B6B6B"
         font.family: VLCStyle.redesign.fontFamily
-        font.weight: Font.DemiBold
-        font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
+        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+    }
+
+    component SectionDivider: Rectangle {
+        Layout.fillWidth: true
+        implicitHeight: VLCStyle.dp(1, VLCStyle.scale)
+        color: VLCStyle.redesign.separator
     }
 
     component EmptyLabel: Text {
@@ -317,7 +417,39 @@ T.Popup {
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
     }
 
-    component TrackChoice: PanelButton {
+    component TrackRow: T.Button {
+        implicitHeight: VLCStyle.dp(40, VLCStyle.scale)
+        focusPolicy: Qt.StrongFocus
+        onActiveFocusChanged: if (activeFocus) root.ensureVisible(this)
+        background: Rectangle {
+            color: parent.hovered || parent.activeFocus ? "#151515" : "transparent"
+            radius: VLCStyle.dp(4, VLCStyle.scale)
+        }
+        contentItem: Item {
+            Text {
+                anchors.left: parent.left
+                anchors.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
+                anchors.verticalCenter: parent.verticalCenter
+                text: "✓"
+                visible: parent.parent.checked
+                color: VLCStyle.redesign.accent
+                font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
+            }
+            Text {
+                anchors.left: parent.left
+                anchors.leftMargin: VLCStyle.dp(40, VLCStyle.scale)
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                text: parent.parent.text
+                color: VLCStyle.redesign.textSecondary
+                elide: Text.ElideRight
+                font.family: VLCStyle.redesign.fontFamily
+                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+            }
+        }
+    }
+
+    component TrackChoice: TrackRow {
         property bool allowOff: false
         function disable() { model.checked = false }
 
