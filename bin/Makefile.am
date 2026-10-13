@@ -175,3 +175,7 @@ vlc_waveform_SOURCES = $(top_srcdir)/extras/juxtopposed/waveform.c
 vlc_waveform_CPPFLAGS = $(AM_CPPFLAGS)
 vlc_waveform_CFLAGS = $(AM_CFLAGS) -std=c11 -D_DEFAULT_SOURCE
 vlc_waveform_LDADD = ../lib/libvlc.la -lm
+
+if HAVE_WIN32
+vlc_waveform_LDFLAGS = -municode
+endif

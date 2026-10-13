@@ -69,6 +69,10 @@ Controls.Popup {
             spacing: 8
             Controls.SpinBox {
                 id: durationInput
+                palette.text: "#eaeaea"
+                palette.base: "#101010"
+                palette.button: "#202020"
+                palette.buttonText: "#969696"
                 objectName: "sleepTimerMinutes"
                 from: 1
                 to: 720

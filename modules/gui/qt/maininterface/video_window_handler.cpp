@@ -86,7 +86,9 @@ void VideoWindowHandler::requestVideoState(  unsigned i_arg )
 
 void VideoWindowHandler::setVideoSize(unsigned int w, unsigned int h, Qt::WindowStates currentStates)
 {
-    if (!m_window)
+    // Filter and crop reconfiguration can briefly announce an unknown size.
+    // Keep the current geometry until the subsequent valid source size arrives.
+    if (!m_window || w == 0 || h == 0)
         return;
     Qt::WindowStates states = m_window->windowStates();
 
@@ -167,9 +169,8 @@ void VideoWindowHandler::setVideoSize(unsigned int w, unsigned int h, Qt::Window
                         const auto pslSize = playerSpecializationLoader->size().toSize(); // QML items have logical size too
                         const auto windowSize = m_window->size();
 
-                        const auto dW = (windowSize.width() - pslSize.width());
-                        const auto dH = (windowSize.height() - pslSize.height());
-                        assert(dW >= 0 && dH >= 0); // psl can not be bigger than the window
+                        const auto dW = std::max(0, windowSize.width() - pslSize.width());
+                        const auto dH = std::max(0, windowSize.height() - pslSize.height());
 
                         msg_Dbg( m_intf, "Autoresize interface window size compensation: %ix%i", dW, dH );
 

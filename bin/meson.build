@@ -51,8 +51,13 @@ if build_vlc and (host_system != 'darwin' or have_osx) and not have_win_store an
         win_subsystem: 'windows'
     )
 
+    waveform_link_args = []
+    if host_system == 'windows' and cc.get_argument_syntax() == 'gcc'
+        waveform_link_args += ['-municode']
+    endif
     executable('vlc-waveform',
         '../extras/juxtopposed/waveform.c',
+        link_args: waveform_link_args,
         link_with: [libvlc],
         include_directories: [vlc_include_dirs],
         dependencies: [m_lib],
