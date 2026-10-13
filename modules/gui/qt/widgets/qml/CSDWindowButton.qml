@@ -30,6 +30,8 @@ T.Button {
     property color color
     property color hoverColor
     property string iconTxt: ""
+    property url iconSource: ""
+    property string description: ""
     property bool showHovered: false
     property bool isThemeDark: false
     property bool externalPressed: false
@@ -37,7 +39,10 @@ T.Button {
     readonly property bool _paintHovered: control.hovered || showHovered
 
     padding: 0
-    width: VLCStyle.dp(40, VLCStyle.scale)
+    width: VLCStyle.dp(36, VLCStyle.scale)
+
+    Accessible.name: description
+    Accessible.onPressAction: control.clicked()
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -62,8 +67,16 @@ T.Button {
     }
 
     contentItem: Item {
+        Image {
+            anchors.centerIn: parent
+            width: VLCStyle.redesign.iconSize
+            height: width
+            source: control.iconSource
+            visible: source.toString() !== ""
+        }
         Widgets.IconLabel {
             id: icon
+            visible: control.iconSource.toString() === ""
             anchors.centerIn: parent
             text: control.iconTxt
 

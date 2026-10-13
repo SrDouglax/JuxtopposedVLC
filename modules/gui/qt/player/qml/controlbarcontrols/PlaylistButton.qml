@@ -24,7 +24,8 @@ import VLC.Style
 import VLC.Util
 
 
-Widgets.IconToolButton {
+RedesignIconButton {
+    iconSource: "qrc:///redesign/queue.svg"
     id: playlistBtn
 
     text: VLCIcons.playlist

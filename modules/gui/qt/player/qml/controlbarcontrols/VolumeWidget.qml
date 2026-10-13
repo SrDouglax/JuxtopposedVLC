@@ -55,7 +55,7 @@ T.Pane {
         id: volumeWidget
 
         anchors.fill: parent
-        spacing: 0
+        spacing: VLCStyle.redesign.controlInnerSpacing
 
         Widgets.IconToolButton{
             id: volumeBtn
@@ -66,13 +66,31 @@ T.Pane {
                 if (_player.muted)
                     return VLCIcons.volume_muted
                 else if (_player.volume === 0)
-                    return VLCIcons.volume_zero
+                    return VLCIcons.volume_muted
                 else if (_player.volume < .33)
                     return VLCIcons.volume_low
                 else if (_player.volume <= .66)
                     return VLCIcons.volume_medium
                 else
                     return VLCIcons.volume_high
+            }
+            font.pixelSize: VLCStyle.redesign.iconSize
+            contentItem: Item {
+                implicitWidth: VLCStyle.redesign.iconSize
+                implicitHeight: VLCStyle.redesign.iconSize
+                Image {
+                    anchors.fill: parent
+                    source: "qrc:///redesign/volume.svg"
+                    mirror: true // Figma rotate(180deg) + scaleY(-1)
+                    visible: !root._player.muted && root._player.volume > .66
+                }
+                Widgets.IconLabel {
+                    anchors.fill: parent
+                    text: volumeBtn.text
+                    font: volumeBtn.font
+                    color: volumeBtn.color
+                    visible: root._player.muted || root._player.volume <= .66
+                }
             }
             description: qsTr("Mute")
 
@@ -111,7 +129,7 @@ T.Pane {
             }
 
             Layout.fillHeight: true
-            Layout.margins: VLCStyle.margin_xsmall
+            Layout.margins: 0
 
             property bool _inhibitPlayerVolumeUpdate: false
 

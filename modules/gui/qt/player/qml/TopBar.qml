@@ -69,7 +69,7 @@ FocusScope{
 
     property alias resumeVisible: resumeDialog.visible
 
-    property alias playlistVisible: playlistButton.checked
+    property bool playlistVisible: false
 
     // Signals
 
@@ -96,7 +96,6 @@ FocusScope{
     onTopMarginChanged: _layout()
     onSideMarginChanged: _layout()
 
-    on_ShowTopBarChanged: _layout()
     on_ShowCenterTextChanged: _layout()
 
     // Functions
@@ -109,8 +108,8 @@ FocusScope{
 
         if (c2 === csdDecorations) {
             //csdDecorations.implicitHeight gets overwritten when the height is set,
-            //VLCStyle.icon_normal is its initial value
-            c2Height = VLCStyle.icon_normal
+            //VLCStyle.redesign.topbarHeight is its initial value
+            c2Height = VLCStyle.redesign.topbarHeight
         }
 
         const lineHeight = Math.max(c1Height, c2Height)
@@ -136,8 +135,8 @@ FocusScope{
         if (_showCenterText) {
             //place everything on one line
             //csdDecorations.implicitHeight gets overwritten when the height is set,
-            //VLCStyle.icon_normal is its initial value
-            const lineHeight = Math.max(VLCStyle.redesign.topbarHeight, logoOrResume.implicitHeight, playlistGroup.implicitHeight)
+            //VLCStyle.redesign.topbarHeight is its initial value
+            const lineHeight = Math.max(VLCStyle.redesign.topbarHeight, logoOrResume.implicitHeight)
 
             centerTitleText.y = topMargin
             centerTitleText.height = lineHeight
@@ -148,17 +147,11 @@ FocusScope{
             logoOrResume.height = lineHeight
             logoOrResume.anchors.topMargin = topMargin
 
-            playlistGroup.height = lineHeight
-            playlistGroup.anchors.topMargin = topMargin
-            playlistGroup.extraRightMargin = Qt.binding(function() { return width - csdDecorations.x })
-
 
             implicitHeight = lineHeight
             offset += lineHeight
 
         } else {
-            playlistGroup.extraRightMargin = 0
-
             let left = undefined
             let right = undefined
             let logoPlaced = false
@@ -189,10 +182,7 @@ FocusScope{
                 left = undefined
             }
 
-            if (_showTopBar)
-                right = playlistGroup
-            else
-                right = undefined
+            right = undefined
 
             offset += _layoutLine(left, right, offset)
         }
@@ -301,7 +291,6 @@ FocusScope{
                 focus: true
 
                 Navigation.parentItem: root
-                Navigation.rightItem: menuSelector
                 onClicked: root.backRequested()
 
                 onHoveredChanged: root.requestLockUnlockAutoHide(hovered)
@@ -326,7 +315,7 @@ FocusScope{
             //add aditional margin so it align with menubar text when visible (see MenuBar.qml)
             anchors.leftMargin: VLCStyle.margin_xsmall
 
-            maxWidth: ((root.showCSD && !root.pinControls) ? csdDecorations : playlistGroup).x
+            maxWidth: (root.showCSD ? csdDecorations.x : root.width)
                 - VLCStyle.applicationHorizontalMargin
                 - VLCStyle.margin_large
 
@@ -350,7 +339,7 @@ FocusScope{
         id: centerTitleText
         centerWithinBounds: true
         leftLimit: logoOrResume.x + logoOrResume.width
-        rightLimit: playlistGroup.x
+        rightLimit: root.showCSD ? csdDecorations.x : root.width
         visible: root._showCenterText && !root.resumeVisible
         enabled: visible
         text: qsTr("VLC Media Player")
@@ -379,13 +368,11 @@ FocusScope{
         anchors.right: parent.right
 
         focus: false
-        height: VLCStyle.icon_normal
+        height: VLCStyle.redesign.topbarHeight
         active: root.showCSD
         enabled: root.showCSD
         visible: root.showCSD
-        source:  VLCStyle.palette.hasCSDImage
-            ? "qrc:///qt/qml/VLC/Widgets/CSDThemeButtonSet.qml"
-            : "qrc:///qt/qml/VLC/Widgets/CSDWindowButtonSet.qml"
+        source: "qrc:///qt/qml/VLC/Widgets/CSDWindowButtonSet.qml"
 
         Connections {
             target: csdDecorations.item
@@ -394,106 +381,4 @@ FocusScope{
         }
     }
 
-    Row {
-        id: playlistGroup
-
-        property int extraRightMargin: 0
-
-        focus: true
-        spacing: VLCStyle.margin_xxsmall
-
-        anchors.top: parent.top
-        anchors.right: parent.right
-        anchors.rightMargin: root._sideMargin + extraRightMargin
-
-        visible: root._showTopBar
-
-        Widgets.IconToolButton {
-            id: menuSelector
-            color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
-                                           colorContext.fg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
-            backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
-                                                     colorContext.bg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
-            radius: VLCStyle.redesign.controlRadius
-            contentItem: Image {
-                source: "qrc:///redesign/menu.svg"
-                sourceSize: Qt.size(VLCStyle.redesign.iconSize, VLCStyle.redesign.iconSize)
-                fillMode: Image.PreserveAspectFit
-            }
-
-            anchors.verticalCenter: parent.verticalCenter
-            visible: !root.showToolbar
-            enabled: visible
-            focus: visible
-            font.pixelSize: VLCStyle.redesign.iconSize
-
-            width: VLCStyle.bannerButton_width
-            height: VLCStyle.bannerButton_height
-
-            text: VLCIcons.more
-            description: qsTr("Menu")
-
-            AccessibleCompat.id: "topBarMenuButton"
-
-            checked: contextMenu.shown
-
-            Navigation.parentItem: root
-            Navigation.leftItem: backBtn
-            Navigation.rightItem: playlistButton
-
-            onClicked: contextMenu.popup(this.mapToGlobal(0, height))
-
-            onHoveredChanged: root.requestLockUnlockAutoHide(hovered)
-
-            Menus.QmlGlobalMenu {
-                id: contextMenu
-
-                ctx: MainCtx
-
-                onAboutToShow: root.requestLockUnlockAutoHide(true)
-                onAboutToHide: root.requestLockUnlockAutoHide(false)
-            }
-
-            Connections {
-                target: root
-
-                function onForceUnlock() {
-                    contextMenu.close()
-                }
-            }
-        }
-
-        PlaylistPane.PlaylistToggleButton {
-            id: playlistButton
-            color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
-                                           colorContext.fg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
-            backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
-                                                     colorContext.bg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
-            radius: VLCStyle.redesign.controlRadius
-
-            anchors.verticalCenter: parent.verticalCenter
-            objectName: ControlListModel.PLAYLIST_BUTTON
-            font.pixelSize: VLCStyle.redesign.iconSize
-            text: VLCIcons.playlist
-            description: qsTr("Play Queue")
-
-            AccessibleCompat.id: "topBarPlayqueueButton"
-
-            focus: root.showToolbar
-
-            width: VLCStyle.bannerButton_width
-            height: VLCStyle.bannerButton_height
-
-            plListView: root.plListView
-            
-            Navigation.parentItem: root
-            Navigation.leftItem: menuSelector.visible ? menuSelector : backBtn
-
-            onClicked: togglePlaylistVisibility()
-
-            Accessible.onToggleAction:togglePlaylistVisibility()
-
-            onHoveredChanged: root.requestLockUnlockAutoHide(hovered)
-        }
-    }
 }

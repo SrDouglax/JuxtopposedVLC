@@ -225,6 +225,51 @@
       ],
       "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/volume-fill.svg",
       "proposedQrcURL": "qrc:/redesign/volume-fill.svg"
+    },
+    {
+      "name": "equalizer",
+      "originalFilename": "432a4.svg",
+      "originalSymbol": "imgFrame51",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/432a4.svg",
+      "sha256": "2529f9f3677d28344629769650c36a445b0eae6f63a1ea6f3228a291a33de297",
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/equalizer.svg",
+      "proposedQrcURL": "qrc:/redesign/equalizer.svg"
+    },
+    {
+      "name": "subtitles",
+      "originalFilename": "3ffd5.svg",
+      "originalSymbol": "imgFrame52",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/3ffd5.svg",
+      "sha256": "7848b8707c85be33afdd8a9eb4ca40bf734b4a145fd9c7488e2639a545870f7f",
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/subtitles.svg",
+      "proposedQrcURL": "qrc:/redesign/subtitles.svg"
+    },
+    {
+      "name": "player-settings",
+      "originalFilename": "e80b5.svg",
+      "originalSymbol": "imgFrame53",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/e80b5.svg",
+      "sha256": "247aa8b8faa8475fa70cd4be01fc5584113cb02270d0ad20472fc867cff29af8",
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/player-settings.svg",
+      "proposedQrcURL": "qrc:/redesign/player-settings.svg"
+    },
+    {
+      "name": "queue",
+      "originalFilename": "0eda2.svg",
+      "originalSymbol": "imgFrame54",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/0eda2.svg",
+      "sha256": "456d37af09e1d6b968e87f7e9cd53ff45bf1a8de6765e9eccfc0a7c3aee20e20",
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/queue.svg",
+      "proposedQrcURL": "qrc:/redesign/queue.svg"
+    },
+    {
+      "name": "volume",
+      "originalFilename": "bf521.svg",
+      "originalSymbol": "imgFrame48",
+      "originalURL": "https://www.figma.com/api/mcp/asset/1c0dfb2f-37ac-4987-bfb2-6d845609d335/bf521.svg",
+      "sha256": "372ae6acc727cc5a75c8d7705f604afe3fce45a2359051181003dcbd603433b8",
+      "proposedRepositoryTarget": "modules/gui/qt/pixmaps/redesign/volume.svg",
+      "proposedQrcURL": "qrc:/redesign/volume.svg"
     }
   ],
   "font": {

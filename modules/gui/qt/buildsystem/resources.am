@@ -18,6 +18,11 @@ libqt_plugin_la_RES = \
 	pixmaps/redesign/volume-background.svg \
 	pixmaps/redesign/volume-fill.svg \
 	pixmaps/redesign/volume-mask.svg \
+	pixmaps/redesign/volume.svg \
+	pixmaps/redesign/queue.svg \
+	pixmaps/redesign/player-settings.svg \
+	pixmaps/redesign/subtitles.svg \
+	pixmaps/redesign/equalizer.svg \
 	pixmaps/VLCIcons.ttf \
 	pixmaps/addons/addon_default.svg \
 	pixmaps/addons/addon_broken.svg \

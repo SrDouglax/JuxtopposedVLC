@@ -18,31 +18,25 @@
 import QtQuick
 import QtQuick.Window
 
-
 import VLC.MainInterface
+import VLC.Player
 import VLC.Style
 
 Row {
-    id: windowButtonGroup
-
+    id: root
     spacing: 0
     padding: 0
-
     width: implicitWidth
 
     property color color: theme.fg.primary
     property color hoverColor: theme.bg.primary.alpha(0.5)
 
-    readonly property bool useWinIcons: ((MainCtx.osName === MainCtx.Windows)&&(MainCtx.osVersion >= 10))
-
     readonly property bool buttonHovered: {
-        let h = false
         for (let i = 0; i < repeater.count; ++i) {
-            const button = repeater.itemAt(i)
-            h = h || button.hovered || button.showHovered
+            const group = repeater.itemAt(i)
+            if (group.buttonHovered) return true
         }
-
-        return h
+        return false
     }
 
     readonly property ColorContext colorContext: ColorContext {
@@ -52,81 +46,71 @@ Row {
 
     Repeater {
         id: repeater
-
         model: MainCtx.csdButtonModel.windowCSDButtons
 
-        CSDWindowButton {
+        Row {
             required property var modelData
+            height: root.height
+            readonly property bool buttonHovered: windowButton.hovered || windowButton.showHovered || fullscreenButton.hovered
 
-            height: windowButtonGroup.height
-
-            showHovered: modelData.showHovered
-
-            externalPressed: modelData.externalPressed
-
-            color: (modelData.type === CSDButton.Close && (hovered || modelData.showHovered))
-                   ? "white"
-                   : windowButtonGroup.color
-
-            hoverColor: (modelData.type === CSDButton.Close) ? "red" : windowButtonGroup.hoverColor
-
-            isThemeDark: theme.palette.isDark
-
-            iconTxt:{
-                switch (modelData.type) {
-                case CSDButton.Minimize:
-                {
-                    if (useWinIcons)
-                        return "\uE921"
-
-                    else
-                        return VLCIcons.window_minimize
+            CSDWindowButton {
+                id: windowButton
+                height: root.height
+                showHovered: modelData.showHovered
+                externalPressed: modelData.externalPressed
+                color: root.color
+                hoverColor: modelData.type === CSDButton.Close ? "#c42b1c" : root.hoverColor
+                isThemeDark: theme.palette.isDark
+                iconSource: {
+                    switch (modelData.type) {
+                    case CSDButton.Minimize: return "qrc:///redesign/minimize.svg"
+                    case CSDButton.MaximizeRestore: return "qrc:///redesign/maximize.svg"
+                    case CSDButton.Close: return "qrc:///redesign/close.svg"
+                    }
+                    return ""
                 }
-
-                case CSDButton.MaximizeRestore:
-                {
-                    if (useWinIcons)
-                        return (MainCtx.intfMainWindow.visibility === Window.Maximized)
-                                ? "\uE923"
-                                : "\uE922"
-
-                    else
-                        return (MainCtx.intfMainWindow.visibility === Window.Maximized)
-                                ? VLCIcons.window_restore
-                                : VLCIcons.window_maximize
+                description: {
+                    switch (modelData.type) {
+                    case CSDButton.Minimize: return qsTr("Minimize")
+                    case CSDButton.MaximizeRestore:
+                        return MainCtx.intfMainWindow.visibility === Window.Maximized ? qsTr("Restore") : qsTr("Maximize")
+                    case CSDButton.Close: return qsTr("Close")
+                    }
+                    return ""
                 }
+                onClicked: modelData.click()
 
-                case CSDButton.Close:
-                {
-                    if (useWinIcons)
-                        return "\uE8BB"
-
-                    else
-                        return VLCIcons.window_close
+                // Preserve the native Windows hit-test/snap rectangles.
+                onWidthChanged: Qt.callLater(updateRect)
+                onHeightChanged: Qt.callLater(updateRect)
+                onXChanged: Qt.callLater(updateRect)
+                Component.onCompleted: Qt.callLater(updateRect)
+                Connections {
+                    target: VLCStyle
+                    function onAppWidthChanged() { Qt.callLater(windowButton.updateRect) }
+                    function onAppHeightChanged() { Qt.callLater(windowButton.updateRect) }
                 }
+                function updateRect() {
+                    const point = mapToItem(null, 0, 0)
+                    modelData.rect = Qt.rect(point.x, point.y, width, height)
                 }
-                console.assert(false, "unreachable")
             }
 
-            onClicked: modelData.click()
-
-            // handles VLCStyle.scale changes
-            onWidthChanged: Qt.callLater(updateRect)
-            onHeightChanged: Qt.callLater(updateRect)
-
-            Connections {
-                target: VLCStyle
-
-                // handle window resize
-                function onAppWidthChanged() { Qt.callLater(updateRect) }
-                function onAppHeightChanged() { Qt.callLater(updateRect) }
-            }
-
-            function updateRect() {
-                const point = mapToItem(null, 0, 0)
-                const rect = Qt.rect(point.x, point.y, width, height)
-
-                modelData.rect = rect
+            CSDWindowButton {
+                id: fullscreenButton
+                height: root.height
+                visible: modelData.type === CSDButton.MaximizeRestore
+                color: root.color
+                hoverColor: root.hoverColor
+                isThemeDark: theme.palette.isDark
+                iconSource: "qrc:///redesign/fullscreen.svg"
+                description: qsTr("Fullscreen")
+                onClicked: {
+                    if (Player.hasVideoOutput)
+                        Player.fullscreen = !Player.fullscreen
+                    else
+                        MainCtx.toggleInterfaceFullScreen()
+                }
             }
         }
     }

@@ -49,7 +49,7 @@ T.ToolBar {
 
     //whether the navigation pannel is actually visible or not
     property alias navigationVisible: navigationVisibilty.checked
-    property alias playqueueVisible: playlistBtn.checked
+    property bool playqueueVisible: false
 
     property alias navigationButton: navigationVisibilty
 
@@ -77,7 +77,6 @@ T.ToolBar {
 
         implicitHeight: VLCStyle.redesign.topbarHeight
         implicitWidth: navigationButtons.implicitWidth
-                     + playqueueButtonsTop.implicitWidth
                      + VLCStyle.margin_xsmall * 2
 
         Item {
@@ -101,7 +100,6 @@ T.ToolBar {
                 spacing: VLCStyle.dp(7, VLCStyle.scale)
 
                 Navigation.parentItem: root
-                Navigation.rightItem: playqueueButtonsTop
 
                 Widgets.IconToolButton {
                     id: navigationVisibilty
@@ -161,7 +159,6 @@ T.ToolBar {
 
                     Navigation.parentItem: navigationButtons
                     Navigation.leftItem: navigationVisibilty
-                    Navigation.rightItem: playlistBtn
                 }
 
                 Widgets.BannerCone {
@@ -175,83 +172,9 @@ T.ToolBar {
             }
         }
 
-        Item {
-            id: playqueueButtonsTop
-
-            implicitWidth: playqueueButtonsTopRow.implicitWidth
-
-            anchors {
-                right: parent.right
-                top: parent.top
-                bottom: parent.bottom
-                //put the buttons below the CSD if we have enough space
-                rightMargin: VLCStyle.margin_xsmall
-                    + ((root._showCSD && root.topPadding < csdButtons.height)
-                        ? Math.max(csdButtons.width - root.rightPadding, 0)
-                        : 0)
-            }
-
-            Navigation.parentItem: root
-
-            Row {
-                id: playqueueButtonsTopRow
-
-                anchors.verticalCenter: parent.verticalCenter
-                spacing: VLCStyle.margin_normal
-
-                Navigation.parentItem: root
-                Navigation.leftItem: navigationButtons
-
-                PlaylistPane.PlaylistToggleButton {
-                    id: playlistBtn
-
-                    plListView: root.plListView
-
-                    Navigation.parentItem: playqueueButtonsTop
-                    Navigation.rightItem: menuBtn
-                    Navigation.leftItem: historyBack
-
-                    onClicked:  root.togglePlayqueueVisibility()
-                }
-
-                Widgets.IconToolButton {
-                    id: menuBtn
-                    contentItem: Image {
-                        source: "qrc:///redesign/menu.svg"
-                        sourceSize: Qt.size(VLCStyle.redesign.iconSize, VLCStyle.redesign.iconSize)
-                        fillMode: Image.PreserveAspectFit
-                        opacity: parent.enabled ? 1.0 : 0.4
-                    }
-                    color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
-                                                   colorContext.fg.primary)
-                    backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
-                                                             colorContext.bg.primary)
-                    radius: VLCStyle.redesign.controlRadius
-
-                    visible: !MainCtx.hasToolbarMenu
-                    font.pixelSize: VLCStyle.redesign.iconSize
-                    text: VLCIcons.more
-                    description: qsTr("Menu")
-                    width: VLCStyle.bannerButton_width
-                    height: VLCStyle.bannerButton_height
-                    checked: contextMenu.shown
-
-                    Navigation.parentItem: playqueueButtonsTop
-                    Navigation.leftItem: playlistBtn
-
-                    onClicked: contextMenu.popup(this.mapToGlobal(0, height))
-
-                    Menus.QmlGlobalMenu {
-                        id: contextMenu
-                        ctx: MainCtx
-                    }
-                }
-            }
-        }
-
         Text {
             anchors.centerIn: parent
-            width: Math.max(0, parent.width - 2 * Math.max(navigationButtons.width, playqueueButtonsTop.width)
+            width: Math.max(0, parent.width - 2 * Math.max(navigationButtons.width, root._showCSD ? csdButtons.width : 0)
                             - 2 * VLCStyle.margin_normal)
             text: Player.title || qsTr("VLC media player")
             color: VLCStyle.redesign.color(VLCStyle.redesign.textMuted, theme.fg.primary)
@@ -284,8 +207,6 @@ T.ToolBar {
 
         height: VLCStyle.redesign.topbarHeight
         active: root._showCSD
-        source: VLCStyle.palette.hasCSDImage
-                  ? "qrc:///qt/qml/VLC/Widgets/CSDThemeButtonSet.qml"
-                  : "qrc:///qt/qml/VLC/Widgets/CSDWindowButtonSet.qml"
+        source: "qrc:///qt/qml/VLC/Widgets/CSDWindowButtonSet.qml"
     }
 }

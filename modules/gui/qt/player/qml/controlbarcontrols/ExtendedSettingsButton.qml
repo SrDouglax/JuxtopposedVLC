@@ -23,12 +23,13 @@ import VLC.Style
 import VLC.Dialogs
 import VLC.Util
 
-Widgets.IconToolButton {
+RedesignIconButton {
+    iconSource: "qrc:///redesign/equalizer.svg"
     id: extdSettingsBtn
 
     text: VLCIcons.effect_filter
 
-    description: qsTr("Extended settings")
+    description: qsTr("Audio effects")
 
     AccessibleCompat.id: "extendedSettingsButton"
 

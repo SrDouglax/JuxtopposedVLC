@@ -24,7 +24,8 @@ import VLC.Style
 import VLC.Player
 import VLC.Util
 
-Widgets.IconToolButton {
+RedesignIconButton {
+    iconSource: "qrc:///redesign/subtitles.svg"
     id: root
 
     // Proprerties

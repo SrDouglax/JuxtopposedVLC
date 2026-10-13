@@ -96,14 +96,10 @@ decltype (ControlbarProfileModel::m_defaults)
                                 },
                                 {
                                     ControlListModel::VOLUME,
-                                    ControlListModel::LANG_BUTTON,
-                                    ControlListModel::BOOKMARK_BUTTON,
                                     ControlListModel::EXTENDED_BUTTON,
-                                    ControlListModel::NAVIGATION_BUTTONS,
-                                    ControlListModel::SKIP_BACK_BUTTON,
-                                    ControlListModel::SKIP_FW_BUTTON,
-                                    ControlListModel::RENDERER_BUTTON,
-                                    ControlListModel::FULLSCREEN_BUTTON
+                                    ControlListModel::LANG_BUTTON,
+                                    ControlListModel::SETTINGS_BUTTON,
+                                    ControlListModel::PLAYLIST_BUTTON
                                 }
                             }
                         }
@@ -122,13 +118,10 @@ decltype (ControlbarProfileModel::m_defaults)
                                 },
                                 {
                                     ControlListModel::VOLUME,
-                                    ControlListModel::LANG_BUTTON,
-                                    ControlListModel::BOOKMARK_BUTTON,
                                     ControlListModel::EXTENDED_BUTTON,
-                                    ControlListModel::RANDOM_BUTTON,
-                                    ControlListModel::LOOP_BUTTON,
-                                    ControlListModel::RENDERER_BUTTON,
-                                    ControlListModel::FULLSCREEN_BUTTON
+                                    ControlListModel::LANG_BUTTON,
+                                    ControlListModel::SETTINGS_BUTTON,
+                                    ControlListModel::PLAYLIST_BUTTON
                                 }
                             }
                         }

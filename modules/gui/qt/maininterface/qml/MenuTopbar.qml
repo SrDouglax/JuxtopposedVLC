@@ -98,9 +98,7 @@ T.ToolBar {
             anchors.right: parent.right
             height: Math.min(parent.implicitHeight, VLCStyle.globalToolbar_height)
             active: root._showCSD
-            source: VLCStyle.palette.hasCSDImage
-                      ? "qrc:///qt/qml/VLC/Widgets/CSDThemeButtonSet.qml"
-                      : "qrc:///qt/qml/VLC/Widgets/CSDWindowButtonSet.qml"
+            source: "qrc:///qt/qml/VLC/Widgets/CSDWindowButtonSet.qml"
         }
 
         Keys.priority: Keys.AfterItem

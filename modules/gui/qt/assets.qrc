@@ -150,6 +150,11 @@
         <file alias="volume-background.svg">pixmaps/redesign/volume-background.svg</file>
         <file alias="volume-fill.svg">pixmaps/redesign/volume-fill.svg</file>
         <file alias="volume-mask.svg">pixmaps/redesign/volume-mask.svg</file>
+        <file alias="volume.svg">pixmaps/redesign/volume.svg</file>
+        <file alias="queue.svg">pixmaps/redesign/queue.svg</file>
+        <file alias="player-settings.svg">pixmaps/redesign/player-settings.svg</file>
+        <file alias="subtitles.svg">pixmaps/redesign/subtitles.svg</file>
+        <file alias="equalizer.svg">pixmaps/redesign/equalizer.svg</file>
     </qresource>
     <qresource prefix="/fonts">
         <file alias="InterVariable.ttf">pixmaps/fonts/InterVariable.ttf</file>

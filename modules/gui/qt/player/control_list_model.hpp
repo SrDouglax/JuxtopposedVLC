@@ -107,6 +107,9 @@ public:
         WIDGET_SPACER = 0x40,
         WIDGET_SPACER_EXTEND,
         WIDGET_MAX,
+
+        // Use a reserved ID without changing persisted control identifiers.
+        SETTINGS_BUTTON = RESERVED_0X2B,
     };
     Q_ENUM(ControlType)
 

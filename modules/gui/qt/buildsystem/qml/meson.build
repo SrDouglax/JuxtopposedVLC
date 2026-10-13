@@ -175,6 +175,8 @@ qml_modules += {
        '../../player/qml/controlbarcontrols/DvdMenuButton.qml',
        '../../player/qml/controlbarcontrols/ExpandingSpacerWidget.qml',
        '../../player/qml/controlbarcontrols/ExtendedSettingsButton.qml',
+       '../../player/qml/controlbarcontrols/SettingsButton.qml',
+       '../../player/qml/controlbarcontrols/RedesignIconButton.qml',
        '../../player/qml/controlbarcontrols/FasterButton.qml',
        '../../player/qml/controlbarcontrols/FrameNextButton.qml',
        '../../player/qml/controlbarcontrols/FramePrevButton.qml',

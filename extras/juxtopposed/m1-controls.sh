@@ -4,7 +4,7 @@ xdotool windowsize "$window" 1280 760 windowmove "$window" 0 20
 sleep 1
 eval "$(xdotool getwindowgeometry --shell "$window")"
 py=$((Y+HEIGHT-27))
-sx=$((X+520)); vx=$((X+957))
+sx=$((X+520)); vx=$((X+WIDTH-230))
 xdotool mousemove $((X+200)) "$py"
 sleep 1
 import -window root "$out/player-large.png"
@@ -53,7 +53,44 @@ printf 'before=%s\nafter=%s\n' "$before_volume" "$after_volume" > "$out/mouse-vo
 [[ "$before_volume" != "$after_volume" ]]
 import -window root "$out/player-controls.png"
 
-xdotool mousemove $((X+WIDTH-32)) "$py" click 1
+# Four real audio states: click the cone, then toggle mute without losing gain.
+for state in low medium high; do
+    case "$state" in
+        low) tx=$((X+WIDTH-243));;
+        medium) tx=$((X+WIDTH-225));;
+        high) tx=$((X+WIDTH-190));;
+    esac
+    xdotool mousemove "$tx" "$py" click 1
+    sleep 0.4
+    get Volume > "$out/volume-$state.txt"
+    xdotool mousemove $((X+500)) $((py-100))
+    sleep 0.3
+    import -window root "$out/volume-$state.png"
+done
+xdotool mousemove $((X+WIDTH-282)) "$py" click 1
+sleep 0.4
+get Volume > "$out/volume-muted.txt"
+xdotool mousemove $((X+500)) $((py-100))
+sleep 0.3
+import -window root "$out/volume-muted.png"
+python3 - "$out" $((X+WIDTH-294)) $((py-12)) <<'PY_STATES'
+import re, subprocess, sys
+from pathlib import Path
+out = Path(sys.argv[1])
+icons = []
+for state, lower, upper in [('low', 0, .33), ('medium', .33, .66), ('high', .66, 1.25)]:
+    volume = float(re.search(r'<([0-9.]+)>', (out / f'volume-{state}.txt').read_text())[1])
+    assert lower <= volume <= upper, (state, volume)
+for state in ['low', 'medium', 'high', 'muted']:
+    icons.append(subprocess.check_output(['convert', str(out / f'volume-{state}.png'),
+                 '-crop', f'24x24+{sys.argv[2]}+{sys.argv[3]}', '-depth', '8', 'rgb:-']))
+assert len(set(icons)) == 4, 'Audio states must render four distinct icons'
+assert (out / 'volume-high.txt').read_text() == (out / 'volume-muted.txt').read_text(), 'Mute must preserve gain'
+print('PASS: four distinct audio icons and real volume levels; mute preserves gain')
+PY_STATES
+xdotool mousemove $((X+WIDTH-282)) "$py" click 1
+
+xdotool mousemove $((X+WIDTH-54)) $((Y+20)) click 1
 sleep 1
 call org.freedesktop.DBus.Properties.Get org.mpris.MediaPlayer2 Fullscreen \
     | tee "$out/mouse-fullscreen.txt" | grep -q true
