@@ -45,6 +45,16 @@ QUrl fileUrl(const QVariant& value)
 
 MLSubtitleAssociations::MLSubtitleAssociations(QObject* parent) : QObject(parent) {}
 
+MediaLib* MLSubtitleAssociations::ml() const
+{
+    return m_ml;
+}
+
+void MLSubtitleAssociations::setMl(MediaLib* ml)
+{
+    m_ml = ml;
+}
+
 QVariantList MLSubtitleAssociations::destinations() const
 {
     QVariantList list;

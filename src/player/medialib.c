@@ -26,6 +26,38 @@
 #include "player.h"
 #include "misc/variables.h"
 
+static void
+vlc_player_input_AddMlSlaves(input_item_t* item, const vlc_ml_media_t* media)
+{
+    if (!media->p_files)
+        return;
+
+    for (size_t i = 0; i < media->p_files->i_nb_items; ++i)
+    {
+        const vlc_ml_file_t* file = &media->p_files->p_items[i];
+        if (file->i_type != VLC_ML_FILE_TYPE_SUBTITLE || !file->psz_mrl ||
+            !file->b_present)
+            continue;
+
+        bool exists = false;
+        vlc_mutex_lock(&item->lock);
+        for (int j = 0; j < item->i_slaves; ++j)
+            if (!strcmp(item->pp_slaves[j]->psz_uri, file->psz_mrl))
+            {
+                exists = true;
+                break;
+            }
+        vlc_mutex_unlock(&item->lock);
+        if (exists)
+            continue;
+
+        input_item_slave_t* slave = input_item_slave_New(file->psz_mrl, SLAVE_TYPE_SPU,
+                                                         SLAVE_PRIORITY_USER);
+        if (slave && input_item_AddSlave(item, slave) != VLC_SUCCESS)
+            input_item_slave_Delete(slave);
+    }
+}
+
 void
 vlc_player_input_RestoreMlStates(struct vlc_player_input* input, bool force_pos)
 {
@@ -47,6 +79,8 @@ vlc_player_input_RestoreMlStates(struct vlc_player_input* input, bool force_pos)
     vlc_ml_media_t* media = vlc_ml_get_media_by_mrl( ml, item->psz_uri);
     if (!media)
         return;
+    if (!input->started)
+        vlc_player_input_AddMlSlaves(item, media);
     if (media->i_type != VLC_ML_MEDIA_TYPE_VIDEO ||
         vlc_ml_media_get_all_playback_pref(ml, media->i_id,
                                            &input->ml.states) != VLC_SUCCESS)

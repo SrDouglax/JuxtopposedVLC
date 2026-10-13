@@ -16,6 +16,8 @@
 
 #include "mlqmltypes.hpp"
 
+Q_MOC_INCLUDE("medialibrary/medialib.hpp")
+
 class MediaLib;
 
 class MLSubtitleAssociations : public QObject
@@ -30,8 +32,8 @@ class MLSubtitleAssociations : public QObject
 public:
     explicit MLSubtitleAssociations(QObject* parent = nullptr);
 
-    MediaLib* ml() const { return m_ml; }
-    void setMl(MediaLib* ml) { m_ml = ml; }
+    MediaLib* ml() const;
+    void setMl(MediaLib* ml);
     QVariantList destinations() const;
     QVariantList sources() const;
     QString error() const { return m_error; }

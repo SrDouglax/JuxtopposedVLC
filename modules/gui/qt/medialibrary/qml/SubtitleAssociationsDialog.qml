@@ -11,16 +11,33 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import VLC.MediaLibrary
+import VLC.Style
 
 Dialog {
     id: root
+    objectName: "subtitleAssociationsDialog"
+
+    readonly property ColorContext colorContext: ColorContext {
+        id: theme
+        colorSet: ColorContext.Window
+    }
 
     title: qsTr("Add subtitles")
     modal: true
     closePolicy: associations.busy ? Popup.NoAutoClose : Popup.CloseOnEscape
-    width: Math.min(620, parent ? parent.width - 32 : 620)
-    height: Math.min(460, parent ? parent.height - 32 : 460)
+    width: Math.min(VLCStyle.dp(620, VLCStyle.scale),
+                    parent ? parent.width - VLCStyle.margin_normal * 2 : 620)
+    height: Math.min(VLCStyle.dp(460, VLCStyle.scale),
+                     parent ? parent.height - VLCStyle.margin_normal * 2 : 460)
     anchors.centerIn: parent
+    padding: VLCStyle.margin_normal
+    font.pixelSize: VLCStyle.fontSize_normal
+
+    background: Rectangle {
+        color: theme.bg.primary
+        border.color: theme.border
+        radius: VLCStyle.dp(12, VLCStyle.scale)
+    }
 
     function openFor(itemId) {
         associations.open(itemId)
@@ -48,9 +65,11 @@ Dialog {
             Layout.fillWidth: true
             text: qsTr("Choose subtitle files, then check the media assigned to each one.")
             wrapMode: Text.WordWrap
+            color: theme.fg.primary
         }
 
         Button {
+            objectName: "subtitleChooseFilesButton"
             text: qsTr("Choose subtitle files…")
             enabled: !associations.busy
             onClicked: associations.chooseFiles()
@@ -61,6 +80,7 @@ Dialog {
             visible: associations.destinations.length === 0 && !associations.busy
             text: qsTr("Select a media file, folder, or playlist to add subtitles.")
             wrapMode: Text.WordWrap
+            color: theme.fg.secondary
         }
 
         ScrollView {
@@ -83,16 +103,19 @@ Dialog {
                             Layout.fillWidth: true
                             text: modelData.label
                             elide: Text.ElideMiddle
+                            color: theme.fg.primary
                         }
                         Label {
                             Layout.fillWidth: true
                             visible: modelData.issue.length > 0
                             text: modelData.issue
                             wrapMode: Text.WordWrap
+                            color: theme.fg.secondary
                         }
                     }
 
                     ComboBox {
+                        objectName: "subtitleDestinationSelector"
                         Layout.preferredWidth: 220
                         model: associations.destinations
                         textRole: "label"
@@ -110,6 +133,7 @@ Dialog {
             visible: associations.error.length > 0
             text: associations.error
             wrapMode: Text.WordWrap
+            color: theme.fg.primary
         }
     }
 
@@ -117,11 +141,13 @@ Dialog {
         spacing: 8
         Item { Layout.fillWidth: true }
         Button {
+            objectName: "subtitleCancelButton"
             text: qsTr("Cancel")
             enabled: !associations.busy
             onClicked: root.reject()
         }
         Button {
+            objectName: "subtitleSaveButton"
             text: qsTr("Save associations")
             enabled: !associations.busy && associations.sources.length > 0
             onClicked: associations.save()
