@@ -40,7 +40,7 @@ Widgets.GridItem {
 
     image: model.thumbnail || ""
     fallbackImage: VLCStyle.noArtVideoCover
-    fillMode: Image.Stretch
+    fillMode: Image.PreserveAspectCrop
 
     title: model.title || qsTr("Unknown title")
     subtitle: model?.duration?.formatHMS() ?? ""

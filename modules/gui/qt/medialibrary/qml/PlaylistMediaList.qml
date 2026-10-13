@@ -60,6 +60,8 @@ MainViewLoader {
     property alias searchPattern: playlistModel.searchPattern
     property alias sortOrder: playlistModel.sortOrder
     property alias sortCriteria: playlistModel.sortCriteria
+    property alias dragItemPlaylist: dragItemPlaylist
+    property alias contextMenu: contextMenu
 
     //---------------------------------------------------------------------------------------------
     // Private
@@ -75,6 +77,10 @@ MainViewLoader {
     //---------------------------------------------------------------------------------------------
 
     signal showList(var model, int reason)
+
+    function openCreateDialog() {
+        createDialog.open()
+    }
 
     //---------------------------------------------------------------------------------------------
     // Events
@@ -178,7 +184,7 @@ MainViewLoader {
             for (let url in drop.urls)
                 urlList.push(drop.urls[url])
             if (index === undefined)
-                DialogsProvider.playlistsDialog(inputItems, (root.model as MLPlaylistListModel).playlistType)
+                DialogsProvider.playlistsDialog(urlList, (root.model as MLPlaylistListModel).playlistType)
             else
                 root.model.append(root.model.getItemId(index), urlList)
         } else {
@@ -209,6 +215,12 @@ MainViewLoader {
     //---------------------------------------------------------------------------------------------
     // Childs
     //---------------------------------------------------------------------------------------------
+
+    PlaylistCreateDialog {
+        id: createDialog
+        parent: root
+        playlistModel: playlistModel
+    }
 
     DropArea {
         anchors.fill: parent
@@ -281,122 +293,8 @@ MainViewLoader {
     Component {
         id: grid
 
-        Widgets.ExpandGridItemView {
-            id: gridView
-
-            //-------------------------------------------------------------------------------------
-            // Settings
-
-            basePictureWidth: isMusic ? VLCStyle.gridCover_music_width : VLCStyle.gridCover_video_width
-            basePictureHeight: isMusic ? VLCStyle.gridCover_music_height : VLCStyle.gridCover_video_height
-
-            model: root.model
-
-            selectionModel: root.selectionModel
-
-            headerDelegate: root.header
-
-            displayMarginBeginning: root.displayMarginBeginning
-            displayMarginEnd: root.displayMarginEnd
-
-            Navigation.parentItem: root
-
-            delegate: VideoGridItem {
-                //---------------------------------------------------------------------------------
-                // Properties
-
-                property var model: ({})
-
-                property int index: -1
-
-                //---------------------------------------------------------------------------------
-                // Settings
-
-                width: gridView.cellWidth;
-                height: gridView.cellHeight;
-
-                pictureWidth : gridView.maxPictureWidth
-                pictureHeight: gridView.maxPictureHeight
-
-                title: (model.name) ? model.name
-                                    : qsTr("Unknown title")
-
-                labels: [
-                    (function () {
-                        const labels = []
-                        if (model.nb_audio > 0)
-                            labels.push(qsTr("%1 Track", "%1 Tracks", model.nb_audio).arg(model.nb_audio))
-                        if (model.nb_video > 0)
-                            labels.push(qsTr("%1 Video", "%1 Videos", model.nb_video).arg(model.nb_video))
-                        if (model.nb_unknown > 0)
-                            labels.push(qsTr("%1 Other", "%1 Other", model.nb_unknown).arg(model.nb_unknown))
-
-                        return labels.join("\n")
-                    })()
-                ]
-
-                dragItem: dragItemPlaylist
-
-
-                //---------------------------------------------------------------------------------
-                // Events
-
-                onItemClicked: (modifier, select) => { gridView.leftClickOnItem(modifier, index, select) }
-
-                onItemDoubleClicked: showList(model, Qt.MouseFocusReason)
-
-                onPlayClicked: if (model.id) MediaLib.addAndPlay(model.id)
-
-                onContextMenuButtonClicked: (_, globalMousePos) => {
-                    gridView.rightClickOnItem(index);
-
-                    contextMenu.popup(selectionModel.selectedRows(), globalMousePos);
-                }
-
-                //---------------------------------------------------------------------------------
-                // Animations
-
-                Behavior on opacity {
-                    OpacityAnimator {
-                        duration: VLCStyle.duration_short
-                    }
-                }
-
-                DropArea {
-                    anchors.fill: parent
-
-                    onEntered: function(drag) {
-                        root._adjustDragAccepted(drag)
-                    }
-
-                    onDropped: function(drop) {
-                        MainCtx.setCursor(gridView, Qt.BusyCursor)
-                        root._dropAction(drop, index).then(() => {
-                            if (gridView)
-                                MainCtx.unsetCursor(gridView)
-                        })
-                    }
-                }
-            }
-
-            //-------------------------------------------------------------------------------------
-            // Events
-
-            // NOTE: Define the initial position and selection. This is done on activeFocus rather
-            //       than Component.onCompleted because selectionModel.selectedGroup update itself
-            //       after this event.
-            onActiveFocusChanged: {
-                if (activeFocus == false || model.count === 0 || selectionModel.hasSelection)
-                    return;
-
-                selectionModel.select(model.index(0,0), ItemSelectionModel.ClearAndSelect)
-            }
-
-            onActionAtIndex: _actionAtIndex()
-
-            //-------------------------------------------------------------------------------------
-            // Childs
-
+        PlaylistGridDisplay {
+            host: root
         }
     }
 
@@ -529,7 +427,7 @@ MainViewLoader {
             focus: true
 
             text: qsTr("No playlists found")
-            hint: qsTr("Right click on a media\nto add it to a playlist")
+            hint: qsTr("Create a playlist with files or add media from the library")
 
             cover: VLCStyle.noArtAlbumCover
         }

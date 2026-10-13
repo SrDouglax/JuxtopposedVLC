@@ -61,6 +61,33 @@ Widgets.PageLoader {
 
             title: qsTr("Playlists")
 
+            headerAction: Component {
+                RowLayout {
+                    spacing: VLCStyle.margin_xsmall
+
+                    Widgets.ButtonExt {
+                        objectName: "videoNewPlaylistButton"
+                        text: qsTr("New playlist")
+                        onClicked: playlistView.openCreateDialog()
+                    }
+
+                    Widgets.ButtonExt {
+                        objectName: "videoRenamePlaylistButton"
+                        text: qsTr("Rename")
+                        enabled: playlistView.selectionModel.selectedIndexes.length === 1
+                        onClicked: playlistView.model.showDialogRename(
+                                       playlistView.selectionModel.selectedIndexes[0])
+                    }
+
+                    Widgets.ButtonExt {
+                        objectName: "videoDeletePlaylistButton"
+                        text: qsTr("Delete")
+                        enabled: playlistView.selectionModel.hasSelection
+                        onClicked: playlistView.deleteSelectedPlaylists()
+                    }
+                }
+            }
+
             PlaylistMediaList {
                 id: playlistView
 

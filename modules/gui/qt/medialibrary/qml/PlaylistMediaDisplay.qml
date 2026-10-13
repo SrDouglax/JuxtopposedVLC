@@ -21,6 +21,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQml.Models
+import QtQuick.Dialogs
 
 import VLC.MainInterface
 import VLC.MediaLibrary
@@ -28,6 +29,7 @@ import VLC.MediaLibrary
 import VLC.Widgets as Widgets
 import VLC.Util
 import VLC.Style
+import VLC.Dialogs
 
 Widgets.PageExt {
     id: root
@@ -49,6 +51,52 @@ Widgets.PageExt {
 
     hasGridListMode: false
     isSearchable: true
+
+    headerAction: Component {
+        RowLayout {
+            spacing: VLCStyle.margin_xsmall
+
+            Widgets.ButtonExt {
+                objectName: "playlistAddFilesButton"
+                text: qsTr("Add files")
+                enabled: !model.transactionPending
+                onClicked: addFilesDialog.open()
+            }
+
+            Widgets.ButtonExt {
+                objectName: "playlistMoveUpButton"
+                text: qsTr("Move up")
+                enabled: root.selectedRow > 0 && !model.transactionPending
+                onClicked: model.move(view.selectionModel.selectedRows(), root.selectedRow - 1)
+            }
+
+            Widgets.ButtonExt {
+                objectName: "playlistMoveDownButton"
+                text: qsTr("Move down")
+                enabled: root.selectedRow >= 0 && root.selectedRow < model.count - 1
+                         && !model.transactionPending
+                onClicked: model.move(view.selectionModel.selectedRows(), root.selectedRow + 2)
+            }
+
+            Widgets.ButtonExt {
+                objectName: "playlistRemoveItemButton"
+                text: qsTr("Remove")
+                enabled: view.selectionModel.hasSelection && !model.transactionPending
+                onClicked: root.onDelete()
+            }
+        }
+    }
+
+    readonly property int selectedRow: view.selectionModel.selectedIndexes.length === 1
+                                       ? view.selectionModel.selectedIndexes[0].row : -1
+
+    FileDialog {
+        id: addFilesDialog
+        objectName: "playlistAddFilesDialog"
+        title: qsTr("Add files to playlist")
+        fileMode: FileDialog.OpenFiles
+        onAccepted: if (selectedFiles.length > 0) model.insert(selectedFiles, model.count)
+    }
 
     // Events
 
@@ -85,7 +133,9 @@ Widgets.PageExt {
         if (indexes.length === 0)
             return;
 
-        model.remove(indexes);
+        if (DialogsProvider.questionDialog(qsTr("Remove selected media from this playlist?"),
+                                           qsTr("Remove from playlist")))
+            model.remove(indexes);
     }
 
 
