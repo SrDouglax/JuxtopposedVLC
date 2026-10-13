@@ -1,15 +1,17 @@
 # JuxtopposedVLC
 
 Fork do VLC para implementar o redesign da Juxtopposed em Qt/QML, com Linux como
-primeira plataforma e Windows preparado desde a fundação. O projeto está em M0;
-a interface original ainda é a referência de funcionamento.
+primeira plataforma e Windows preparado desde a fundação. M0 entregou o baseline
+Linux e o build/pacote Windows com limitações documentadas; M1 ainda não começou.
+A interface original continua sendo a referência de funcionamento.
 
 Referência visual: [VLC Redesign — Community, da Juxtopposed](https://www.figma.com/design/fQSxoEi1zmnD5fQacw0qGs/VLC-Redesign--Community-?node-id=0-1).
 
 [Plano e requisitos](.specs/project/PROJECT.md) · [Roadmap](.specs/project/ROADMAP.md) ·
 [Fundação e build Linux](.specs/features/redesign/foundation.md) ·
 [Build Windows](.specs/features/redesign/windows.md) ·
-[Cobertura do Figma](.specs/features/redesign/coverage.md)
+[Cobertura do Figma](.specs/features/redesign/coverage.md) ·
+[Intenção e comportamento do vídeo](.specs/features/redesign/video.md)
 
 Para abrir a compilação local de desenvolvimento depois do build Linux:
 

@@ -1,0 +1,118 @@
+IMPORTS access/libaccess_srt_plugin.dll
+
+Dump of file D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\access\libaccess_srt_plugin.dll
+
+File Type: DLL
+
+  Image has the following dependencies:
+
+    libvlccore.dll
+    ADVAPI32.dll
+    CRYPT32.dll
+    KERNEL32.dll
+    msvcrt.dll
+    ncrypt.dll
+    WS2_32.dll
+    WSOCK32.dll
+    libgcc_s_seh-1.dll
+
+  Summary
+
+        1000 .bss
+        D000 .data
+        1000 .edata
+        3000 .idata
+       1B000 .pdata
+       F1000 .rdata
+        4000 .reloc
+        1000 .rodata
+        1000 .rsrc
+      2F6000 .text
+        1000 .tls
+       27000 .xdata
+IMPORTS access_output/libaccess_output_srt_plugin.dll
+
+Dump of file D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\access_output\libaccess_output_srt_plugin.dll
+
+File Type: DLL
+
+  Image has the following dependencies:
+
+    libvlccore.dll
+    ADVAPI32.dll
+    CRYPT32.dll
+    KERNEL32.dll
+    msvcrt.dll
+    ncrypt.dll
+    WS2_32.dll
+    WSOCK32.dll
+    libgcc_s_seh-1.dll
+
+  Summary
+
+        1000 .bss
+        D000 .data
+        1000 .edata
+        3000 .idata
+       1B000 .pdata
+       F1000 .rdata
+        4000 .reloc
+        1000 .rodata
+        1000 .rsrc
+      2F6000 .text
+        1000 .tls
+       27000 .xdata
+IMPORTS codec/libx265_plugin.dll
+
+Dump of file D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\codec\libx265_plugin.dll
+
+File Type: DLL
+
+  Image has the following dependencies:
+
+    libvlccore.dll
+    ADVAPI32.dll
+    KERNEL32.dll
+    msvcrt.dll
+    libgcc_s_seh-1.dll
+
+  Summary
+
+        1000 .bss
+        6000 .data
+        1000 .edata
+        2000 .idata
+        7000 .pdata
+       26000 .rdata
+        2000 .reloc
+        1000 .rsrc
+      49A000 .text
+        1000 .tls
+        8000 .xdata
+IMPORTS demux/libgme_plugin.dll
+
+Dump of file D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\demux\libgme_plugin.dll
+
+File Type: DLL
+
+  Image has the following dependencies:
+
+    libvlccore.dll
+    ADVAPI32.dll
+    KERNEL32.dll
+    msvcrt.dll
+    libgcc_s_seh-1.dll
+
+  Summary
+
+        1000 .bss
+       23000 .data
+        1000 .edata
+        2000 .idata
+        6000 .pdata
+       11000 .rdata
+        1000 .reloc
+        1000 .rsrc
+       6B000 .text
+        1000 .tls
+        5000 .xdata

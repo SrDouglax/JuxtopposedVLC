@@ -150,30 +150,41 @@ janela/vídeo/áudio, fullscreen, DPI e caminhos com espaços/acentos. Nenhum ho
 Windows interativo foi identificado. M0 registra esse baseline; não representa
 suporte Windows completo ou aceite visual/funcional do redesign.
 
-## Reparo delimitado do runtime
+## Tentativa de reparo e limite confirmado
 
-Preparado o input manual booleano `repair_runtime`, combinado com
-`artifact_run_id=38341757506`. Esse caminho verifica o SHA256 do ZIP existente,
-valida seus caminhos, extrai a pasta portátil e usa a mesma imagem oficial fixada
-por digest; não executa compilação de VLC nem download/build de contrib.
+O [run 38344175553](https://github.com/SrDouglax/JuxtopposedVLC/actions/runs/38344175553)
+reutilizou o pacote original, validou seu checksum e copiou `libgcc_s_seh-1.dll`
+e `libwinpthread-1.dll` da mesma imagem oficial. Hashes confirmaram que nenhum
+arquivo existente do aplicativo foi alterado. O job de empacotamento passou;
+o teste nativo falhou com os mesmos quatro `error 126`, apesar de versão/exit 0.
+O ZIP dessa tentativa tem SHA256
+`0bd78e92aad12becbf740563583195c062036287f34d045069736f5bffe568a2`.
+A [evidência da tentativa](evidence/windows-repaired/) fica preservada; esse
+pacote não substitui o artifact original como baseline de M0.
 
-O helper `/.github/scripts/runtime.sh` inspeciona imports dos arquivos PE, resolve
-somente runtimes MinGW efetivamente importados com GCC `-print-file-name`, confere
-origem dentro do toolchain/target da imagem e formato PE x64, copia a dependência
-e segue seus imports para completar apenas a closure de runtimes. Caminho ausente,
-origem inesperada ou runtime existente divergente fazem o reparo falhar. Registra
-imagem, compiler path, packaging SHA e SHA256 de cada DLL. Um manifesto de todos
-os arquivos originais é validado depois da cópia, provando que não foram alterados.
+A causa adicional está no carregador upstream: `bin/winvlc.c:116–122` remove o
+CWD da busca e estabelece `LOAD_LIBRARY_SEARCH_SYSTEM32`;
+`src/win32/plugin.c:64` carrega os plugins com essa mesma restrição. Os runtimes
+copiados para a raiz do pacote não são procurados ao resolver as dependências.
+Copiar DLLs para outro diretório ou afrouxar essa política não é uma solução
+incluída em M0.
 
-O novo ZIP recebe checksum novo e conserva `source_sha=93c524...` do aplicativo.
-O SHA do empacotamento e o SHA de verificação são registrados separadamente.
-Durante reparo, o job nativo baixa o artifact do run atual, exige versão/exit 0 e
-zero `plugin_load_errors`. Durante native-only, continua baixando o run de origem.
-Builds futuros também chamam o helper antes de criar o ZIP.
+O upstream acrescenta `-static-libgcc` a `CXXFLAGS` em `configure.ac:323–326`.
+Os quatro módulos afetados usam fontes C e bibliotecas externas; a próxima
+investigação deve confirmar seus comandos finais de link e ligar o runtime
+estaticamente na etapa apropriada. Isso requer nova compilação e prova nativa;
+ainda não foi implementado nem comprovado.
 
-Verificado na preparação: parse YAML, sintaxe Bash de ambos scripts e de todas
-as etapas Linux, caminhos condicionais de reuse/repair e whitespace. Execução do
-reparo e teste nativo do novo pacote ainda pendentes; não foi disparado novo build.
+A tentativa de helper/reparo automático foi removida por não resolver o problema.
+O CI mantém o critério original de M0: checksum, versão e exit 0. Os erros dos
+plugins permanecem no stderr, no contador `plugin_load_errors` e em warning
+visível do job. Não se afirma aprovação dos plugins ou de GUI/reprodução.
+O gate experimental de zero erros não foi atingido; seu resultado falho está
+preservado, separado do smoke básico aprovado.
+
+M0 entrega o build/pacote e esse diagnóstico. A correção de linkagem permanece
+obrigatória antes do aceite completo Windows e da distribuição; o carregador e
+o núcleo não foram alterados, e nenhuma nova tentativa igual foi disparada.
 
 ## Fontes
 
@@ -183,3 +194,7 @@ reparo e teste nativo do novo pacote ainda pendentes; não foi disparado novo bu
 - [SHA512 oficial](https://artifacts.videolan.org/vlc/win64/SHA512SUM)
 - [Recursos dos runners GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 - [Parâmetros de Select-String](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/select-string?view=powershell-7.5)
+
+- [Carregamento dos plugins Windows](https://github.com/videolan/vlc/blob/392bc1d0abdb7396b6c97fef206efa1d23868e19/src/win32/plugin.c#L64)
+- [Política de busca de DLLs](https://github.com/videolan/vlc/blob/392bc1d0abdb7396b6c97fef206efa1d23868e19/bin/winvlc.c#L116)
+- [Flag do runtime C++](https://github.com/videolan/vlc/blob/392bc1d0abdb7396b6c97fef206efa1d23868e19/configure.ac#L323)

@@ -1,6 +1,6 @@
 # Estado
 
-Atualizado em 13/10/2026, America/Recife. M0 em execução; T01/T02/T03 concluídos, T04 em CI.
+Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limites de Windows registrados. M1 ainda não iniciado.
 
 ## Comprovado
 
@@ -11,11 +11,12 @@ Atualizado em 13/10/2026, America/Recife. M0 em execução; T01/T02/T03 concluí
 - Smoke X11 PASS: janela Qt/vídeo/legenda, PCM de áudio, pausa/retomada, seek, volume, fullscreen e saída. Captura e snapshot de recursos persistidos em `features/redesign/evidence`.
 - Compositor Wayland habilitado com scanner 1.23.1 isolado. Lançador `extras/juxtopposed/open.sh` abre no desktop do host com perfil separado; reprodução `wl_shm`, pausa/retomada e fullscreen via MPRIS comprovados.
 - T02: inventário de 103 frames (57 telas/variantes + 46 grupos), IDs e candidatos reais Qt/QML; 11 inspeções visuais, 92 entradas estruturais.
-- Windows: primeiro cross-build compilou/empacotou, mas falhou antes de criar o ZIP por metadado Qt ausente. Correção publicada; nova execução [38341757506](https://github.com/SrDouglax/JuxtopposedVLC/actions/runs/38341757506) em andamento.
+- Windows: cross-build e pacote portátil comprovados no [run 38341757506](https://github.com/SrDouglax/JuxtopposedVLC/actions/runs/38341757506). Carregamento nativo de versão/exit 0 aprovado no [run 38343492003](https://github.com/SrDouglax/JuxtopposedVLC/actions/runs/38343492003), com quatro plugins em aviso.
+- Transcrição do vídeo fornecida em 13/10/2026 incorporada à [referência de intenção e comportamento](../features/redesign/video.md), complementar ao Figma.
 
 ## Em execução / pendente
 
-- T04: concluir CI, publicar artefato/checksum e testar carregamento nativo básico. Janela/vídeo/áudio Windows continuam para validação posterior.
+- Windows: SRT de acesso/saída, x265 e GME importam runtime GCC não disponível na busca restrita do carregador. Copiar DLLs para a raiz não resolveu; a tentativa está preservada em windows.md. Corrigir linkagem e validar esses plugins antes do aceite completo Windows. GUI/vídeo/áudio, DPI e caminhos Windows ainda não comprovados.
 - Figma: quota do conector limitou inspeção visual. IDs estruturais precisam de contexto visual antes de sua implementação.
 - Linux: Qt Quick em software e decodificação por CPU; aceleração GPU/hardware ainda sem prova. Áudio capturado em sink de teste, sem comprovação nos alto-falantes.
 - Nenhum redesign iniciado; M1 depende das provas da fundação.
@@ -29,4 +30,4 @@ Atualizado em 13/10/2026, America/Recife. M0 em execução; T01/T02/T03 concluí
 
 ## Próxima ação
 
-Concluir T04 e registrar artefato/resultado nativo em windows.md. Não iniciar M1 neste pedido.
+M1 começa por contrato visual, shell e barra funcional sobre os controllers existentes. A correção Windows W01 pode ocorrer em paralelo, sem alterar o carregador. As intenções da transcrição acompanham o Figma; nenhuma tela redesenhada foi implementada em M0.

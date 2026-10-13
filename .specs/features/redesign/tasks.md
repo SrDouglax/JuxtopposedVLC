@@ -1,13 +1,13 @@
 # Tarefas de M0 e M1
 
-Status: M0 em execução na branch `chore/m0`; M1 ainda planejado.
+Status: M0 entregue na branch `chore/m0`, com limitações do baseline Windows registradas; M1 ainda planejado. A [transcrição do vídeo](video.md) complementa os critérios visuais/funcionais.
 
 | Entrega de M0 | Estado em 13/10/2026 | Evidência |
 | --- | --- | --- |
 | T01 | Concluída | Fork, SHA, toolchains e build isolado em foundation.md |
 | T02 | Concluída como inventário | 103 IDs em coverage.md; 11 inspeções visuais, 92 estruturais |
 | T03 | Concluída com limites registrados | Smoke X11 PASS, captura, áudio PCM, recursos e prova Wayland em foundation.md |
-| T04 | Em execução | Cross-build anterior passou; correção de empacotamento em CI, artefato/nativo pendentes |
+| T04 | Concluída como baseline | Cross-build, pacote e versão/exit 0 nativos comprovados; quatro plugins Windows pendentes em W01 |
 
 Este backlog detalha a fundação e a primeira fatia funcional. M2–M5 estão no roadmap; serão decompostos a partir do inventário real, antes de executar cada marco. Evitar uma lista fictícia de centenas de tarefas antes de conhecer o código.
 
@@ -76,7 +76,7 @@ T01/T02 podem ocorrer em paralelo. T03/T04 também: ambos provam a mesma base up
 - **Onde:** pontos existentes de `style/` e componentes comuns identificados em T02.
 - **Reutiliza:** sistema de cores, métricas e componentes do VLC.
 - **Requisitos:** R02, R04, R08.
-- **Aceite:** cores, tipografia, espaçamentos, ícones e estados usados pela primeira tela correspondem à referência; consumidores acordados com C; recursos locais, sem URL temporária; estrutura admite os temas do Figma.
+- **Aceite:** cores, tipografia, espaçamentos, ícones e estados usados pela primeira tela correspondem à referência; preservar cone/laranja padrão e formas retangulares suavizadas conforme vídeo; consumidores acordados com C; recursos locais, sem URL temporária; estrutura admite os temas do Figma.
 - **Verificação:** build/check QML disponível e captura dos componentes no app, com foco/hover/disabled. Não gerar testes que apenas repetem constantes de estilo.
 
 ### T06 — Adaptar shell e navegação principal
@@ -101,7 +101,7 @@ T01/T02 podem ocorrer em paralelo. T03/T04 também: ambos provam a mesma base up
 - **Onde:** componente de controles em `player/qml/` e integração mínima delimitada.
 - **Reutiliza:** T05/T06, estado e comandos do player existente.
 - **Requisitos:** R01, R02, R04, R08.
-- **Aceite:** mídia real, play/pause, seek, duração, volume e fullscreen sincronizados; estados sem mídia e ao terminar corretos; aparência comparada ao frame alvo.
+- **Aceite:** mídia real, play/pause, seek, duração, volume e fullscreen sincronizados; estados sem mídia e ao terminar corretos; aparência comparada ao frame alvo. A transcrição pede play à esquerda, barra discreta, seek espesso e volume em cone; reconciliar com o frame alvo antes de codificar. Fila de reprodução e playlists persistentes têm papéis distintos.
 - **Verificação:** interação/testes QML adequados ao comportamento + smoke real com vídeo/áudio; erro de arquivo não causa tela enganosa ou crash. Testes de lógica nova acompanham a mudança.
 
 ### T09 — Integrar e aceitar M1
@@ -112,6 +112,15 @@ T01/T02 podem ocorrer em paralelo. T03/T04 também: ambos provam a mesma base up
 - **Aceite:** revisão dos diffs; build Linux e Windows da revisão integrada; abrir mídia → reproduzir → buscar → fullscreen → retornar → fechar; screenshot real comparada ao Figma. Registrar claramente a cobertura parcial de R02 e runtime Windows pendente, se for o caso.
 - **Verificação:** regressão direcionada às interações e fronteiras integradas; checks novos apenas onde a integração invalidou evidência anterior.
 - **Saída:** atualizar estado, registrar pendências e detalhar M2. Não marcar Figma completo por concluir M1.
+
+### W01 — Resolver linkagem do runtime Windows antes do aceite completo
+
+- **Frente:** A — plataformas, em paralelo às tarefas visuais Linux; depende de T04.
+- **Problema comprovado:** quatro plugins C (SRT entrada/saída, x265, GME) importam `libgcc_s_seh-1.dll`. A base restringe carregamento a SYSTEM32; empacotar DLLs na raiz não resolveu.
+- **Onde:** flags e comandos de link Windows derivados da cadeia upstream. Não enfraquecer o carregador nem instalar runtimes em diretórios do sistema.
+- **Aceite:** linkagem apropriada do runtime, novo cross-build/pacote e carregamento nativo sem os quatro erros. Confirmar ordem/flags de libtool no link C antes de alterar; a flag atual `-static-libgcc` está em CXXFLAGS.
+- **Verificação:** imports dos quatro módulos, versão/exit 0 e contador de falhas de plugins. Depois, smoke Windows real de GUI/vídeo/áudio, separado da prova de compilação.
+- **Estado:** não implementada. Obrigatória antes do aceite completo Windows e distribuição; não impede T05/T06/T07 no Linux.
 
 ## Validação do próprio plano
 

@@ -1,0 +1,1 @@
+sha256:588bae4b5737bb3362276c27b31d2bba657e383ac94e4cacc6babae7fc7f8891 7246930340 ["registry.videolan.org/vlc-debian-win64-posix@sha256:8e83e800036f8f4a6da1031a6b80c2b5bad8337259c072ffa22398baaeaad880"]

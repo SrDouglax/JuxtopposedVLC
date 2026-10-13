@@ -1,6 +1,6 @@
 # M0 — Fundação
 
-Execução iniciada em 12/10/2026, atualizada em 13/10/2026, America/Recife.
+Execução iniciada em 12/10/2026, entregue em 13/10/2026, America/Recife. M0 é a fundação; os limites de Windows abaixo não representam aceite completo dessa plataforma.
 
 ## Base e repositório
 
@@ -124,7 +124,11 @@ Rota: imagem oficial VideoLAN pinada + contrib upstream validado por checksum + 
 | Captura nativa e recursos | Captura da aplicação Qt em Xvfb e snapshot registrados |
 | Desktop Wayland | Lançador executado; reprodução, pausa/retomada e fullscreen via MPRIS comprovados |
 | Matriz Figma → código | 103 frames: 57 telas/variantes + 46 grupos; 11 inspeções visuais |
-| Build e artefato Windows | Nova execução CI em andamento |
-| Carregamento nativo Windows | Pendente |
+| Build e artefato Windows | Cross-build aprovado e pacote portátil 11788020301 publicado |
+| Carregamento nativo Windows | Versão/exit 0 aprovados; quatro plugins em aviso, diagnóstico em windows.md |
 
-M0 somente concluído quando seus critérios estiverem atendidos. Prova gráfica X11 em servidor virtual e prova Wayland no desktop serão descritas separadamente; áudio em sink de teste não equivale a escuta nos alto-falantes.
+Os critérios de fundação T01–T04 foram atendidos com essas limitações explícitas.
+GUI/reprodução Windows e a correção da linkagem de quatro plugins permanecem
+abertos antes do aceite completo Windows. Nenhum redesign ou correção do motor
+foi incluído. A [transcrição do vídeo](video.md) complementa o inventário Figma
+como referência de intenção e comportamento para M1–M3.

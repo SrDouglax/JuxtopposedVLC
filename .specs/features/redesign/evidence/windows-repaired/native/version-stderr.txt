@@ -1,0 +1,4 @@
+[00000019185ff680] main generic error: cannot load plug-in D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\access\libaccess_srt_plugin.dll: The specified module could not be found. (error 126)
+[00000019185ff680] main generic error: cannot load plug-in D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\access_output\libaccess_output_srt_plugin.dll: The specified module could not be found. (error 126)
+[00000019185ff680] main generic error: cannot load plug-in D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\codec\libx265_plugin.dll: The specified module could not be found. (error 126)
+[00000019185ff680] main generic error: cannot load plug-in D:\a\JuxtopposedVLC\JuxtopposedVLC\unpacked\windows\plugins\demux\libgme_plugin.dll: The specified module could not be found. (error 126)

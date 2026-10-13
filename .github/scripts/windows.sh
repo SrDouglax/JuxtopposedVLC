@@ -70,8 +70,6 @@ file "$M0_OUTPUT/windows/vlc.exe" | grep -q 'PE32+.*x86-64'
 find "$M0_OUTPUT/windows" -type f -name '*.dll' -printf '%P\n' | sort > "$M0_OUTPUT/plugins.txt"
 find "$M0_OUTPUT/windows" -type f \( -name '*.dll' -o -name '*.exe' \) \
     -exec x86_64-w64-mingw32-strip --strip-unneeded {} +
-M0_PACKAGING_SHA=$(git rev-parse HEAD) \
-    bash "$root/.github/scripts/runtime.sh" "$M0_OUTPUT/windows" "$M0_OUTPUT"
 (cd "$M0_OUTPUT" && zip -q -r windows.zip windows)
 sha256sum "$M0_OUTPUT/windows.zip" > "$M0_OUTPUT/windows.zip.sha256"
 

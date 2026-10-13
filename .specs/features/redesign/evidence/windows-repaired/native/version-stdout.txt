@@ -1,0 +1,7 @@
+VLC version 4.0.0-dev Otto Chriek (4.0.0-dev-39363-g93c5244285)
+Compiled by root on a63d232cf7dc (Oct 13 2026 03:30:56)
+Compiler: gcc version 14-posix (GCC)
+This program comes with NO WARRANTY, to the extent permitted by law.
+You may redistribute it under the terms of the GNU General Public License;
+see the file named COPYING for details.
+Written by the VideoLAN team; see the AUTHORS file.

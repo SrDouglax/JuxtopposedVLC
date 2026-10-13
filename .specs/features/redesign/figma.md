@@ -35,3 +35,12 @@ T02 baixou **0 assets**. SVGs/capas/thumbnails foram identificados nos contextos
 A base de código mapeada é `392bc1d0abdb7396b6c97fef206efa1d23868e19`; símbolos e caminhos publicados aparecem na matriz. Controladores existentes são candidatos confirmados por fonte, ainda sem prova de integração com o redesign. **0/103 entradas têm aparência e função comprovadas no aplicativo redesenhado.** Nenhum build, smoke Linux ou teste nativo Windows foi executado por T02.
 
 A entrega de T02 é o inventário rastreável para implementação incremental; R02 continua aberto. Metadados completos por frame superior não equivalem a inspeção visual de todos os estados, nem a implementação do Figma completo.
+
+## Referência complementar do vídeo
+
+A [transcrição e sua síntese funcional](video.md), fornecidas em 13/10/2026,
+registram a intenção das escolhas, 16 requisitos narrativos e critérios de
+comportamento para M1–M3. Ela complementa os frames sem substituir medidas,
+tokens e inspeção visual. Play à esquerda no padrão e o layout customizado
+central são tratados separadamente; fila e playlists também preservam papéis
+distintos. Propostas sem equivalente comprovado continuam exigindo lógica real.

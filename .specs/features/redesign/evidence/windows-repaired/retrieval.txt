@@ -1,0 +1,4 @@
+artifact_id=11788301922
+artifact_bytes=92133447
+windows_zip_bytes=92186667
+selective_bytes_downloaded=3001

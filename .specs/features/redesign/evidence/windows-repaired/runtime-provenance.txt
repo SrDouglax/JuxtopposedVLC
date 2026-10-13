@@ -1,0 +1,11 @@
+image=registry.videolan.org/vlc-debian-win64-posix@sha256:8e83e800036f8f4a6da1031a6b80c2b5bad8337259c072ffa22398baaeaad880
+packaging_sha=495788ee65b8c3a837c93fcf7b51cd6077b77ba5
+compiler_path=/usr/bin/x86_64-w64-mingw32-gcc
+x86_64-w64-mingw32-gcc (GCC) 14-posix
+Copyright (C) 2024 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+runtime=libgcc_s_seh-1.dll source=/usr/lib/gcc/x86_64-w64-mingw32/14-posix/libgcc_s_seh-1.dll sha256=172cfdc9d83703ec0a0ca2cee08f6cf2a166b801717ee51a56b3a63b36bc2f83
+runtime=libwinpthread-1.dll source=/usr/x86_64-w64-mingw32/lib/libwinpthread-1.dll sha256=fc3cd567190f3f24e8201c2e1602f7d1f1e583a572efb7dbd8746d7928538e94
+existing_application_files_unchanged=true

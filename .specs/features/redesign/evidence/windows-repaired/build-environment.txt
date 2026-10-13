@@ -1,0 +1,23 @@
+source_sha=93c524428590416991e9a55c1746463ce493c553
+contrib_sha=a5538c557d276378d5ba0f8f8010a8b87eaa6f78
+contrib_url=https://artifacts.videolan.org/vlc/win64/vlc-contrib-x86_64-w64-mingw32-a5538c557d276378d5ba0f8f8010a8b87eaa6f78.tar.zst
+contrib_sha512=7504d2d80be566f1caced13c8acf45af67059dc159d987a5d4e82c8912ed6fc4435fba714670e53c786bd83accf6c441f1ad345d3c97c04b5bf0ab60341f8d0d
+image=registry.videolan.org/vlc-debian-win64-posix@sha256:8e83e800036f8f4a6da1031a6b80c2b5bad8337259c072ffa22398baaeaad880
+jobs=2
+x86_64-w64-mingw32-gcc (GCC) 14-posix
+Copyright (C) 2024 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+GNU Make 4.4.1
+Built for x86_64-pc-linux-gnu
+Copyright (C) 1988-2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       145G   68G   77G  47% /build
+               total        used        free      shared  buff/cache   available
+Mem:            15Gi       1.5Gi       2.4Gi        44Mi        12Gi        14Gi
+Swap:          3.0Gi          0B       3.0Gi
+packaging_sha=495788ee65b8c3a837c93fcf7b51cd6077b77ba5
