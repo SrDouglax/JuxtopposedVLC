@@ -17,6 +17,7 @@
  *****************************************************************************/
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls.Basic as Controls
 import QtQml.Models
 
 
@@ -47,7 +48,7 @@ Item {
         anchors.fill: parent
         spacing: 0
 
-        TabBar {
+        Controls.TabBar {
             id: bar
             z: 1
 

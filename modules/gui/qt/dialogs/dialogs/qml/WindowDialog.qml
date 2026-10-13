@@ -19,6 +19,7 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Layouts
+import QtQuick.Controls.Basic as Controls
 
 import VLC.MainInterface
 import VLC.Widgets as Widgets
@@ -37,7 +38,7 @@ Window {
     width: VLCStyle.appWidth * 0.75
     height: VLCStyle.appHeight * 0.85
 
-    color: theme.bg.primary
+    color: root.colorContext.bg.primary
 
     property alias contentComponent: loader.sourceComponent
     property alias standardButtons: buttonBox.standardButtons
@@ -94,7 +95,7 @@ Window {
             sourceComponent: contentComponent
         }
 
-        DialogButtonBox {
+        Controls.DialogButtonBox {
             id: buttonBox
 
             padding: 0
@@ -103,7 +104,7 @@ Window {
             Layout.fillWidth: true
             Layout.minimumHeight: VLCStyle.icon_normal
 
-            standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+            standardButtons: Controls.DialogButtonBox.Ok | Controls.DialogButtonBox.Cancel
 
             background: null
 
