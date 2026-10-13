@@ -62,7 +62,8 @@ public:
         m_fileName = qfu(media->psz_filename);
         m_smallThumbnail = getThumbnail(media->thumbnails[VLC_ML_THUMBNAIL_SMALL]);
         m_bannerThumbnail = getThumbnail(media->thumbnails[VLC_ML_THUMBNAIL_BANNER]);
-        m_duration = VLCDuration::fromMS(media->i_duration);
+        m_duration = media->i_duration >= 0
+            ? VLCDuration::fromMS(media->i_duration) : VLCDuration {};
         m_progress = media->f_progress;
         m_playCount = media->i_playcount;
         m_mrl = getMRL();
