@@ -1,0 +1,47 @@
+{
+  "source_commit": "85d27cc3dab4244afb8d5bd1872f9f7bd7cb746d",
+  "validation": "Linux native Qt6.4.2/X11/Xvfb/Openbox/software; incremental Qt plugin over M0 core",
+  "windows": "deferred until consolidated interface; workflow manual only",
+  "result": "PASS: playback, PCM audio, keyboard/mouse, seek click/drag, volume, fullscreen, resize, dialog with Unicode/space, invalid file, video navigation/history",
+  "known_unchanged_warnings": [
+    "ImageExt null status on teardown",
+    "MainDisplay scaleAxis ReferenceError, also present in M0"
+  ],
+  "not_proven": [
+    "Windows build/runtime for M1",
+    "hardware/GPU",
+    "RHI blur",
+    "all 103 Figma frames",
+    "nonempty library selection persistence",
+    "multifile previous/next interaction"
+  ],
+  "files": {
+    "player-large.png": "073a59ae00fd6b4e0e985c95252f766eaf454ecd7582fdbab3b4a64fd4b69f36",
+    "player-controls.png": "cd8d9796e9ab60cdbaaf3a92a2f600f8910bff9695a9a1e59c42ef645d7a823a",
+    "player-small.png": "21f234a2a4f479c8479d8dc26b30523419f6bc90e077490351d2cfa094e72fd3",
+    "empty.png": "b9e7c5af94971e2955d122f7d607aebdef9632fbf4e8d0b644af7275730818b4",
+    "shell-large.png": "38372080fcfe04ab4e7329a0c9eea85fde6a88038082ddb1df87020f7be5a09d",
+    "shell-small.png": "8ef21ae9ac0e8766644abf14cb3b48acfa87c63bb2e1eee82dd488213d9b54ac",
+    "sidebar-toggled.png": "5c0c66b65b370ad45fa08cd725da0169fc1c2fe2dd5ce78160967927cb68adfa",
+    "navigation-keyboard.png": "6ce469f0ca6b218018343c5ad2b56c4b08c2015fcfee76162657414affc67d54",
+    "fullscreen-controls.png": "848d0dfc8d2511ec7a611897815d6fedb9df899605f3e1028b1ee2737aa7adfb",
+    "open-dialog-filled.png": "351f5d272a1fffb4be063563bd08e3a5103a7cc0dd460e479350f3fde298d6e6",
+    "dialog-playing.png": "f43689fa03ea63876291396592a7286f5a94ec7581de56ef50487563661e3001",
+    "invalid-file.png": "770a42f9f607bec85b4fc8a7aba917e1585a69c8438e46affb6a0b21c6ddc812",
+    "video-all-restored.png": "c617e315d661224641c8ee14114efd3f1ea5114f4beef5f79c44beccadfbc20d",
+    "video-playlists-switch.png": "e7b3cec06759cfbc2c435587368488dda49315ac0beb24cc60facfd33333761e",
+    "video-all-back.png": "04da0ca41bb817662a9dee4df4930b366be4e1e939f71c01effbf59f805c9fa3",
+    "result.txt": "46b9cc0b71ed7d62045daaa2e306920d84cebbb17ada4770b8e39b5fa21e5100",
+    "ui-result.txt": "dfb5ce4c261a1fca20d9dac8f1c7922b5ec9d3988155695f25241f53ea1ddbe9",
+    "mouse-play.txt": "0f5f59bb93a02edd353122cdb712cf28754b07d3d7ea763334f76270c3dcfc0e",
+    "mouse-pause.txt": "c061c253c44b4f983e1192969dbca41f26205545ee2c0c368e92239b7ee7ddba",
+    "mouse-seek.txt": "77536eeb75807a979bf258fceb9846818d9e19be7686487600abe24882b0c3ee",
+    "mouse-volume.txt": "7a0797684a6dfcabb19ecce66c361cd4002f957c77a4025935d8cdc661f3c91c",
+    "mouse-fullscreen.txt": "b47aab0773d9e29952e06bb1d2682843eb5c01d1258f5c0e7747c4b9dfa027ca",
+    "mouse-windowed.txt": "9383853adbc025374fad4f7d06fe68dcfb87fe956de7cc88695923d0f646a65e",
+    "invalid-status.txt": "fe745b6bd3f52e3291154cf78d55a9f6a6963ff2c3c4cb04901310245520e75f",
+    "open-dialog-metadata.txt": "a908201513529ec875bc8614d16501e4ce93e96171ac968f9660d19bfcfbfae4",
+    "resources.txt": "5ca262a15bccd2c4866e9b6888fc7fae81bdb806a15d171ff698e522e8b1803a"
+  },
+  "qt_plugin_sha256": "1985eda40a88c6fa71c5d5985667f025e5ecdd49f1199022ffda55a7e7c39ee4"
+}

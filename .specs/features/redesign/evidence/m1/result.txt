@@ -1,0 +1,1 @@
+PASS: Qt window, video, PCM audio, subtitle fixture, pause/resume, seek, volume, fullscreen, exit

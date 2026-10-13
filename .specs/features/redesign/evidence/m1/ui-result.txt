@@ -1,0 +1,1 @@
+PASS: mouse playback, seek click/drag, volume, fullscreen, resize, file dialog, missing file; navigation captures recorded

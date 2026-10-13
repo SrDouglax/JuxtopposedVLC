@@ -2,13 +2,15 @@
 
 Fork do VLC para implementar o redesign da Juxtopposed em Qt/QML, com Linux como
 primeira plataforma e Windows preparado desde a fundação. M0 entregou o baseline
-Linux e o build/pacote Windows com limitações documentadas; M1 ainda não começou.
-A interface original continua sendo a referência de funcionamento.
+Linux e o build/pacote Windows com limitações documentadas. M1 entrega a primeira
+fatia nativa de shell e player, validada no Linux; a biblioteca completa continua
+nos próximos marcos. Windows será validado manualmente após consolidar a interface.
 
 Referência visual: [VLC Redesign — Community, da Juxtopposed](https://www.figma.com/design/fQSxoEi1zmnD5fQacw0qGs/VLC-Redesign--Community-?node-id=0-1).
 
 [Plano e requisitos](.specs/project/PROJECT.md) · [Roadmap](.specs/project/ROADMAP.md) ·
 [Fundação e build Linux](.specs/features/redesign/foundation.md) ·
+[M1 e evidências](.specs/features/redesign/m1.md) ·
 [Build Windows](.specs/features/redesign/windows.md) ·
 [Cobertura do Figma](.specs/features/redesign/coverage.md) ·
 [Intenção e comportamento do vídeo](.specs/features/redesign/video.md)
@@ -20,8 +22,9 @@ Para abrir a compilação local de desenvolvimento depois do build Linux:
 ```
 
 O lançador usa Docker, perfil próprio e Qt Quick em software. Os arquivos da
-pasta pessoal ficam disponíveis para leitura em `/media/home`. Esta é a base
-original de M0; o redesign começa em M1.
+pasta pessoal ficam disponíveis para leitura em `/media/home`. O módulo Qt já inclui a
+fatia de M1. A aparência Dark foi comparada ao Figma; System/Day/Night permanecem
+disponíveis nas preferências.
 
 # VLC media player
 
