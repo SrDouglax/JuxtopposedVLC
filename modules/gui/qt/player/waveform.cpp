@@ -140,6 +140,12 @@ void Waveform::refresh()
     const quint64 request = m_generation;
     m_busy = true;
     emit stateChanged();
+#ifdef Q_OS_WIN
+    // CREATE_NO_WINDOW: keep the analysis helper invisible beside the GUI.
+    process->setCreateProcessArgumentsModifier([](QProcess::CreateProcessArguments* arguments) {
+        arguments->flags |= 0x08000000;
+    });
+#endif
     process->setProgram(program);
     process->setArguments({path});
     connect(process, &QProcess::errorOccurred, this,

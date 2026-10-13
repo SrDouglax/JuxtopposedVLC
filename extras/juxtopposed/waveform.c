@@ -135,9 +135,9 @@ static int analyze(const char *path)
     a.chunks = calloc(MAX_CHUNKS, sizeof(*a.chunks));
     if (!a.chunks) return 3;
 
-    const char *options[] = {"--no-video", "--no-media-library",
+    const char *options[] = {"--ignore-config", "--no-video", "--no-media-library",
                              "--no-metadata-network-access", "--no-sub-autodetect-file"};
-    libvlc_instance_t *vlc = libvlc_new(4, options);
+    libvlc_instance_t *vlc = libvlc_new((int)(sizeof(options) / sizeof(options[0])), options);
     if (!vlc) { free(a.chunks); return 4; }
     const struct libvlc_media_player_cbs callbacks = {
         .version = 0, .on_media_stopping = on_stopping

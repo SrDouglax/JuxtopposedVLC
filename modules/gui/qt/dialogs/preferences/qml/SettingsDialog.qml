@@ -31,6 +31,7 @@ Dialog {
     readonly property bool hasChanges: config.dirty || appearanceDirty
 
     readonly property var titles: ({
+        extensions: qsTr("VLC Addons"),
         general: qsTr("Global Settings"), interface: qsTr("Interface Settings"),
         privacy: qsTr("Privacy Settings"), controls: qsTr("Controls Settings"),
         playback: qsTr("Playback Settings"), video: qsTr("Video Settings"),
