@@ -21,6 +21,7 @@ import QtQuick.Layouts
 import QtQuick.Templates as T
 
 import VLC.Dialogs
+import VLC.MainInterface
 import VLC.Player
 import VLC.Style
 import VLC.Widgets as Widgets
@@ -114,6 +115,14 @@ T.Popup {
                         objectName: "subtitleOffButton"
                         Layout.fillWidth: true
                         text: qsTr("Off")
+                        checked: {
+                            for (let i = 0; i < subtitleRows.count; ++i) {
+                                const row = subtitleRows.itemAt(i)
+                                if (row && row.checked)
+                                    return false
+                            }
+                            return true
+                        }
                         onClicked: {
                             for (let i = 0; i < subtitleRows.count; ++i) {
                                 const row = subtitleRows.itemAt(i)
@@ -129,7 +138,10 @@ T.Popup {
                     Repeater {
                         id: subtitleRows
                         model: Player.subtitleTracks
-                        delegate: TrackChoice { Layout.fillWidth: true }
+                        delegate: TrackChoice {
+                            objectName: "subtitleTrack" + index
+                            Layout.fillWidth: true
+                        }
                     }
                     PanelButton {
                         objectName: "addSubtitleButton"
@@ -158,7 +170,10 @@ T.Popup {
                     }
                     Repeater {
                         model: Player.audioTracks
-                        delegate: TrackChoice { Layout.fillWidth: true }
+                        delegate: TrackChoice {
+                            objectName: "audioTrack" + index
+                            Layout.fillWidth: true
+                        }
                     }
                     SectionTitle { text: qsTr("Output device") }
                     EmptyLabel {
@@ -168,7 +183,10 @@ T.Popup {
                     Repeater {
                         id: outputRows
                         model: Player.audioDevices
-                        delegate: TrackChoice { Layout.fillWidth: true }
+                        delegate: TrackChoice {
+                            objectName: "outputDevice" + index
+                            Layout.fillWidth: true
+                        }
                     }
                     DelayControl {
                         objectName: "audioDelayControl"
@@ -191,7 +209,10 @@ T.Popup {
                     }
                     Repeater {
                         model: Player.videoTracks
-                        delegate: TrackChoice { Layout.fillWidth: true }
+                        delegate: TrackChoice {
+                            objectName: "videoTrack" + index
+                            Layout.fillWidth: true
+                        }
                     }
                 }
 
@@ -219,6 +240,33 @@ T.Popup {
                     EmptyLabel {
                         visible: !Player.ratechangable
                         text: qsTr("Speed cannot be changed for this media")
+                    }
+                    SectionTitle { text: qsTr("Chapters") }
+                    EmptyLabel {
+                        visible: Player.chapters.count === 0
+                        text: qsTr("No chapters in this media")
+                    }
+                    Repeater {
+                        model: Player.chapters
+                        delegate: PanelButton {
+                            objectName: "chapter" + index
+                            Layout.fillWidth: true
+                            text: model.display
+                            checked: model.checked
+                            onClicked: Player.chapters.selectChapter(index)
+                        }
+                    }
+                    SectionTitle { text: qsTr("Bookmarks") }
+                    PanelButton {
+                        objectName: "manageBookmarksButton"
+                        Layout.fillWidth: true
+                        text: qsTr("Manage bookmarks…")
+                        enabled: MainCtx.mediaLibraryAvailable
+                        onClicked: DialogsProvider.bookmarksDialog()
+                    }
+                    EmptyLabel {
+                        visible: !MainCtx.mediaLibraryAvailable
+                        text: qsTr("Bookmarks require the media library")
                     }
                 }
             }
@@ -264,7 +312,6 @@ T.Popup {
     }
 
     component TrackChoice: Widgets.CheckedDelegate {
-        objectName: "trackChoice"
         readonly property bool isModelChecked: model.checked
         text: model.display
         implicitHeight: VLCStyle.dp(34, VLCStyle.scale)
