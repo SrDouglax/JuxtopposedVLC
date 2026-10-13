@@ -203,9 +203,14 @@ QString AudioEffects::preset() const
 QVariantList AudioEffects::presets() const
 {
     QVariantList result;
-    for (int i = 0; i < NB_PRESETS; ++i)
+    for (int i = 0; i < NB_PRESETS; ++i) {
+        QVariantList gains;
+        for (int band = 0; band < EQZ_BANDS_MAX; ++band)
+            gains << eqz_preset_10b[i].f_amp[band];
         result << QVariantMap{{"id", QString::fromUtf8(preset_list[i])},
-                              {"name", qtr(preset_list_text[i])}};
+                              {"name", qtr(preset_list_text[i])},
+                              {"bands", gains}};
+    }
     return result;
 }
 

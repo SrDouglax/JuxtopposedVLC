@@ -180,6 +180,7 @@ ColumnLayout {
             clip: true
             model: root.effects.presets
             delegate: T.Button {
+                id: presetChoice
                 required property var modelData
                 width: presetList.width
                 height: VLCStyle.dp(38, VLCStyle.scale)
@@ -195,10 +196,41 @@ ColumnLayout {
                 contentItem: RowLayout {
                     Text {
                         Layout.fillWidth: true
-                        text: parent.parent.text
+                        text: presetChoice.text
                         color: VLCStyle.redesign.textSecondary
                         font.family: VLCStyle.redesign.fontFamily
                         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                        elide: Text.ElideRight
+                    }
+                    Canvas {
+                        Layout.preferredWidth: VLCStyle.dp(72, VLCStyle.scale)
+                        Layout.preferredHeight: VLCStyle.dp(24, VLCStyle.scale)
+                        renderTarget: Canvas.Image
+                        Accessible.role: Accessible.Graphic
+                        Accessible.name: qsTr("%1 equalizer curve").arg(presetChoice.text)
+                        onPaint: {
+                            const gains = presetChoice.modelData.bands
+                            if (!gains || gains.length !== 10) return
+                            const paint = getContext("2d")
+                            paint.clearRect(0, 0, width, height)
+                            paint.strokeStyle = VLCStyle.redesign.border
+                            paint.lineWidth = 1
+                            paint.beginPath()
+                            paint.moveTo(0, height / 2)
+                            paint.lineTo(width, height / 2)
+                            paint.stroke()
+                            paint.strokeStyle = VLCStyle.redesign.accent
+                            paint.lineWidth = 1.5
+                            paint.beginPath()
+                            for (let band = 0; band < gains.length; ++band) {
+                                const gain = Math.max(-20, Math.min(20, Number(gains[band])))
+                                const x = band * width / (gains.length - 1)
+                                const y = (20 - gain) * height / 40
+                                if (band === 0) paint.moveTo(x, y)
+                                else paint.lineTo(x, y)
+                            }
+                            paint.stroke()
+                        }
                     }
                     Image {
                         source: "qrc:///redesign/icons/check/selected.png"
