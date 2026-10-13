@@ -118,10 +118,11 @@ T.Pane {
                 navigationDepth: depth
                 width: ListView.view.width
                 height: VLCStyle.dp(38, VLCStyle.scale)
-                leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(16 + depth * 16, VLCStyle.scale)
+                leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(root.delegateShowText ? 24 + depth * 16 : 8, VLCStyle.scale)
                 rightPadding: root.safeAreaRightMargin + VLCStyle.margin_small
-                leftInset: root.safeAreaLeftMargin
-                rightInset: root.safeAreaRightMargin
+                leftInset: root.safeAreaLeftMargin + VLCStyle.dp(8, VLCStyle.scale)
+                rightInset: root.safeAreaRightMargin + VLCStyle.dp(8, VLCStyle.scale)
+                iconSlotWidth: VLCStyle.dp(modelData.asset === "video" ? 32 : 30, VLCStyle.scale)
                 iconTxt: modelData.icon
                 referenceIconName: modelData.asset
                 text: modelData.title
@@ -140,10 +141,11 @@ T.Pane {
             id: addItem
             Layout.fillWidth: true
             Layout.preferredHeight: VLCStyle.dp(38, VLCStyle.scale)
-            leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(16, VLCStyle.scale)
+            leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(root.delegateShowText ? 24 : 8, VLCStyle.scale)
             rightPadding: root.safeAreaRightMargin
-            leftInset: root.safeAreaLeftMargin
-            rightInset: root.safeAreaRightMargin
+            leftInset: root.safeAreaLeftMargin + VLCStyle.dp(8, VLCStyle.scale)
+            rightInset: root.safeAreaRightMargin + VLCStyle.dp(8, VLCStyle.scale)
+            iconSlotWidth: VLCStyle.dp(30, VLCStyle.scale)
             iconTxt: VLCIcons.add
             referenceIconName: "add"
             text: qsTr("Add item")

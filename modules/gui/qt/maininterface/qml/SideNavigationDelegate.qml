@@ -35,6 +35,7 @@ T.ItemDelegate {
     property string referenceIconName: ""
     property var navigationUri: []
     property int navigationDepth: 0
+    property real iconSlotWidth: VLCStyle.redesign.iconSize
 
     readonly property url imageSource: {
         if (referenceIconName.length > 0)
@@ -138,7 +139,7 @@ T.ItemDelegate {
         spacing: VLCStyle.margin_xsmall
 
         Item {
-            Layout.preferredWidth: VLCStyle.redesign.iconSize
+            Layout.preferredWidth: control.iconSlotWidth
             Layout.fillHeight: true
 
             Image {
