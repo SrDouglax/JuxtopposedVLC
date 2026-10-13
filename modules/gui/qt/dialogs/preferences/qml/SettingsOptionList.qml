@@ -10,6 +10,8 @@ import "SettingsPresentation.js" as Presentation
 Column {
     id: root
     property var settingsModel
+    property string category: ""
+    property string search: ""
     readonly property int count: optionsRepeater.count
     width: parent ? parent.width : implicitWidth
     spacing: 0
@@ -48,6 +50,13 @@ Column {
                 editorKind: presentation.editor
                 dirty: model.dirty
                 onCommit: (value) => root.settingsModel.setValue(settingKey, value)
+            }
+
+            Loader {
+                width: parent.width
+                active: root.category === "privacy" && root.search.length === 0
+                        && model.key === "restore-playback-states"
+                sourceComponent: SettingsPrivacyActions { width: root.width }
             }
         }
     }
