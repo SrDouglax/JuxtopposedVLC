@@ -31,9 +31,9 @@ WindowDialog {
     objectName: "toolbarEditorDialog"
 
     width: Math.max(minimumWidth, Math.min(VLCStyle.dp(1048, VLCStyle.scale),
-                                          Screen.availableWidth - VLCStyle.dp(40, VLCStyle.scale)))
+                                          Screen.desktopAvailableWidth - VLCStyle.dp(40, VLCStyle.scale)))
     height: Math.max(minimumHeight, Math.min(VLCStyle.dp(700, VLCStyle.scale),
-                                            Screen.availableHeight - VLCStyle.dp(40, VLCStyle.scale)))
+                                            Screen.desktopAvailableHeight - VLCStyle.dp(40, VLCStyle.scale)))
 
     minimumWidth: VLCStyle.dp(640, VLCStyle.scale)
     minimumHeight: VLCStyle.dp(480, VLCStyle.scale)

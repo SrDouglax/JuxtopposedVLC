@@ -253,7 +253,7 @@ MouseArea {
             font.pixelSize: VLCStyle.dp(24, VLCStyle.scale)
             font.weight: Font.Medium
             horizontalAlignment: Text.AlignHCenter
-            color: VLCStyle.redesign.textSecondary
+            color: VLCStyle.redesign.color(VLCStyle.redesign.textSecondary, "#4d4d4d")
             Accessible.description: qsTr("Title and artist")
 
             property bool componentCompleted: false
