@@ -116,9 +116,11 @@ T.Control {
         videoSurfaceProvider: MainCtx.videoSurfaceProvider
 
         color: (hoverHandler.hovered ||
-                playButton?.hovered ||
-                closeButton?.hovered ||
-                fullscreenButton?.hovered) ? "#10000000" : "transparent"
+                playButton.hovered ||
+                previousButton.hovered ||
+                nextButton.hovered ||
+                closeButton.hovered ||
+                fullscreenButton.hovered) ? "#66000000" : "transparent"
 
         // It is acceptable for effects to exceed the boundaries of the
         // parent. They are an exception to the "hypothetical clip test".
@@ -131,6 +133,8 @@ T.Control {
         visible: !root.hideControls &&
                  (hoverHandler.hovered ||
                  playButton.hovered ||
+                 previousButton.hovered ||
+                 nextButton.hovered ||
                  closeButton.hovered ||
                  fullscreenButton.hovered)
 
@@ -140,25 +144,46 @@ T.Control {
         // because content item is supposed to be the foreground item.
         z: 1
 
-        Widgets.IconButton {
-            id: playButton
-
+        Row {
             anchors.centerIn: parent
+            spacing: VLCStyle.dp(12, VLCStyle.scale)
 
-            font.pixelSize: VLCStyle.icon_large
+            Widgets.IconButton {
+                id: previousButton
+                text: VLCIcons.previous
+                textStyle: root.textStyle
+                description: qsTr("Previous item")
+                enabled: MainPlaylistController.hasPrev
+                onClicked: MainPlaylistController.prev()
+            }
 
-            description: qsTr("play/pause")
+            Widgets.IconButton {
+                id: playButton
 
-            AccessibleCompat.id: "pipPlayButton"
+                font.pixelSize: VLCStyle.icon_large
 
-            text: (Player.playingState !== Player.PLAYING_STATE_PAUSED
-                   && Player.playingState !== Player.PLAYING_STATE_STOPPED)
-                  ? VLCIcons.pause_filled
-                  : VLCIcons.play_filled
+                description: qsTr("Play or pause")
 
-            textStyle: root.textStyle
+                AccessibleCompat.id: "pipPlayButton"
 
-            onClicked: MainPlaylistController.togglePlayPause()
+                text: (Player.playingState !== Player.PLAYING_STATE_PAUSED
+                       && Player.playingState !== Player.PLAYING_STATE_STOPPED)
+                      ? VLCIcons.pause_filled
+                      : VLCIcons.play_filled
+
+                textStyle: root.textStyle
+
+                onClicked: MainPlaylistController.togglePlayPause()
+            }
+
+            Widgets.IconButton {
+                id: nextButton
+                text: VLCIcons.next
+                textStyle: root.textStyle
+                description: qsTr("Next item")
+                enabled: MainPlaylistController.hasNext
+                onClicked: MainPlaylistController.next()
+            }
         }
 
         Widgets.IconButton {
@@ -167,8 +192,8 @@ T.Control {
             anchors {
                 top: parent.top
                 topMargin: VLCStyle.margin_small
-                right: parent.right
-                rightMargin: VLCStyle.margin_small
+                left: parent.left
+                leftMargin: VLCStyle.margin_small
             }
 
             font.pixelSize: VLCStyle.icon_PIP
@@ -189,8 +214,8 @@ T.Control {
             anchors {
                 top: parent.top
                 topMargin: VLCStyle.margin_small
-                left: parent.left
-                leftMargin: VLCStyle.margin_small
+                right: parent.right
+                rightMargin: VLCStyle.margin_small
             }
 
             font.pixelSize: VLCStyle.icon_PIP
