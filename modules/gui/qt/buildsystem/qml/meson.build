@@ -21,6 +21,7 @@ qml_modules += {
         '../../dialogs/preferences/qml/SettingsPresentation.qml',
         '../../dialogs/preferences/qml/ActionButton.qml',
         '../../dialogs/preferences/qml/ShortcutsCapturePopup.qml',
+        '../../dialogs/preferences/qml/SettingsExtensions.qml',
         '../../dialogs/preferences/qml/SettingsDialog.qml',
         '../../dialogs/preferences/qml/SettingsOptionRow.qml',
         '../../dialogs/toolbar/qml/PlayerMenu.qml',

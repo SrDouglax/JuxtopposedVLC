@@ -169,10 +169,6 @@ Dialog {
             category: root.selectedCategory
             availableCategories: config.categories
             onSelected: (category) => {
-                if (category === "extensions") {
-                    DialogsProvider.pluginDialog()
-                    return
-                }
                 root.selectedCategory = category
                 searchField.text = ""
                 contentFlick.contentY = 0
@@ -209,8 +205,15 @@ Dialog {
                                        .includes(searchField.text.toLowerCase()))
                 }
 
+                SettingsExtensions {
+                    id: extensions
+                    width: parent.width
+                    visible: root.selectedCategory === "extensions" && !searchField.text.length
+                    settingsModel: config
+                }
                 SettingsOptionList {
                     id: optionList
+                    visible: !extensions.visible
                     width: parent.width
                     settingsModel: config
                     category: root.selectedCategory
