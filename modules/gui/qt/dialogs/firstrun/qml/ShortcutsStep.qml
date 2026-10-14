@@ -44,7 +44,7 @@ Item {
                     id: shortcutRow
                     required property int index
                     width: parent.width
-                    height: 55
+                    height: implicitHeight
                     spacing: 38
                     Repeater {
                         model: 2
@@ -52,37 +52,76 @@ Item {
                             required property int index
                             readonly property int shortcutIndex: shortcutRow.index + index * Math.ceil(root.shortcuts.length / 2)
                             readonly property var shortcut: shortcutIndex < root.shortcuts.length ? root.shortcuts[shortcutIndex] : null
+                            readonly property var sequences: shortcut
+                                ? shortcut.sequence.split("\t").filter(sequence => sequence.length > 0) : []
                             width: (parent.width - 38) / 2
-                            height: 55
+                            implicitHeight: Math.max(55, keycaps.implicitHeight + 12)
+                            height: implicitHeight
                             visible: shortcut !== null
                             Text {
                                 anchors.left: parent.left
                                 anchors.verticalCenter: parent.verticalCenter
-                                width: parent.width * 0.53
+                                width: parent.width - keycaps.width - 16
                                 text: parent.shortcut ? parent.shortcut.action : ""
                                 color: "#969696"
                                 elide: Text.ElideRight
                                 font.family: VLCStyle.redesign.fontFamily
                                 font.pixelSize: 16
                             }
-                            Rectangle {
-                                id: keycap
+                            Flow {
+                                id: keycaps
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                width: Math.max(52, Math.min(parent.width * 0.44, keyText.implicitWidth + 28))
-                                height: 43
-                                radius: 12
-                                color: "#1d1d1d"
-                                border.width: 3
-                                border.color: "#383838"
-                                Text {
-                                    id: keyText
-                                    anchors.centerIn: parent
-                                    text: keycap.parent.shortcut ? keycap.parent.shortcut.sequence : ""
-                                    color: "#c6c6c6"
-                                    font.family: VLCStyle.redesign.fontFamily
-                                    font.pixelSize: 15
-                                    elide: Text.ElideRight
+                                width: parent.width * 0.56
+                                spacing: 8
+                                Repeater {
+                                    model: keycaps.parent.sequences
+                                    delegate: Row {
+                                        required property int index
+                                        required property string modelData
+                                        spacing: 8
+                                        Text {
+                                            visible: index > 0
+                                            width: 8
+                                            height: 43
+                                            text: "/"
+                                            color: "#777777"
+                                            font.pixelSize: 15
+                                            verticalAlignment: Text.AlignVCenter
+                                            Accessible.ignored: true
+                                        }
+                                        Rectangle {
+                                            id: keycap
+                                            width: Math.min(keycaps.width - (index > 0 ? 16 : 0),
+                                                            Math.max(52, keyText.implicitWidth + 28))
+                                            height: 43
+                                            radius: 12
+                                            color: "#1d1d1d"
+                                            border.width: 3
+                                            border.color: "#383838"
+                                            Accessible.role: Accessible.StaticText
+                                            Accessible.name: modelData
+                                            Text {
+                                                id: keyText
+                                                anchors.centerIn: parent
+                                                width: parent.width - 28
+                                                text: modelData
+                                                color: "#c6c6c6"
+                                                font.family: VLCStyle.redesign.fontFamily
+                                                font.pixelSize: 15
+                                                horizontalAlignment: Text.AlignHCenter
+                                                elide: Text.ElideRight
+                                            }
+                                            MouseArea {
+                                                id: hover
+                                                anchors.fill: parent
+                                                hoverEnabled: true
+                                                acceptedButtons: Qt.NoButton
+                                            }
+                                            Controls.ToolTip.visible: hover.containsMouse && keyText.truncated
+                                            Controls.ToolTip.text: modelData
+                                        }
+                                    }
                                 }
                             }
                         }
