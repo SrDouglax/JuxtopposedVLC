@@ -40,7 +40,7 @@ Item {
 
     Flickable {
         anchors.fill: parent
-        anchors.margins: 6
+        anchors.margins: VLCStyle.dp(6, VLCStyle.scale)
         contentHeight: categoryList.implicitHeight
         clip: true
         boundsBehavior: Flickable.StopAtBounds
@@ -48,14 +48,14 @@ Item {
         Column {
             id: categoryList
             width: parent.width
-            spacing: 2
+            spacing: VLCStyle.dp(2, VLCStyle.scale)
 
             Repeater {
                 model: root.entries
                 delegate: Item {
                     required property var modelData
                     width: categoryList.width
-                    height: modelData.kind === "heading" ? 46 : 46
+                    height: VLCStyle.dp(46, VLCStyle.scale)
                     visible: modelData.kind === "heading"
                              || modelData.key === "extensions"
                              || root.availableCategories.indexOf(modelData.key) >= 0
@@ -63,9 +63,9 @@ Item {
                     Label {
                         visible: modelData.kind === "heading"
                         anchors.left: parent.left
-                        anchors.leftMargin: 10
+                        anchors.leftMargin: VLCStyle.dp(10, VLCStyle.scale)
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 10
+                        anchors.bottomMargin: VLCStyle.dp(10, VLCStyle.scale)
                         text: modelData.label || ""
                         color: root.dark ? "#6d6d6d" : "#666666"
                         font.family: VLCStyle.redesign.fontFamily
@@ -77,8 +77,8 @@ Item {
                         enabled: modelData.key === "extensions"
                                  || root.availableCategories.indexOf(modelData.key) >= 0
                         anchors.fill: parent
-                        anchors.topMargin: 3
-                        anchors.bottomMargin: 3
+                        anchors.topMargin: VLCStyle.dp(3, VLCStyle.scale)
+                        anchors.bottomMargin: VLCStyle.dp(3, VLCStyle.scale)
                         onClicked: root.selected(modelData.key)
                         background: Rectangle {
                             color: root.category === modelData.key
@@ -88,9 +88,9 @@ Item {
                             radius: 3
                         }
                         contentItem: Row {
-                            spacing: 12
+                            spacing: VLCStyle.dp(12, VLCStyle.scale)
                             anchors.left: parent.left
-                            anchors.leftMargin: 10
+                            anchors.leftMargin: VLCStyle.dp(10, VLCStyle.scale)
                             anchors.verticalCenter: parent.verticalCenter
                             Image {
                                 width: VLCStyle.dp(24, VLCStyle.scale)

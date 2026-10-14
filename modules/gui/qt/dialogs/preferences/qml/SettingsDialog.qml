@@ -105,7 +105,7 @@ Dialog {
 
                 Image {
                     anchors.left: parent.left
-                    anchors.leftMargin: 12
+                    anchors.leftMargin: VLCStyle.dp(12, VLCStyle.scale)
                     anchors.verticalCenter: parent.verticalCenter
                     width: VLCStyle.dp(20, VLCStyle.scale)
                     height: width
@@ -116,8 +116,8 @@ Dialog {
                     id: searchField
                     objectName: "settingsSearch"
                     anchors.fill: parent
-                    leftPadding: 42
-                    rightPadding: 10
+                    leftPadding: VLCStyle.dp(42, VLCStyle.scale)
+                    rightPadding: VLCStyle.dp(10, VLCStyle.scale)
                     placeholderText: qsTr("Search")
                     color: root.dark ? "#dddddd" : "#222222"
                     font.family: VLCStyle.redesign.fontFamily
@@ -142,10 +142,10 @@ Dialog {
                 id: closeButton
                 objectName: "settingsClose"
                 anchors.right: parent.right
-                anchors.rightMargin: 15
+                anchors.rightMargin: VLCStyle.dp(15, VLCStyle.scale)
                 anchors.verticalCenter: parent.verticalCenter
-                width: 32
-                height: 32
+                width: VLCStyle.dp(32, VLCStyle.scale)
+                height: width
                 onClicked: root.reject()
                 background: Item {}
                 contentItem: Image {
@@ -321,6 +321,8 @@ Dialog {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Reset category")
+                font.family: VLCStyle.redesign.fontFamily
+                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                 enabled: !searchField.text.length && root.selectedCategory !== "extensions"
                 onClicked: {
                     config.resetCategory()
@@ -328,7 +330,7 @@ Dialog {
                         appearance.resetDefaults()
                 }
                 background: Rectangle { color: root.dark ? "#1a1a1a" : "#e9e9e9"; radius: 3 }
-                contentItem: Label { text: parent.text; color: root.dark ? "#999999" : "#444444"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
+                contentItem: Label { text: parent.text; font: parent.font; color: root.dark ? "#999999" : "#444444"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
             }
             Button {
                 id: applyButton
