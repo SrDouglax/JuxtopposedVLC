@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 import QtQuick
+import VLC.Widgets as Widgets
 
 // NOTE: ImageExt behaves exactly like Image, except when at least one of these features are used:
 //       - `PreserveAspectCrop` fill mode without requiring a clip node.
@@ -23,8 +24,8 @@ import QtQuick
 //       - Background coloring.
 //       - Outlining (border).
 //       - TODO: Custom padding.
-// NOTE: Extra features are only available with the RHI graphics backend,
-//       particularly when shaders are supported.
+// NOTE: RHI shaders provide the extra features. SoftwareImage also provides
+//       transparent rounded corners and proportional cropping on the CPU.
 // NOTE: Do not use this type if none of the extra features are used.
 // NOTE: This item is also a texture provider, but for technical reasons, it is through an anonymous
 //       item exposed through `textureProviderItem`. Note that, postprocessing (any non-image/texture
@@ -122,12 +123,15 @@ Item {
     property real radiusTopLeft: radius
     property real radiusBottomRight: radius
     property real radiusBottomLeft: radius
-    readonly property real effectiveRadius: shaderEffect.visible ? Math.max(radiusTopRight, radiusTopLeft, radiusBottomRight, radiusBottomLeft) : 0.0
+    readonly property bool softwareRounding: root.GraphicsInfo.api === GraphicsInfo.Software
+                                            && image.status === Image.Ready
+    readonly property real effectiveRadius: shaderEffect.visible || softwareRounding
+        ? Math.max(radiusTopRight, radiusTopLeft, radiusBottomRight, radiusBottomLeft) : 0.0
 
     // If effective radius is 0.0 (no rounding), use "black" as the default background
     // color so that blending is not used:
     property color backgroundColor: (effectiveRadius > 0.0 ? "transparent" : "black")
-    readonly property color effectiveBackgroundColor: shaderEffect.visible ? backgroundColor : "transparent"
+    readonly property color effectiveBackgroundColor: shaderEffect.visible || softwareRounding ? backgroundColor : "transparent"
 
     property alias blending: shaderEffect.blending
     blending: (effectiveRadius > 0.0) || (effectiveBackgroundColor.a < 1.0)
@@ -253,8 +257,12 @@ Item {
                                                           : "qrc:///shaders/SDFAARoundedTexture.frag.qsb"
     }
 
-    Image {
+    Widgets.SoftwareImage {
         id: image
+
+        radii: Qt.vector4d(root.radiusTopLeft, root.radiusTopRight,
+                          root.radiusBottomRight, root.radiusBottomLeft)
+        backgroundColor: root.backgroundColor
 
         anchors.fill: parent
 

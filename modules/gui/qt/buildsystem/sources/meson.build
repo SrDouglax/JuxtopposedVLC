@@ -382,6 +382,8 @@ qt_plugin_sources = files(
     '../../widgets/native/qvlcframe.hpp',
     '../../widgets/native/searchlineedit.cpp',
     '../../widgets/native/searchlineedit.hpp',
+    '../../widgets/native/softwareimage.cpp',
+    '../../widgets/native/softwareimage.hpp',
     '../../widgets/native/viewblockingrectangle.cpp',
     '../../widgets/native/viewblockingrectangle.hpp',
     '../../widgets/native/doubleclickignoringitem.hpp',

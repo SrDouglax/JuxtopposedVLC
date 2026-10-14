@@ -1,4 +1,5 @@
 #include "mainui.hpp"
+#include "widgets/native/softwareimage.hpp"
 
 #include <cassert>
 
@@ -413,6 +414,7 @@ void MainUI::registerQMLTypes()
         const char* uri = "VLC.Widgets";
         const int versionMajor = 1;
         const int versionMinor = 0;
+        qmlRegisterType<SoftwareImage>(uri, versionMajor, versionMinor, "SoftwareImage");
 
         // @uri VLC.Widgets
         qmlRegisterType<CSDThemeImage>(uri, versionMajor, versionMinor, "CSDThemeImage");

@@ -1,0 +1,16 @@
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-ubuntu'
+crop transparent corner PASS
+crop transparent corner PASS
+crop transparent corner PASS
+crop transparent corner PASS
+crop image center PASS
+fit transparent corner PASS
+fit image center PASS
+fit letterbox PASS
+mixed rounded corner PASS
+mixed square corner PASS
+texture replacement keeps corners transparent PASS
+radius reset restores square node PASS
+pooled image clears old pixels PASS
+reused image rounds again PASS
+reused image reloads PASS

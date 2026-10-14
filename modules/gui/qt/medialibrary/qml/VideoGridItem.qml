@@ -59,36 +59,18 @@ Widgets.GridItem {
                                                   colorContext.palette?.isDark ?? true)
                         : colorContext.fg.highlight
 
-    // Bottom rounding is provided by the progress bar if it is visible:
-    mediaCover.radiusBottomLeft: progressBar.visible ? 0.0 : mediaCover.radius
-    mediaCover.radiusBottomRight: progressBar.visible ? 0.0 : mediaCover.radius
-
-    selectedShadow.height: selectedShadow.implicitHeight + (progressBar.visible ? progressBar.height : 0.0)
-    unselectedShadow.height: unselectedShadow.implicitHeight + (progressBar.visible ? progressBar.height : 0.0)
-
     Widgets.VideoProgressBar {
         id: progressBar
 
         parent: root.mediaCover
 
-        // If the background color of the image is opaque (which should be
-        // the case by default), we can place the progress bar beneath the
-        // thumbnail and disable clipping because the top part would not be
-        // exposed. Note that the top part is still going to be painted, as
-        // long as the image is not opaque which is the expected case since
-        // SDF-based round images always have transparent parts which needs
-        // blending. If the image is not rounded and its blending is disabled,
-        // the top part of the bar is not going to be painted, thanks to depth
-        // testing. Furthermore, fragment shader may not even be executed for
-        // the top part that are obscured by the opaque image, provided that
-        // early depth test is applicable. In any case, since bottom radii
-        // are 0.0 and background color is opaque, the top part (if painted)
-        // will not be exposed to the user.
-        z: (root.mediaCover.color.a > (1.0 - Number.EPSILON)) ? -0.1 : 0.0
-        clip: (z >= 0.0)
+        // Overlay the bottom of the thumbnail so both shapes share one edge.
+        // Appending the strip below a square image leaves black corner seams.
+        z: 1
+        clip: true
 
         anchors {
-            top: parent.bottom
+            bottom: parent.bottom
             left: parent.left
             right: parent.right
         }
@@ -108,37 +90,6 @@ Widgets.GridItem {
             color: "#33000000"
             radius: root.pictureRadius
             visible: VLCStyle.palette.isDark
-        }
-
-        // Software Qt Quick cannot run the image rounding shader. Paint only
-        // the four exterior corners, leaving the actual thumbnail unchanged.
-        Canvas {
-            anchors.fill: parent
-            visible: root.GraphicsInfo.shaderType !== GraphicsInfo.RhiShader
-            onWidthChanged: requestPaint()
-            onHeightChanged: requestPaint()
-            onPaint: {
-                const ctx = getContext("2d")
-                ctx.clearRect(0, 0, width, height)
-                ctx.fillStyle = VLCStyle.redesign.windowBackground
-                const corners = [ [0, 0, 0, root.mediaCover.radiusTopLeft],
-                                  [width, 0, 90, root.mediaCover.radiusTopRight],
-                                  [width, height, 180, root.mediaCover.radiusBottomRight],
-                                  [0, height, 270, root.mediaCover.radiusBottomLeft] ]
-                for (const corner of corners) {
-                    const r = Math.min(corner[3], width / 2, height / 2)
-                    ctx.save()
-                    ctx.translate(corner[0], corner[1])
-                    ctx.rotate(corner[2] * Math.PI / 180)
-                    ctx.beginPath()
-                    ctx.moveTo(0, 0)
-                    ctx.lineTo(r, 0)
-                    ctx.arcTo(0, 0, 0, r, r)
-                    ctx.closePath()
-                    ctx.fill()
-                    ctx.restore()
-                }
-            }
         }
 
         Widgets.ScaledImage {

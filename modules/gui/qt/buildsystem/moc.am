@@ -150,6 +150,7 @@ nodist_libqt_plugin_la_SOURCES = \
 	widgets/native/navigation_attached.moc.cpp \
 	widgets/native/mlfolderseditor.moc.cpp \
 	widgets/native/searchlineedit.moc.cpp \
+	widgets/native/softwareimage.moc.cpp \
 	widgets/native/viewblockingrectangle.moc.cpp
 
 nodist_libqt_plugin_la_SOURCES += \
