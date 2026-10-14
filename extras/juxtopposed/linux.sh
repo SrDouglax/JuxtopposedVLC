@@ -22,7 +22,7 @@ if ! pkg-config --atleast-version=1.23.0 wayland-scanner; then
         --prefix=/work/build-m0/deps --libdir=lib --buildtype=release \
         -Dlibraries=false -Dscanner=true -Dtests=false \
         -Ddocumentation=false -Ddtd_validation=false > logs/wayland-scanner.log 2>&1
-    meson compile -C wayland-scanner-build >> logs/wayland-scanner.log 2>&1
+    meson compile -C wayland-scanner-build --jobs "$jobs" >> logs/wayland-scanner.log 2>&1
     meson install -C wayland-scanner-build --no-rebuild >> logs/wayland-scanner.log 2>&1
     cd /work
 fi

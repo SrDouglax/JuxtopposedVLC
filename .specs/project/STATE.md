@@ -25,6 +25,11 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 
 ## Organização
 
+- Em 13/10/2026, a execução de M3 foi reorganizada após pressão de RAM/swap no host. Nenhum subagente está ativo; as próximas correções ficam com o coordenador.
+- Uma operação pesada por vez: encerrar a aplicação antes de compilar e encerrar a compilação antes do teste nativo. Builds incrementais com `make -j1`, `nice -n 19` e prioridade de I/O baixa; o scanner Meson também respeita `M0_JOBS` (padrão 1).
+- O contêiner local `juxtopposed-vlc-m0-linux` está limitado a 2 GiB de RAM, sem swap (`memory-swap` igual a `memory`) e uma CPU. Permanece desligado durante inspeção/edição. Se esse teto impedir uma operação, registrar a falha e reavaliar antes de ampliar recursos.
+- Fila imediata de M3: (1) diagnosticar a asserção ao abrir vídeo com legenda e corrigir a paleta do editor sobreposto; (2) build incremental e validação somente dos caminhos afetados; (3) concluir as verificações restantes de perfis/legendas e atualizar a evidência de entrega. Reaproveitar as provas já válidas de efeitos, timer e miniplayer.
+- Servidores de outros projetos, perfis do usuário, downloads e artefatos de build permanecem preservados. Não esvaziar swap com `swapoff`: o host não tem RAM suficiente para absorvê-la.
 - Coordenador conduz base/build Linux, revisão e integração.
 - Frente de design executa T02; frente Windows prepara e acompanha T04.
 - Nenhum subagente usa Astra. Execução dos subagentes autorizada pelo pedido de fazer M0.
