@@ -27,6 +27,7 @@ Dialog {
     property bool saved: false
     property bool previousGlobalShortcuts: true
     property bool advancedExpanded: false
+    property string profileError: ""
     readonly property bool dark: VLCStyle.palette.isDark
     readonly property bool appearanceDirty: appearance.dirty
     readonly property bool hasChanges: config.dirty || appearanceDirty
@@ -48,7 +49,17 @@ Dialog {
         open()
     }
 
+    function persistProfileAndClose() {
+        if (!MainCtx.controlbarProfileModel.save()) {
+            profileError = MainCtx.controlbarProfileModel.lastError
+            return
+        }
+        profileError = ""
+        close()
+    }
+
     function saveSettings() {
+        if (profileError) { persistProfileAndClose(); return }
         if (!audioOutput.canApply()) return
         if (!config.applyWithEffects(inlineEffects.audioForSave(), inlineEffects.videoForSave())) {
             inlineEffects.clearDirty()
@@ -62,11 +73,12 @@ Dialog {
         appearance.save()
         developerMode.save()
         saved = true
-        close()
+        persistProfileAndClose()
     }
 
     onOpened: {
         saved = false
+        profileError = ""
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
         MainCtx.useGlobalShortcuts = false
         config.reload()
@@ -87,7 +99,6 @@ Dialog {
         audioOutput.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
-
     ShortcutsDialog { id: shortcutsDialog; parent: root.parent }
 
     ConfigModel {
@@ -96,14 +107,12 @@ Dialog {
         category: searchField.text.length > 0 ? "" : root.selectedCategory
         search: searchField.text
     }
-
     background: Rectangle {
         color: VLCStyle.redesign.color(VLCStyle.redesign.windowBackground,
                                        VLCStyle.palette.lightGrey100)
         border.color: VLCStyle.redesign.color("#222222", VLCStyle.palette.lightGrey700)
         radius: VLCStyle.dp(8, VLCStyle.scale)
     }
-
     contentItem: Item {
         Rectangle {
             id: topbar
@@ -112,7 +121,6 @@ Dialog {
             anchors.top: parent.top
             height: VLCStyle.dp(49, VLCStyle.scale)
             color: "transparent"
-
             Rectangle {
                 anchors.left: parent.left
                 anchors.leftMargin: VLCStyle.dp(8, VLCStyle.scale)
@@ -410,12 +418,13 @@ Dialog {
             Label {
                 id: errorLabel
                 visible: config.error.length > 0 || audioOutput.error.length > 0
+                         || root.profileError.length > 0
                 anchors.left: resetButton.right
                 anchors.leftMargin: 10
                 anchors.right: cancelButton.left
                 anchors.rightMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
-                text: audioOutput.error || config.error
+                text: root.profileError || audioOutput.error || config.error
                 color: "#e7a466"
                 elide: Text.ElideRight
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -451,7 +460,7 @@ Dialog {
                 anchors.verticalCenter: parent.verticalCenter
                 width: VLCStyle.dp(88, VLCStyle.scale)
                 text: qsTr("Apply")
-                enabled: root.hasChanges
+                enabled: root.hasChanges || !!root.profileError
                 onClicked: root.saveSettings()
                 background: Rectangle {
                     color: applyButton.enabled ? (root.dark ? "#371f06" : "#f7e2c9")

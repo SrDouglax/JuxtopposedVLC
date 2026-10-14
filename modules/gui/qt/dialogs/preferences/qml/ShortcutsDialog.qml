@@ -24,6 +24,7 @@ Dialog {
     anchors.centerIn: parent
 
     property bool saved: false
+    property string profileError: ""
     property bool resetRequested: false
     property bool previousGlobalShortcuts: true
     property string captureOption: ""
@@ -69,6 +70,7 @@ Dialog {
 
     onOpened: {
         saved = false
+        profileError = ""
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
         MainCtx.useGlobalShortcuts = false
         shortcuts.reload()
@@ -407,8 +409,8 @@ Dialog {
                 anchors.right: saveButton.left
                 anchors.rightMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                text: shortcuts.error
-                visible: shortcuts.error.length > 0
+                text: root.profileError || shortcuts.error
+                visible: shortcuts.error.length > 0 || root.profileError.length > 0
                 color: "#df8950"
                 elide: Text.ElideRight
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -439,11 +441,16 @@ Dialog {
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Save")
                 primary: true
-                enabled: shortcuts.dirty
+                enabled: shortcuts.dirty || !!root.profileError
                 onClicked: {
-                    if (!shortcuts.apply())
+                    if (!root.profileError && !shortcuts.apply())
                         return
                     root.saved = true
+                    if (!MainCtx.controlbarProfileModel.save()) {
+                        root.profileError = MainCtx.controlbarProfileModel.lastError
+                        return
+                    }
+                    root.profileError = ""
                     restartNotice.open()
                 }
             }

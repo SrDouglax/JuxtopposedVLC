@@ -19,6 +19,7 @@
 
 #include <QSettings>
 #include <QChar>
+#include <QCoreApplication>
 
 #include "qt.hpp"
 #include "controlbar_profile.hpp"
@@ -39,6 +40,7 @@ ControlbarProfileModel::ControlbarProfileModel(QSettings* settings, QObject *par
 
     // To make the QML player controlbars update when model is Reset
     connect(this, &QAbstractListModel::modelReset, this, &ControlbarProfileModel::selectedProfileChanged);
+    connect(qApp, &QCoreApplication::aboutToQuit, this, [this] { save(); });
 
     // When all profiles are removed, insert defaults:
     // Maybe add a dedicate button for this purpose and don't allow removing all profiles ?

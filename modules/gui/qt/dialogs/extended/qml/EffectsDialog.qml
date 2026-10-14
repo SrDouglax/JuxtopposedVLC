@@ -15,6 +15,7 @@ T.Popup {
     objectName: "audioEffectsDialog"
     property int currentTab: 0
     property bool previousGlobalShortcuts: true
+    property string profileError: ""
     readonly property var filterTabs: [
         { id: "equalizer", title: qsTr("Equalizer") },
         { id: "compressor", title: qsTr("Compressor") },
@@ -50,6 +51,7 @@ T.Popup {
     anchors.centerIn: T.Overlay.overlay
 
     onOpened: {
+        profileError = ""
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
         MainCtx.useGlobalShortcuts = false
         if (currentTab === 0) audioBridge.begin()
@@ -220,9 +222,10 @@ T.Popup {
             Layout.fillWidth: true
             Layout.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
             Layout.rightMargin: VLCStyle.dp(16, VLCStyle.scale)
-            visible: root.currentTab === 0 ? audioBridge.lastError.length > 0 && audioBridge.transactionActive
-                                           : videoEffects.lastError.length > 0 && videoEffects.transactionActive
-            text: root.currentTab === 0 ? audioBridge.lastError : videoEffects.lastError
+            visible: !!root.profileError
+                     || (root.currentTab === 0 ? audioBridge.lastError.length > 0 && audioBridge.transactionActive
+                                               : videoEffects.lastError.length > 0 && videoEffects.transactionActive)
+            text: root.profileError || (root.currentTab === 0 ? audioBridge.lastError : videoEffects.lastError)
             color: "#FF8989"
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -258,9 +261,16 @@ T.Popup {
                 text: qsTr("Save")
                 Layout.fillWidth: true
                 implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
-                enabled: root.currentTab === 0 ? audioBridge.transactionActive : videoEffects.transactionActive
+                enabled: !!root.profileError || (root.currentTab === 0 ? audioBridge.transactionActive : videoEffects.transactionActive)
                 onClicked: {
-                    if (root.currentTab === 0 ? audioBridge.save() : videoEffects.save()) root.close()
+                    if (!root.profileError && !(root.currentTab === 0 ? audioBridge.save() : videoEffects.save()))
+                        return
+                    if (!MainCtx.controlbarProfileModel.save()) {
+                        root.profileError = MainCtx.controlbarProfileModel.lastError
+                        return
+                    }
+                    root.profileError = ""
+                    root.close()
                 }
                 background: Rectangle { color: parent.enabled ? VLCStyle.redesign.accent : VLCStyle.redesign.controlBackground; radius: VLCStyle.dp(5, VLCStyle.scale) }
                 contentItem: Text {
