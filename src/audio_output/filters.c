@@ -388,7 +388,7 @@ static int VisualizationCallback (vlc_object_t *obj, const char *var,
      * separate "visual" (external) and "audio-visual" (internal) variables...
      * The visual plugin should have one submodule per effect instead. */
     static const char *const effects[] = {
-        "dummy", "scope", "spectrometer", "spectrum", "vuMeter",
+        "dummy", "scope", "spectrometer", "spectrum", "waveform", "vuMeter",
     };
     for (size_t i = 0; i < ARRAY_SIZE(effects); i++)
         if (!strcasecmp (mode, effects[i]))

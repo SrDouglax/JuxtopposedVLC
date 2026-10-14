@@ -222,6 +222,8 @@ public slots:
     void nativeEffectsDialog(int page = 0);
     void playerMenuDialog();
     void sleepTimerDialog();
+    void audioVisualizationDialog();
+    void hdrOutputDialog();
     void setRedesignDialogVisible(const QString& name, bool visible);
     void firstRunDialog();
     void extendedDialog(int page = 0);
@@ -296,6 +298,8 @@ signals:
     void preferencesRequested();
     void playerMenuRequested();
     void sleepTimerRequested();
+    void audioVisualizationRequested();
+    void hdrOutputRequested();
     void setupRequested();
     void effectsRequested(int page);
     void releaseMouseEvents();

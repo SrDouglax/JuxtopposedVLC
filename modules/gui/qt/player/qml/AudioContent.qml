@@ -21,6 +21,7 @@ import QtQuick.Window
 import QtQuick.Templates as T
 
 import VLC.MainInterface
+import VLC.Dialogs
 import VLC.Style
 import VLC.Widgets as Widgets
 import VLC.Player
@@ -385,7 +386,7 @@ MouseArea {
             Widgets.IconToolButton {
                 text: VLCIcons.visualization
                 font.pixelSize: VLCStyle.icon_audioPlayerButton
-                onClicked: Player.toggleVisualization()
+                onClicked: DialogsProvider.audioVisualizationDialog()
                 description: qsTr("Visualization")
 
                 AccessibleCompat.id: "audioVisualizationButton"

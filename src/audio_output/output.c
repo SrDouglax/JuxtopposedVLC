@@ -330,6 +330,8 @@ audio_output_t *aout_New (vlc_object_t *parent)
     var_Change(aout, "visual", VLC_VAR_ADDCHOICE, val, _("Scope"));
     val.psz_string = (char *)"spectrum";
     var_Change(aout, "visual", VLC_VAR_ADDCHOICE, val, _("Spectrum"));
+    val.psz_string = (char *)"waveform";
+    var_Change(aout, "visual", VLC_VAR_ADDCHOICE, val, _("Waveform"));
     val.psz_string = (char *)"vuMeter";
     var_Change(aout, "visual", VLC_VAR_ADDCHOICE, val, _("VU meter"));
     /* Same list the preferences use; "visual" is covered by its effects. */

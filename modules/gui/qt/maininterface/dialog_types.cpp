@@ -11,6 +11,7 @@
 #include "dialogs/extended/audio_effects.hpp"
 #include "dialogs/extended/video_effects.hpp"
 #include "player/sleep_timer.hpp"
+#include "player/hdr_output.hpp"
 
 void MainUI::registerDialogTypes()
 {
@@ -35,6 +36,7 @@ void MainUI::registerDialogTypes()
         qmlRegisterType<SleepTimerController>(uri, versionMajor, versionMinor, "SleepTimerController");
         qmlRegisterType<ShortcutsModel>(uri, versionMajor, versionMinor, "ShortcutsModel");
         qmlRegisterType<VideoEffects>(uri, versionMajor, versionMinor, "VideoEffects");
+        qmlRegisterType<HdrOutput>(uri, versionMajor, versionMinor, "HdrOutput");
         qmlRegisterModule(uri, versionMajor, versionMinor);
         qmlProtectModule(uri, versionMajor);
     }

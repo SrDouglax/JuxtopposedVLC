@@ -43,6 +43,7 @@ visu_PLUGINS += $(LTLIBprojectm)
 libvisual_plugin_la_SOURCES = \
 	visualization/visual/visual.c visualization/visual/visual.h \
 	visualization/visual/effects.c \
+	visualization/visual/oscilloscope.c visualization/visual/oscilloscope.h \
 	visualization/visual/fft.c visualization/visual/fft.h \
 	visualization/visual/window.c visualization/visual/window.h \
 	visualization/visual/window_presets.h

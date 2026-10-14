@@ -52,7 +52,8 @@ vlc_modules += {
         'visual/visual.c', 'visual/visual.h',
         'visual/fft.c', 'visual/fft.h',
         'visual/window.c', 'visual/window.h',
-        'visual/effects.c', 'visual/window_presets.h'),
+        'visual/effects.c', 'visual/oscilloscope.c', 'visual/oscilloscope.h',
+        'visual/window_presets.h'),
     'dependencies' : [m_lib],
     'plugin_dir' : 'visualization',
 }

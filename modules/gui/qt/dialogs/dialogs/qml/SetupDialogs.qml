@@ -10,6 +10,8 @@ Item {
     SleepTimerController { id: sleepTimer; player: Player; playlist: MainPlaylistController }
     PlayerMenu { id: playerMenu; parent: root; anchors.centerIn: parent }
     SleepTimerMenu { id: timerMenu; parent: root; anchors.centerIn: parent; timerController: sleepTimer }
+    AudioVisualizationDialog { id: visualization; parent: root; anchors.centerIn: parent }
+    HdrOutputDialog { id: hdr; parent: root; anchors.centerIn: parent }
     OnboardingController {
         id: setupState
         ctx: MainCtx
@@ -34,6 +36,8 @@ Item {
         }
         function onPlayerMenuRequested() { playerMenu.open() }
         function onSleepTimerRequested() { timerMenu.open() }
+        function onAudioVisualizationRequested() { visualization.open() }
+        function onHdrOutputRequested() { hdr.open() }
     }
     Loader {
         id: setup

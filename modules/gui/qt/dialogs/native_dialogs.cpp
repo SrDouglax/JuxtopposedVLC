@@ -109,6 +109,8 @@ void DialogsProvider::nativePrefsDialog()
 
 void DialogsProvider::playerMenuDialog() { emit playerMenuRequested(); }
 void DialogsProvider::sleepTimerDialog() { emit sleepTimerRequested(); }
+void DialogsProvider::audioVisualizationDialog() { emit audioVisualizationRequested(); }
+void DialogsProvider::hdrOutputDialog() { emit hdrOutputRequested(); }
 
 void DialogsProvider::prefsDialog() { emit preferencesRequested(); }
 void DialogsProvider::firstRunDialog() { emit setupRequested(); }
