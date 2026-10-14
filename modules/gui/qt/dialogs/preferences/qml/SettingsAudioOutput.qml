@@ -17,11 +17,13 @@ ColumnLayout {
     readonly property string error: preview.lastError
     spacing: VLCStyle.dp(5, VLCStyle.scale)
 
-    function begin() { if (!preview.active) preview.begin() }
+    function begin() {
+        if (!preview.active && preview.begin()) selectedIndex = preview.currentIndex()
+    }
     function canApply() { return preview.canCommit() }
     function apply() { return preview.commit() }
     function cancel() { return preview.cancel() }
-    function reset() { if (preview.cancel()) preview.begin() }
+    function reset() { if (preview.cancel()) begin() }
 
     AudioOutputPreview { id: preview; ctx: MainCtx }
     Repeater {
@@ -60,7 +62,9 @@ ColumnLayout {
             model: Player.audioDevices
             textRole: "display"
             Binding { target: deviceBox; property: "currentIndex"; value: root.selectedIndex; when: !deviceBox.popup.visible }
-            onActivated: (index) => preview.preview(index, textAt(index))
+            onActivated: (index) => {
+                if (preview.preview(index, textAt(index))) root.selectedIndex = index
+            }
             contentItem: Label {
                 leftPadding: VLCStyle.dp(12, VLCStyle.scale)
                 text: deviceRows.count === 0 ? qsTr("No selectable device available")

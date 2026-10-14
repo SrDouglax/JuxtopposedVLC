@@ -32,6 +32,7 @@ public:
     bool dirty() const { return m_dirty; }
     QString lastError() const { return m_error; }
     Q_INVOKABLE bool begin();
+    Q_INVOKABLE int currentIndex() const;
     Q_INVOKABLE bool preview(int index, const QString& displayedName);
     Q_INVOKABLE bool canCommit();
     Q_INVOKABLE bool commit();

@@ -80,6 +80,27 @@ bool AudioOutputPreview::begin()
     return true;
 }
 
+int AudioOutputPreview::currentIndex() const
+{
+    if (!sameOutput()) return -1;
+    char* current = aout_DeviceGet(m_aout);
+    const QByteArray selected = current ? QByteArray(current) : QByteArray();
+    free(current);
+    char** ids = nullptr;
+    char** names = nullptr;
+    const int count = aout_DevicesList(m_aout, &ids, &names);
+    int selectedIndex = -1;
+    for (int i = 0; i < count; ++i) {
+        if (ids && (ids[i] ? QByteArray(ids[i]) : QByteArray()) == selected)
+            selectedIndex = i;
+        if (ids) free(ids[i]);
+        if (names) free(names[i]);
+    }
+    free(ids);
+    free(names);
+    return selectedIndex;
+}
+
 bool AudioOutputPreview::preview(int index, const QString& displayedName)
 {
     if (!m_aout || !sameOutput())
@@ -98,7 +119,10 @@ bool AudioOutputPreview::preview(int index, const QString& displayedName)
     matches = matches && matchingNames == 1;
     if (matches && ids[index]) chosenId = ids[index];
     if (matches) chosenDefault = !ids[index] || ids[index][0] == '\0';
-    for (int i = 0; i < count; ++i) { free(ids[i]); free(names[i]); }
+    for (int i = 0; i < count; ++i) {
+        if (ids) free(ids[i]);
+        if (names) free(names[i]);
+    }
     free(ids);
     free(names);
     if (!matches) return fail(tr("The available output devices changed. Reopen Audio settings."));
