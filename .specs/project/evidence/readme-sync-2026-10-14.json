@@ -1,0 +1,13 @@
+{
+  "date": "2026-10-14",
+  "upstream": "3127258a2dac31be87f4ead6492d3862a8a90a31",
+  "merge": "c15fe14dc98dd0d4f3486ba0e56bff3484f0e0e9",
+  "remaining_upstream_commits_integrated": 7,
+  "readme": "English introduction, updated milestone status; original VLC section preserved",
+  "readme_links_and_shell_syntax": "PASS",
+  "linux_qt_gaussianblur_accesstweaks_build": "PASS",
+  "runtime_wayland_probe": "FAIL",
+  "runtime_private_x11_probe": "FAIL",
+  "runtime_acceptance": false,
+  "windows_and_macos": "NOT RUN"
+}

@@ -51,3 +51,12 @@ Os21 commits de `videolan/vlc:master` até `d83cb23375405257164b5c073c6370e18060
 Build incremental do plugin Qt no Linux aprovado. O smoke nativo Wayland, com perfil isolado, iniciou o VLC e validou os menus em1920×1080 e720×540, incluindo posição, toggle, ícones, seleção e controles principais. [Resultado e hash do plugin](evidence/upstream-2026-10-14.json) e [log das verificações](evidence/upstream-2026-10-14-ui.txt). Uma operação pesada por vez, `make -j1`,2 GiB de RAM, sem swap e uma CPU.
 
 Windows/macOS e recompilação das dependências contrib atualizadas não foram exercitados. Avisos anteriores de `scaleAxis`/`inlineContentEnabled` permanecem. `git diff --check` aponta espaços herdados nos patches upstream de mad/Qt; os arquivos `.patch` foram preservados. A sincronização não resolve a posição do atalho Audio effects, que continua registrada como pendência.
+
+
+## README internacional e nova sincronização — 14/10/2026
+
+O README do fork foi reescrito em inglês, atualizado para M0–M3 e acompanhado de comandos de build/execução, crédito ao design e limites de validação. O conteúdo original do VLC foi preservado. Links relativos e sintaxe dos comandos foram verificados.
+
+A atualização publicada `9d43532224` foi preservada. Os sete commits upstream restantes até `3127258a2d` foram integrados em uma branch dedicada; conflitos em quatro arquivos QML foram conciliados mantendo os imports aliased necessários ao redesign, e `EditorDummyButton` adotou `T.Label` do upstream. O plugin Qt e os targets de gaussianblur/accesstweaks compilaram no Linux, com uma CPU,2 GiB e sem swap.
+
+A automação de menus falhou tanto em Wayland no desktop quanto em X11 isolado; não há aceite de runtime desta rodada. Os testes foram encerrados sem ampliar a tarefa para correções de interface. Essa limitação não deve ser confundida com as provas aprovadas das revisões anteriores.

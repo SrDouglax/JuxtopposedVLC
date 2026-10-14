@@ -1,30 +1,59 @@
 # JuxtopposedVLC
 
-Fork do VLC para implementar o redesign da Juxtopposed em Qt/QML, com Linux como
-primeira plataforma e Windows preparado desde a fundação. M0 entregou o baseline
-Linux e o build/pacote Windows com limitações documentadas. M1 entrega a primeira
-fatia nativa de shell e player, validada no Linux; a biblioteca completa continua
-nos próximos marcos. Windows será validado manualmente após consolidar a interface.
+A VLC fork implementing [Juxtopposed's VLC Redesign (Community)](https://www.figma.com/design/fQSxoEi1zmnD5fQacw0qGs/VLC-Redesign--Community-?node-id=0-1) with VLC's existing Qt/QML interface and playback engine.
 
-Referência visual: [VLC Redesign — Community, da Juxtopposed](https://www.figma.com/design/fQSxoEi1zmnD5fQacw0qGs/VLC-Redesign--Community-?node-id=0-1).
+Development is **Linux-first**, with Windows portability tracked throughout the project. The upstream VLC history is preserved, and **`redesign` is the default integration branch** of this fork.
 
-[Plano e requisitos](.specs/project/PROJECT.md) · [Roadmap](.specs/project/ROADMAP.md) ·
-[Fundação e build Linux](.specs/features/redesign/foundation.md) ·
-[M1 e evidências](.specs/features/redesign/m1.md) ·
-[Build Windows](.specs/features/redesign/windows.md) ·
-[Cobertura do Figma](.specs/features/redesign/coverage.md) ·
-[Intenção e comportamento do vídeo](.specs/features/redesign/video.md)
+## Development status
 
-Para abrir a compilação local de desenvolvimento depois do build Linux:
+M0 established the build foundation; M1 introduced the redesigned shell and player; M2 added library and track/subtitle workflows. M3 integrates player settings, effects, profiles, customization and subtitle tools, with ongoing visual refinement.
+
+This is an **in-progress development build**. Linux has native build and runtime validation. Full visual parity with the reference, release packaging and current Windows UI validation remain unfinished. The original VLC platform list below describes upstream VLC, not the validation status of this redesign.
+
+## Build and run on Linux
+
+The development environment uses Docker. You need a Linux desktop with an accessible Wayland socket or authenticated X11 display to open the application.
 
 ```sh
+git clone --branch redesign https://github.com/SrDouglax/JuxtopposedVLC.git
+cd JuxtopposedVLC
+
+docker build -t juxtopposed-vlc-m0-linux -f extras/juxtopposed/linux.Dockerfile .
+docker run -d --name juxtopposed-vlc-m0-linux \
+  --cpus=1 --memory=2g --memory-swap=2g \
+  -v "$PWD:/work" juxtopposed-vlc-m0-linux sleep infinity
+docker exec -e M0_JOBS=1 juxtopposed-vlc-m0-linux sh extras/juxtopposed/linux.sh
+docker stop juxtopposed-vlc-m0-linux
+
 ./extras/juxtopposed/open.sh
 ```
 
-O lançador usa Docker, perfil próprio e Qt Quick em software. Os arquivos da
-pasta pessoal ficam disponíveis para leitura em `/media/home`. O módulo Qt já inclui a
-fatia de M1. A aparência Dark foi comparada ao Figma; System/Day/Night permanecem
-disponíveis nas preferências.
+After the build is available, use `open.sh` again to launch it. You can also pass a media file:
+
+```sh
+./extras/juxtopposed/open.sh /path/to/video.mp4
+```
+
+The launcher uses a separate development profile, Qt Quick software rendering and CPU decoding. It keeps the installed VLC profile separate and exposes your home directory read-only at **`/media/home`** inside the application. Build outputs, caches and runtime profiles are excluded from Git.
+
+The example limits compilation to one CPU, 2 GiB of RAM and no container swap; `M0_JOBS` controls build parallelism. This is a development setup, not an optimized release build.
+
+## Project documentation
+
+- [Project scope and requirements](.specs/project/PROJECT.md)
+- [Roadmap](.specs/project/ROADMAP.md)
+- [Branches and integration workflow](.specs/project/BRANCHES.md)
+- [Foundation and Linux build details](.specs/features/redesign/foundation.md)
+- [M1: shell and player](.specs/features/redesign/m1.md)
+- [M2: library and subtitles](.specs/features/redesign/m2.md)
+- [M3: implementation, validation and remaining work](.specs/features/redesign/m3.md)
+- [Windows build and validation](.specs/features/redesign/windows.md)
+- [Design coverage](.specs/features/redesign/coverage.md)
+- [Design intent and video reference](.specs/features/redesign/video.md)
+
+Development notes and detailed validation reports are currently mostly written in Brazilian Portuguese.
+
+For redesign changes, submit a pull request to [this fork](https://github.com/SrDouglax/JuxtopposedVLC/pulls). Create a focused branch from `redesign` and include relevant validation. Upstream VLC contribution, licensing and support information follows below.
 
 # VLC media player
 
