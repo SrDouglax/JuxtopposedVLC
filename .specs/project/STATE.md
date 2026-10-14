@@ -2,6 +2,8 @@
 
 Atualizado em 14/10/2026, America/Recife. M0 entregue como fundação, com limites de Windows registrados. M1 entregue como primeira fatia Linux na branch `feat/m1`. M2 funcional entregue no Linux na branch `feat/m2`, com cobertura visual parcial explícita.
 
+O desenvolvimento integrado de M0–M3 está centralizado na branch `redesign`, criada a partir de `feat/m3`. As branches dos marcos ficam como histórico; próximos trabalhos partem de `redesign`. [Organização das branches e pendências](BRANCHES.md).
+
 ## Comprovado
 
 - Fork [SrDouglax/JuxtopposedVLC](https://github.com/SrDouglax/JuxtopposedVLC) criado e confirmado pela API GitHub.
