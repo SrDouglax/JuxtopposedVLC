@@ -30,6 +30,10 @@ import VLC.PlayerControls
 Item {
     id: root
 
+    // The editor remains the sole owner of its drag views. In the in-player
+    // dialog, only their visual parent moves to the player's bottom strip.
+    property Item previewHost: null
+
     property bool dragActive: !!_viewThatContainsDrag || buttonDragItem.Drag.active
 
     property alias removeInfoRectVisible: buttonList.removeInfoRectVisible
@@ -45,6 +49,7 @@ Item {
     }
 
     ColumnLayout {
+        id: editorColumn
         anchors.fill: parent
         spacing: 0
 
@@ -86,8 +91,11 @@ Item {
         }
 
         Item {
-            Layout.preferredHeight: VLCStyle.controlLayoutHeight * 1.5
-            Layout.fillWidth: true
+            id: previewArea
+            parent: root.previewHost ? root.previewHost : editorColumn
+            anchors.fill: root.previewHost ? parent : undefined
+            Layout.preferredHeight: root.previewHost ? -1 : VLCStyle.controlLayoutHeight * 1.5
+            Layout.fillWidth: !root.previewHost
 
             TextMetrics {
                 id: leftMetric
@@ -239,7 +247,7 @@ Item {
                                     Text {
                                         anchors.fill: parent
 
-                                        text: repeater.getMetric(index).text
+                                        text: root.previewHost ? "" : repeater.getMetric(index).text
                                         verticalAlignment: Text.AlignVCenter
                                         font.pixelSize: VLCStyle.fontSize_xxlarge
                                         color: VLCStyle.redesign.color("#969696", theme.fg.secondary)
