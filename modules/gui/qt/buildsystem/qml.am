@@ -5,6 +5,14 @@ libqml_module_dialogs_a_ModulePath = VLC/Dialogs
 libqml_module_dialogs_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
 libqml_module_dialogs_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_dialogs_a_QML = \
+	dialogs/preferences/qml/SettingsInlineEffects.qml \
+	dialogs/preferences/qml/SettingsEqualizer.qml \
+	dialogs/preferences/qml/SettingsPicture.qml \
+	dialogs/preferences/qml/SettingsLastfm.qml \
+	dialogs/preferences/qml/SettingsDeveloperMode.qml \
+	dialogs/preferences/qml/SettingsAudioOutput.qml \
+	player/qml/AudioVisualizationDialog.qml \
+	player/qml/HdrOutputDialog.qml \
 	dialogs/dialogs/qml/CustomDialog.qml \
 	dialogs/firstrun/qml/WelcomeStep.qml \
 	dialogs/firstrun/qml/OnboardingButton.qml \
@@ -85,6 +93,8 @@ libqml_module_medialibrary_a_ModulePath = VLC/MediaLibrary
 libqml_module_medialibrary_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
 libqml_module_medialibrary_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_medialibrary_a_QML = \
+	medialibrary/qml/SubtitleSourceControls.qml \
+	medialibrary/qml/OpenSubtitlesPanel.qml \
 	medialibrary/qml/ArtistTopBanner.qml \
 	medialibrary/qml/AudioGridItem.qml \
 	medialibrary/qml/HomeDisplay.qml \
@@ -177,6 +187,9 @@ libqml_module_player_a_ModulePath = VLC/Player
 libqml_module_player_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
 libqml_module_player_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_player_a_QML = \
+	player/qml/SubtitleSeriesPreset.qml \
+	player/qml/SubtitleTracksPanel.qml \
+	player/qml/SubtitleSyncTimeline.qml \
 	player/qml/ControlBar.qml \
 	player/qml/PlaybackSpeed.qml \
 	player/qml/LyricsFlickable.qml \
@@ -220,6 +233,16 @@ libqml_module_playercontrols_a_ModulePath = VLC/PlayerControls
 libqml_module_playercontrols_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
 libqml_module_playercontrols_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_playercontrols_a_QML = \
+	player/qml/controlbarcontrols/MetadataText.qml \
+	player/qml/controlbarcontrols/FileNameWidget.qml \
+	player/qml/controlbarcontrols/ArtistNameWidget.qml \
+	player/qml/controlbarcontrols/DurationWidget.qml \
+	player/qml/controlbarcontrols/FrameRateWidget.qml \
+	player/qml/controlbarcontrols/ResolutionWidget.qml \
+	player/qml/controlbarcontrols/ZoomWidget.qml \
+	player/qml/controlbarcontrols/FavoriteButton.qml \
+	player/qml/controlbarcontrols/DividerWidget.qml \
+	player/qml/controlbarcontrols/HDRButton.qml \
 	player/qml/controlbarcontrols/HighResolutionTimeWidget.qml \
 	player/qml/controlbarcontrols/ArtworkInfoWidget.qml \
 	player/qml/controlbarcontrols/AspectRatioWidget.qml \

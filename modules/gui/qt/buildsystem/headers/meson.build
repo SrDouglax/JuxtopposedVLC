@@ -1,4 +1,11 @@
 moc_headers = files(
+    '../../dialogs/preferences/audio_output_preview.hpp',
+
+    '../../player/hdr_output.hpp',
+    '../../player/media_details.hpp',
+    '../../player/favorite_state.hpp',
+    '../../medialibrary/mlopensubtitles.hpp',
+
     '../../dialogs/extended/video_effects.hpp',
     '../../dialogs/extended/audio_effects.hpp',
     '../../dialogs/preferences/shortcuts_model.hpp',

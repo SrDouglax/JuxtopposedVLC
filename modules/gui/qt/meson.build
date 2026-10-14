@@ -15,7 +15,7 @@ qt6_dep = dependency('qt6',
     # Note that Qt < 6.2.5 does not provide pc files!
     version: '>=6.2',
     modules: [
-        'Core', 'Gui', 'Widgets', 'Qml',
+        'Core', 'Gui', 'Widgets', 'Qml', 'Network',
         'Quick', 'QuickControls2'
         ],
     private_headers: true,

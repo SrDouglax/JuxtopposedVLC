@@ -9,6 +9,7 @@
 #include <QByteArray>
 #include <QString>
 #include <QVariant>
+#include "maininterface/mainctx.hpp"
 #include <vlc_configuration.h>
 #include <vlc_plugin.h>
 #include <cstdlib>

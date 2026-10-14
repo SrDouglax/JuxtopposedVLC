@@ -70,3 +70,5 @@ void PlayerMediaDetails::refresh()
     m_frameRate = frameRate;
     emit detailsChanged();
 }
+
+MainCtx *PlayerMediaDetails::ctx() const { return m_ctx; }

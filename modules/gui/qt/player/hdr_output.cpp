@@ -20,13 +20,13 @@ HdrOutput::HdrOutput(QObject* parent) : QObject(parent)
         free(values); free(labels);
     }
     m_available = !nativeValues.isEmpty();
-    const QStringList labels = {tr("Auto"), tr("Off"), "HDR10", "HDR10+", "Dolby Vision", "HLG"};
+    const QStringList labels = {tr("Auto"), tr("Off"), QStringLiteral("HDR10"), QStringLiteral("HDR10+"), QStringLiteral("Dolby Vision"), QStringLiteral("HLG")};
     // Only output modes actually implemented by the libplacebo module have a value.
     const int values[] = {0, 1, 2, -1, -1, 3};
     for (int i = 0; i < labels.size(); ++i) {
         const bool enabled = nativeValues.contains(values[i]);
-        m_choices.append(QVariantMap{{"label", labels[i]}, {"value", values[i]}, {"enabled", enabled},
-            {"reason", enabled ? QString() : (m_available
+        m_choices.append(QVariantMap{{QStringLiteral("label"), labels[i]}, {QStringLiteral("value"), values[i]}, {QStringLiteral("enabled"), enabled},
+            {QStringLiteral("reason"), enabled ? QString() : (m_available
                 ? tr("This renderer does not expose this output format.")
                 : tr("The libplacebo HDR renderer is not installed in this build."))}});
     }
@@ -40,16 +40,16 @@ int HdrOutput::selectedIndex() const
     if (!m_available) return -1;
     const int current = config_GetInt("pl-output-hint");
     for (int i = 0; i < m_choices.size(); ++i)
-        if (m_choices[i].toMap().value("value").toInt() == current) return i;
+        if (m_choices[i].toMap().value(QStringLiteral("value")).toInt() == current) return i;
     return -1;
 }
 bool HdrOutput::select(int index)
 {
     if (!m_ctx || !m_ctx->getIntf() || index < 0 || index >= m_choices.size()
-        || !m_choices[index].toMap().value("enabled").toBool()) return false;
+        || !m_choices[index].toMap().value(QStringLiteral("enabled")).toBool()) return false;
     const int before = config_GetInt("pl-output-hint");
     char* previousOutput = config_GetPsz("vout");
-    config_PutInt("pl-output-hint", m_choices[index].toMap().value("value").toInt());
+    config_PutInt("pl-output-hint", m_choices[index].toMap().value(QStringLiteral("value")).toInt());
     config_PutPsz("vout", "libplacebo");
     const bool saved = config_SaveConfigFile(m_ctx->getIntf()) == 0;
     if (!saved) {

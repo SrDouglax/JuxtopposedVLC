@@ -22,7 +22,7 @@ class PlayerMediaDetails : public QObject
 
 public:
     explicit PlayerMediaDetails(QObject *parent = nullptr);
-    MainCtx *ctx() const { return m_ctx; }
+    MainCtx *ctx() const;
     void setCtx(MainCtx *ctx);
     QUrl url() const { return m_url; }
     void setUrl(const QUrl &url);

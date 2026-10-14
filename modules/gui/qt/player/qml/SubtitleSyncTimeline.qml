@@ -7,6 +7,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Basic as Controls
 
+import VLC.Util
 import VLC.Player
 import VLC.Style
 

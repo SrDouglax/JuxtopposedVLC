@@ -6,6 +6,7 @@
 #include "dialogs/dialogs_provider.hpp"
 #include "dialogs/dialogs/dialogmodel.hpp"
 #include "dialogs/preferences/config_model.hpp"
+#include "dialogs/preferences/audio_output_preview.hpp"
 #include "dialogs/preferences/shortcuts_model.hpp"
 #include "dialogs/firstrun/onboarding.hpp"
 #include "dialogs/extended/audio_effects.hpp"
@@ -30,6 +31,7 @@ void MainUI::registerDialogTypes()
         assert(DialogErrorModel::getInstance<false>());
         qmlRegisterSingletonInstance<DialogErrorModel>(uri, versionMajor, versionMinor, "DialogErrorModel", DialogErrorModel::getInstance<false>());
 
+        qmlRegisterType<AudioOutputPreview>(uri, versionMajor, versionMinor, "AudioOutputPreview");
         qmlRegisterType<ConfigModel>(uri, versionMajor, versionMinor, "ConfigModel");
         qmlRegisterType<OnboardingController>(uri, versionMajor, versionMinor, "OnboardingController");
         qmlRegisterType<AudioEffects>(uri, versionMajor, versionMinor, "AudioEffects");

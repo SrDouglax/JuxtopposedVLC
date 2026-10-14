@@ -24,16 +24,12 @@
 #include "medialibrary/mlplaylist.hpp"
 #include "medialibrary/mlbookmarkmodel.hpp"
 #include "medialibrary/mlsubtitleassociations.hpp"
+#include "medialibrary/mlopensubtitles.hpp"
 
 #include "player/player_controller.hpp"
 #include "player/waveform.hpp"
-#include "player/player_controlbar_model.hpp"
-#include "player/control_list_model.hpp"
-#include "player/control_list_filter.hpp"
 #include "player/delay_estimator.hpp"
 
-#include "dialogs/toolbar/controlbar_profile_model.hpp"
-#include "dialogs/toolbar/controlbar_profile.hpp"
 
 #include "playlist/playlist_model.hpp"
 #include "playlist/playlist_controller.hpp"
@@ -318,23 +314,7 @@ void MainUI::registerQMLTypes()
         qmlProtectModule(uri, versionMajor);
     }
 
-    {
-        const char* uri = "VLC.PlayerControls";
-        const int versionMajor = 1;
-        const int versionMinor = 0;
-
-        // @uri VLC.PlayerControls
-        qmlRegisterUncreatableType<ControlbarProfileModel>(uri, versionMajor, versionMinor, "ControlbarProfileModel", "");
-        qmlRegisterUncreatableType<ControlbarProfile>(uri, versionMajor, versionMinor, "ControlbarProfile", "");
-        qmlRegisterUncreatableType<PlayerControlbarModel>(uri, versionMajor, versionMinor, "PlayerControlbarModel", "");
-        qmlRegisterUncreatableType<ControlListModel>( uri, versionMajor, versionMinor, "ControlListModel", "" );
-        qmlRegisterType<ControlListFilter>(uri, versionMajor, versionMinor, "ControlListFilter");
-        qmlRegisterSingletonType(uri, versionMajor, versionMinor, "PlayerListModel", PlayerControlbarModel::getPlaylistIdentifierListModel);
-
-
-        qmlRegisterModule(uri, versionMajor, versionMinor);
-        qmlProtectModule(uri, versionMajor);
-    }
+    registerPlayerControlTypes();
 
     {
         const char* uri = "VLC.Playlist";
@@ -470,6 +450,7 @@ void MainUI::registerQMLTypes()
         qmlRegisterType<MLPlaylistModel>( uri, versionMajor, versionMinor, "MLPlaylistModel" );
         qmlRegisterType<MLBookmarkModel>( uri, versionMajor, versionMinor, "MLBookmarkModel" );
         qmlRegisterType<MLSubtitleAssociations>(uri, versionMajor, versionMinor, "MLSubtitleAssociations");
+        qmlRegisterType<MLOpenSubtitles>(uri, versionMajor, versionMinor, "MLOpenSubtitles");
 
         qmlRegisterType<NetworkMediaModel>( uri, versionMajor, versionMinor, "NetworkMediaModel");
         qmlRegisterType<NetworkDeviceModel>( uri, versionMajor, versionMinor, "NetworkDeviceModel");

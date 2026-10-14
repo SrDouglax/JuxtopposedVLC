@@ -212,7 +212,17 @@ GridView {
                     border.width: VLCStyle.dp(1, VLCStyle.scale)
                     border.color: VLCStyle.redesign.color("#6b6b6b", colorContext.border)
 
+                    Image {
+                        anchors.centerIn: parent
+                        width: VLCStyle.dp(24, VLCStyle.scale)
+                        height: width
+                        source: PlayerControlbarControls.controlList[model.index].icon || ""
+                        fillMode: Image.PreserveAspectFit
+                        visible: source.toString().length > 0
+                    }
+
                     EditorDummyButton {
+                        visible: !PlayerControlbarControls.controlList[model.index].icon
                         anchors.centerIn: parent
                         color: VLCStyle.redesign.color("#969696", colorContext.fg.primary)
                         text: PlayerControlbarControls.controlList[model.index].label

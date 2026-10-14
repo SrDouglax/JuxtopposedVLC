@@ -1,4 +1,27 @@
 qt_plugin_sources = files(
+    '../../dialogs/toolbar/profile_settings.cpp',
+    '../../dialogs/toolbar/profile_settings.hpp',
+    '../../dialogs/toolbar/profile_persistence.cpp',
+
+    '../../dialogs/preferences/audio_output_preview.cpp',
+    '../../dialogs/preferences/audio_output_preview.hpp',
+
+    '../../dialogs/preferences/config_model_effects.cpp',
+    '../../dialogs/preferences/config_values.hpp',
+    '../../dialogs/preferences/config_model_audioscrobbler.cpp',
+    '../../maininterface/player_types.cpp',
+    '../../player/hdr_output.cpp',
+    '../../player/hdr_output.hpp',
+    '../../player/media_details.cpp',
+    '../../player/media_details.hpp',
+    '../../player/favorite_state.cpp',
+    '../../player/favorite_state.hpp',
+    '../../medialibrary/mlsubtitleassociations_targets.cpp',
+    '../../medialibrary/mlsubtitleassociations_link.cpp',
+    '../../medialibrary/mlopensubtitles.cpp',
+    '../../medialibrary/mlopensubtitles.hpp',
+    '../../medialibrary/opensubtitles_url.hpp',
+
     '../../dialogs/extended/video_effects.cpp',
     '../../dialogs/extended/video_effects.hpp',
     '../../dialogs/extended/audio_effects.cpp',

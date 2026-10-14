@@ -149,6 +149,10 @@
         <file alias="icons/backward-15-sec/default.png">pixmaps/redesign/icons/backward-15-sec/default.png</file>
         <file alias="icons/speed/active.png">pixmaps/redesign/icons/speed/active.png</file>
         <file alias="icons/sort/default.png">pixmaps/redesign/icons/sort/default.png</file>
+        <file alias="icons/spectrometer/default.png">pixmaps/redesign/icons/spectrometer/default.png</file>
+        <file alias="icons/scope/default.png">pixmaps/redesign/icons/scope/default.png</file>
+        <file alias="icons/spectrum/default.png">pixmaps/redesign/icons/spectrum/default.png</file>
+        <file alias="icons/waveform/default.png">pixmaps/redesign/icons/waveform/default.png</file>
         <file alias="icons/0/default.png">pixmaps/redesign/icons/0/default.png</file>
         <file alias="icons/sort/active.png">pixmaps/redesign/icons/sort/active.png</file>
         <file alias="icons/fullscreen/active.png">pixmaps/redesign/icons/fullscreen/active.png</file>

@@ -39,6 +39,7 @@ public:
 private:
     void registerQMLTypes();
     void registerDialogTypes();
+    void registerPlayerControlTypes();
     static void clearQMLTypes();
     static QObject* getMainCtxInstance(QQmlEngine *, QJSEngine *);
 

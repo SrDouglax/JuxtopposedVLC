@@ -5,6 +5,15 @@ qml_modules += {
     'target' : 'dialogs',
     'outdir' : 'VLC/Dialogs',
     'sources': files(
+        '../../dialogs/preferences/qml/SettingsInlineEffects.qml',
+        '../../dialogs/preferences/qml/SettingsEqualizer.qml',
+        '../../dialogs/preferences/qml/SettingsPicture.qml',
+        '../../dialogs/preferences/qml/SettingsLastfm.qml',
+        '../../dialogs/preferences/qml/SettingsDeveloperMode.qml',
+        '../../dialogs/preferences/qml/SettingsAudioOutput.qml',
+        '../../player/qml/AudioVisualizationDialog.qml',
+        '../../player/qml/HdrOutputDialog.qml',
+
         '../../dialogs/dialogs/qml/CustomDialog.qml',
         '../../dialogs/firstrun/qml/WelcomeStep.qml',
         '../../dialogs/firstrun/qml/OnboardingButton.qml',
@@ -83,6 +92,9 @@ qml_modules += {
     'target' : 'medialibrary',
     'outdir' : 'VLC/MediaLibrary',
     'sources': files(
+        '../../medialibrary/qml/SubtitleSourceControls.qml',
+        '../../medialibrary/qml/OpenSubtitlesPanel.qml',
+
         '../../medialibrary/qml/ArtistTopBanner.qml',
         '../../medialibrary/qml/AudioGridItem.qml',
         '../../medialibrary/qml/HomeDisplay.qml',
@@ -169,6 +181,11 @@ qml_modules += {
    'target' : 'player',
    'outdir' : 'VLC/Player',
    'sources': files(
+        '../../player/qml/SubtitleSeriesPreset.qml',
+        '../../player/qml/SubtitleTracksPanel.qml',
+
+        '../../player/qml/SubtitleSyncTimeline.qml',
+
        '../../player/qml/ControlBar.qml',
        '../../player/qml/PlaybackSpeed.qml',
        '../../player/qml/LyricsFlickable.qml',
@@ -208,6 +225,17 @@ qml_modules += {
    'target' : 'playercontrols',
    'outdir' : 'VLC/PlayerControls',
    'sources': files(
+        '../../player/qml/controlbarcontrols/MetadataText.qml',
+        '../../player/qml/controlbarcontrols/FileNameWidget.qml',
+        '../../player/qml/controlbarcontrols/ArtistNameWidget.qml',
+        '../../player/qml/controlbarcontrols/DurationWidget.qml',
+        '../../player/qml/controlbarcontrols/FrameRateWidget.qml',
+        '../../player/qml/controlbarcontrols/ResolutionWidget.qml',
+        '../../player/qml/controlbarcontrols/ZoomWidget.qml',
+        '../../player/qml/controlbarcontrols/FavoriteButton.qml',
+        '../../player/qml/controlbarcontrols/DividerWidget.qml',
+        '../../player/qml/controlbarcontrols/HDRButton.qml',
+
        '../../player/qml/controlbarcontrols/HighResolutionTimeWidget.qml',
        '../../player/qml/controlbarcontrols/ArtworkInfoWidget.qml',
        '../../player/qml/controlbarcontrols/AspectRatioWidget.qml',

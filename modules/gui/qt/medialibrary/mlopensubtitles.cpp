@@ -8,6 +8,7 @@
 #endif
 
 #include "mlopensubtitles.hpp"
+#include "opensubtitles_url.hpp"
 
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -165,18 +166,12 @@ void MLOpenSubtitles::download(int index, const QString& apiKey,
         }
         const auto loginData = QJsonDocument::fromJson(body).object();
         const QString token = loginData.value(QStringLiteral("token")).toString();
-        QUrl base(loginData.value(QStringLiteral("base_url")).toString());
-        if (base.isEmpty())
-            base = apiUrl;
-        if (token.isEmpty() || base.scheme() != QStringLiteral("https") ||
-            (base.host() != QStringLiteral("api.opensubtitles.com") &&
-             base.host() != QStringLiteral("vip-api.opensubtitles.com")))
+        const QUrl base = openSubtitlesApiBase(loginData.value(QStringLiteral("base_url")).toString());
+        if (token.isEmpty() || base.isEmpty())
         {
             fail(tr("OpenSubtitles returned an invalid login session."));
             return;
         }
-        if (!base.path().endsWith(QStringLiteral("/")))
-            base.setPath(base.path() + QLatin1Char('/'));
         QNetworkRequest downloadRequest = request(base.resolved(QUrl(QStringLiteral("download"))), apiKey.trimmed());
         downloadRequest.setRawHeader("Authorization", QByteArray("Bearer ") + token.toUtf8());
         auto* downloadReply = m_network.post(downloadRequest,

@@ -24,7 +24,7 @@ class FavoriteState : public QObject
 
 public:
     explicit FavoriteState(QObject *parent = nullptr);
-    MainCtx *ctx() const { return m_ctx; }
+    MainCtx *ctx() const;
     void setCtx(MainCtx *ctx);
     QUrl url() const { return m_url; }
     void setUrl(const QUrl &url);

@@ -7,6 +7,7 @@
 #endif
 #include "config_model.hpp"
 
+#include <vlc_common.h>
 #include <vlc_modules.h>
 
 QVariant ConfigModel::valueFor(const QString& key) const

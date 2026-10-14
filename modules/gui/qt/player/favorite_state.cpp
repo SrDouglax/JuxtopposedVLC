@@ -95,3 +95,5 @@ void FavoriteState::toggle()
             emit stateChanged();
         });
 }
+
+MainCtx *FavoriteState::ctx() const { return m_ctx; }
