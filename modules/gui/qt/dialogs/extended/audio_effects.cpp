@@ -15,6 +15,7 @@
 #include "audio_effects.hpp"
 #include "maininterface/mainctx.hpp"
 #include "qt.hpp"
+#include "dialogs/preferences/config_values.hpp"
 #include "../../../../audio_filter/equalizer_presets.h"
 
 #include <QLocale>
@@ -76,6 +77,7 @@ void AudioEffects::setCtx(MainCtx* ctx)
     m_ctx = ctx;
     m_transactionActive = false;
     m_snapshotValues.clear();
+    m_configSnapshot.clear();
     emit ctxChanged(ctx);
     emit stateChanged();
 }
@@ -290,9 +292,15 @@ bool AudioEffects::begin()
     m_snapshotChain = chain();
     m_snapshotAout = aoutToken();
     m_snapshotValues.clear();
+    m_configSnapshot.clear();
     for (const QString& filter : filters)
         for (const QString& name : optionNames(filter))
             m_snapshotValues.insert(name, readValue(name));
+    for (const QString& name : m_snapshotValues.keys()) {
+        const QVariant value = ConfigValues::read(name);
+        if (value.isValid()) m_configSnapshot.insert(name, value);
+    }
+    m_configSnapshot.insert("audio-filter", ConfigValues::read("audio-filter"));
     m_transactionActive = true;
     clearError();
     emit stateChanged();
@@ -411,6 +419,7 @@ bool AudioEffects::cancel()
     if (!activeAudio() || aoutToken() != m_snapshotAout) {
         m_transactionActive = false;
         m_snapshotValues.clear();
+        m_configSnapshot.clear();
         emit stateChanged();
         return fail(tr("Audio output changed; the previous preview can no longer be restored."));
     }
@@ -428,51 +437,43 @@ bool AudioEffects::cancel()
     if (result != VLC_SUCCESS) return fail(tr("Audio filter preview could not be restored."));
     m_transactionActive = false;
     m_snapshotValues.clear();
+    m_configSnapshot.clear();
     clearError();
     emit stateChanged();
     return true;
 }
 
-bool AudioEffects::save()
+bool AudioEffects::prepareConfiguration(QHash<QString, QVariant>& values,
+                                        QHash<QString, QVariant>& expected)
 {
     if (!requirePreview()) return false;
-    QHash<QString, QVariant> configBefore;
-    const auto putConfig = [](const QString& name, const QVariant& value) {
-        const QByteArray id = name.toUtf8();
-        const module_config_t* option = config_FindConfig(id.constData());
-        if (!option || !value.isValid()) return;
-        if (CONFIG_CLASS(option->i_type) == CONFIG_ITEM_FLOAT) config_PutFloat(id.constData(), value.toFloat());
-        else if (CONFIG_CLASS(option->i_type) == CONFIG_ITEM_BOOL) config_PutInt(id.constData(), value.toBool());
-        else if (CONFIG_CLASS(option->i_type) == CONFIG_ITEM_STRING) {
-            const QByteArray bytes = value.toString().toUtf8();
-            config_PutPsz(id.constData(), bytes.constData());
-        }
-    };
-    for (const QString& filter : filters) {
-        for (const QString& name : optionNames(filter)) {
-            const QVariant value = readValue(name);
-            const QByteArray id = name.toUtf8();
-            const module_config_t* option = config_FindConfig(id.constData());
-            if (!option || !value.isValid()) continue;
-            if (CONFIG_CLASS(option->i_type) == CONFIG_ITEM_FLOAT) configBefore.insert(name, config_GetFloat(id.constData()));
-            else if (CONFIG_CLASS(option->i_type) == CONFIG_ITEM_BOOL) configBefore.insert(name, bool(config_GetInt(id.constData())));
-            else if (CONFIG_CLASS(option->i_type) == CONFIG_ITEM_STRING) configBefore.insert(name, fromVlc(config_GetPsz(id.constData())));
-            putConfig(name, value);
-        }
+    for (auto it = m_configSnapshot.cbegin(); it != m_configSnapshot.cend(); ++it) {
+        const QVariant value = it.key() == "audio-filter" ? QVariant(chain()) : readValue(it.key());
+        if (!value.isValid()) return fail(tr("An audio effect value is unavailable."));
+        values.insert(it.key(), value);
+        expected.insert(it.key(), it.value());
     }
-    const QString oldFilters = fromVlc(config_GetPsz("audio-filter"));
-    const QByteArray filtersBytes = chain().toUtf8();
-    config_PutPsz("audio-filter", filtersBytes.constData());
-    if (config_SaveConfigFile(m_ctx->getIntf()) != 0) {
-        for (auto it = configBefore.cbegin(); it != configBefore.cend(); ++it)
-            putConfig(it.key(), it.value());
-        const QByteArray oldBytes = oldFilters.toUtf8();
-        config_PutPsz("audio-filter", oldBytes.constData());
-        return fail(tr("Audio effect settings could not be saved."));
-    }
+    return true;
+}
+
+void AudioEffects::finalizeConfiguration()
+{
     m_transactionActive = false;
     m_snapshotValues.clear();
+    m_configSnapshot.clear();
     clearError();
     emit stateChanged();
+}
+
+bool AudioEffects::save()
+{
+    QHash<QString, QVariant> values, expected;
+    if (!prepareConfiguration(values, expected)) return false;
+    QString conflict;
+    int result = 0;
+    if (!ConfigValues::commit(m_ctx->getIntf(), values, expected, &conflict, &result))
+        return fail(result ? tr("Audio effect settings could not be saved (error %1).").arg(result)
+                           : tr("Audio effect setting %1 changed outside this dialog.").arg(conflict));
+    finalizeConfiguration();
     return true;
 }

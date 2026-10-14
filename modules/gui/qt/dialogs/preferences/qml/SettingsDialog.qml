@@ -26,9 +26,10 @@ Dialog {
     property string selectedCategory: "general"
     property bool saved: false
     property bool previousGlobalShortcuts: true
+    property bool advancedExpanded: false
     readonly property bool dark: VLCStyle.palette.isDark
     readonly property bool appearanceDirty: appearance.dirty
-    readonly property bool hasChanges: config.dirty || appearanceDirty
+    readonly property bool hasChanges: config.dirty || appearanceDirty || inlineEffects.dirty
 
     readonly property var titles: ({
         extensions: qsTr("VLC Addons"),
@@ -47,8 +48,12 @@ Dialog {
     }
 
     function saveSettings() {
-        if (!config.apply())
+        if (!config.applyWithEffects(inlineEffects.audioForSave(), inlineEffects.videoForSave())) {
+            inlineEffects.clearDirty()
+            inlineEffects.beginForCurrentCategory()
             return
+        }
+        inlineEffects.clearDirty()
         appearance.save()
         saved = true
         close()
@@ -60,12 +65,15 @@ Dialog {
         MainCtx.useGlobalShortcuts = false
         config.reload()
         appearance.begin()
+        advancedExpanded = false
+        inlineEffects.beginForCurrentCategory()
     }
     onClosed: {
         if (!saved) {
             config.cancel()
             appearance.cancel()
         }
+        inlineEffects.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
 
@@ -173,6 +181,8 @@ Dialog {
                 root.selectedCategory = category
                 searchField.text = ""
                 contentFlick.contentY = 0
+                root.advancedExpanded = false
+                inlineEffects.beginForCurrentCategory()
             }
         }
 
@@ -219,10 +229,31 @@ Dialog {
                     settingsModel: config
                     category: root.selectedCategory
                     search: searchField.text
+                    filterMode: searchField.text.length ? "all" : "basic"
+                    sectionFilter: root.selectedCategory === "video" && !searchField.text.length
+                                   ? qsTr("Output") : ""
+                }
+
+                SettingsInlineEffects {
+                    id: inlineEffects
+                    width: parent.width
+                    category: root.selectedCategory
+                    searchActive: searchField.text.length > 0
+                }
+
+                SettingsOptionList {
+                    id: videoMoreOptions
+                    width: parent.width
+                    visible: root.selectedCategory === "video" && !searchField.text.length
+                    settingsModel: config
+                    category: root.selectedCategory
+                    filterMode: "basic"
+                    excludedSection: qsTr("Output")
                 }
 
                 Label {
-                    visible: optionList.count === 0 && !appearance.visible
+                    visible: optionList.availableCount === 0 && !appearance.visible
+                             && !inlineEffects.visible && !extensions.visible
                     text: searchField.text.length > 0
                           ? qsTr("No matching settings")
                           : qsTr("No settings are available for this category on this VLC installation")
@@ -237,10 +268,13 @@ Dialog {
                 Button {
                     id: advancedButton
                     objectName: "settingsAdvancedOptions"
+                    visible: root.selectedCategory === "general" && !searchField.text.length
+                             && advancedOptions.availableCount > 0
                     width: parent.width
                     height: VLCStyle.dp(38, VLCStyle.scale)
-                    text: qsTr("Advanced Options  ›")
-                    onClicked: DialogsProvider.nativePrefsDialog()
+                    text: root.advancedExpanded ? qsTr("Advanced Options  ⌄")
+                                                : qsTr("Advanced Options  ›")
+                    onClicked: root.advancedExpanded = !root.advancedExpanded
                     background: Rectangle { color: root.dark ? "#1a1a1a" : "#e9e9e9"; radius: 3 }
                     contentItem: Label {
                         text: parent.text
@@ -250,6 +284,15 @@ Dialog {
                         font.family: VLCStyle.redesign.fontFamily
                         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                     }
+                }
+
+                SettingsOptionList {
+                    id: advancedOptions
+                    width: parent.width
+                    visible: advancedButton.visible && root.advancedExpanded
+                    settingsModel: config
+                    category: root.selectedCategory
+                    filterMode: "advanced"
                 }
 
                 PersonalizationActions {
@@ -266,15 +309,6 @@ Dialog {
                     onClicked: { root.reject(); DialogsProvider.firstRunDialog() }
                 }
 
-                ActionButton {
-                    visible: root.selectedCategory === "audio" || root.selectedCategory === "video"
-                    width: parent.width
-                    text: qsTr("Adjustments and Effects")
-                    onClicked: {
-                        root.reject()
-                        DialogsProvider.extendedDialog(root.selectedCategory === "video" ? 1 : 0)
-                    }
-                }
                 ActionButton {
                     visible: root.selectedCategory === "controls"
                     width: parent.width

@@ -12,6 +12,7 @@
 #include "video_effects.hpp"
 #include "maininterface/mainctx.hpp"
 #include "qt.hpp"
+#include "dialogs/preferences/config_values.hpp"
 
 #include <QByteArray>
 #include <cmath>
@@ -56,6 +57,7 @@ void VideoEffects::setCtx(MainCtx* ctx)
     m_ctx = ctx;
     m_transactionActive = false;
     m_snapshotValues.clear();
+    m_configSnapshot.clear();
     emit ctxChanged(ctx);
     changed();
 }
@@ -231,8 +233,15 @@ bool VideoEffects::begin()
     }
     m_snapshotValues.clear();
     m_snapshotCrop.clear();
+    m_configSnapshot.clear();
     for (const QString& filter : filters)
         for (const QString& name : optionNames(filter)) m_snapshotValues.insert(name, readValue(name));
+    for (const QString& name : m_snapshotValues.keys()) {
+        const QVariant value = getConfig(name);
+        if (value.isValid()) m_configSnapshot.insert(name, value);
+    }
+    m_configSnapshot.insert("video-filter", getConfig("video-filter"));
+    m_configSnapshot.insert("crop", getConfig("crop"));
     for (const QString& side : cropSides) m_snapshotCrop.insert(side, cropValue(side));
     m_transactionActive = true;
     clearError(); changed();
@@ -328,7 +337,8 @@ bool VideoEffects::cancel()
 {
     if (!m_transactionActive) return true;
     if (!activeVideo() || voutToken() != m_snapshotVout) {
-        m_transactionActive = false; m_snapshotValues.clear(); m_snapshotCrop.clear(); changed();
+        m_transactionActive = false; m_snapshotValues.clear(); m_snapshotCrop.clear();
+        m_configSnapshot.clear(); changed();
         return fail(tr("Video output changed; the previous preview can no longer be restored."));
     }
     for (const QString& filter : filters)
@@ -348,48 +358,44 @@ bool VideoEffects::cancel()
     if (result != VLC_SUCCESS || cropResult != VLC_SUCCESS)
         return fail(tr("Video preview could not be restored."));
     m_transactionActive = false; m_snapshotValues.clear(); m_snapshotCrop.clear();
+    m_configSnapshot.clear();
     clearError(); changed();
     return true;
 }
-bool VideoEffects::putConfig(const QString& name, const QVariant& value)
-{
-    const QByteArray id = name.toUtf8();
-    const module_config_t* option = config_FindConfig(id.constData());
-    if (!option || !value.isValid()) return false;
-    switch (CONFIG_CLASS(option->i_type)) {
-        case CONFIG_ITEM_FLOAT: config_PutFloat(id.constData(), value.toFloat()); return true;
-        case CONFIG_ITEM_BOOL: config_PutInt(id.constData(), value.toBool()); return true;
-        case CONFIG_ITEM_INTEGER: config_PutInt(id.constData(), value.toLongLong()); return true;
-        case CONFIG_ITEM_STRING: {
-            const QByteArray bytes = value.toString().toUtf8();
-            config_PutPsz(id.constData(), bytes.constData()); return true;
-        }
-        default: return false;
-    }
-}
-bool VideoEffects::save()
+bool VideoEffects::prepareConfiguration(QHash<QString, QVariant>& values,
+                                        QHash<QString, QVariant>& expected)
 {
     if (!requirePreview()) return false;
     vout_thread_t* vout = vlc_player_vout_Hold(m_ctx->getIntf()->p_player);
     if (!vout) return fail(tr("No active video output is available."));
-    const QString currentCrop = own(var_GetString(vout, "crop"));
+    const QString crop = own(var_GetString(vout, "crop"));
     vout_Release(vout);
-    const QString currentChain = filterChain();
-    QHash<QString, QVariant> before;
-    for (const QString& filter : filters)
-        for (const QString& name : optionNames(filter)) {
-            before.insert(name, getConfig(name));
-            putConfig(name, readValue(name));
-        }
-    before.insert("video-filter", getConfig("video-filter"));
-    before.insert("crop", getConfig("crop"));
-    putConfig("video-filter", currentChain);
-    putConfig("crop", currentCrop);
-    if (config_SaveConfigFile(m_ctx->getIntf()) != 0) {
-        for (auto it = before.cbegin(); it != before.cend(); ++it) putConfig(it.key(), it.value());
-        return fail(tr("Video effect settings could not be saved."));
+    for (auto it = m_configSnapshot.cbegin(); it != m_configSnapshot.cend(); ++it) {
+        const QVariant value = it.key() == "video-filter" ? QVariant(filterChain())
+                             : it.key() == "crop" ? QVariant(crop) : readValue(it.key());
+        if (!value.isValid()) return fail(tr("A video effect value is unavailable."));
+        values.insert(it.key(), value);
+        expected.insert(it.key(), it.value());
     }
+    return true;
+}
+
+void VideoEffects::finalizeConfiguration()
+{
     m_transactionActive = false; m_snapshotValues.clear(); m_snapshotCrop.clear();
+    m_configSnapshot.clear();
     clearError(); changed();
+}
+
+bool VideoEffects::save()
+{
+    QHash<QString, QVariant> values, expected;
+    if (!prepareConfiguration(values, expected)) return false;
+    QString conflict;
+    int result = 0;
+    if (!ConfigValues::commit(m_ctx->getIntf(), values, expected, &conflict, &result))
+        return fail(result ? tr("Video effect settings could not be saved (error %1).").arg(result)
+                           : tr("Video effect setting %1 changed outside this dialog.").arg(conflict));
+    finalizeConfiguration();
     return true;
 }

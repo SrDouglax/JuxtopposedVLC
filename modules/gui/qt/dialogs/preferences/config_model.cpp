@@ -159,21 +159,6 @@ QVariant ConfigModel::readValue(const Entry &entry)
     return result;
 }
 
-void ConfigModel::putValue(const Entry &entry, const QVariant &value)
-{
-    const QByteArray key = entry.key.toUtf8();
-    if (entry.type == QLatin1String("boolean"))
-        config_PutInt(key.constData(), value.toBool() ? 1 : 0);
-    else if (entry.type == QLatin1String("integer"))
-        config_PutInt(key.constData(), value.toLongLong());
-    else if (entry.type == QLatin1String("float"))
-        config_PutFloat(key.constData(), value.toFloat());
-    else {
-        const QByteArray utf8 = value.toString().toUtf8();
-        config_PutPsz(key.constData(), utf8.constData());
-    }
-}
-
 bool ConfigModel::normalize(const Entry &entry, const QVariant &value,
                             QVariant *normalized)
 {
@@ -293,46 +278,7 @@ void ConfigModel::resetCategory()
 
 bool ConfigModel::apply()
 {
-    if (!m_ctx || !m_ctx->getIntf()) {
-        setError(tr("VLC preferences are unavailable."));
-        return false;
-    }
-    QVector<int> changed;
-    QVector<QVariant> before;
-    for (int i = 0; i < m_entries.size(); ++i) {
-        const Entry &entry = m_entries[i];
-        if (entry.staged == entry.current)
-            continue;
-        const QVariant live = readValue(entry);
-        if (live != entry.current) {
-            setError(tr("%1 changed outside this dialog. Cancel and reopen preferences.")
-                         .arg(entry.label));
-            return false;
-        }
-        changed.append(i);
-        before.append(live);
-    }
-    if (changed.isEmpty()) {
-        setError({});
-        return true;
-    }
-    for (int i : changed)
-        putValue(m_entries[i], m_entries[i].staged);
-    const int result = config_SaveConfigFile(m_ctx->getIntf());
-    if (result != 0) {
-        for (int j = 0; j < changed.size(); ++j)
-            putValue(m_entries[changed[j]], before[j]);
-        setError(tr("Could not save VLC preferences (error %1). Changes were reverted in memory; verify the configuration file.")
-                     .arg(result));
-        return false;
-    }
-    for (int i : changed) {
-        m_entries[i].current = m_entries[i].staged;
-        notifyEntry(i);
-    }
-    emit dirtyChanged();
-    setError({});
-    return true;
+    return applyWithEffects(nullptr, nullptr);
 }
 
 void ConfigModel::reload()

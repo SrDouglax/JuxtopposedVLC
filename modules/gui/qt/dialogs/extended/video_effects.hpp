@@ -44,6 +44,8 @@ public:
     Q_INVOKABLE bool begin();
     Q_INVOKABLE bool cancel();
     Q_INVOKABLE bool save();
+    bool prepareConfiguration(QHash<QString, QVariant>& values, QHash<QString, QVariant>& expected);
+    void finalizeConfiguration();
     Q_INVOKABLE bool filterAvailable(const QString& filter) const;
     Q_INVOKABLE bool filterEnabled(const QString& filter) const;
     Q_INVOKABLE bool setFilterEnabled(const QString& filter, bool enabled);
@@ -73,7 +75,6 @@ private:
     static QStringList optionNames(const QString& filter);
     static bool validOption(const QString& name);
     static QVariant defaultValue(const QString& name);
-    static bool putConfig(const QString& name, const QVariant& value);
     static QVariant getConfig(const QString& name);
     static bool validSide(const QString& side);
 
@@ -85,6 +86,7 @@ private:
     QString m_snapshotChain;
     QString m_snapshotCropString;
     QHash<QString, QVariant> m_snapshotValues;
+    QHash<QString, QVariant> m_configSnapshot;
     QHash<QString, int> m_snapshotCrop;
 };
 #endif

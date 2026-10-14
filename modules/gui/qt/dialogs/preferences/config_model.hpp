@@ -12,7 +12,11 @@
 #include <QVector>
 
 class MainCtx;
+class AudioEffects;
+class VideoEffects;
 Q_MOC_INCLUDE("maininterface/mainctx.hpp")
+Q_MOC_INCLUDE("dialogs/extended/audio_effects.hpp")
+Q_MOC_INCLUDE("dialogs/extended/video_effects.hpp")
 
 class ConfigModel : public QAbstractListModel
 {
@@ -51,6 +55,7 @@ public:
     Q_INVOKABLE bool setDirectoryUrl(const QString &key, const QUrl &url);
     Q_INVOKABLE QString keyAt(int visibleRow) const;
     Q_INVOKABLE bool apply();
+    Q_INVOKABLE bool applyWithEffects(AudioEffects *audio, VideoEffects *video);
     Q_INVOKABLE void cancel();
     Q_INVOKABLE void resetCategory();
     Q_INVOKABLE void reload();
@@ -77,7 +82,6 @@ private:
     void notifyEntry(int entryIndex);
     static bool normalize(const Entry &entry, const QVariant &value, QVariant *normalized);
     static QVariant readValue(const Entry &entry);
-    static void putValue(const Entry &entry, const QVariant &value);
 
     QPointer<MainCtx> m_ctx;
     QString m_category, m_search, m_error;

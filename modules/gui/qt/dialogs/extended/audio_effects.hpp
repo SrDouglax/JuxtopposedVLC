@@ -59,6 +59,8 @@ public:
     Q_INVOKABLE bool begin();
     Q_INVOKABLE bool cancel();
     Q_INVOKABLE bool save();
+    bool prepareConfiguration(QHash<QString, QVariant>& values, QHash<QString, QVariant>& expected);
+    void finalizeConfiguration();
     Q_INVOKABLE bool filterAvailable(const QString& filter) const;
     Q_INVOKABLE bool filterEnabled(const QString& filter) const;
     Q_INVOKABLE bool setFilterEnabled(const QString& filter, bool enabled);
@@ -95,6 +97,7 @@ private:
     QString m_snapshotChain;
     quintptr m_snapshotAout = 0;
     QHash<QString, QVariant> m_snapshotValues;
+    QHash<QString, QVariant> m_configSnapshot;
 };
 
 #endif

@@ -16,7 +16,21 @@ Column {
     property var settingsModel
     property string category: ""
     property string search: ""
+    property string filterMode: "all"
+    property string sectionFilter: ""
+    property string excludedSection: ""
     readonly property int count: optionsRepeater.count
+    readonly property int availableCount: {
+        let total = 0
+        for (let i = 0; i < optionsRepeater.count; ++i) {
+            const entry = presentationData.entry(root.settingsModel.keyAt(i), "")
+            if ((filterMode === "all" || (filterMode === "advanced") === entry.advanced)
+                    && (!sectionFilter || entry.section === sectionFilter)
+                    && (!excludedSection || entry.section !== excludedSection))
+                ++total
+        }
+        return total
+    }
     width: parent ? parent.width : implicitWidth
     spacing: 0
 
@@ -27,11 +41,17 @@ Column {
             width: root.width
             spacing: 0
             readonly property var presentation: presentationData.entry(model.key, model.label)
+            // A category can place an inline effect panel between native option groups.
+            visible: (root.filterMode === "all"
+                      || (root.filterMode === "advanced") === presentation.advanced)
+                     && (!root.sectionFilter || presentation.section === root.sectionFilter)
+                     && (!root.excludedSection || presentation.section !== root.excludedSection)
             readonly property string previousSection: index > 0
                 ? presentationData.entry(root.settingsModel.keyAt(index - 1), "").section : ""
 
             Label {
-                visible: index === 0 || presentation.section !== previousSection
+                visible: root.filterMode !== "advanced"
+                         && (index === 0 || presentation.section !== previousSection)
                 width: parent.width
                 height: visible ? VLCStyle.dp(58, VLCStyle.scale) : 0
                 topPadding: VLCStyle.dp(22, VLCStyle.scale)
