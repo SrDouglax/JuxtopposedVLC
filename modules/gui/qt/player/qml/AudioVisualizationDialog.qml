@@ -1,5 +1,6 @@
 /* Copyright (C) 2026 VLC authors and VideoLAN. GPL version 2 or later. */
 import QtQuick
+import QtQuick.Layouts
 import QtQuick.Controls.Basic as Controls
 import VLC.MainInterface
 import VLC.Player
@@ -59,23 +60,22 @@ Controls.Popup {
                     radius: 4
                     border.color: row.visualFocus ? VLCStyle.redesign.accent : "transparent"
                 }
-                contentItem: Row {
+                contentItem: RowLayout {
                     spacing: 10
                     Image {
-                        width: row.index === 0 ? 0 : 24; height: 24
-                        anchors.verticalCenter: parent.verticalCenter
+                        Layout.preferredWidth: row.index === 0 ? 0 : 24; Layout.preferredHeight: 24
                         source: row.index === 0 ? "" : "qrc:///redesign/icons/" +
                             (row.model.display.toLowerCase().includes("spectrometer") ? "spectrometer" :
                              row.model.display.toLowerCase().includes("spectrum") ? "spectrum" :
                              row.model.display.toLowerCase().includes("scope") ? "scope" : "waveform") + "/default.png"
                     }
                     Text {
-                        width: row.width - 78; height: parent.height; verticalAlignment: Text.AlignVCenter
+                        Layout.fillWidth: true; verticalAlignment: Text.AlignVCenter
                         text: row.text; color: VLCStyle.redesign.color("#969696", "#4d4d4d")
                         font.family: VLCStyle.redesign.fontFamily; font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                     }
-                    Image { width: 24; height: 24; anchors.verticalCenter: parent.verticalCenter
-                        source: "qrc:///redesign/icons/check/selected.png"; visible: row.checked }
+                    Image { Layout.preferredWidth: 24; Layout.preferredHeight: 24
+                        source: "qrc:///redesign/icons/check/default.png"; visible: row.checked }
                 }
             }
             Text {

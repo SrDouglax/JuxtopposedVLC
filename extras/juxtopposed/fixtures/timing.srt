@@ -1,0 +1,7 @@
+1
+00:00:00,000 --> 00:01:00,000
+M3 subtitle source and timing test
+
+2
+00:01:00,000 --> 00:02:00,000
+M3 second subtitle cue
