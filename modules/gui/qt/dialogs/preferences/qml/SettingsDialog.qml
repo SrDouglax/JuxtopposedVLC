@@ -30,7 +30,7 @@ Dialog {
     readonly property bool dark: VLCStyle.palette.isDark
     readonly property bool appearanceDirty: appearance.dirty
     readonly property bool hasChanges: config.dirty || appearanceDirty
-                                       || inlineEffects.dirty || developerMode.dirty
+                                       || inlineEffects.dirty || developerMode.dirty || audioOutput.dirty
 
     readonly property var titles: ({
         extensions: qsTr("VLC Addons"),
@@ -49,11 +49,15 @@ Dialog {
     }
 
     function saveSettings() {
+        if (!audioOutput.canApply()) return
         if (!config.applyWithEffects(inlineEffects.audioForSave(), inlineEffects.videoForSave())) {
             inlineEffects.clearDirty()
             inlineEffects.beginForCurrentCategory()
+            if (audioOutput.cancel() && root.selectedCategory === "audio")
+                audioOutput.begin()
             return
         }
+        if (!audioOutput.apply()) return
         inlineEffects.clearDirty()
         appearance.save()
         developerMode.save()
@@ -71,6 +75,7 @@ Dialog {
         lastfm.begin()
         advancedExpanded = false
         inlineEffects.beginForCurrentCategory()
+        if (selectedCategory === "audio") audioOutput.begin()
     }
     onClosed: {
         if (!saved) {
@@ -79,6 +84,7 @@ Dialog {
             developerMode.cancel()
         }
         inlineEffects.cancel()
+        audioOutput.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
 
@@ -188,6 +194,7 @@ Dialog {
                 contentFlick.contentY = 0
                 root.advancedExpanded = false
                 inlineEffects.beginForCurrentCategory()
+                if (category === "audio") audioOutput.begin()
             }
         }
 
@@ -263,6 +270,7 @@ Dialog {
                 }
 
                 SettingsAudioOutput {
+                    id: audioOutput
                     width: parent.width
                     visible: root.selectedCategory === "audio" && !searchField.text.length
                 }
@@ -401,13 +409,13 @@ Dialog {
 
             Label {
                 id: errorLabel
-                visible: config.error.length > 0
+                visible: config.error.length > 0 || audioOutput.error.length > 0
                 anchors.left: resetButton.right
                 anchors.leftMargin: 10
                 anchors.right: cancelButton.left
                 anchors.rightMargin: 10
                 anchors.verticalCenter: parent.verticalCenter
-                text: config.error
+                text: audioOutput.error || config.error
                 color: "#e7a466"
                 elide: Text.ElideRight
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
@@ -430,6 +438,8 @@ Dialog {
                         developerMode.resetDefaults()
                     if (root.selectedCategory === "privacy")
                         lastfm.begin()
+                    if (root.selectedCategory === "audio")
+                        audioOutput.reset()
                 }
                 background: Rectangle { color: root.dark ? "#1a1a1a" : "#e9e9e9"; radius: 3 }
                 contentItem: Label { text: parent.text; font: parent.font; color: root.dark ? "#999999" : "#444444"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
