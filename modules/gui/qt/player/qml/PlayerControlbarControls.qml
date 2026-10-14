@@ -44,8 +44,8 @@ QtObject {
         { id: ControlListModel.SNAPSHOT_BUTTON, file: "SnapshotButton.qml", label: VLCIcons.snapshot, text: qsTr("Snapshot") },
         { id: ControlListModel.RECORD_BUTTON, file: "RecordButton.qml", label: VLCIcons.record, text: qsTr("Record") },
         { id: ControlListModel.ATOB_BUTTON, file: "AtoBButton.qml", label: VLCIcons.atob, text: qsTr("A-B Loop") },
-        { id: ControlListModel.FRAME_PREV_BUTTON, file: "FrameNextButton.qml", label: VLCIcons.next_frame, text: qsTr("Next Frame") },
-        { id: ControlListModel.FRAME_NEXT_BUTTON, file: "FramePrevButton.qml", label: VLCIcons.previous_frame, text: qsTr("Previous Frame") },
+        { id: ControlListModel.FRAME_NEXT_BUTTON, file: "FrameNextButton.qml", label: VLCIcons.next_frame, text: qsTr("Next Frame") },
+        { id: ControlListModel.FRAME_PREV_BUTTON, file: "FramePrevButton.qml", label: VLCIcons.previous_frame, text: qsTr("Previous Frame") },
         { id: ControlListModel.REVERSE_BUTTON, file: "ReverseButton.qml", label: VLCIcons.play_reverse, text: qsTr("Trickplay Reverse") },
         { id: ControlListModel.SKIP_BACK_BUTTON, file: "SkipBackButton.qml", label: VLCIcons.skip_back, text: qsTr("Step backward") },
         { id: ControlListModel.SKIP_FW_BUTTON, file: "SkipForwardButton.qml", label: VLCIcons.skip_for, text: qsTr("Step forward") },
@@ -70,6 +70,15 @@ QtObject {
         { id: ControlListModel.PLAYER_SWITCH_BUTTON, file: "PlayerSwitchButton.qml", label: VLCIcons.fullscreen, text: qsTr("Switch Player") },
         { id: ControlListModel.ARTWORK_INFO, file: "ArtworkInfoWidget.qml", label: VLCIcons.info, text: qsTr("Artwork Info") },
         { id: ControlListModel.PLAYBACK_SPEED_BUTTON, file: "PlaybackSpeedButton.qml", label: "1x", text: qsTr("Playback Speed") },
+        { id: ControlListModel.HDR_BUTTON, file: "HDRButton.qml", label: "HDR", text: qsTr("HDR") },
+        { id: ControlListModel.FILE_NAME_WIDGET, file: "FileNameWidget.qml", label: VLCIcons.info, icon: "qrc:///redesign/icons/file/default.png", text: qsTr("File Name") },
+        { id: ControlListModel.ARTIST_NAME_WIDGET, file: "ArtistNameWidget.qml", label: VLCIcons.info, icon: "qrc:///redesign/icons/artist/default.png", text: qsTr("Artist Name") },
+        { id: ControlListModel.DURATION_WIDGET, file: "DurationWidget.qml", label: VLCIcons.time, text: qsTr("Duration") },
+        { id: ControlListModel.FRAME_RATE_WIDGET, file: "FrameRateWidget.qml", label: VLCIcons.info, text: qsTr("FPS") },
+        { id: ControlListModel.RESOLUTION_WIDGET, file: "ResolutionWidget.qml", label: VLCIcons.info, text: qsTr("Resolution") },
+        { id: ControlListModel.ZOOM_WIDGET, file: "ZoomWidget.qml", label: VLCIcons.search, icon: "qrc:///redesign/icons/zoom/default.png", text: qsTr("Zoom") },
+        { id: ControlListModel.FAVORITE_BUTTON, file: "FavoriteButton.qml", label: VLCIcons.bookmark, icon: "qrc:///redesign/icons/favorite/default.png", text: qsTr("Favorite") },
+        { id: ControlListModel.DIVIDER_WIDGET, file: "DividerWidget.qml", label: VLCIcons.space, icon: "qrc:///redesign/icons/divider/default.png", text: qsTr("Divider") },
         { id: ControlListModel.HIGH_RESOLUTION_TIME_WIDGET, file: "HighResolutionTimeWidget.qml", label: VLCIcons.time, text: qsTr("High Resolution Time") }
     ]
 
