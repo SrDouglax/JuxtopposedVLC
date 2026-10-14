@@ -1,6 +1,6 @@
 # M3 — cobertura estática de Settings, Onboarding e atalhos
 
-Estado examinado: checkout integrado `feat/m3` em `883e32d826c4f5c8e3e8ff26c9b200f20b8499d3`, incluindo alterações locais ainda não commitadas em `Dialogs.qml`, `SettingsDialog.qml` e outros componentes. Referências: 19 arquivos `Settings - *.png`, 11 `Onboarding*.png` e `Keyboard Shortcuts.png` em `build-m3/reference/export/`. Esta é uma comparação de imagens exportadas com código, sem build, abertura do VLC ou captura da UI integrada. “Ligado” abaixo significa que existe binding ou ação para uma API real; não significa paridade visual ou comportamento nativo verificado.
+Estado examinado: checkout integrado `feat/m3` em `883e32d826c4f5c8e3e8ff26c9b200f20b8499d3`, incluindo alterações locais ainda não commitadas em `Dialogs.qml`, `SettingsDialog.qml` e outros componentes. Referências: 19 arquivos `Settings - *.png`, 11 `Onboarding*.png` e `Keyboard Shortcuts.png` em `build-m3/reference/export/`. Esta revisão inicial é uma comparação de imagens exportadas com código, sem build ou runtime por este revisor; o resultado nativo posterior está em m3.md. “Ligado” abaixo significa que existe binding ou ação para uma API real; não significa paridade visual ou comportamento nativo verificado.
 
 ## Arquitetura e alcance comum
 
@@ -60,3 +60,7 @@ Estado examinado: checkout integrado `feat/m3` em `883e32d826c4f5c8e3e8ff26c9b20
 1. Capturar Settings (ao menos General, Controls, Video, Audio, Extensions), onboarding três passos e Keyboard Shortcuts em 1920×1080 e 720 px, com tema escuro e claro; comparar alinhamento/legibilidade, scroll e estados de popup com os PNGs. Nenhuma captura integrada foi feita nesta revisão.
 2. Exercitar persistência com reinício: Apply/Cancel de opção VLC e tema/acento, Finish/Skip do onboarding, inclusão real de pasta e Save/Cancel/conflito de atalho. Fonte estática sustenta os caminhos, não o resultado final de runtime.
 3. Decidir se as lacunas de catálogo acima são requisitos M3 ou se os diálogos nativos de preferências/efeitos são a saída aceita. Não preencher os espaços do export com controles sem API real.
+
+## Delta integrado posterior
+
+O catálogo foi ampliado para115 opções: quatro durações de salto e mouse-pause-policy; FreeType/encoding/cor/opacidade de legendas; abertura/one-instance; proxy Windows/TLS opcionais; threads/skiploopfilter/post-processing/clock; gain/stereo/mix; pasta de gravação com FilePicker e sout-spu. Reset all local/global foi acrescentado ao editor e à página Controls, com confirmação e staging. Os efeitos de vídeo da páginaSettings agora abrem a UI do redesign diretamente na aba Video. Os campos anteriormente ausentes cobertos por esse delta não continuam pendentes; sua paridade visual e todos os consumidores ainda não são afirmados. Veja m3.md e evidence/m3/result.json para provas de Apply/Cancel, reset, gravação e reinício.

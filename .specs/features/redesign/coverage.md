@@ -195,3 +195,7 @@ O snapshot guarda nomes/IDs, dimensões, labels, fontes/tokens e contagem de ref
 A matriz de rastreabilidade está entregue: 103/103 frames superiores mapeados, 18 contratos de código e critérios de prova por linha. Inspeção visual: 11/103 IDs (10 novos + 1 anterior); 92 seguem S. Função e aparência do redesign: **0/103 comprovadas no runtime**. Build/Linux/Windows são T03/T04 e posteriores; esta tarefa não os executou.
 
 A lacuna de Figma após atingir o limite do conector fica registrada por ID, não escondida como “cobertura completa”. O detalhamento visual dos estados internos continua necessário antes de implementar cada fatia; a matriz pode orientar M1 com os IDs já inspecionados. O objetivo final R02 permanece aberto até haver implementação e prova de todos os estados aplicáveis.
+
+## Complemento M3 — export completo
+
+O export de 105 PNGs fornecido em 13/10/2026 complementa o inventário de 103 nodes acima; as contagens não são intercambiáveis. [Manifest e hashes](evidence/m3/reference-manifest.json), [Settings/onboarding/atalhos](m3-coverage-settings.md), [demais exports](m3-coverage-player.md) e [implementação/prova/pendências M3](m3.md). V/S da tabela T02 registra a inspeção histórica e não foi reescrito como se novas chamadasMCP tivessem ocorrido. As capturasLinux M3 comprovam amostras funcionais e correções, sem declarar todos os nodes visualmente completos.

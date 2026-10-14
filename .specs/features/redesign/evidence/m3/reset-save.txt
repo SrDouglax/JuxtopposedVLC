@@ -1,0 +1,2 @@
+#global-key-play-pause=
+#key-play-pause=Space	Media Play Pause

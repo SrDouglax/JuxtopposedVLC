@@ -1,0 +1,502 @@
+{
+  "source": "User export VLC Redesign (Community) (1)",
+  "welcome_source": "Original Figma asset 1899:3055",
+  "png_assets": [
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/0/default.png",
+      "sha256": "724360f70d89b0618e3e28667e1981392bcc4c6777c8e91ac3f0b4d42fed81b2"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/EQ/default.png",
+      "sha256": "118f8d4f2937bac42e84ca0b1621f71e2d843d740944d53068f113aed3ff9bf1"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/HDR/default.png",
+      "sha256": "eada220608ad11be62d89c72eab4eafd94cb998a00d7e78f48522411681fc53d"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/PiP/default.png",
+      "sha256": "464f4d7b00df387e0f1e95b499805aad3e054818f801030670f94654b1ba99dd"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/accessibility/default.png",
+      "sha256": "46db186aafa9133f37cd0bdac88b8487b54bac5207cd4d6cab4fbdaf878bec7e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/add/default.png",
+      "sha256": "c11fc56332e5c38ba1bfda9410800d11c9cb5725a1e74723247d29ea44f394bc"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/album/default.png",
+      "sha256": "dc298d870ce22b684d3c316df94b8c28bfe369b00154d921b1cdbed3e441e3e6"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/artist/active.png",
+      "sha256": "a7f72fbb1ec543972314955ca6780e941ca18aa2fe9e66a32677c0674826e95c"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/artist/default.png",
+      "sha256": "5caabca047cbefa841caf21d6e52e334a58d6437ac8d7f84db828fb96b009fb3"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/audio/active.png",
+      "sha256": "a223d91624850c6eef5f5d3b21d2aaccf4a1750129840271ef1ef4441c7e8c85"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/audio/default.png",
+      "sha256": "c66aa66eabd83ba25f91682f296d11d023f3f91448f3412cae0b5c34b0374f27"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/backward-10-sec/default.png",
+      "sha256": "5abee166aa2a89586405b3b7083bcc0d049bd005343d9436a2c9037541f80de2"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/backward-15-sec/default.png",
+      "sha256": "614d14e566e63121bf266429f30fa37d69123d5bce0fc8646ab854d7298d114e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/bookmark/default.png",
+      "sha256": "70c78ed53f0ee571e589aec7c441be7286c3e6b5105055f86bb8bf3c99b62f76"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/bookmarks/default.png",
+      "sha256": "3536fac23cfcd41186b2185dd097a8d545523c82e59f1815fa5054eb958af3df"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/capture-device/default.png",
+      "sha256": "147889b5556f75df2e192b425e5cad2a210d804d34880aea2b684c75469c788e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/chapters/default.png",
+      "sha256": "ca4c1579edec86fcd1974c54ddaa4354f4f7ddfa338682fd3d88e0bc97a6da94"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/check/active.png",
+      "sha256": "0b6884570a132b52d447fc5a0292bc5010680e4e5dbed66002c3cdef97669461"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/check/default.png",
+      "sha256": "724360f70d89b0618e3e28667e1981392bcc4c6777c8e91ac3f0b4d42fed81b2"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/check/selected.png",
+      "sha256": "32984a4c74860dc680d021f28ed4a995a1884a0ceb798cf9f4ed35d14d992a1a"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/chevron-down/default.png",
+      "sha256": "f38a040f451bcc42ca47a5c394aa5cd68327478fdb2350f94649854f36e6d6fb"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/chevron-right/default.png",
+      "sha256": "fd19e280eccc2832be30d881e2509909a6334bc3237554bdfe07fde6b483ce66"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/close/default.png",
+      "sha256": "ed9fbd5233dde77a9627735914fecf6c3baa645405167648ffce49c2a169c8d4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/collapse-sidebar/default.png",
+      "sha256": "5b894c77d2c1e86f32b04ff2c71c6481e6f255b522162c8545b45ab2bbabbe10"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/disc/default.png",
+      "sha256": "27ecf0742a2d5f81108644210eeaeeb5075a34733bc89e97139f9f894db22d5c"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/divider/default.png",
+      "sha256": "3ff58a8d88b7ffae6d19774a082bba1f73f392d8e4b0f2fc6e850b8d0980b350"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/edit/default.png",
+      "sha256": "d842a369b97151abf551f0781451fd37d0d74b67dbde5cbf196b717ff1668030"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/expand-sidebar/default.png",
+      "sha256": "cdccf41b410c2ed2800e736f9593f27e57a0377776831354cecf1b21e7998725"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/favorite/active.png",
+      "sha256": "8f65ef4c210b02bbfaefca0125917260632207dffbcf74d15fd3804214f98fcd"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/favorite/default.png",
+      "sha256": "2b0dc0fb22bf8accd5b6ade2666e8818e54ba471c6c0ffa60d9781f31ca11d05"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/file/default.png",
+      "sha256": "a485fc4237592e1f0a98c060e574f30d5f8b473ba0a2121375074773d81e2d8f"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/folder/active.png",
+      "sha256": "642b17d6778729d9da7cd6582d3ac71b8cf81937b235f7ab902efb5800658fd6"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/folder/default.png",
+      "sha256": "8d3723e15b2707b862badd9c9078d6e95b0926d52949e6c173bfaf7864228bc5"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/folder/selected.png",
+      "sha256": "e4599310977de6ee0de8e532ca2ae52ac557b6ad47d6d169e0111dc13ab6e458"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/forward-10-sec/default.png",
+      "sha256": "2ddba73f73500e3b172e96993e826db42d377a43da06820a1919a46faf25d25e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/forward-15-sec/default.png",
+      "sha256": "3fde229bdae089d96edbfe6f299163f7906c17d7e8d82d4f3eb7d4aabf0115e4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/fullscreen/active.png",
+      "sha256": "d0795a8406c078c5a66aa87d60f5922a623b844e2210c51fc5c508c878ad5ecf"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/fullscreen/default.png",
+      "sha256": "67c2430255ff4a3b1084ce104ceb4ab46d702a68b3b32d845f15b0f32d520e67"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/genre/default.png",
+      "sha256": "0f63cdaecc4e49cb7797e5981335d0e3fab25a5745a86c923486e151a760e52a"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/grid/default.png",
+      "sha256": "0c69bf5fc0777fea79ed7be3851a16200569cd4546fb6a002043e21ca6d5513d"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/home/active.png",
+      "sha256": "82bb14992db14505a1227f15b4063b044abb2b701728780019e2d87b2f97a422"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/home/default.png",
+      "sha256": "54751a83feaf9437fb951a443df242f5a13e836ddd396e8366860fa55869d818"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/home/selected.png",
+      "sha256": "8495caee837eadb7cd1676358ed93ed67d7e2bb91672a532ceae5e411cb7ed37"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/hotkeys/active.png",
+      "sha256": "4ca43d5afe8643518f7effb8d61af742004a17fed188f47dcd712ac828dd0188"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/hotkeys/default.png",
+      "sha256": "e2d89576bb6a59ab79021d7633aa04214baf0bd8518de0525a884da8f402f56e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/info/default.png",
+      "sha256": "99a4274f66c878a1fcd5bf5b106bb7f3b45665cf45cb53e9f4b4b269bd37bbe4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/interface/active.png",
+      "sha256": "4d02577097a44453fae994b40cc1400b24123a61be5b42ec8bebf778d6692f63"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/interface/default.png",
+      "sha256": "e6773d70c0fc38e8af624500f412e55c4fe0adf1ee1fec2cf3ef3f5f85d780b8"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/link/active.png",
+      "sha256": "76219cdadc1385280d870dcbb114d694a683d3f21ee619e1e851d28749dec5a5"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/link/default.png",
+      "sha256": "ff19871bd984e292a48531e0a043051fe87ea2bad6a1f3dd97b00ac194f7837d"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/list/default.png",
+      "sha256": "d471e6be22dc7106e028ef5b010e69419af0d2a36afba76aa31727a51c8ae6c0"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/lists/active.png",
+      "sha256": "d81126eb5fab987f51c314f67722cf8d47f10dfc2a4c9a68a880b1bb4e79167d"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/lists/default.png",
+      "sha256": "059c64c891fd756555c638fd31d1ccf0ab86f99601bbf17d49e5c3487a35f076"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/maximize/default.png",
+      "sha256": "f7937a828875bc8e30587e5673587759647633b74d62fbfce5682a39f2ae269e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/minimize/default.png",
+      "sha256": "d92c316e025ec8932a5872d7d5b2e894d8136ac990dfbc88fe55cb6dc04dfefb"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/more/default.png",
+      "sha256": "780646657811c4a342a859098f977fff046d524f675819e797a17fc502094eee"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/move/default.png",
+      "sha256": "2b9358159946ba886797a0abe1852e4d4eed71cf8b05f0a9a317599a25300754"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/music/default.png",
+      "sha256": "d59cddf2126d5b769f1a9bcf688ba6f9a048b4b670ed8fb8e61fbd2c4d5e01b2"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/new-folder/default.png",
+      "sha256": "b63f9399640f01c23d945f51bfc37ac0eca5136d2111e8b2c513f2e022e7c095"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/next/default.png",
+      "sha256": "3514016969f013c7f59cb9c8cc0e7c1387ea40d19d9a83b9e67fe87fef5df64c"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/open/default.png",
+      "sha256": "74fe01b7669fd0029d265055e79c163c3c94bfeec96fe0f2b67c508a1c12c6a8"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/paint/active.png",
+      "sha256": "653d706349e626dbce0a548dacec2b921ae758008cdda4bb801620d7bfc1a38a"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/paint/default.png",
+      "sha256": "9f74a01d63d2773845c6436d5177b82e14f52b6483cd70b73626c3e23c6af999"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/pause/default.png",
+      "sha256": "c5b840cd9ccc35421e8d523c9fdd390e0d4335b8b31f2f717c3db3e8e79554db"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/play/default.png",
+      "sha256": "ba34a186526c6c26ae189428a8a1952312d0d086ae57bfd07e7af4faf3ef7bb4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/playback/active.png",
+      "sha256": "20d6b1989419ce0a7ca1fb378e4c20d0067cbc583080fdb72ca84a7f56a1b8ae"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/playback/default.png",
+      "sha256": "a2813c1f14d7048b142db10589481888cef3b111541c95b4e03a059cb314819c"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/playback-settings/active.png",
+      "sha256": "2e4088bb14b2f6228981985e11c7e93b4b38646b971c40bf090a26584ab6cd0c"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/playback-settings/default.png",
+      "sha256": "0a3a15b473adf0ccc51b8288f4cf8eaf5beb53a406f0503a7dc3c18ff44a7708"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/playlist/active.png",
+      "sha256": "a19fa7511976bf837259f889b81063c3f7683917307a7ef8057bd708eb9eae9e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/playlist/default.png",
+      "sha256": "66e3540fb5eae45647073a8cbfcec4109253716aefe6c174c6d26d30ea3e80ec"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/plugins/active.png",
+      "sha256": "222630bd11a82cbc382e0cde6f756ba5cfd178cfd8c909f217954c5aac12c974"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/plugins/default.png",
+      "sha256": "c346aa570ab78c8cef461ee91d41c43c83acfc5cfdd25ea9de55dfd82a32c28d"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/preferences/active.png",
+      "sha256": "c8fc4c337b9906f7ab64170c4e7c2027574671523c2e6d7e14fbe6501ecd8b12"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/preferences/default.png",
+      "sha256": "d8a79547919ff6b002e4bd6000f50c08d889c524549fa1f7dbc9083b7519a7de"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/previous/default.png",
+      "sha256": "2ace324754a0598fc3ef53b94a365ac731a7bd46c0eb63d489df73c1a3b5712d"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/privacy/active.png",
+      "sha256": "724a1b97cc934360d2606be2164d23e7970f47bc9348301eee559ad9c3db9e95"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/privacy/default.png",
+      "sha256": "b40bcd6e4e362551e2cb8089d45852df87c0369b519624042945ea864f12a26c"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/profile/default.png",
+      "sha256": "0a859b4ecc7557ab217e24a8bc75f1cfef9a162bc34cc502b084a38806b4a5c6"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/queue/default.png",
+      "sha256": "1a41098890b03ce2386106ce0896279a6cf4699a073c0c455256fb9d61a4a276"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/quit/default.png",
+      "sha256": "5cf589f15297f125feaa75411992decca784217fbae6e2cfd0d2cbddc462c382"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/recent/default.png",
+      "sha256": "ae90971d68d9fe11d6413909753f2bf441500078dce6351d451ce2457dbb73be"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/record/active.png",
+      "sha256": "bf9465b8f7b02e61a7fd2c0606a2c6da54db34f08eb4ce9c59fab91712a3eb5a"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/record/default.png",
+      "sha256": "31ebf88ff86295672bc194703ac34719b55a8b925f6f2ab6790676b0fffc3539"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/refresh/default.png",
+      "sha256": "a925bd46af7514a4326bd07b1f499eefd1abbda5b9c3f058ce62aa91470072c4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/remove/default.png",
+      "sha256": "75c892fb78d03a094320c0281bc4718a94e2e19f6ded9c34110a7c3b14c9b3bc"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/replay/default.png",
+      "sha256": "a69dc21f6a86d7e741b7ee7431dbf9b71595f3e4da9d990d9cb8802afdf1af00"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/save/default.png",
+      "sha256": "8a8af9ee697f0015a2be323e4c44f6c4f53682680d6d3a8f15ca2e9759ffaf94"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/search/default.png",
+      "sha256": "e379a08adf9afc76bac1c17f548deec870c558117dbdedfe3eff1ff29404a6d4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/settings/active.png",
+      "sha256": "527386ee346ee7e7cf92056510e66bacaeee06795e9c09e49c607ac6d92478c6"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/settings/default.png",
+      "sha256": "43b24dc9c6892150b527ea18e0876db8f4127b724120c1a0ced7866bc7bcf95f"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/sidebar/active.png",
+      "sha256": "81aabb87e041daf6e663c650279f0f598b5a1d1da9fe145f361b95a23d120639"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/snapshot/default.png",
+      "sha256": "dbd044632bddce4da66b59c702106a54b749c468673c1d1be7809e02f84f98e2"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/songs/active.png",
+      "sha256": "24384d895566d4036f925d47af148feda19f33237cf42e1801b88ee8c707d182"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/songs/default.png",
+      "sha256": "8114d48e4884737754202edf4a1a05d5a95bed04941b070351087f8059ee517e"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/songs/selected.png",
+      "sha256": "98cc989f6e15e74c56ce0c02c7184da015c031d2ab55a390472c431b08961af8"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/sort/active.png",
+      "sha256": "ca4f18c2022a72a663830f77ef6564d4270850a198140452667c71e12ac362df"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/sort/default.png",
+      "sha256": "0a0de5da45273034606d2f881f03cd5358638a327a4a420fab313ff69b67baaf"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/speed/active.png",
+      "sha256": "1d119cb6e4b0a214565c84192f8ef81289807d2bec16b730ca3f695e246154b6"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/speed/default.png",
+      "sha256": "e4474f92ca83a8ef27428511d6fe2bf35980c87a8b570f2d132926860921556a"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/stop/default.png",
+      "sha256": "aff4c89d282f484e1987467ea4bd8f9925ca8a5f214ba37c2dea1646e0b538f2"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/streaming/active.png",
+      "sha256": "19adf43f35b670ef1751125905670ffa07e172207ffa4e7df3f01b60fc84b5cd"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/streaming/default.png",
+      "sha256": "0bc9c3ce3bbe4c4da36d282041587fcf4fb6992fc047139d216d872cce766fef"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/streaming/selected.png",
+      "sha256": "c095a9f0b78a2402da89f4f7bcccee39aa9e49174dc88f5dc8c11cdb955bbb26"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/subtitle/default.png",
+      "sha256": "e385a0fd0d75c3ec2ecbb602e93ac9ce68bf095b68e2c1d1c10d1c3cd5741363"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/subtitles/active.png",
+      "sha256": "bb060988b17d63b89a5f9009da51502f893798cfc925cafada58dc31baabb9f4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/subtitles/default.png",
+      "sha256": "4aac98845d26f4e54e961ea493a6b7263ada8f131f9164c8d439e72fefb51065"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/swap/default.png",
+      "sha256": "e8b475a173fac09beb92f42a45a844098f06048e35922f7625c6d25684a3dcc5"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/thumbnail/default.png",
+      "sha256": "182b8a8df961d70912899278ad3023077206a506cbfe7c196807383bce437e72"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/tv/active.png",
+      "sha256": "e0415f1569f444036ec44abbaaa762782ffb09124abe882bb180ac36f6b1c82b"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/tv/default.png",
+      "sha256": "589a2e03497072b1b7639f725fbfb5cdc2fbb873d900d8f814ed93d4e3f6820b"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/tv/selected.png",
+      "sha256": "c9e4dca48b888faee528e1f7cc6f2798b237090721b157617f2db7ad59d2c112"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/ui/default.png",
+      "sha256": "c4c8e0e1325b905d5586c899c4326e23e3177b2184d699aa65c09ec5dff3d729"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/video/active.png",
+      "sha256": "ca466e9e995e66bcb088d98fa30ba20fd068a0017a68c7c5b4f359d4f63aa0ea"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/video/default.png",
+      "sha256": "ec48c037247978054f6d3d0b556cd1f6727cc3dee541a3d2808b36cd5dbac3ad"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/videos/active.png",
+      "sha256": "12373d26328132494e56e50a30e01ced3e00f2b01a0350901f7eac0b9ebafff5"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/videos/default.png",
+      "sha256": "36ed19550e06bbd89c208678335700464840b686244562d0accb5a6d5321ff4c"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/videos/selected.png",
+      "sha256": "539cb67f54ddd03972aa1ae12ee48fe636e9261088e33118acc9fe064bfb02b5"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/view/active.png",
+      "sha256": "89a6f9325b58feb740b0f3542770deac7e28643aa87c1d69c2bf62e8a713dba4"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/view/default.png",
+      "sha256": "2bbaea5302320aa35dc397caed70529067fc3b0c857f3e041062b252e8442162"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/vlc/default.png",
+      "sha256": "a403242284a1a8a2f1a3b214f2c422e63e863e4d5a2c724ad361ae72072a1225"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/window/default.png",
+      "sha256": "cf4f3bd0a924ad49791eee0d2bf2474792a82ae0c6e3c9b65cefdb7d6a801d09"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/wrench/default.png",
+      "sha256": "7de8eb5d0ac2dbe6ad2fcba4d30f52e6599f20b45ae6b70cf068ebe23dda6db0"
+    },
+    {
+      "path": "modules/gui/qt/pixmaps/redesign/icons/zoom/default.png",
+      "sha256": "a202f394efd8d6d82a82d54a178fc12181e66dbcde59a7c1dbcb5250e14d316f"
+    }
+  ]
+}

@@ -4,8 +4,8 @@
 plugin. Install it beside the VLC application binary as `vlc-waveform` (or
 `vlc-waveform.exe` on Windows). The Qt `Waveform` object launches it with
 `QProcess` and one absolute local file path argument. Neither component adds a
-LibVLC link dependency to the Qt plugin. Build-system registration and package
-placement are intentionally left to the host integration.
+LibVLC link dependency to the Qt plugin. Autotools and Meson register the helper and install it beside VLC. The Windows
+package check requires its executable; Windows compilation is still pending.
 
 Linux build against this repository's existing VLC 4 build, inside the
 `juxtopposed-vlc-m0-linux` container:
@@ -52,7 +52,7 @@ Proof in ignored `build-m3/waveform`:
 | 120-second AAC/H.264 fixture (`--no-video`) | 512 bins, 360,000 decoded frames, 7.56 s wall |
 | 180-second local WAV with a one-second opening tone | 512 bins, 542,400 decoded frames, 11.22 s wall; only first six bins nonzero |
 
-The full Qt application build, interaction and Windows execution remain to be
-verified after registration. The Canvas component subclasses `SliderBar`, so
+The integrated Qt build and waveform rendering were verified in the native
+Linux application; Windows execution remains unverified. The Canvas component subclasses `SliderBar`, so
 it retains its seek action through `Player.position`; it displays the original
 slider until a valid envelope is ready.

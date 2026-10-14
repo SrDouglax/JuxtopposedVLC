@@ -1,0 +1,30 @@
+{
+  "source_sha": "e532f32d9950cedaeb14473655eb8d4f29e247fa",
+  "qt_sha256": "9836ef7618eec8a8a311c21f5a5ec199482629f8c73b501efa9aa7c1ce57a2a8",
+  "waveform_sha256": "6d7eeb4094bb5a4332201258b01d0fb1a95a9742949200b4eb77183c645abb3b",
+  "platform": "Linux Ubuntu24.04 GCC13.3 Qt6.4.2 X11 Xvfb software renderer PulseAudio null sink",
+  "windows": "Deferred to final interface round; manifests updated, build/runtime unverified",
+  "functional_evidence": {
+    "preferences": "Apply/Cancel retained stats=0 and theme/accent across restart; recording directory saved to native config",
+    "shortcuts": "F9 assignment/conflict/restart tested earlier; Reset Cancel retains F9; Reset Save restores Space + Media Play Pause; after restart Space Playing -> Paused",
+    "audio": "Preamp live PCM measured and Cancel restored RMS; not an individual DSP calibration of every filter",
+    "video": "Invert actual pixels, Cancel restores within8 perRGBchannel, process alive; Save persisted invert through restart",
+    "timer": "Pause and Stop one minute; popup reopen preserves countdown; media change cancels",
+    "customization": "Clone persisted; drag Stop to center, Save; removal followed by Cancel restored saved center",
+    "miniplayer": "Real surface, pause, seek~89s, queue, restore, close stops",
+    "music": "Metadata/artwork real; waveform from decoded PCM; CPU blur visible"
+  },
+  "known_warnings": [
+    "MainDisplay.qml:120 scaleAxis undefined (upstream Qt6.4 pinch handler)",
+    "One startup QPainter::setCompositionMode: Painter not active"
+  ],
+  "not_proven": [
+    "All Figma nodes visually identical",
+    "Every config consumer and filter permutation",
+    "Multi-output crop rollback",
+    "Installed add-on lifecycle",
+    "Hardware/GPU/HDR and actual speakers",
+    "Windows runtime for M3"
+  ],
+  "dpi": "Settings100% at980x700 and1920x1080; 150% initial snapshot; 200% after fixing scaled search spacing and sidebar rows, scroll shows remaining categories. Not whole-product DPI certification."
+}

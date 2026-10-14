@@ -1,0 +1,13 @@
+*** Warning: Linking the shared library libqt_plugin.la against the
+*** static library libqml_module_playlist.a is not portable!
+
+*** Warning: Linking the shared library libqt_plugin.la against the
+*** static library libqml_module_style.a is not portable!
+
+*** Warning: Linking the shared library libqt_plugin.la against the
+*** static library libqml_module_util.a is not portable!
+
+*** Warning: Linking the shared library libqt_plugin.la against the
+*** static library libqml_module_widgets.a is not portable!
+make[1]: Leaving directory '/work/build-m0/linux/modules/gui/qt'
+make: Leaving directory '/work/build-m0/linux/modules/gui/qt'
