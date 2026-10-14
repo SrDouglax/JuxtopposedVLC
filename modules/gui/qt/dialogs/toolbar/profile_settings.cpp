@@ -193,7 +193,7 @@ bool ProfileSettings::apply(MainCtx *ctx, QSettings *settings,
     const QString accent = target.value("accent").toString();
     const int theme = target.value("theme").toInt();
     if (!QColor::isValidColor(accent) || theme < 0
-        || theme >= ctx->getColorScheme()->rowCount()) {
+        || theme >= ctx->getColorScheme()->rowCount(QModelIndex())) {
         if (error) *error = QStringLiteral("Profile appearance is invalid.");
         return false;
     }
