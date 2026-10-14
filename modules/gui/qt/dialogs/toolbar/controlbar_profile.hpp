@@ -21,6 +21,7 @@
 #include <QObject>
 #include <QMap>
 #include <QVector>
+#include <QVariantMap>
 #include <array>
 
 Q_MOC_INCLUDE( "player/player_controlbar_model.hpp" )
@@ -73,6 +74,7 @@ private:
     // Assuming model (player) count to stay below that,
     // QMap is used here.
     QMap<int, PlayerControlbarModel *> m_models;
+    QVariantMap m_settingsSnapshot;
 
     struct Configuration {
         int identifier;

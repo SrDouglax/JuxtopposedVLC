@@ -33,6 +33,8 @@ class ControlbarProfileModel : public QAbstractListModel
     Q_PROPERTY(ControlbarProfile* currentModel READ currentModel NOTIFY selectedProfileChanged FINAL)
 
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged FINAL)
+    Q_PROPERTY(QString lastError READ lastError NOTIFY errorChanged FINAL)
+    Q_PROPERTY(QString profileAccent READ profileAccent NOTIFY selectedProfileChanged FINAL)
 
 public:
     explicit ControlbarProfileModel(QSettings* settings, QObject *parent = nullptr);
@@ -72,6 +74,8 @@ public:
     };
 
     int selectedProfile() const;
+    QString lastError() const { return m_lastError; }
+    QString profileAccent() const;
     ControlbarProfile* currentModel() const;
 
     ControlbarProfile* cloneProfile(const ControlbarProfile* profile);
@@ -92,7 +96,7 @@ public:
     void insertProfile(std::unique_ptr<ControlbarProfile> profile, bool select);
 
 public slots:
-    void save(bool clearDirty = true) const;
+    bool save(bool clearDirty = true);
     bool reload();
 
     bool setSelectedProfile(int selectedProfile);
@@ -102,6 +106,7 @@ public slots:
 signals:
     void countChanged();
     void selectedProfileChanged();
+    void errorChanged();
 
     void selectedProfileControlListChanged(const QVector<int>& linearControlList);
 
@@ -109,6 +114,8 @@ private:
     QVector<ControlbarProfile *> m_profiles;
 
     int m_selectedProfile = -1;
+    QString m_lastError;
+    bool m_skipNextApply = false;
 
     struct Profile {
         const Style id;

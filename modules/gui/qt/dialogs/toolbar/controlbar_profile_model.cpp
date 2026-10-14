@@ -24,17 +24,8 @@
 #include "controlbar_profile.hpp"
 #include "player/control_list_model.hpp"
 #include "player/player_controlbar_model.hpp"
-
-// NOTE: QSettings started to accept QAnyStringView with Qt 6.4,
-//       so instead of a QString(Literal), use QLatin1String(View):
-constexpr QLatin1String SETTINGS_KEY_SELECTEDPROFILE {"SelectedProfile"};
-constexpr QLatin1String SETTINGS_ARRAYNAME_PROFILES {"Profiles"};
-constexpr QLatin1String SETTINGS_KEY_NAME {"Name"};
-constexpr QLatin1String SETTINGS_KEY_MODEL {"Model"};
-
-constexpr QChar SETTINGS_CONTROL_SEPARATOR {','};
-constexpr QChar SETTINGS_CONFIGURATION_SEPARATOR {'|'};
-constexpr QChar SETTINGS_PROFILE_SEPARATOR {'$'};
+#include "profile_settings.hpp"
+#include "maininterface/mainctx.hpp"
 
 ControlbarProfileModel::ControlbarProfileModel(QSettings* settings, QObject *parent)
     : QAbstractListModel(parent),
@@ -266,165 +257,15 @@ int ControlbarProfileModel::selectedProfile() const
     return m_selectedProfile;
 }
 
+QString ControlbarProfileModel::profileAccent() const
+{
+    return m_settings->value(QStringLiteral("redesign/accent"),
+                             QStringLiteral("#D37918")).toString();
+}
+
 ControlbarProfile* ControlbarProfileModel::currentModel() const
 {
     return getProfile(selectedProfile());
-}
-
-void ControlbarProfileModel::save(bool clearDirty) const
-{
-    const auto groupName = metaObject()->className();
-
-    m_settings->beginGroup(groupName);
-    m_settings->remove(""); // clear the group before save
-
-    m_settings->setValue(SETTINGS_KEY_SELECTEDPROFILE, selectedProfile());
-
-    m_settings->beginWriteArray(SETTINGS_ARRAYNAME_PROFILES);
-
-    for (int i = 0; i < m_profiles.size(); ++i)
-    {
-        m_settings->setArrayIndex(i);
-
-        const auto& ptrModelMap = m_profiles.at(i)->m_models;
-
-        QString val;
-        for (auto it = ptrModelMap.constBegin(); it != ptrModelMap.end(); ++it)
-        {
-            const int identifier = it.key();
-
-            const auto serializedModels = m_profiles.at(i)->getModelData(identifier);
-
-            static const auto join = [](const QVector<int>& list) {
-                QString ret;
-                for (auto i : list)
-                {
-                    ret += QString::number(i) + SETTINGS_CONTROL_SEPARATOR;
-                }
-                if (!ret.isEmpty())
-                    ret.chop(1);
-                return ret;
-            };
-
-            val += SETTINGS_PROFILE_SEPARATOR %
-                   QString::number(identifier) %
-                   SETTINGS_CONFIGURATION_SEPARATOR %
-                   join(serializedModels[0]) %
-                   SETTINGS_CONFIGURATION_SEPARATOR %
-                   join(serializedModels[1]) %
-                   SETTINGS_CONFIGURATION_SEPARATOR %
-                   join(serializedModels[2]);
-        }
-
-        if (clearDirty)
-            m_profiles.at(i)->resetDirty();
-
-        m_settings->setValue(SETTINGS_KEY_NAME, m_profiles.at(i)->name());
-        m_settings->setValue(SETTINGS_KEY_MODEL, val);
-    }
-
-    m_settings->endArray();
-    m_settings->endGroup();
-}
-
-bool ControlbarProfileModel::reload()
-{
-    const auto groupName = metaObject()->className();
-
-    m_settings->beginGroup(groupName);
-
-    const int size = m_settings->beginReadArray(SETTINGS_ARRAYNAME_PROFILES);
-
-    if (size <= 0)
-    {
-        m_settings->endArray();
-        m_settings->endGroup();
-
-        return false;
-    }
-
-    beginResetModel();
-
-    decltype (m_profiles) profiles;
-    for (int i = 0; i < size; ++i)
-    {
-        m_settings->setArrayIndex(i);
-
-        const QString modelValue = m_settings->value(SETTINGS_KEY_MODEL).toString();
-        if (modelValue.isEmpty())
-            continue;
-
-        QStringView modelValueStringView(modelValue);
-        const auto val = modelValueStringView.split(SETTINGS_PROFILE_SEPARATOR);
-        if (val.isEmpty())
-            continue;
-
-        const auto ptrNewProfile = new ControlbarProfile(this);
-        ptrNewProfile->setName(m_settings->value(SETTINGS_KEY_NAME).toString());
-
-        for (auto j : val)
-        {
-            if (j.isEmpty())
-                continue;
-
-            const auto alignments = j.split(SETTINGS_CONFIGURATION_SEPARATOR);
-
-            if (alignments.length() != 4)
-                continue;
-
-            bool ok = false;
-            int identifier = alignments[0].toInt(&ok);
-            if (!ok || identifier < 0)
-                continue;
-
-            static const auto split = [](auto ref) {
-                QVector<int> list;
-
-                if (ref.isEmpty())
-                    return list;
-
-                for (auto i : ref.split(SETTINGS_CONTROL_SEPARATOR))
-                {
-                    bool ok = false;
-                    int k = i.toInt(&ok);
-
-                    if (ok)
-                        list.append(k);
-                }
-                return list;
-            };
-
-            const std::array<QVector<int>, 3> data { split(alignments[1]),
-                                                     split(alignments[2]),
-                                                     split(alignments[3]) };
-
-            ptrNewProfile->setModelData(identifier, data);
-            ptrNewProfile->resetDirty(); // Newly loaded model can not be dirty
-        }
-
-        profiles.append(ptrNewProfile);
-    }
-
-    m_settings->endArray();
-
-    m_selectedProfile = -1;
-    std::for_each(m_profiles.begin(), m_profiles.end(), [](auto i) { delete i; });
-
-    m_profiles = std::move(profiles);
-
-    endResetModel();
-
-    bool ok = false;
-    int index = m_settings->value(SETTINGS_KEY_SELECTEDPROFILE).toInt(&ok);
-
-    if (ok)
-        setSelectedProfile(index);
-    else
-        setSelectedProfile(0);
-
-    m_settings->endGroup();
-
-    return true;
 }
 
 bool ControlbarProfileModel::setSelectedProfile(int selectedProfile)
@@ -439,6 +280,23 @@ bool ControlbarProfileModel::setSelectedProfile(int selectedProfile)
 
     if (!ptrProfileNew)
         return false;
+
+    auto *ctx = qobject_cast<MainCtx *>(parent());
+    if (!m_skipNextApply && ptrProfileOld && ctx)
+        ptrProfileOld->m_settingsSnapshot = ProfileSettings::capture(ctx, m_settings);
+    if (!m_skipNextApply && ctx && !ptrProfileNew->m_settingsSnapshot.isEmpty()) {
+        QString error;
+        if (!ProfileSettings::apply(ctx, m_settings,
+                                    ptrProfileNew->m_settingsSnapshot, &error)) {
+            m_lastError = error;
+            emit errorChanged();
+            return false;
+        }
+    }
+    if (!m_lastError.isEmpty()) {
+        m_lastError.clear();
+        emit errorChanged();
+    }
 
     connect(ptrProfileNew, &ControlbarProfile::controlListChanged, this, &ControlbarProfileModel::selectedProfileControlListChanged);
     connect(this, &QAbstractListModel::modelReset, ptrProfileNew, &ControlbarProfile::generateLinearControlList);
@@ -515,6 +373,8 @@ ControlbarProfile *ControlbarProfileModel::newProfile()
     const auto ptrNewProfile = generateProfileFromStyle(Style::EMPTY_STYLE);
     assert(ptrNewProfile);
     ptrNewProfile->setParent(this);
+    ptrNewProfile->m_settingsSnapshot = ProfileSettings::capture(
+        qobject_cast<MainCtx *>(parent()), m_settings);
 
     beginInsertRows(QModelIndex(), m_profiles.size(), m_profiles.size());
 
@@ -531,6 +391,11 @@ ControlbarProfile *ControlbarProfileModel::cloneProfile(const ControlbarProfile 
 
     if (!ptrNewProfile)
         return nullptr;
+
+    ptrNewProfile->m_settingsSnapshot = profile->m_settingsSnapshot;
+    if (profile == currentModel())
+        ptrNewProfile->m_settingsSnapshot = ProfileSettings::capture(
+            qobject_cast<MainCtx *>(parent()), m_settings);
 
     for (auto it = profile->m_models.constBegin(); it != profile->m_models.constEnd(); ++it)
     {

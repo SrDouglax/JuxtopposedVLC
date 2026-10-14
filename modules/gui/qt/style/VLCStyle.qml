@@ -36,6 +36,12 @@ QtObject {
         readonly property var accentChoices: ["#d37918", "#a03b26", "#8c721b", "#147428", "#147a97", "#144497", "#6631b5", "#ab3c80", "#7e7e7e"]
         readonly property color logoColor: "#D37918"
         property color accent: MainCtx.settingValue("redesign/accent", "#D37918")
+        readonly property Connections profileAppearanceSync: Connections {
+            target: MainCtx.controlbarProfileModel
+            function onSelectedProfileChanged() {
+                vlc_style.redesign.accent = MainCtx.controlbarProfileModel.profileAccent
+            }
+        }
         readonly property color accentDim: Qt.colorEqual(accent, "#D37918") ? "#AB6314" : Qt.darker(accent, 1.25)
         readonly property color accentBackground: Qt.colorEqual(accent, "#D37918") ? "#371F06" : Qt.tint("#0E0E0E", Qt.rgba(accent.r, accent.g, accent.b, 0.25))
         readonly property color windowBackground: "#0E0E0E"

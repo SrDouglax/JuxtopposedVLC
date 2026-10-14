@@ -9,9 +9,11 @@ Controls.Popup {
     id: root
     objectName: "profilesMenu"
     property var profileModel: MainCtx.controlbarProfileModel
+    property string switchError: ""
 
     width: 264
     height: Math.min(profileModel.count, 6) * 48 + 61
+            + ((switchError || profileModel.lastError) ? 56 : 0)
     padding: 0
     closePolicy: Controls.Popup.CloseOnEscape | Controls.Popup.CloseOnPressOutside
 
@@ -69,9 +71,16 @@ Controls.Popup {
                 Accessible.name: name
                 Accessible.description: activeProfile ? qsTr("Selected profile") : ""
                 onClicked: {
+                    root.switchError = ""
                     if (root.profileModel.selectedProfile !== index) {
-                        root.profileModel.selectedProfile = index
-                        root.profileModel.save()
+                        const previous = root.profileModel.selectedProfile
+                        if (!root.profileModel.setSelectedProfile(index))
+                            return
+                        if (!root.profileModel.save()) {
+                            root.switchError = root.profileModel.lastError
+                            root.profileModel.setSelectedProfile(previous)
+                            return
+                        }
                     }
                     root.close()
                 }
@@ -82,6 +91,20 @@ Controls.Popup {
             width: parent.width
             height: 1
             color: "#292929"
+        }
+
+        Text {
+            visible: !!(root.switchError || root.profileModel.lastError)
+            width: parent.width - 32
+            height: visible ? 56 : 0
+            x: 16
+            text: root.switchError || root.profileModel.lastError
+            color: "#e4a580"
+            wrapMode: Text.WordWrap
+            font.family: VLCStyle.redesign.fontFamily
+            font.pixelSize: 12
+            verticalAlignment: Text.AlignVCenter
+            Accessible.role: Accessible.AlertMessage
         }
 
         Controls.ItemDelegate {

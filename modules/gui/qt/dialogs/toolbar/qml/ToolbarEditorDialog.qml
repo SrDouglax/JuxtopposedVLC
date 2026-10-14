@@ -52,7 +52,8 @@ Controls.Popup {
     }
 
     function saveEditor() {
-        MainCtx.controlbarProfileModel.save()
+        if (!MainCtx.controlbarProfileModel.save())
+            return
         saved = true
         close()
     }
@@ -229,6 +230,16 @@ Controls.Popup {
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
+                    }
+                    Text {
+                        visible: !!MainCtx.controlbarProfileModel.lastError
+                        text: MainCtx.controlbarProfileModel.lastError
+                        color: "#e4a580"
+                        font.family: VLCStyle.redesign.fontFamily
+                        font.pixelSize: VLCStyle.redesign.fontSmall
+                        elide: Text.ElideRight
+                        Layout.fillWidth: true
+                        Accessible.role: Accessible.AlertMessage
                     }
                     Item { Layout.fillWidth: true }
                     T.Button {
