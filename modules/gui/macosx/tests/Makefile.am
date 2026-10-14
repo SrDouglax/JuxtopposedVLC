@@ -16,6 +16,7 @@ VLCMacOSXTests_SOURCES = \
 	gui/macosx/tests/VLCInputItemTest.m \
 	gui/macosx/tests/VLCInputItemTestSupport.m \
 	gui/macosx/tests/VLCInputNodeTest.m \
+	gui/macosx/tests/VLCMediaSourceTableViewSortingTest.m \
 	gui/macosx/tests/VLCLibraryDataTypesIntegrationTest.m \
 	gui/macosx/tests/VLCLibraryDataTypesIntegrationTestSupport.m \
 	gui/macosx/tests/VLCLogMessageTest.m \
@@ -27,6 +28,7 @@ VLCMacOSXTests_SOURCES = \
 	gui/macosx/library/VLCLibraryDataTypes.m \
 	gui/macosx/library/VLCInputItem.m \
 	gui/macosx/library/VLCInputNode.m \
+	gui/macosx/library/media-source/VLCMediaSourceTableViewSorting.m \
 	gui/macosx/windows/logging/VLCLogMessage.m \
 	gui/macosx/views/VLCTimeFormatter.m
 
@@ -58,6 +60,7 @@ VLCMacOSXTests_LDFLAGS = \
 	-Wl,-framework,XCTest \
 	-Wl,-framework,Foundation \
 	-Wl,-framework,Cocoa \
+	-Wl,-framework,CoreServices \
 	-Wl,-framework,IOKit
 
 VLCMacOSXTests_LDADD = \
