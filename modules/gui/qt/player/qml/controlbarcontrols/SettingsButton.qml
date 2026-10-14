@@ -20,10 +20,14 @@ import VLC.Style
 import VLC.Dialogs
 import VLC.Util
 
-RedesignIconButton {
+PlayerPanelButton {
+    id: root
+    signal requestLockUnlockAutoHide(bool lock)
+    onCheckedChanged: requestLockUnlockAutoHide(checked)
     iconSource: "qrc:///redesign/player-settings.svg"
     text: VLCIcons.settings
     description: qsTr("Player settings")
     AccessibleCompat.id: "playerSettingsButton"
-    onClicked: DialogsProvider.playerMenuDialog()
+    checked: DialogsProvider.playerMenuVisible
+    onClicked: DialogsProvider.playerMenuDialog(root)
 }

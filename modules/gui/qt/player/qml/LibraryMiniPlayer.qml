@@ -5,6 +5,7 @@
  */
 import QtQuick
 import QtQuick.Controls.Basic as Controls
+import QtQuick.Controls.impl as Impl
 import QtQuick.Templates as T
 
 import VLC.MainInterface
@@ -130,6 +131,7 @@ T.Control {
         }
 
         Item {
+            objectName: "miniPlayerTitleDrag"
             x: titleLabel.x
             y: titleLabel.y
             width: titleLabel.width
@@ -154,8 +156,8 @@ T.Control {
             id: details
             x: VLCStyle.dp(6, VLCStyle.scale)
             y: titleLabel.y + titleLabel.height + VLCStyle.dp(18, VLCStyle.scale)
-            width: parent.width - x * 2
-            height: VLCStyle.dp(26, VLCStyle.scale)
+            width: Math.max(0, queueButton.x - x - VLCStyle.dp(8, VLCStyle.scale))
+            height: VLCStyle.dp(32, VLCStyle.scale)
             spacing: VLCStyle.dp(6, VLCStyle.scale)
 
             Image {
@@ -200,16 +202,42 @@ T.Control {
             objectName: "miniPlayerQueueToggle"
             x: parent.width - width - VLCStyle.dp(3, VLCStyle.scale)
             y: details.y
-            width: VLCStyle.dp(24, VLCStyle.scale)
+            width: VLCStyle.dp(100, VLCStyle.scale)
             height: details.height
+            padding: VLCStyle.dp(4, VLCStyle.scale)
+            checkable: true
+            checked: root.queueExpanded
+            text: qsTr("Queue")
             Accessible.name: root.queueExpanded ? qsTr("Hide queue") : qsTr("Show queue")
             onClicked: root.queueExpanded = !root.queueExpanded
-            background: Item {}
-            contentItem: Image {
-                source: "qrc:///redesign/mini-queue.svg"
-                sourceSize: Qt.size(20, 20)
-                fillMode: Image.PreserveAspectFit
-                opacity: root.queueExpanded ? 1 : 0.65
+            background: Rectangle {
+                radius: VLCStyle.dp(4, VLCStyle.scale)
+                color: queueButton.down || root.queueExpanded ? VLCStyle.redesign.accentBackground
+                     : queueButton.hovered ? VLCStyle.redesign.color("#373737", "#bcbcbc")
+                     : VLCStyle.redesign.color("#292929", "#bcbcbc")
+                border.color: queueButton.visualFocus ? VLCStyle.redesign.focusColor
+                            : root.queueExpanded ? VLCStyle.redesign.accent
+                            : VLCStyle.redesign.color("#555555", "#858585")
+            }
+            contentItem: Row {
+                spacing: VLCStyle.dp(4, VLCStyle.scale)
+                Impl.IconImage {
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: VLCStyle.dp(24, VLCStyle.scale)
+                    height: width
+                    source: "qrc:///redesign/mini-queue.svg"
+                    sourceSize: Qt.size(width, height)
+                    color: root.queueExpanded ? VLCStyle.redesign.accent
+                         : VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
+                }
+                Text {
+                    anchors.verticalCenter: parent.verticalCenter
+                    text: queueButton.text
+                    color: root.queueExpanded ? VLCStyle.redesign.accent
+                         : VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
+                    font.family: VLCStyle.redesign.fontFamily
+                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                }
             }
         }
     }

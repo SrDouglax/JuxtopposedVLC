@@ -1,14 +1,31 @@
 /* Copyright (C) 2026 VLC authors and VideoLAN. GPL version 2 or later. */
 import QtQuick
+import QtQuick.Templates as T
 import VLC.Dialogs
 import VLC.MainInterface
 import VLC.Player
 import VLC.Playlist
+import VLC.Style
 
 Item {
     id: root
     SleepTimerController { id: sleepTimer; player: Player; playlist: MainPlaylistController }
-    PlayerMenu { id: playerMenu; parent: root; anchors.centerIn: parent }
+    PlayerMenu {
+        id: playerMenu
+        parent: sourceButton ? sourceButton : root
+        closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent
+        property Item sourceButton: null
+        readonly property real controlsTop: sourceButton
+            ? sourceButton.panelTop : root.height - VLCStyle.dp(80, VLCStyle.scale)
+        function updatePosition() {
+            x = root.mapToItem(parent, Math.max(0, root.width - width - VLCStyle.dp(20, VLCStyle.scale)), 0).x
+            y = sourceButton ? sourceButton.offsetY(height)
+                             : Math.max(0, controlsTop - height - VLCStyle.dp(8, VLCStyle.scale))
+        }
+        width: Math.min(VLCStyle.dp(344, VLCStyle.scale), root.width)
+        onHeightChanged: if (visible) updatePosition()
+        onVisibleChanged: DialogsProvider.setRedesignDialogVisible("playerMenu", visible)
+    }
     SleepTimerMenu { id: timerMenu; parent: root; anchors.centerIn: parent; timerController: sleepTimer }
     AudioVisualizationDialog { id: visualization; parent: root; anchors.centerIn: parent }
     HdrOutputDialog { id: hdr; parent: root; anchors.centerIn: parent }
@@ -34,11 +51,21 @@ Item {
             if (effects.item) effects.item.switchTab(page)
             root.show(effects)
         }
-        function onPlayerMenuRequested() { playerMenu.open() }
+        function onPlayerMenuRequested(source) {
+            if (playerMenu.visible) playerMenu.close()
+            else {
+                playerMenu.sourceButton = source
+                playerMenu.updatePosition()
+                playerMenu.open()
+                Qt.callLater(playerMenu.updatePosition)
+            }
+        }
         function onSleepTimerRequested() { timerMenu.open() }
         function onAudioVisualizationRequested() { visualization.open() }
         function onHdrOutputRequested() { hdr.open() }
     }
+    onWidthChanged: if (playerMenu.visible) Qt.callLater(playerMenu.updatePosition)
+    onHeightChanged: if (playerMenu.visible) Qt.callLater(playerMenu.updatePosition)
     Loader {
         id: setup
         anchors.fill: parent

@@ -1,0 +1,92 @@
+MINI-PROBE Player settings PASS
+MINI-PROBE viewport Player settings QVariant(double, 1920) QVariant(double, 1080)
+MINI-PROBE panel-opens PASS
+MINI-PROBE icon-active PASS
+MINI-PROBE panel playerSettingsMenu QPointF(1556,750) QSizeF(344, 268) QSize(1920, 1080) barTop QVariant(double, 1026)
+MINI-PROBE rendered-content-above-bar PASS
+MINI-PROBE panel-in-bounds-above-entire-bar PASS
+MINI-PROBE panel-right-aligned PASS
+MINI-PROBE second-click-closes-icon PASS
+MINI-PROBE second-click-closes-popup PASS
+MINI-PROBE escape-clears-icon PASS
+MINI-PROBE outside-clears-icon PASS
+MINI-PROBE Languages and tracks PASS
+MINI-PROBE viewport Languages and tracks QVariant(double, 1920) QVariant(double, 1080)
+MINI-PROBE panel-opens PASS
+MINI-PROBE icon-active PASS
+MINI-PROBE panel tracksMenu QPointF(1500,518) QSizeF(400, 500) QSize(1920, 1080) barTop QVariant(double, 1026)
+MINI-PROBE rendered-content-above-bar PASS
+MINI-PROBE panel-in-bounds-above-entire-bar PASS
+MINI-PROBE panel-right-aligned PASS
+MINI-PROBE second-click-closes-icon PASS
+MINI-PROBE second-click-closes-popup PASS
+MINI-PROBE escape-clears-icon PASS
+MINI-PROBE outside-clears-icon PASS
+MINI-PROBE Play Queue PASS
+MINI-PROBE viewport Play Queue QVariant(double, 1920) QVariant(double, 1080)
+MINI-PROBE panel-opens PASS
+MINI-PROBE icon-active PASS
+MINI-PROBE panel playerNavigationMenu QPointF(1500,518) QSizeF(400, 500) QSize(1920, 1080) barTop QVariant(double, 1026)
+MINI-PROBE rendered-content-above-bar PASS
+MINI-PROBE panel-in-bounds-above-entire-bar PASS
+MINI-PROBE panel-right-aligned PASS
+MINI-PROBE navigation-tab PASS
+MINI-PROBE navigation-tab PASS
+MINI-PROBE second-click-closes-icon PASS
+MINI-PROBE second-click-closes-popup PASS
+MINI-PROBE escape-clears-icon PASS
+MINI-PROBE outside-clears-icon PASS
+MINI-PROBE small-window-size PASS
+MINI-PROBE Player settings PASS
+MINI-PROBE viewport Player settings QVariant(double, 720) QVariant(double, 540)
+MINI-PROBE panel-opens PASS
+MINI-PROBE icon-active PASS
+MINI-PROBE panel playerSettingsMenu QPointF(356,192) QSizeF(344, 268) QSize(720, 540) barTop QVariant(double, 468)
+MINI-PROBE rendered-content-above-bar PASS
+MINI-PROBE panel-in-bounds-above-entire-bar PASS
+MINI-PROBE panel-right-aligned PASS
+MINI-PROBE second-click-closes-icon PASS
+MINI-PROBE second-click-closes-popup PASS
+MINI-PROBE escape-clears-icon PASS
+MINI-PROBE outside-clears-icon PASS
+MINI-PROBE Languages and tracks PASS
+MINI-PROBE viewport Languages and tracks QVariant(double, 720) QVariant(double, 540)
+MINI-PROBE panel-opens PASS
+MINI-PROBE icon-active PASS
+MINI-PROBE panel tracksMenu QPointF(300,8) QSizeF(400, 452) QSize(720, 540) barTop QVariant(double, 468)
+MINI-PROBE rendered-content-above-bar PASS
+MINI-PROBE panel-in-bounds-above-entire-bar PASS
+MINI-PROBE panel-right-aligned PASS
+MINI-PROBE second-click-closes-icon PASS
+MINI-PROBE second-click-closes-popup PASS
+MINI-PROBE escape-clears-icon PASS
+MINI-PROBE outside-clears-icon PASS
+MINI-PROBE Play Queue PASS
+MINI-PROBE viewport Play Queue QVariant(double, 720) QVariant(double, 540)
+MINI-PROBE panel-opens PASS
+MINI-PROBE icon-active PASS
+MINI-PROBE panel playerNavigationMenu QPointF(300,8) QSizeF(400, 452) QSize(720, 540) barTop QVariant(double, 468)
+MINI-PROBE rendered-content-above-bar PASS
+MINI-PROBE panel-in-bounds-above-entire-bar PASS
+MINI-PROBE panel-right-aligned PASS
+MINI-PROBE navigation-tab PASS
+MINI-PROBE navigation-tab PASS
+MINI-PROBE second-click-closes-icon PASS
+MINI-PROBE second-click-closes-popup PASS
+MINI-PROBE escape-clears-icon PASS
+MINI-PROBE outside-clears-icon PASS
+MINI-PROBE PANELS RESULT PASS
+MINI-PROBE platform "wayland"
+MINI-PROBE title QPointF(6,729.625) QPointF(206,449.625)
+MINI-PROBE title PASS
+MINI-PROBE video-corner-hover QPointF(206,449.625) QPointF(306,499.625)
+MINI-PROBE video-corner-hover PASS
+MINI-PROBE video-play-button QPointF(306,499.625) QPointF(406,549.625)
+MINI-PROBE video-play-button PASS
+MINI-PROBE video-next-button QPointF(406,549.625) QPointF(506,599.625)
+MINI-PROBE video-next-button PASS
+MINI-PROBE drag-does-not-toggle-playback PASS
+MINI-PROBE queue-opens PASS
+MINI-PROBE queue-closes PASS
+MINI-PROBE play-button-click PASS
+MINI-PROBE RESULT PASS

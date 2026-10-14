@@ -213,6 +213,7 @@ libqml_module_player_a_QML = \
 	player/qml/TopBar.qml \
 	player/qml/Title.qml \
 	player/qml/TracksMenu.qml \
+	player/qml/NavigationMenu.qml \
 	player/qml/TracksPage.qml \
 	player/qml/TracksPageAudio.qml \
 	player/qml/TracksPageSpeed.qml \
@@ -256,6 +257,7 @@ libqml_module_playercontrols_a_QML = \
 	player/qml/controlbarcontrols/ExtendedSettingsButton.qml \
 	player/qml/controlbarcontrols/SettingsButton.qml \
 	player/qml/controlbarcontrols/RedesignIconButton.qml \
+	player/qml/controlbarcontrols/PlayerPanelButton.qml \
 	player/qml/controlbarcontrols/FasterButton.qml \
 	player/qml/controlbarcontrols/FrameNextButton.qml \
 	player/qml/controlbarcontrols/FramePrevButton.qml \

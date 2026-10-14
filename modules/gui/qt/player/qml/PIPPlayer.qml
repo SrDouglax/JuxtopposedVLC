@@ -71,11 +71,25 @@ T.Control {
         }
     }
 
+    // An ancestor handler also sees gestures beginning on the hover controls.
+    // Keep taps in the child layer, but take a drag after Qt's normal threshold.
+    DragHandler {
+        id: dragHandler
+        target: root.dragTarget
+        cursorShape: Qt.DragMoveCursor
+        grabPermissions: PointerHandler.CanTakeOverFromAnything
+        onActiveChanged: if (active) root.releaseAnchors()
+        xAxis.minimum: root.dragXMin
+        xAxis.maximum: root.dragXMax
+        yAxis.minimum: root.dragYMin
+        yAxis.maximum: root.dragYMax
+    }
+
     DoubleClickIgnoringItem {
         anchors.fill: parent
 
         TapHandler {
-            gesturePolicy: TapHandler.WithinBounds
+            gesturePolicy: TapHandler.DragThreshold
 
             onDoubleTapped: (eventPoint, button) => {
                 // Docs are lying, there is no `deviceType`: QTBUG-135104
@@ -92,26 +106,6 @@ T.Control {
                     MainPlaylistController.togglePlayPause()
                 }
             }
-        }
-
-        DragHandler {
-            id: dragHandler
-
-            target: root.dragTarget
-
-            cursorShape: Qt.DragMoveCursor
-
-            grabPermissions: PointerHandler.CanTakeOverFromAnything
-
-            onActiveChanged: {
-                if (active)
-                    root.releaseAnchors()
-            }
-
-            xAxis.minimum: root.dragXMin
-            xAxis.maximum: root.dragXMax
-            yAxis.minimum: root.dragYMin
-            yAxis.maximum: root.dragYMax
         }
 
         HoverHandler {

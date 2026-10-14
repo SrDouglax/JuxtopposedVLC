@@ -8,6 +8,7 @@ import VLC.Player
 
 Controls.Popup {
     id: root
+    objectName: "playerSettingsMenu"
     focus: true
     property bool previousGlobalShortcuts: true
     onOpened: {

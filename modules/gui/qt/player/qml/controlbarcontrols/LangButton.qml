@@ -17,6 +17,7 @@
  *****************************************************************************/
 
 import QtQuick
+import QtQuick.Templates as T
 
 
 import VLC.Widgets as Widgets
@@ -24,17 +25,19 @@ import VLC.Style
 import VLC.Player
 import VLC.Util
 
-RedesignIconButton {
+PlayerPanelButton {
     iconSource: "qrc:///redesign/subtitles.svg"
     id: root
 
     // Proprerties
 
-    readonly property var _parentItem: {
-        if ((typeof rootPlayer !== 'undefined') && (rootPlayer !== null))
-            return rootPlayer
-        else
-            return g_mainDisplay
+    readonly property var _seriesPreset: {
+        let item = root.parent
+        while (item) {
+            if ("subtitleSeriesPreset" in item) return item.subtitleSeriesPreset
+            item = item.parent
+        }
+        return null
     }
 
     // Signals
@@ -47,6 +50,7 @@ RedesignIconButton {
     text: VLCIcons.audiosub
 
     enabled: menuLoader.status === Loader.Ready
+    checked: menuLoader.item ? menuLoader.item.visible : false
 
     description: qsTr("Languages and tracks")
 
@@ -60,10 +64,7 @@ RedesignIconButton {
             menu.close()
             return
         }
-        const position = root.mapToItem(root._parentItem, 0, 0)
-        menu.x = Math.max(0, Math.min(root._parentItem.width - menu.width,
-                                      position.x + root.width - menu.width))
-        menu.y = Math.max(0, root._parentItem.positionSliderY - menu.height)
+        root.positionPopup(menu)
         menu.open()
     }
 
@@ -75,9 +76,9 @@ RedesignIconButton {
         sourceComponent: TracksMenu {
             id: menu
 
-            parent: root._parentItem
-            seriesPreset: root._parentItem && ("subtitleSeriesPreset" in root._parentItem)
-                          ? root._parentItem.subtitleSeriesPreset : null
+            parent: root
+            closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent
+            seriesPreset: root._seriesPreset
 
             z: 1
 

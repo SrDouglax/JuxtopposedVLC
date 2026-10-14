@@ -120,6 +120,7 @@ public:
     Q_PROPERTY(bool pluginDialogVisible READ pluginDialogVisible NOTIFY pluginDialogVisibleChanged FINAL)
     Q_PROPERTY(bool egpDialogVisible READ egpDialogVisible NOTIFY egpDialogVisibleChanged FINAL)
     Q_PROPERTY(bool prefsDialogVisible READ prefsDialogVisible NOTIFY prefsDialogVisibleChanged FINAL)
+    Q_PROPERTY(bool playerMenuVisible READ playerMenuVisible NOTIFY playerMenuVisibleChanged FINAL)
 #ifdef UPDATE_CHECK
     Q_PROPERTY(bool updateDialogVisible READ updateDialogVisible NOTIFY updateDialogVisibleChanged FINAL)
 #endif
@@ -220,7 +221,7 @@ public slots:
     void prefsDialog();
     void nativePrefsDialog();
     void nativeEffectsDialog(int page = 0);
-    void playerMenuDialog();
+    void playerMenuDialog(QObject* source = nullptr);
     void sleepTimerDialog();
     void audioVisualizationDialog();
     void hdrOutputDialog();
@@ -290,13 +291,15 @@ public:
     bool pluginDialogVisible() const;
     bool egpDialogVisible() const;
     bool prefsDialogVisible() const;
+    bool playerMenuVisible() const;
 #ifdef UPDATE_CHECK
     bool updateDialogVisible() const;
 #endif
 
 signals:
     void preferencesRequested();
-    void playerMenuRequested();
+    void playerMenuRequested(QObject* source);
+    void playerMenuVisibleChanged();
     void sleepTimerRequested();
     void audioVisualizationRequested();
     void hdrOutputRequested();
