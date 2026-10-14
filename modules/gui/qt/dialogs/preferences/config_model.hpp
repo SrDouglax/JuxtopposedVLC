@@ -53,6 +53,11 @@ public:
 
     Q_INVOKABLE bool setValue(const QString &key, const QVariant &value);
     Q_INVOKABLE bool setDirectoryUrl(const QString &key, const QUrl &url);
+    Q_INVOKABLE QVariant valueFor(const QString &key) const;
+    Q_INVOKABLE bool hasOption(const QString &key) const;
+    Q_INVOKABLE bool audioscrobblerAvailable() const;
+    Q_INVOKABLE bool audioscrobblerEnabled() const;
+    Q_INVOKABLE bool setAudioscrobblerEnabled(bool enabled);
     Q_INVOKABLE QString keyAt(int visibleRow) const;
     Q_INVOKABLE bool apply();
     Q_INVOKABLE bool applyWithEffects(AudioEffects *audio, VideoEffects *video);

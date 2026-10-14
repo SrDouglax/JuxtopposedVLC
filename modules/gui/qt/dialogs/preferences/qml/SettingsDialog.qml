@@ -29,7 +29,8 @@ Dialog {
     property bool advancedExpanded: false
     readonly property bool dark: VLCStyle.palette.isDark
     readonly property bool appearanceDirty: appearance.dirty
-    readonly property bool hasChanges: config.dirty || appearanceDirty || inlineEffects.dirty
+    readonly property bool hasChanges: config.dirty || appearanceDirty
+                                       || inlineEffects.dirty || developerMode.dirty
 
     readonly property var titles: ({
         extensions: qsTr("VLC Addons"),
@@ -55,6 +56,7 @@ Dialog {
         }
         inlineEffects.clearDirty()
         appearance.save()
+        developerMode.save()
         saved = true
         close()
     }
@@ -65,6 +67,8 @@ Dialog {
         MainCtx.useGlobalShortcuts = false
         config.reload()
         appearance.begin()
+        developerMode.begin()
+        lastfm.begin()
         advancedExpanded = false
         inlineEffects.beginForCurrentCategory()
     }
@@ -72,6 +76,7 @@ Dialog {
         if (!saved) {
             config.cancel()
             appearance.cancel()
+            developerMode.cancel()
         }
         inlineEffects.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
@@ -230,8 +235,45 @@ Dialog {
                     category: root.selectedCategory
                     search: searchField.text
                     filterMode: searchField.text.length ? "all" : "basic"
-                    sectionFilter: root.selectedCategory === "video" && !searchField.text.length
-                                   ? qsTr("Output") : ""
+                    sectionFilter: (root.selectedCategory === "video"
+                                    || root.selectedCategory === "audio") && !searchField.text.length
+                                   ? qsTr("Output")
+                                   : root.selectedCategory === "general" && !searchField.text.length
+                                     ? qsTr("Startup") : ""
+                }
+
+                SettingsDeveloperMode {
+                    id: developerMode
+                    width: parent.width
+                    visible: root.selectedCategory === "general"
+                             && (!searchField.text.length
+                                 || qsTr("developer mode diagnostics")
+                                    .includes(searchField.text.toLowerCase()))
+                }
+
+                SettingsOptionList {
+                    id: generalMoreOptions
+                    width: parent.width
+                    visible: root.selectedCategory === "general" && !searchField.text.length
+                    settingsModel: config
+                    category: root.selectedCategory
+                    filterMode: "basic"
+                    excludedSection: qsTr("Startup")
+                    hideSectionHeadings: true
+                }
+
+                SettingsAudioOutput {
+                    width: parent.width
+                    visible: root.selectedCategory === "audio" && !searchField.text.length
+                }
+
+                SettingsOptionList {
+                    width: parent.width
+                    visible: root.selectedCategory === "audio" && !searchField.text.length
+                    settingsModel: config
+                    category: root.selectedCategory
+                    filterMode: "basic"
+                    excludedSection: qsTr("Output")
                 }
 
                 SettingsInlineEffects {
@@ -251,8 +293,20 @@ Dialog {
                     excludedSection: qsTr("Output")
                 }
 
+                SettingsLastfm {
+                    id: lastfm
+                    width: parent.width
+                    settingsModel: config
+                    visible: (!searchField.text.length && root.selectedCategory === "privacy")
+                             || (searchField.text.length > 0
+                                 && qsTr("last.fm lastfm username password scrobbler")
+                                    .includes(searchField.text.toLowerCase()))
+                }
+
                 Label {
                     visible: optionList.availableCount === 0 && !appearance.visible
+                             && !developerMode.visible
+                             && !lastfm.visible
                              && !inlineEffects.visible && !extensions.visible
                     text: searchField.text.length > 0
                           ? qsTr("No matching settings")
@@ -290,9 +344,19 @@ Dialog {
                     id: advancedOptions
                     width: parent.width
                     visible: advancedButton.visible && root.advancedExpanded
+                             && developerMode.selected
                     settingsModel: config
                     category: root.selectedCategory
                     filterMode: "advanced"
+                }
+
+                Label {
+                    visible: advancedButton.visible && root.advancedExpanded
+                             && !developerMode.selected
+                    width: parent.width
+                    text: qsTr("Enable Developer mode to edit advanced diagnostics.")
+                    color: VLCStyle.redesign.textMuted
+                    font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
                 }
 
                 PersonalizationActions {
@@ -362,6 +426,10 @@ Dialog {
                     config.resetCategory()
                     if (root.selectedCategory === "general")
                         appearance.resetDefaults()
+                    if (root.selectedCategory === "general")
+                        developerMode.resetDefaults()
+                    if (root.selectedCategory === "privacy")
+                        lastfm.begin()
                 }
                 background: Rectangle { color: root.dark ? "#1a1a1a" : "#e9e9e9"; radius: 3 }
                 contentItem: Label { text: parent.text; font: parent.font; color: root.dark ? "#999999" : "#444444"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }

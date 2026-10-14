@@ -19,12 +19,13 @@ Column {
     property string filterMode: "all"
     property string sectionFilter: ""
     property string excludedSection: ""
+    property bool hideSectionHeadings: false
     readonly property int count: optionsRepeater.count
     readonly property int availableCount: {
         let total = 0
         for (let i = 0; i < optionsRepeater.count; ++i) {
             const entry = presentationData.entry(root.settingsModel.keyAt(i), "")
-            if ((filterMode === "all" || (filterMode === "advanced") === entry.advanced)
+            if (!entry.hidden && (filterMode === "all" || (filterMode === "advanced") === entry.advanced)
                     && (!sectionFilter || entry.section === sectionFilter)
                     && (!excludedSection || entry.section !== excludedSection))
                 ++total
@@ -42,7 +43,7 @@ Column {
             spacing: 0
             readonly property var presentation: presentationData.entry(model.key, model.label)
             // A category can place an inline effect panel between native option groups.
-            visible: (root.filterMode === "all"
+            visible: !presentation.hidden && (root.filterMode === "all"
                       || (root.filterMode === "advanced") === presentation.advanced)
                      && (!root.sectionFilter || presentation.section === root.sectionFilter)
                      && (!root.excludedSection || presentation.section !== root.excludedSection)
@@ -50,7 +51,7 @@ Column {
                 ? presentationData.entry(root.settingsModel.keyAt(index - 1), "").section : ""
 
             Label {
-                visible: root.filterMode !== "advanced"
+                visible: !root.hideSectionHeadings && root.filterMode !== "advanced"
                          && (index === 0 || presentation.section !== previousSection)
                 width: parent.width
                 height: visible ? VLCStyle.dp(58, VLCStyle.scale) : 0

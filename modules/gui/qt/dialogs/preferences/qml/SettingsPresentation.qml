@@ -9,7 +9,7 @@ function entry(key, fallback) {
         "qt-updates-notif": [qsTr("Startup"), qsTr("Check for updates automatically")],
         "file-logging": [qsTr("Diagnostics"), qsTr("Save a log")],
         "logfile": [qsTr("Diagnostics"), qsTr("Log file"), "savefile"],
-        "log-verbose": [qsTr("Advanced Options"), qsTr("Log details")],
+        "log-verbose": [qsTr("Diagnostics"), qsTr("Log details")],
         "stats": [qsTr("Advanced Options"), qsTr("Collect statistics")],
         "embedded-video": [qsTr("Window"), qsTr("Play video inside main window")],
         "qt-video-autoresize": [qsTr("Window"), qsTr("Resize window to fit video")],
@@ -28,6 +28,11 @@ function entry(key, fallback) {
         "restore-playback-pos": [qsTr("History"), qsTr("Remember the playback position")],
         "restore-playback-states": [qsTr("History"), qsTr("Restore playback settings")],
         "metadata-network-access": [qsTr("Network"), qsTr("Fetch titles and cover art from the internet")],
+        "lastfm-username": [qsTr("Network"), qsTr("Last.fm username")],
+        "lastfm-password": [qsTr("Network"), qsTr("Last.fm password"), "password"],
+        "scrobbler-url": [qsTr("Network"), qsTr("Last.fm submission URL")],
+        "extraintf": [qsTr("Network"), qsTr("Additional interfaces")],
+        "control": [qsTr("Network"), qsTr("Control interfaces")],
         "playlist-autostart": [qsTr("Startup"), qsTr("Start playing as soon as a file opens")],
         "rate": [qsTr("Startup"), qsTr("Default playback speed"), "slider"],
         "preferred-resolution": [qsTr("Tracks"), qsTr("Preferred video quality")],
@@ -52,16 +57,17 @@ function entry(key, fallback) {
         "snapshot-format": [qsTr("Snapshots"), qsTr("Snapshot format")],
         "snapshot-preview": [qsTr("Snapshots"), qsTr("Preview snapshots")],
         "audio": [qsTr("Output"), qsTr("Enable audio")],
+        "aout": [qsTr("Output"), qsTr("Audio output module")],
         "qt-max-volume": [qsTr("Volume"), qsTr("Maximum volume"), "slider"],
         "stereo-mode": [qsTr("Output"), qsTr("Speaker setup")],
-        "mix-mode": [qsTr("Output"), qsTr("Audio mixing mode")],
+        "mix-mode": [qsTr("Output"), qsTr("Spatial audio and mixing mode")],
         "gain": [qsTr("Volume"), qsTr("Output gain"), "slider"],
         "mmdevice-volume": [qsTr("Volume"), qsTr("Windows startup volume when not remembering last volume")],
         "volume-save": [qsTr("Volume"), qsTr("Remember last volume")],
         "volume-step": [qsTr("Volume"), qsTr("Volume step")],
         "audio-replay-gain-mode": [qsTr("Loudness"), qsTr("Replay gain")],
         "audio-replay-gain-preamp": [qsTr("Loudness"), qsTr("Replay gain preamp")],
-        "audio-time-stretch": [qsTr("Effects"), qsTr("Time stretching")],
+        "audio-time-stretch": [qsTr("Playback"), qsTr("Time stretching")],
         "spu": [qsTr("Tracks & Languages"), qsTr("Enable subtitles")],
         "sub-language": [qsTr("Tracks & Languages"), qsTr("Preferred language")],
         "sub-autodetect-file": [qsTr("Loading Subtitles"), qsTr("Load subtitle files automatically")],
@@ -120,9 +126,10 @@ function entry(key, fallback) {
         "sout-spu": [qsTr("Streaming"), qsTr("Include subtitles")]
     }
     const item = items[key]
-    const advanced = key === "verbose" || key === "stats" || key === "log-verbose"
-    return item ? { section: item[0], label: item[1], editor: item[2] || "", advanced: advanced }
-                : { section: qsTr("More options"), label: fallback, editor: "", advanced: false }
+    const advanced = key === "verbose" || key === "stats"
+    const hidden = ["lastfm-username", "lastfm-password", "scrobbler-url", "extraintf", "control"].includes(key)
+    return item ? { section: item[0], label: item[1], editor: item[2] || "", advanced: advanced, hidden: hidden }
+                : { section: qsTr("More options"), label: fallback, editor: "", advanced: false, hidden: false }
 }
 
 }

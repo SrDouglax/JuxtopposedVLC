@@ -266,13 +266,16 @@ void ConfigModel::resetCategory()
     const bool wasDirty = dirty();
     for (int i = 0; i < m_entries.size(); ++i) {
         Entry &entry = m_entries[i];
-        if (entry.category != m_category || entry.staged == entry.original)
+        if (entry.category != m_category || entry.staged == entry.original
+            || entry.key == QLatin1String("extraintf") || entry.key == QLatin1String("control"))
             continue;
         entry.staged = entry.original;
         notifyEntry(i);
     }
     if (wasDirty != dirty())
         emit dirtyChanged();
+    if (m_category == QLatin1String("privacy") && audioscrobblerAvailable())
+        setAudioscrobblerEnabled(false);
     setError({});
 }
 
@@ -341,7 +344,9 @@ void ConfigModel::reload()
                 }
                 free(texts);
                 free(values);
-            } else if (entry.type == QLatin1String("string")) {
+            } else if (entry.type == QLatin1String("string")
+                       && entry.key != QLatin1String("extraintf")
+                       && entry.key != QLatin1String("control")) {
                 char **values = nullptr;
                 char **texts = nullptr;
                 const ssize_t count = config_GetPszChoices(option.name, &values, &texts);
@@ -356,6 +361,8 @@ void ConfigModel::reload()
                 free(texts);
                 free(values);
             }
+            if (entry.key == QLatin1String("aout") && entry.choices.isEmpty())
+                continue;
             m_entries.append(entry);
         }
         for (int i = 0; i < m_entries.size(); ++i)
