@@ -52,13 +52,23 @@ Item {
     }
 
     function selectTrack(model, title) {
-        if (!title) return true
         for (let i = 0; i < model.count; ++i) {
             const index = model.index(i, 0)
             if (model.data(index, Qt.DisplayRole) === title)
                 return model.setData(index, true, Qt.CheckStateRole)
         }
         return false
+    }
+
+    function disableTracks(model) {
+        if (model.count === 0) return false
+        for (let i = 0; i < model.count; ++i) {
+            const index = model.index(i, 0)
+            if (model.data(index, Qt.CheckStateRole) &&
+                    !model.setData(index, false, Qt.CheckStateRole))
+                return false
+        }
+        return true
     }
 
     function refresh() {
@@ -72,7 +82,7 @@ Item {
         if (!raw) return
         try {
             const loaded = JSON.parse(raw)
-            if (loaded.version !== 1) return
+            if (loaded.version !== 1 && loaded.version !== 2) return
             preset = loaded
             Qt.callLater(tryApply)
         } catch (error) {
@@ -88,13 +98,16 @@ Item {
             Player.subtitleFPS = preset.subtitleFPS
             delayApplied = true
         }
-        if (!preset.audioTrack) audioApplied = true
-        if (!preset.subtitleTrack) subtitleApplied = true
-        if (!audioApplied && Player.audioTracks.count > 0)
-            audioApplied = selectTrack(Player.audioTracks, preset.audioTrack)
-        if (!subtitleApplied && Player.subtitleTracks.count > 0)
-            subtitleApplied = selectTrack(Player.subtitleTracks, preset.subtitleTrack)
-        if ((preset.audioTrack && !audioApplied) || (preset.subtitleTrack && !subtitleApplied))
+        // Version 1 had no explicit Off state: an empty title meant no selection request.
+        if (!audioApplied)
+            audioApplied = preset.version === 2 && preset.audioOff
+                         ? disableTracks(Player.audioTracks)
+                         : !preset.audioTrack || selectTrack(Player.audioTracks, preset.audioTrack)
+        if (!subtitleApplied)
+            subtitleApplied = preset.version === 2 && preset.subtitleOff
+                            ? disableTracks(Player.subtitleTracks)
+                            : !preset.subtitleTrack || selectTrack(Player.subtitleTracks, preset.subtitleTrack)
+        if (!audioApplied || !subtitleApplied)
             status = qsTr("A saved audio or subtitle track is unavailable in this episode.")
         else if (delayApplied && audioApplied && subtitleApplied)
             status = qsTr("Series preset applied.")
@@ -102,10 +115,14 @@ Item {
 
     function saveCurrent() {
         if (!seriesKey || !Player.isStarted) return false
+        const audioTrack = selectedTrackName(Player.audioTracks)
+        const subtitleTrack = selectedTrackName(Player.subtitleTracks)
         const next = {
-            version: 1,
-            audioTrack: selectedTrackName(Player.audioTracks),
-            subtitleTrack: selectedTrackName(Player.subtitleTracks),
+            version: 2,
+            audioTrack: audioTrack,
+            subtitleTrack: subtitleTrack,
+            audioOff: Player.audioTracks.count > 0 && !audioTrack,
+            subtitleOff: Player.subtitleTracks.count > 0 && !subtitleTrack,
             subtitleDelayMS: Player.subtitleDelayMS,
             secondarySubtitleDelayMS: Player.secondarySubtitleDelayMS,
             subtitleFPS: Player.subtitleFPS
@@ -126,19 +143,20 @@ Item {
         status = qsTr("Series preset removed.")
     }
 
-    onSeriesKeyChanged: Qt.callLater(refresh)
     Component.onCompleted: refresh()
     Connections {
         target: Player
-        function onInputChanged() { Qt.callLater(root.refresh) }
+        function onInputChanged() { root.refresh() }
         function onPlayingStateChanged() { Qt.callLater(root.tryApply) }
     }
     Connections {
         target: Player.audioTracks
         function onCountChanged() { Qt.callLater(root.tryApply) }
+        function onDataChanged() { if (!root.audioApplied) Qt.callLater(root.tryApply) }
     }
     Connections {
         target: Player.subtitleTracks
         function onCountChanged() { Qt.callLater(root.tryApply) }
+        function onDataChanged() { if (!root.subtitleApplied) Qt.callLater(root.tryApply) }
     }
 }
