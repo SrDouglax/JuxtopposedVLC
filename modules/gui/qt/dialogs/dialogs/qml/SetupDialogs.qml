@@ -12,17 +12,19 @@ Item {
     SleepTimerController { id: sleepTimer; player: Player; playlist: MainPlaylistController }
     PlayerMenu {
         id: playerMenu
+        timerController: sleepTimer
         parent: sourceButton ? sourceButton : root
         closePolicy: T.Popup.CloseOnEscape | T.Popup.CloseOnPressOutsideParent
         property Item sourceButton: null
         readonly property real controlsTop: sourceButton
             ? sourceButton.panelTop : root.height - VLCStyle.dp(80, VLCStyle.scale)
         function updatePosition() {
+            if (sourceButton) { sourceButton.positionPopup(playerMenu); return }
             x = root.mapToItem(parent, Math.max(0, root.width - width - VLCStyle.dp(20, VLCStyle.scale)), 0).x
             y = sourceButton ? sourceButton.offsetY(height)
                              : Math.max(0, controlsTop - height - VLCStyle.dp(8, VLCStyle.scale))
         }
-        width: Math.min(VLCStyle.dp(344, VLCStyle.scale), root.width)
+        width: Math.min(VLCStyle.dp(400, VLCStyle.scale), root.width)
         onHeightChanged: if (visible) updatePosition()
         onVisibleChanged: DialogsProvider.setRedesignDialogVisible("playerMenu", visible)
     }
@@ -41,7 +43,7 @@ Item {
             if (!loader.item.visible) loader.item.open()
         }
     }
-    Component.onCompleted: if (setupState.needsSetup) Qt.callLater(() => show(setup))
+    Component.onCompleted: { PlayerPanelState.player = Player; if (setupState.needsSetup) Qt.callLater(() => show(setup)) }
     Connections {
         target: DialogsProvider
         function onPreferencesRequested() { root.show(preferences) }
@@ -64,6 +66,7 @@ Item {
         function onAudioVisualizationRequested() { visualization.open() }
         function onHdrOutputRequested() { hdr.open() }
     }
+    PlaybackFeedback { anchors.fill: parent }
     onWidthChanged: if (playerMenu.visible) Qt.callLater(playerMenu.updatePosition)
     onHeightChanged: if (playerMenu.visible) Qt.callLater(playerMenu.updatePosition)
     Loader {

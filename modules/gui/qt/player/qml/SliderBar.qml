@@ -20,6 +20,7 @@ import QtQuick.Templates as T
 import QtQuick.Layouts
 
 import VLC.Player
+import VLC.Dialogs
 import VLC.Widgets as Widgets
 import VLC.Style
 import VLC.Util
@@ -91,6 +92,11 @@ T.ProgressBar {
 
         if (Player.hasChapters)
             _text += " - " + Player.chapters.getNameAtPosition(control._tooltipPosition)
+
+        if (PlayerPanelState.showSubtitleTimeline) {
+            const cue = PlayerPanelState.cueAt(control._tooltipPosition * Player.length.toSeconds() - Player.subtitleDelayMS / 1000)
+            if (cue.length) _text += "\n" + cue
+        }
 
         return _text
     }

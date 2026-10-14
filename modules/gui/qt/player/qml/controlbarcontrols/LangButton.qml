@@ -50,7 +50,7 @@ PlayerPanelButton {
     text: VLCIcons.audiosub
 
     enabled: menuLoader.status === Loader.Ready
-    checked: menuLoader.item ? menuLoader.item.visible : false
+    checked: menuLoader.item ? menuLoader.item.visiblePanel : false
 
     description: qsTr("Languages and tracks")
 
@@ -60,8 +60,8 @@ PlayerPanelButton {
 
     onClicked: {
         const menu = menuLoader.item
-        if (menu.opened) {
-            menu.close()
+        if (menu.visiblePanel) {
+            menu.dismiss()
             return
         }
         root.positionPopup(menu)
@@ -84,21 +84,16 @@ PlayerPanelButton {
 
             focus: true
 
-            onOpened: {
-                root.requestLockUnlockAutoHide(true)
-                root.menuOpened(menu)
-            }
-
-            onClosed: {
-                root.requestLockUnlockAutoHide(false)
-                root.forceActiveFocus()
-                root.menuOpened(null)
+            onVisiblePanelChanged: {
+                root.requestLockUnlockAutoHide(visiblePanel)
+                root.menuOpened(visiblePanel ? menu : null)
+                if (!visiblePanel) root.forceActiveFocus()
             }
         }
     }
 
     function forceUnlock() {
         if((menuLoader)&&(menuLoader.item))
-            menuLoader.item.close()
+            menuLoader.item.dismiss()
     }
 }

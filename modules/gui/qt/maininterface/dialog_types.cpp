@@ -13,6 +13,7 @@
 #include "dialogs/extended/video_effects.hpp"
 #include "player/sleep_timer.hpp"
 #include "player/hdr_output.hpp"
+#include "player/panel_state.hpp"
 
 void MainUI::registerDialogTypes()
 {
@@ -39,6 +40,8 @@ void MainUI::registerDialogTypes()
         qmlRegisterType<ShortcutsModel>(uri, versionMajor, versionMinor, "ShortcutsModel");
         qmlRegisterType<VideoEffects>(uri, versionMajor, versionMinor, "VideoEffects");
         qmlRegisterType<HdrOutput>(uri, versionMajor, versionMinor, "HdrOutput");
+        qmlRegisterSingletonType<PlayerPanelState>(uri, versionMajor, versionMinor, "PlayerPanelState",
+            [](QQmlEngine*, QJSEngine*) -> QObject* { return new PlayerPanelState; });
         qmlRegisterModule(uri, versionMajor, versionMinor);
         qmlProtectModule(uri, versionMajor);
     }

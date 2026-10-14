@@ -1,6 +1,7 @@
 nodist_libqt_plugin_la_SOURCES = \
 	dialogs/preferences/audio_output_preview.moc.cpp \
 	player/hdr_output.moc.cpp \
+	player/panel_state.moc.cpp \
 	player/media_details.moc.cpp \
 	player/favorite_state.moc.cpp \
 	medialibrary/mlopensubtitles.moc.cpp \

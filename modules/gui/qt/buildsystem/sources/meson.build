@@ -11,6 +11,8 @@ qt_plugin_sources = files(
     '../../dialogs/preferences/config_model_audioscrobbler.cpp',
     '../../maininterface/player_types.cpp',
     '../../player/hdr_output.cpp',
+    '../../player/panel_state.cpp',
+    '../../player/panel_state.hpp',
     '../../player/hdr_output.hpp',
     '../../player/media_details.cpp',
     '../../player/media_details.hpp',

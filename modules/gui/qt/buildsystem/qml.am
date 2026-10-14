@@ -214,6 +214,23 @@ libqml_module_player_a_QML = \
 	player/qml/Title.qml \
 	player/qml/TracksMenu.qml \
 	player/qml/NavigationMenu.qml \
+	player/qml/PanelTabs.qml \
+	player/qml/PanelField.qml \
+	player/qml/PanelCombo.qml \
+	player/qml/PanelChoice.qml \
+	player/qml/PanelNumber.qml \
+	player/qml/PanelRange.qml \
+	player/qml/PanelToggle.qml \
+	player/qml/PanelAction.qml \
+	player/qml/PanelTrackRow.qml \
+	player/qml/MenuTrackList.qml \
+	player/qml/MenuPlayback.qml \
+	player/qml/MenuVideo.qml \
+	player/qml/MenuAudio.qml \
+	player/qml/MenuSubtitles.qml \
+	player/qml/MenuRenderer.qml \
+	player/qml/PlaybackFeedback.qml \
+	player/qml/SubtitleMarkers.qml \
 	player/qml/TracksPage.qml \
 	player/qml/TracksPageAudio.qml \
 	player/qml/TracksPageSpeed.qml \

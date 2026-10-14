@@ -1,6 +1,6 @@
 # Estado
 
-Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limites de Windows registrados. M1 entregue como primeira fatia Linux na branch `feat/m1`. M2 funcional entregue no Linux na branch `feat/m2`, com cobertura visual parcial explícita.
+Atualizado em 14/10/2026, America/Recife. M0 entregue como fundação, com limites de Windows registrados. M1 entregue como primeira fatia Linux na branch `feat/m1`. M2 funcional entregue no Linux na branch `feat/m2`, com cobertura visual parcial explícita.
 
 ## Comprovado
 
@@ -38,3 +38,5 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 ## Próxima ação
 
 M3 na branch `feat/m3`: implementação e validação funcional Linux atualizadas, catálogo de121 chaves candidatas, efeitos inline, perfis com preferências, editor sobreposto, HDR/visualizer e fontes/presets de legendas integrados. A cobertura visual integral continua sem aceite. [Estado, prova e trabalho restante](../features/redesign/m3.md). [Evidência e hashes](../features/redesign/evidence/m3/result.json). O export completo de 105 PNGs está disponível e os 103 nodes têm revisão por export; isso não encerra a fidelidade integral. Próxima ação: conferir a composição/variantes e equivalências de controles ainda registradas nos mapas, antes de declarar fidelidade integral ao Figma. Windows/W01 permanece para a rodada final.
+
+- 14/10/2026: estrutura e controles principais dos três menus do player corrigidos a partir de `Controls.png`; quatro abas da engrenagem, faixas compactas, fila simples, ícones e toggle validados em Wayland/Linux. Evidências e limites em [M3](../features/redesign/m3.md). Paridade integral e Windows continuam pendentes.

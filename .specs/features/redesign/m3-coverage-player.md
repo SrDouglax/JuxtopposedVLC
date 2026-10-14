@@ -59,7 +59,7 @@ Estado examinado: checkout integrado `feat/m3` em `f201cd4af341e2f9332cbb2d0e441
 
 ## Associação de legendas e menus da biblioteca
 
-`SubtitleAssociationsDialog` usa `MLSubtitleAssociations` para associar arquivos de legenda a mídia, pasta ou playlist; `SubtitleSourceControls` expõe **alvo selecionável** (`targets`/`selectTarget`) e origens Computer, Link HTTPS direto e OpenSubtitles. O backend baixa links com limite de tamanho/cancelamento e associa às mídias reais; `OpenSubtitlesPanel` usa API REST, busca por título/idioma, seleção de resultado e download autenticado. Requer chave de API do usuário e, para download, conta/credenciais e quota válidas; não há matching automático garantido para todo episódio. O player ativo abre associação local por `LangButton` → `TracksMenu` → `SubtitleTracksPanel`, além dos menus da biblioteca. A mesma aba traz slider de delay, marcas de voz/texto via `DelayEstimator` e preset persistido por pasta/série em `MainDisplay`; o formato v2 distingue Off explícito e lê presets v1. Sem execução, não se comprova download, associação, restauração em mídia seguinte ou exatidão visual.
+`SubtitleAssociationsDialog` usa `MLSubtitleAssociations` para associar arquivos de legenda a mídia, pasta ou playlist; `SubtitleSourceControls` expõe **alvo selecionável** (`targets`/`selectTarget`) e origens Computer, Link HTTPS direto e OpenSubtitles. O backend baixa links com limite de tamanho/cancelamento e associa às mídias reais; `OpenSubtitlesPanel` usa API REST, busca por título/idioma, seleção de resultado e download autenticado. Requer chave de API do usuário e, para download, conta/credenciais e quota válidas; não há matching automático garantido para todo episódio. O player ativo abre associação local por `LangButton` → `TracksMenu` → Edit em External Tracks → `SubtitleTracksPanel`, além dos menus da biblioteca. A mesma aba traz slider de delay, marcas de voz/texto via `DelayEstimator` e preset persistido por pasta/série em `MainDisplay`; o formato v2 distingue Off explícito e lê presets v1. Sem execução, não se comprova download, associação, restauração em mídia seguinte ou exatidão visual.
 
 | Export (node ID) | Cobertura e diferença específica |
 | --- | --- |
@@ -89,7 +89,7 @@ Estas imagens são peças da biblioteca visual, não telas completas. Elas serve
 | --- | --- |
 | `Icon Wrapper.png` (`177:98`) | Ícones/containers de controles; não há fluxo isolado. |
 | `volume.png` (`244:184`) | Controle de volume do player; valor real vem de `Player`, estados visuais não comparados. |
-| `Controls.png` (`491:1780`) | `ControlBar` e editor overlay com delegates reais; depende do perfil ativo e das escolhas salvas. |
+| `Controls.png` (`491:1780`) | `ControlBar`, editor e menus Playback/Video/Audio/Subtitles, faixas e Queue/Bookmarks/Chapters ligados ao core. Estrutura, geometria e controles principais exercitados em Wayland em1920×1080 e720×540; [prova e limites](m3.md). Campos indisponíveis refletem a capacidade do build. Aceite integral de cada variante/DPI continua pendente. |
 | `thumbnail.png` (`2151:9673`) | `GridItem`/capas da medialibrary; depende de artwork indexada e fallback. |
 | `Button.png` (`500:3063`) | Botões `Widgets`/controles do redesign; conjunto de estados precisa comparação renderizada. |
 | `Toggle.png` (`536:1014`) | Switch/checkbox de filtros e settings; fragmento sem fluxo próprio. |

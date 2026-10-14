@@ -257,6 +257,7 @@ T.Pane {
             },
             WaveformSlider {
                 id: trackPositionSlider
+                SubtitleMarkers { anchors.fill: parent; z: 0 }
 
                 barHeight: root.sliderHeight
                 redesign: true

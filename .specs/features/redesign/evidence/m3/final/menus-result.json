@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-14",
+  "platform": "Linux Qt 6.4.2 Wayland software",
+  "profile": "isolated",
+  "sizes": [
+    [
+      1920,
+      1080
+    ],
+    [
+      720,
+      540
+    ]
+  ],
+  "panels": "PASS",
+  "plugin_sha256": "7870f8100796043409f01c2a7a083fc8861f807cf51059532fc2474150e640c6",
+  "input": "Qt event injection and direct edited-signal for speed/delays",
+  "limitations": [
+    "Windows deferred",
+    "Physical mouse and GPU not exercised",
+    "Timeline limited to single external SRT",
+    "HDR disabled without libplacebo",
+    "Subtitle font/appearance defaults apply to newly created renderers",
+    "Existing scaleAxis and inlineContentEnabled warnings during resize"
+  ],
+  "mini": "PASS"
+}

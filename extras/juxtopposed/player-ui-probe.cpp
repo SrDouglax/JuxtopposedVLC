@@ -34,7 +34,7 @@ static void drag(QPoint start, QPoint delta, const char *name) {
 }
 static void panels() {
     view->showMaximized(); QTest::qWait(600);
-    QQmlExpression expression(qmlContext(mini), mini, "MainCtx.playerView = true; MainCtx.pinVideoControls = true");
+    QQmlExpression expression(qmlContext(mini), mini, "MainCtx.playerView = true; MainCtx.pinVideoControls = true; MainPlaylistController.play()");
     expression.evaluate();
     if(expression.hasError())qWarning()<<expression.error();
     QTest::qWait(1000);
@@ -56,6 +56,22 @@ static void panels() {
         QTest::qWait(250);
         QQuickWindowPrivate::get(view)->polishItems();
         QTest::qWait(50);
+    };
+    auto evaluate = [](QObject *object, const QString &code) {
+        QQmlExpression expression(qmlContext(object), object, code);
+        auto result = expression.evaluate();
+        if (expression.hasError()) { qWarning() << expression.error(); failed = true; }
+        return result;
+    };
+    auto named = [](QObject *popup, const QString &name)->QQuickItem* {
+        auto content = qobject_cast<QQuickItem*>(popup->property("contentItem").value<QObject*>());
+        std::function<QQuickItem*(QQuickItem*)> visit = [&](QQuickItem *item)->QQuickItem* {
+            if (!item) return nullptr;
+            if (item->objectName() == name) return item;
+            for (auto child : item->childItems()) if (auto found = visit(child)) return found;
+            return nullptr;
+        };
+        return visit(content);
     };
     const char *descriptions[] = {"Player settings", "Languages and tracks", "Play Queue"};
     const char *names[] = {"playerSettingsMenu", "tracksMenu", "playerNavigationMenu"};
@@ -84,6 +100,68 @@ static void panels() {
                     check(qAbs(view->width()-origin.x()-width-20)<3, "panel-right-aligned");
                 }
                 view->grabWindow().save(qEnvironmentVariable("MINI_PROBE_IMAGE")+QString("-%1-%2.png").arg(i).arg(size));
+                if (i == 0) {
+                    for (int tabIndex = 0; tabIndex < 4; ++tabIndex) {
+                        auto tab = named(popup, QString("panelTab%1").arg(tabIndex));
+                        check(tab != nullptr, "settings-tab-present");
+                        if (!tab) continue;
+                        click(tab);
+                        check(popup->property("currentTab").toInt() == tabIndex && tab->property("checked").toBool(), "settings-tab-active");
+                        view->grabWindow().save(qEnvironmentVariable("MINI_PROBE_IMAGE")+QString("-settings-%1-%2.png").arg(tabIndex).arg(size));
+                        if (size) continue;
+                        if (tabIndex == 0) {
+                            auto speed = named(popup, "playerSpeedRange");
+                            check(speed != nullptr, "speed-control-present");
+                            if (speed) {
+                                QMetaObject::invokeMethod(speed, "edited", Q_ARG(double, 1.25));
+                                QTest::qWait(150);
+                                check(qAbs(evaluate(popup, "Player.rate").toDouble()-1.25)<0.01, "speed-updates-core");
+                                QMetaObject::invokeMethod(speed, "edited", Q_ARG(double, 1.0));
+                            }
+                            auto stats = named(popup, "playerShowStatistics");
+                            if (stats) { click(stats); check(evaluate(popup,"PlayerPanelState.showStatistics").toBool(), "statistics-toggle"); click(stats); }
+                            check(evaluate(popup,"PlayerPanelState.statistics.decodedVideo > 0").toBool(), "statistics-from-core");
+                            check(evaluate(popup,"PlayerPanelState.timelineAvailable && PlayerPanelState.cueAt(1).length > 0").toBool(), "timeline-from-srt");
+                        } else if (tabIndex == 1) {
+                            auto zoom = named(popup, "playerZoom");
+                            check(zoom && qAbs(zoom->width()-218)<2, "choice-field-width");
+                            if (zoom) {
+                                click(zoom);
+                                auto choices = zoom->property("popup").value<QObject*>();
+                                check(choices && choices->property("visible").toBool(), "choice-dropdown-opens");
+                                auto list = choices ? choices->property("contentItem").value<QObject*>() : nullptr;
+                                check(list && list->property("count").toInt() > 0, "choice-dropdown-has-native-rows");
+                                QTest::keyClick(view, Qt::Key_Escape); QTest::qWait(100);
+                                check(popup->property("visible").toBool(), "choice-escape-keeps-settings-open");
+                            }
+                            auto flip = named(popup, "playerFlip-hflip");
+                            auto reset = named(popup, "playerFlip-");
+                            check(flip && reset && flip->isEnabled(), "flip-controls-available");
+                            if (flip && reset) {
+                                click(flip);
+                                check(evaluate(popup,"videoEffects.filterEnabled('transform') && videoEffects.parameterValue('transform-type') === 'hflip'").toBool(), "flip-updates-core");
+                                click(reset);
+                                check(!evaluate(popup,"videoEffects.filterEnabled('transform')").toBool(), "flip-reset");
+                            }
+                        } else {
+                            const auto name = tabIndex == 2 ? "playerAudioDelay" : "playerSubtitleDelay";
+                            auto delay = named(popup, name);
+                            check(delay != nullptr, "delay-control-present");
+                            if (delay) {
+                                QMetaObject::invokeMethod(delay, "edited", Q_ARG(double, 0.5)); QTest::qWait(150);
+                                check(evaluate(popup,tabIndex==2?"Player.audioDelayMS === 500":"Player.subtitleDelayMS === 500").toBool(), "delay-updates-core");
+                                QMetaObject::invokeMethod(delay, "edited", Q_ARG(double, 0.0));
+                            }
+                            if (tabIndex == 3) {
+                                evaluate(popup, "for (let i=0; i<Player.subtitleTracks.count; ++i) Player.subtitleTracks.setData(Player.subtitleTracks.index(i,0),false,Qt.CheckStateRole)");
+                                QTest::qWait(150);
+                                auto choice = named(popup, "playerSubtitleTrackChoice");
+                                check(choice && choice->property("currentIndex").toInt()==-1 && choice->property("displayText").toString()=="None", "disabled-tracks-show-none");
+                                evaluate(popup, "Player.subtitleTracks.setData(Player.subtitleTracks.index(0,0),true,Qt.CheckStateRole)");
+                            }
+                        }
+                    }
+                }
                 if(i==2) {
                     for (auto label : {QString("Bookmarks"),QString("Chapters")}) {
                         auto content = qobject_cast<QQuickItem*>(popup->property("contentItem").value<QObject*>());
@@ -94,6 +172,18 @@ static void panels() {
                         };
                         if(auto tab=visit(content))click(tab);
                         check(popup->property("currentTab").toInt()==(label=="Bookmarks"?1:2), "navigation-tab");
+                    }
+                }
+                if (i == 1 && size == 0) {
+                    popup->setProperty("currentTab", 0); QTest::qWait(150);
+                    auto edit = named(popup, "playerSubtitleTools");
+                    check(edit != nullptr, "subtitle-tools-accessible");
+                    if (edit) {
+                        click(edit);
+                        check(popup->property("visiblePanel").toBool() && button->property("checked").toBool(), "subtitle-tools-active-icon");
+                        click(button);
+                        check(!popup->property("visiblePanel").toBool() && !button->property("checked").toBool(), "subtitle-tools-toggle-closes");
+                        click(button);
                     }
                 }
             }

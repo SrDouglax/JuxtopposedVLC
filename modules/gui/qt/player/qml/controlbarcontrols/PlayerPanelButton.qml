@@ -29,7 +29,7 @@ RedesignIconButton {
         if (!popupViewport || !menu) return
         menu.width = Math.min(VLCStyle.dp(400, VLCStyle.scale), popupViewport.width)
         const top = panelTop
-        menu.height = Math.max(0, Math.min(VLCStyle.dp(500, VLCStyle.scale), top - VLCStyle.dp(16, VLCStyle.scale)))
+        menu.height = Math.max(0, Math.min(VLCStyle.dp(menu.preferredHeight ?? 500, VLCStyle.scale), top - VLCStyle.dp(16, VLCStyle.scale)))
         menu.x = popupViewport.mapToItem(root, Math.max(0, popupViewport.width - menu.width - VLCStyle.dp(20, VLCStyle.scale)), 0).x
         menu.y = offsetY(menu.height)
         activePopup = menu

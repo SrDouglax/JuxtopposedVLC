@@ -27,7 +27,7 @@
 
 namespace {
 const QStringList filters = {"adjust", "sharpen", "gradfun", "grain", "extract", "colorthres",
-                             "invert", "posterize", "gradient", "sepia"};
+                             "invert", "posterize", "gradient", "sepia", "transform", "rotate"};
 const QStringList cropSides = {"top", "bottom", "left", "right"};
 const QHash<QString, QStringList> options = {
     {"adjust", {"hue", "brightness", "contrast", "saturation", "gamma"}},
@@ -36,7 +36,7 @@ const QHash<QString, QStringList> options = {
     {"colorthres", {"colorthres-color", "colorthres-saturationthres", "colorthres-similaritythres"}},
     {"invert", {}}, {"posterize", {"posterize-level"}},
     {"gradient", {"gradient-mode", "gradient-color", "gradient-cartoon"}},
-    {"sepia", {"sepia-intensity"}}
+    {"sepia", {"sepia-intensity"}}, {"transform", {"transform-type"}}, {"rotate", {"rotate-angle"}}
 };
 QString own(char* bytes)
 {

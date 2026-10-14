@@ -45,7 +45,7 @@ public:
     Q_INVOKABLE bool cancel();
     Q_INVOKABLE bool save();
     bool prepareConfiguration(QHash<QString, QVariant>& values, QHash<QString, QVariant>& expected);
-    void finalizeConfiguration();
+    Q_INVOKABLE void finalizeConfiguration();
     Q_INVOKABLE bool filterAvailable(const QString& filter) const;
     Q_INVOKABLE bool filterEnabled(const QString& filter) const;
     Q_INVOKABLE bool setFilterEnabled(const QString& filter, bool enabled);

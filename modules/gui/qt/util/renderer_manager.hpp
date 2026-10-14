@@ -54,7 +54,7 @@ public:
     RendererManager( qt_intf_t* intf, vlc_player_t* player );
     virtual ~RendererManager();
 
-    void disableRenderer();
+    Q_INVOKABLE void disableRenderer();
 
 public slots:
     void StartScan();
