@@ -1110,7 +1110,9 @@ static void on_preparse_ended_callback(vlc_preparser_req *req,
 {
     input_item_t *p_item = vlc_preparser_req_GetItem(req);
     PlayerControllerPrivate *me = reinterpret_cast<PlayerControllerPrivate *>(userdata);
-    me->onArtFetchEnded(p_item, input_item_IsArtFetched(p_item));
+    me->callAsync([me, item = SharedInputItem(p_item)] {
+        me->onArtFetchEnded(item.get(), input_item_IsArtFetched(item.get()));
+    });
 }
 
 
@@ -1281,8 +1283,8 @@ input_item_t *PlayerController::getInput() const
 bool PlayerController::isStarted() const
 {
     Q_D(const PlayerController);
-    vlc_player_locker locker{ d->m_player };
-    return vlc_player_IsStarted( d->m_player );
+    return d->m_playing_status == PLAYING_STATE_STARTED || d->m_playing_status == PLAYING_STATE_PLAYING
+        || d->m_playing_status == PLAYING_STATE_PAUSED;
 }
 
 bool PlayerController::hasInput() const
@@ -2147,16 +2149,14 @@ void PlayerController::requestArtUpdate( input_item_t *p_item )
 
 void PlayerControllerPrivate::onArtFetchEnded(input_item_t *p_item, bool)
 {
-    Q_Q(PlayerController);
-
-    vlc_player_locker lock{ m_player };
-    bool b_current_item = (p_item == vlc_player_GetCurrentMedia( m_player ));
-    /* No input will signal the cover art to update,
-         * let's do it ourself */
+    const bool b_current_item = [this, p_item] {
+        vlc_player_locker lock{ m_player };
+        return p_item == vlc_player_GetCurrentMedia( m_player );
+    }();
     if ( b_current_item )
         UpdateArt( p_item );
     else
-        emit q->artChanged( p_item );
+        emit q_func()->artChanged( p_item );
 }
 
 const QString PlayerController::decodeArtURL( input_item_t *p_item )
