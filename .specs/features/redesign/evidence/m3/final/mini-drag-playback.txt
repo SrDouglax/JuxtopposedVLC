@@ -1,0 +1,4 @@
+status-after-drag: (<'Paused'>,)
+status-click: (<'Playing'>,)
+seek-position: (<int64 60525981>,)
+status-seek: (<'Paused'>,)

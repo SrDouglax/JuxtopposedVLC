@@ -48,15 +48,27 @@ T.Control {
     Accessible.focusable: false
     Accessible.name: qsTr("video content")
 
-    Drag.active: dragHandler.active
+    property bool freelyPositioned: false
 
-    Drag.onActiveChanged: {
-        dragTarget.anchors.left = undefined
-        dragTarget.anchors.right = undefined
-        dragTarget.anchors.top = undefined
-        dragTarget.anchors.bottom = undefined
-        dragTarget.anchors.verticalCenter = undefined
-        dragTarget.anchors.horizontalCenter = undefined
+    function releaseAnchors() {
+        freelyPositioned = true
+    }
+
+    // AnchorChanges resets anchor lines through Qt's reset API. Assigning
+    // undefined from JavaScript leaves the card anchored on Qt 6.4.
+    // Keep this state after release so the card stays where it was dropped.
+    states: State {
+        name: "freelyPositioned"
+        when: root.freelyPositioned
+        AnchorChanges {
+            target: root.dragTarget
+            anchors.left: undefined
+            anchors.right: undefined
+            anchors.top: undefined
+            anchors.bottom: undefined
+            anchors.verticalCenter: undefined
+            anchors.horizontalCenter: undefined
+        }
     }
 
     DoubleClickIgnoringItem {
@@ -89,9 +101,12 @@ T.Control {
 
             cursorShape: Qt.DragMoveCursor
 
-            dragThreshold: 0
-
             grabPermissions: PointerHandler.CanTakeOverFromAnything
+
+            onActiveChanged: {
+                if (active)
+                    root.releaseAnchors()
+            }
 
             xAxis.minimum: root.dragXMin
             xAxis.maximum: root.dragXMax

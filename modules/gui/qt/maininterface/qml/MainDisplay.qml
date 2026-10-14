@@ -836,6 +836,7 @@ FocusScope {
             dragXMax: g_mainDisplay.width - playerPip.width - VLCStyle.applicationHorizontalMargin
             dragYMin: localTopbar.y + localTopbar.height
             dragYMax: loaderUpdatePane.y - playerPip.height
+            dragAreaHeight: loaderUpdatePane.y - dragYMin
 
             //keep the player visible on resize
             Connections {

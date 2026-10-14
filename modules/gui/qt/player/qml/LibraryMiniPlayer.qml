@@ -21,8 +21,20 @@ T.Control {
     property real dragXMax: 0
     property real dragYMin: 0
     property real dragYMax: 0
+    property real dragAreaHeight: parent ? parent.height - dragYMin : 0
     property bool queueExpanded: false
     readonly property bool lightTheme: !VLCStyle.palette.isDark
+
+    function keepInBounds() {
+        if (!video || !video.freelyPositioned)
+            return
+        x = Math.max(dragXMin, Math.min(dragXMax, x))
+        y = Math.max(dragYMin, Math.min(dragYMax, y))
+    }
+    onDragXMinChanged: keepInBounds()
+    onDragXMaxChanged: keepInBounds()
+    onDragYMinChanged: keepInBounds()
+    onDragYMaxChanged: keepInBounds()
     readonly property string folderName: {
         const parts = decodeURIComponent(Player.url.toString()).split("/")
         return parts.length > 1 ? parts[parts.length - 2] : ""
@@ -30,11 +42,11 @@ T.Control {
 
     padding: VLCStyle.dp(8, VLCStyle.scale)
     implicitWidth: VLCStyle.dp(390, VLCStyle.scale)
-    implicitHeight: topPadding + bottomPadding +
-                    (queueExpanded ? queueArea.height + VLCStyle.dp(6, VLCStyle.scale) : 0) +
-                    video.height + VLCStyle.dp(6, VLCStyle.scale) + seek.height +
-                    VLCStyle.dp(24, VLCStyle.scale) + titleLabel.height +
-                    VLCStyle.dp(18, VLCStyle.scale) + details.height
+    readonly property real baseHeight: topPadding + bottomPadding +
+        video.height + VLCStyle.dp(6, VLCStyle.scale) + seek.height +
+        VLCStyle.dp(24, VLCStyle.scale) + titleLabel.height +
+        VLCStyle.dp(18, VLCStyle.scale) + details.height
+    implicitHeight: baseHeight + (queueExpanded ? queueArea.height + VLCStyle.dp(6, VLCStyle.scale) : 0)
 
     background: Rectangle {
         color: root.lightTheme ? "#ababaa" : VLCStyle.redesign.playerControlBackground
@@ -45,7 +57,8 @@ T.Control {
         MiniPlayerQueue {
             id: queueArea
             width: parent.width
-            height: implicitHeight
+            height: Math.min(implicitHeight, Math.max(0, root.dragAreaHeight
+                              - root.baseHeight - VLCStyle.dp(6, VLCStyle.scale)))
             visible: root.queueExpanded
         }
 
@@ -114,6 +127,27 @@ T.Control {
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
             verticalAlignment: Text.AlignVCenter
+        }
+
+        Item {
+            x: titleLabel.x
+            y: titleLabel.y
+            width: titleLabel.width
+            height: titleLabel.height
+            z: 2
+            DragHandler {
+                target: root
+                cursorShape: Qt.DragMoveCursor
+                grabPermissions: PointerHandler.CanTakeOverFromAnything
+                xAxis.minimum: root.dragXMin
+                xAxis.maximum: root.dragXMax
+                yAxis.minimum: root.dragYMin
+                yAxis.maximum: root.dragYMax
+                onActiveChanged: {
+                    if (active)
+                        video.releaseAnchors()
+                }
+            }
         }
 
         Row {
