@@ -19,7 +19,7 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 ## Em execução / pendente
 
 - Windows: SRT de acesso/saída, x265 e GME importam runtime GCC não disponível na busca restrita do carregador. Copiar DLLs para a raiz não resolveu; a tentativa está preservada em windows.md. Corrigir linkagem e validar esses plugins antes do aceite completo Windows. GUI/vídeo/áudio, DPI e caminhos Windows ainda não comprovados.
-- Figma: quota do conector limitou inspeção visual. IDs estruturais precisam de contexto visual antes de sua implementação.
+- Figma: os105 exports completos fornecidos pelo usuário substituíram a dependência da quota MCP; o aceite visual integral permanece pendente.
 - Linux: Qt Quick em software e decodificação por CPU; aceleração GPU/hardware ainda sem prova. Áudio capturado em sink de teste, sem comprovação nos alto-falantes.
 - M1: contrato visual, shell e player em frentes disjuntas; referências completas de `970:2703` e `187:328` recuperadas do cache da sessão. Shell e barra implementados; smoke integrado Linux PASS (mouse/teclado, seek, volume, fullscreen, resize, diálogo com acento/espaço e arquivo inexistente). T07 não necessária. T09 da fatia Linux aprovado; fidelidade integral e demais marcos seguem pendentes. Windows foi adiado para a rodada final após consolidar a interface, por decisão de 13/10/2026; workflow somente manual.
 
@@ -28,7 +28,7 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 - Em 13/10/2026, a execução de M3 foi reorganizada após pressão de RAM/swap no host. Nenhum subagente está ativo; as próximas correções ficam com o coordenador.
 - Uma operação pesada por vez: encerrar a aplicação antes de compilar e encerrar a compilação antes do teste nativo. Builds incrementais com `make -j1`, `nice -n 19` e prioridade de I/O baixa; o scanner Meson também respeita `M0_JOBS` (padrão 1).
 - O contêiner local `juxtopposed-vlc-m0-linux` está limitado a 2 GiB de RAM, sem swap (`memory-swap` igual a `memory`) e uma CPU. Permanece desligado durante inspeção/edição. Se esse teto impedir uma operação, registrar a falha e reavaliar antes de ampliar recursos.
-- Fila imediata de M3: (1) diagnosticar a asserção ao abrir vídeo com legenda e corrigir a paleta do editor sobreposto; (2) build incremental e validação somente dos caminhos afetados; (3) concluir as verificações restantes de perfis/legendas e atualizar a evidência de entrega. Reaproveitar as provas já válidas de efeitos, timer e miniplayer.
+- Fila funcional desta rodada M3 concluída: asserção, paletas, editor, perfis, associação/presets de legendas e Skip/reinício verificados; evidências registradas. Fila remanescente: aceite visual integral e verificações externas discriminadas em M3. O contêiner foi desligado ao terminar.
 - Servidores de outros projetos, perfis do usuário, downloads e artefatos de build permanecem preservados. Não esvaziar swap com `swapoff`: o host não tem RAM suficiente para absorvê-la.
 - Coordenador conduz base/build Linux, revisão e integração.
 - Frente de design executa T02; frente Windows prepara e acompanha T04.
@@ -37,4 +37,4 @@ Atualizado em 13/10/2026, America/Recife. M0 entregue como fundação, com limit
 
 ## Próxima ação
 
-M3 em execução na branch `feat/m3`: música/waveform, preferências115 opções, onboarding, efeitos, atalhos/reset, perfis/personalização, timer e miniplayer integrados e exercitados no Linux. [Estado, prova e trabalho restante](../features/redesign/m3.md). [Evidência e hashes](../features/redesign/evidence/m3/result.json). O export completo de 105 PNGs está disponível e os 103 nodes têm revisão por export; isso não encerra a fidelidade integral. Próxima ação: composição/variantes restantes e recursos explicitamente listados no documento M3. Windows/W01 permanece para a rodada final.
+M3 na branch `feat/m3`: implementação e validação funcional Linux atualizadas, catálogo de121 chaves candidatas, efeitos inline, perfis com preferências, editor sobreposto, HDR/visualizer e fontes/presets de legendas integrados. A cobertura visual integral continua sem aceite. [Estado, prova e trabalho restante](../features/redesign/m3.md). [Evidência e hashes](../features/redesign/evidence/m3/result.json). O export completo de 105 PNGs está disponível e os 103 nodes têm revisão por export; isso não encerra a fidelidade integral. Próxima ação: conferir a composição/variantes e equivalências de controles ainda registradas nos mapas, antes de declarar fidelidade integral ao Figma. Windows/W01 permanece para a rodada final.

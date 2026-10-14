@@ -1,6 +1,6 @@
 {
-  "source_sha": "e532f32d9950cedaeb14473655eb8d4f29e247fa",
-  "qt_sha256": "9836ef7618eec8a8a311c21f5a5ec199482629f8c73b501efa9aa7c1ce57a2a8",
+  "source_sha": "19713ce4b10ab240970123c390c0fe3639847c12",
+  "qt_sha256": "a002ba2cc83e58bfe44f7882c94791e02eb494b02b09ea5d757c60454f8624c4",
   "waveform_sha256": "6d7eeb4094bb5a4332201258b01d0fb1a95a9742949200b4eb77183c645abb3b",
   "platform": "Linux Ubuntu24.04 GCC13.3 Qt6.4.2 X11 Xvfb software renderer PulseAudio null sink",
   "windows": "Deferred to final interface round; manifests updated, build/runtime unverified",
@@ -10,21 +10,66 @@
     "audio": "Preamp live PCM measured and Cancel restored RMS; not an individual DSP calibration of every filter",
     "video": "Invert actual pixels, Cancel restores within8 perRGBchannel, process alive; Save persisted invert through restart",
     "timer": "Pause and Stop one minute; popup reopen preserves countdown; media change cancels",
-    "customization": "Clone persisted; drag Stop to center, Save; removal followed by Cancel restored saved center",
+    "customization": "Overlay on actual player, clone M3 Final, drag HDR/Favorite/FPS/Resolution and Save; HDR removal followed by Cancel restored saved bar. Dark and Light rendered without missing palettes.",
     "miniplayer": "Real surface, pause, seek~89s, queue, restore, close stops",
-    "music": "Metadata/artwork real; waveform from decoded PCM; CPU blur visible"
+    "music": "Metadata/artwork real; waveform from decoded PCM; CPU blur visible",
+    "player_stability": "Six episode/music transitions paused successfully after cached-state and artwork-thread corrections; no mutex assertion in final runs.",
+    "profiles": "After restart M3-QA: Dark/Blue, volume step12.8, preamp7.954545, EQ enabled. Switch to M3 Final: Light/Orange, volume step7, preamp12.613636, EQ disabled.372 config values per safe snapshot; tested secret/path exclusions.",
+    "subtitle_link": "Direct HTTPS downloaded123bytes with SHA256 matching fixture; folder target and episode destination selected; association persisted as external File type4 for media5.",
+    "subtitle_series": "Off and750ms persisted between episodes and restart, including late library-associated track. Two subtitle tracks unselected in final Light capture.",
+    "audio_device": "Actual Pulse sink2 during preview and sink1 after Cancel, same live output. Device choice remains transient.",
+    "visualizer": "Native PCM waveform rendering reused; current selector Waveform/Disabled exercised with installed module list.",
+    "hdr": "Menu opens and reports renderer unavailable; no actual HDR output claimed.",
+    "onboarding": "Reopened from Settings; fresh profile rejects missing directory through real folder picker; Skip prevents automatic wizard after restart (qt-privacy-ask=0).",
+    "opensubtitles": "Search requires a session key; API-key/username/password fields clear after closing. Authenticated search/download not exercised."
   },
   "known_warnings": [
-    "MainDisplay.qml:120 scaleAxis undefined (upstream Qt6.4 pinch handler)",
-    "One startup QPainter::setCompositionMode: Painter not active"
+    "MainDisplay.qml:121 scaleAxis undefined in upstream Qt6.4 pinch handler; no fatal assertion or inlineContentHost binding loop in final runs"
   ],
   "not_proven": [
-    "All Figma nodes visually identical",
-    "Every config consumer and filter permutation",
+    "All103Figma nodes pixel-identical and every hover/focus/720px/DPI variant",
+    "Every optional config consumer and DSP permutation",
     "Multi-output crop rollback",
-    "Installed add-on lifecycle",
-    "Hardware/GPU/HDR and actual speakers",
-    "Windows runtime for M3"
+    "Installed external addon lifecycle",
+    "Authenticated OpenSubtitles and Last.fm",
+    "Actual hardware GPU/HDR output and physical speakers",
+    "Windows M3 build/runtime"
   ],
-  "dpi": "Settings100% at980x700 and1920x1080; 150% initial snapshot; 200% after fixing scaled search spacing and sidebar rows, scroll shows remaining categories. Not whole-product DPI certification."
+  "dpi": "Settings100% at980x700 and1920x1080; 150% initial snapshot; 200% after fixing scaled search spacing and sidebar rows, scroll shows remaining categories. Not whole-product DPI certification.",
+  "previous_functional_source_sha": "e532f32d9950cedaeb14473655eb8d4f29e247fa",
+  "status": "linux_functional_validated_visual_parity_pending",
+  "resource_policy": {
+    "memory_bytes": 2147483648,
+    "memory_swap_bytes": 2147483648,
+    "cpus": 1,
+    "build_jobs": 1,
+    "build_nice": 19,
+    "simultaneous_build_and_runtime": false,
+    "final_container_running": false
+  },
+  "final_evidence": {
+    "media-transitions.txt": "a7b689eedbe095efc0b9bba2e6855976cb9b15dbd0f7de836ff6f5f9d6b29316",
+    "customize-overlay.png": "4e1e6c286a57682556b1a37fb8a375d815daac045a11d1769191a201fd0ef2be",
+    "metadata-controls.png": "b3dc442d5043d8ccae848601c3ad34d2efa4b0c3a6c875e52596213aceaefa23",
+    "favorite.json": "73e33570bc67806c00ba62e301cd6dd68d9d5e6a5ef550bf969db0d79f3fdc20",
+    "hdr-capability.png": "0bbd9dedadac9c8b1a04366ebd509852e4bf70f568d73292f3aaaf9cb3e5d6fd",
+    "link-downloaded.png": "81f4227e07f778f7b8bec12fb60157e9988ea635776f73709e40804a5a3e7fd9",
+    "link-download.json": "d83fea1c6985a31adf8f935bd774b13c31630d283f62048117b94bad15bb5ce4",
+    "subtitle-targets.png": "7af8c4b2d6a4d768f827d90095cdeb0883f6acd6be81baf451eb2c7150b2add1",
+    "opensubtitles-cleared.png": "1425601574ea3c10b66f710174b4764f7699abd276c795b6ae2ae04735d4ac64",
+    "profiles-after-restart.json": "4dbe9e8f7ba354b9a75ef20e173fe4e754298afadac8ee84178310ffee8ddd34",
+    "profiles-restored.json": "1eb3b4c8d59e4cb34f91a5731fd7f200a296b3e5c2fc2fcde5da5b60a3d42070",
+    "persisted-subtitles.json": "65690ae3a691d2cb5b51fa27455da3d33a2304f75e3a57f50d189f2ce840e258",
+    "series-off-light.png": "da2c9c82c2fb3abb280894d17284ad663bcc3aeaff343274f489039a927bf2c0",
+    "visualizer-menu.png": "22637ecfee71deab365acddb38813ad1bac5e3b53cbad0ec2443170473cd17c3",
+    "visualizer-selected.png": "ca0886ea07d099156e8d3d2a42c1317fab55940e1da0e245595a8d8ac86f9ccb",
+    "visualizer-disabled.png": "c0c22f29090484df26a92b58bae1bf9f0fc06645998ac92b2f8adae7eb625cdc",
+    "editor-remove.png": "60aadc41e4a5a1b5407bf765a0b45f73cfeeefda934367f91cdf037528c67f97",
+    "editor-cancel.png": "d5877e097d5bfd52955349df7210833d28cf7dc15d6a4310456b18db9d4e492b",
+    "folder-invalid.png": "d7ca588aff6c1f091209364756f56ee5f61376f23af005830e512cd52488c7b6",
+    "wizard-skip-restart.png": "91bf04855c9a4eb1723797ace879cb9e1558152395536758e6a18918fc0182d8",
+    "device-preview.json": "0481971cd5b3b0af085e166f8b7ad54a5e1a1870955bb3dfa19e719c4eaf2b48",
+    "device-cancel.json": "fff5a5fa9ce33a7cf0df2093955b24db9f3420a1047eb4b701e895fa9c133af6",
+    "waveform-rendered.png": "6533b4114ea79c5110e1a646b08797bd137d2410b4f1e867996355d4f0c5124d"
+  }
 }

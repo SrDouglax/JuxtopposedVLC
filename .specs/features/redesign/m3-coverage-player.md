@@ -24,7 +24,7 @@ Estado examinado: checkout integrado `feat/m3` em `f201cd4af341e2f9332cbb2d0e441
 
 ## Editor, perfis e menus do player
 
-`ToolbarEditorDialog` agora é um `Popup` modal sobre o `Controls.Overlay.overlay` do player e usa `MainCtx.controlbarProfileModel`: seleção, New, Clone, Delete, Save e Cancel (`reload()`). `ToolbarEditor` e `ToolbarEditorButtonList` fazem drag and drop nas seções reais do control bar; `PlayerControlbarControls.controlList` inclui delegates ativos para HDR, Zoom, Favorite, File Name, Artist Name, Duration, Frame Rate, Resolution, Divider e High Resolution Time. O editor coloca seu painel sobre a superfície atual e uma faixa de drop no rodapé, mas posição exata e feedback de arraste ainda exigem captura. Perfis salvos também armazenam um subconjunto seguro de configurações, aparência, tema e atalhos; segredos, caminhos e integrações globais ficam fora do snapshot.
+`ToolbarEditorDialog` agora é um `Popup` modal sobre o `T.Overlay.overlay` do player e usa `MainCtx.controlbarProfileModel`: seleção, New, Clone, Delete, Save e Cancel (`reload()`). `ToolbarEditor` e `ToolbarEditorButtonList` fazem drag and drop nas seções reais do control bar; `PlayerControlbarControls.controlList` inclui delegates ativos para HDR, Zoom, Favorite, File Name, Artist Name, Duration, Frame Rate, Resolution, Divider e High Resolution Time. O editor coloca seu painel sobre a superfície atual e uma faixa de drop no rodapé, mas posição exata e feedback de arraste ainda exigem captura. Perfis salvos também armazenam um subconjunto seguro de configurações, aparência, tema e atalhos; segredos, caminhos e integrações globais ficam fora do snapshot.
 
 | Export (node ID) | Cobertura e diferença específica |
 | --- | --- |
@@ -41,7 +41,7 @@ Estado examinado: checkout integrado `feat/m3` em `f201cd4af341e2f9332cbb2d0e441
 
 ## Efeitos de áudio e vídeo
 
-`EffectsDialog` abre tabs Audio/Video. `AudioEffects` e `VideoEffects` são pontes C++ para filtros do core, com begin/save/cancel e disponibilidade condicionada à mídia/filtro instalado. O visual é uma janela estreita com seções; falta comparação renderizada com o export. Há microcopy incorreta no estado sem áudio: “Play audio to preview and edit audioBridge.” expõe o identificador interno. `AudioVisualizationDialog` lista `Player.audioVisualization` e seleciona com `toggleIndex`; `HdrOutputDialog` usa a ponte `HdrOutput` e as escolhas nativas de `pl-output-hint`. Ambos têm abertura ligada ao player, mas resultado visual e dispositivo efetivo ainda não foram exercitados.
+`EffectsDialog` abre tabs Audio/Video. `AudioEffects` e `VideoEffects` são pontes C++ para filtros do core, com begin/save/cancel e disponibilidade condicionada à mídia/filtro instalado. O visual é uma janela estreita com seções; falta comparação renderizada com o export. A microcopy no estado sem áudio foi corrigida para “Play audio to preview and edit audio effects.”. `AudioVisualizationDialog` lista `Player.audioVisualization` e seleciona com `toggleIndex`; `HdrOutputDialog` usa a ponte `HdrOutput` e as escolhas nativas de `pl-output-hint`. Ambos têm abertura ligada ao player, mas resultado visual e dispositivo efetivo ainda não foram exercitados.
 
 | Export (node ID) | Cobertura e lacuna |
 | --- | --- |
@@ -63,7 +63,7 @@ Estado examinado: checkout integrado `feat/m3` em `f201cd4af341e2f9332cbb2d0e441
 
 | Export (node ID) | Cobertura e diferença específica |
 | --- | --- |
-| `Add Subtitles to Playlist/Folder.png` (`1911:7545`) | Modal ligado a destinos reais, com alvo selecionável e Computer/Link/OpenSubtitles; persistência efetiva ainda depende de teste com biblioteca indexada. |
+| `Add Subtitles to Playlist/Folder.png` (`1911:7545`) | Modal ligado a destinos reais, com alvo selecionável e Computer/Link/OpenSubtitles; arquivo e pasta/destino exercitados com Link HTTPS; associação persistida após reinício. Playlist sem prova nova específica. |
 | `Add Subtitles to Playlist/Folder-1.png` (`3336:11929`) | Variação de destino múltiplo: `destinations` e `assign(source,destination)` existem; a disposição exata das linhas não foi aferida. |
 | `Add Subtitles to Playlist/Folder-2.png` (`1919:8707`) | Variante da lista de legendas; URL HTTPS e busca OpenSubtitles por título/idioma estão ligadas, sujeitas a rede, chave e conta. |
 | `Add Subtitles to Playlist/Folder-3.png` (`1919:9278`) | Seleção/atribuição por linha e busca com campo de idioma existem; não há prova de matching automático nem equivalência visual do filtro do PNG. |
@@ -109,8 +109,8 @@ Estas imagens são peças da biblioteca visual, não telas completas. Elas serve
 
 `Components.png` e `Designs.png` são pranchas de referência sem node ID no inventário e sem fluxo executável. Não contam como duas telas implementadas.
 
-## Provas que ainda mudam a decisão
+## Evidência funcional e aceite restante
 
-1. Capturar no VLC integrado player vídeo/música, Light, Hide UI, biblioteca grid/list, mini player compacto/expandido, editor overlay/perfis, efeitos, HDR, visualizer e associação de legendas em 1920×1080 e 720 px. Conferir foco, hover, drag/drop, estados vazios e recorte/scroll; esta revisão não alega paridade visual.
-2. Exercitar com mídia real: seek/fila, drag/drop e Save/Cancel do editor, troca de perfil (layout + preferências seguras) e persistência após reinício; Save/Cancel de efeitos; visualizer com módulos instalados; HDR com renderer/display compatíveis; associação local, Link HTTPS, OpenSubtitles autenticado e reprodução subsequente. Código estático prova caminhos, não resultado persistido ou saída HDR efetiva.
-3. Validar preset de série em dois episódios com faixas disponíveis tardiamente e Off salvo. O modelo de faixas não sinaliza “lista final pronta”; uma seleção padrão feita depois da primeira aplicação de Off pode prevalecer, pendente de teste nativo. Permanecem fora da capacidade do backend presente HDR10+/Dolby Vision, credenciais/quota OpenSubtitles fornecidas pelo usuário e correspondência automática perfeita de legendas. Corrigir a microcopy `audioBridge` antes de declarar acabamento do diálogo de efeitos.
+A [rodada final](m3.md) registra editor overlay Save/Cancel, troca/reinício de perfis com configuração e efeitos, controles reais de FPS/resolução/favorito, Link HTTPS com hash e associação persistente, Off/750 ms entre episódios e faixas tardias, visualizer e capability HDR. Não há alegação de equivalência pixel a pixel.
+
+Falta comparação renderizada integral de103 nodes/variantes,720 px e estados. HDR físico e OpenSubtitles autenticado exigem renderer/display e credenciais compatíveis; HDR10+/DV não são simulados. A revisão não transforma limitações em implementações concluídas.

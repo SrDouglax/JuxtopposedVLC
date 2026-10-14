@@ -1,0 +1,90 @@
+{
+    "profiles": [
+        {
+            "accent": "",
+            "equalizerEnabled": false,
+            "gain": 0,
+            "index": 0,
+            "name": "Default Style",
+            "secretsExcluded": true,
+            "settingsCount": 0,
+            "stats": false,
+            "theme": 0,
+            "volumeStep": 0
+        },
+        {
+            "accent": "",
+            "equalizerEnabled": false,
+            "gain": 0,
+            "index": 1,
+            "name": "Minimalist Style",
+            "secretsExcluded": true,
+            "settingsCount": 0,
+            "stats": false,
+            "theme": 0,
+            "volumeStep": 0
+        },
+        {
+            "accent": "",
+            "equalizerEnabled": false,
+            "gain": 0,
+            "index": 2,
+            "name": "One-liner Style",
+            "secretsExcluded": true,
+            "settingsCount": 0,
+            "stats": false,
+            "theme": 0,
+            "volumeStep": 0
+        },
+        {
+            "accent": "",
+            "equalizerEnabled": false,
+            "gain": 0,
+            "index": 3,
+            "name": "Simplest Style",
+            "secretsExcluded": true,
+            "settingsCount": 0,
+            "stats": false,
+            "theme": 0,
+            "volumeStep": 0
+        },
+        {
+            "accent": "",
+            "equalizerEnabled": false,
+            "gain": 0,
+            "index": 4,
+            "name": "Classic Style",
+            "secretsExcluded": true,
+            "settingsCount": 0,
+            "stats": false,
+            "theme": 0,
+            "volumeStep": 0
+        },
+        {
+            "accent": "#144497",
+            "equalizerEnabled": true,
+            "gain": 7.954545497894287,
+            "index": 5,
+            "name": "M3-QA",
+            "secretsExcluded": true,
+            "settingsCount": 372,
+            "stats": false,
+            "theme": 2,
+            "volumeStep": 12.800000190734863
+        },
+        {
+            "accent": "#d37918",
+            "equalizerEnabled": false,
+            "gain": 12.613636016845703,
+            "index": 6,
+            "name": "M3 Final",
+            "secretsExcluded": true,
+            "settingsCount": 372,
+            "stats": false,
+            "theme": 1,
+            "volumeStep": 7
+        }
+    ],
+    "selected": 6
+}
+
