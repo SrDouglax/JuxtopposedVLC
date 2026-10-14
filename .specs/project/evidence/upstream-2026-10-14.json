@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-14",
+  "branch": "redesign",
+  "merge_commit": "6a4dd4e16b1157648062be0ef3fbb6d2f6e86e35",
+  "upstream_commit": "d83cb23375405257164b5c073c6370e180608632",
+  "integrated_commits": 21,
+  "merge_conflicts": false,
+  "behind_upstream": 0,
+  "validation": {
+    "qt_linux_incremental_build": "PASS",
+    "native_wayland_startup_and_panels": "PASS",
+    "window_sizes": [
+      [
+        1920,
+        1080
+      ],
+      [
+        720,
+        540
+      ]
+    ],
+    "input": "Qt event injection and direct edit signals in isolated profile",
+    "plugin_sha256": "5e58f4dc09781b82dd8213eda20257282e4ef1b4c4b23354c9b38b4265aee9eb"
+  },
+  "resource_limits": {
+    "cpu": 1,
+    "ram_gib": 2,
+    "swap": 0,
+    "make_jobs": 1
+  },
+  "limitations": [
+    "Windows and macOS not built or exercised",
+    "Updated contrib dependencies not rebuilt",
+    "Existing scaleAxis and inlineContentEnabled warnings remain"
+  ],
+  "diff_check": "Inherited whitespace in upstream contrib mad/qt .patch files preserved"
+}

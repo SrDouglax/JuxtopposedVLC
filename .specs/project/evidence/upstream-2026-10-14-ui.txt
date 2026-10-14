@@ -1,0 +1,114 @@
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE Player settings PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE viewport Player settings QVariant(double, 1920) QVariant(double, 1080)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-opens PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE icon-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel playerSettingsMenu QPointF(1500,78) QSizeF(400, 940) QSize(1920, 1080) barTop QVariant(double, 1026)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE rendered-content-above-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-in-bounds-above-entire-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-right-aligned PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE speed-control-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE speed-updates-core PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE statistics-toggle PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE statistics-from-core PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE timeline-from-srt PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE choice-field-width PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE choice-dropdown-opens PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE choice-dropdown-has-native-rows PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE choice-escape-keeps-settings-open PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE flip-controls-available PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE flip-updates-core PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE flip-reset PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE delay-control-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE delay-updates-core PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE delay-control-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE delay-updates-core PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE disabled-tracks-show-none PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-popup PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE escape-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE outside-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE Languages and tracks PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE viewport Languages and tracks QVariant(double, 1920) QVariant(double, 1080)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-opens PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE icon-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel tracksMenu QPointF(1500,518) QSizeF(400, 500) QSize(1920, 1080) barTop QVariant(double, 1026)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE rendered-content-above-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-in-bounds-above-entire-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-right-aligned PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE subtitle-tools-accessible PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE subtitle-tools-active-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE subtitle-tools-toggle-closes PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-popup PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE escape-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE outside-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE Play Queue PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE viewport Play Queue QVariant(double, 1920) QVariant(double, 1080)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-opens PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE icon-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel playerNavigationMenu QPointF(1500,78) QSizeF(400, 940) QSize(1920, 1080) barTop QVariant(double, 1026)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE rendered-content-above-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-in-bounds-above-entire-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-right-aligned PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE navigation-tab PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE navigation-tab PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-popup PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE escape-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE outside-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE small-window-size PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE Player settings PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE viewport Player settings QVariant(double, 720) QVariant(double, 540)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-opens PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE icon-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel playerSettingsMenu QPointF(300,8) QSizeF(400, 452) QSize(720, 540) barTop QVariant(double, 468)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE rendered-content-above-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-in-bounds-above-entire-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-right-aligned PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-present PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE settings-tab-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-popup PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE escape-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE outside-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE Languages and tracks PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE viewport Languages and tracks QVariant(double, 720) QVariant(double, 898)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-opens PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE icon-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel tracksMenu QPointF(300,318) QSizeF(400, 500) QSize(720, 898) barTop QVariant(double, 826)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE rendered-content-above-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-in-bounds-above-entire-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-right-aligned PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-popup PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE escape-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE outside-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE Play Queue PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE viewport Play Queue QVariant(double, 720) QVariant(double, 898)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-opens PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE icon-active PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel playerNavigationMenu QPointF(300,8) QSizeF(400, 810) QSize(720, 898) barTop QVariant(double, 826)
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE rendered-content-above-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-in-bounds-above-entire-bar PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE panel-right-aligned PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE navigation-tab PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE navigation-tab PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE second-click-closes-popup PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE escape-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE outside-clears-icon PASS
+[00005fe858aba700] [qt] qt generic: (default) MINI-PROBE PANELS RESULT PASS

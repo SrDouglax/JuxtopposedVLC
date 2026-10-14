@@ -42,3 +42,12 @@ O desenvolvimento integrado de M0–M3 está centralizado na branch `redesign`, 
 M3 na branch `feat/m3`: implementação e validação funcional Linux atualizadas, catálogo de121 chaves candidatas, efeitos inline, perfis com preferências, editor sobreposto, HDR/visualizer e fontes/presets de legendas integrados. A cobertura visual integral continua sem aceite. [Estado, prova e trabalho restante](../features/redesign/m3.md). [Evidência e hashes](../features/redesign/evidence/m3/result.json). O export completo de 105 PNGs está disponível e os 103 nodes têm revisão por export; isso não encerra a fidelidade integral. Próxima ação: conferir a composição/variantes e equivalências de controles ainda registradas nos mapas, antes de declarar fidelidade integral ao Figma. Windows/W01 permanece para a rodada final.
 
 - 14/10/2026: estrutura e controles principais dos três menus do player corrigidos a partir de `Controls.png`; quatro abas da engrenagem, faixas compactas, fila simples, ícones e toggle validados em Wayland/Linux. Evidências e limites em [M3](../features/redesign/m3.md). Paridade integral e Windows continuam pendentes.
+
+
+## Sincronização upstream — 14/10/2026
+
+Os21 commits de `videolan/vlc:master` até `d83cb23375405257164b5c073c6370e180608632` foram integrados na `redesign` pelo merge `6a4dd4e16b1157648062be0ef3fbb6d2f6e86e35`, sem conflitos. A integração preserva o histórico do redesign e passa a ter zero commits behind dessa revisão upstream.
+
+Build incremental do plugin Qt no Linux aprovado. O smoke nativo Wayland, com perfil isolado, iniciou o VLC e validou os menus em1920×1080 e720×540, incluindo posição, toggle, ícones, seleção e controles principais. [Resultado e hash do plugin](evidence/upstream-2026-10-14.json) e [log das verificações](evidence/upstream-2026-10-14-ui.txt). Uma operação pesada por vez, `make -j1`,2 GiB de RAM, sem swap e uma CPU.
+
+Windows/macOS e recompilação das dependências contrib atualizadas não foram exercitados. Avisos anteriores de `scaleAxis`/`inlineContentEnabled` permanecem. `git diff --check` aponta espaços herdados nos patches upstream de mad/Qt; os arquivos `.patch` foram preservados. A sincronização não resolve a posição do atalho Audio effects, que continua registrada como pendência.
