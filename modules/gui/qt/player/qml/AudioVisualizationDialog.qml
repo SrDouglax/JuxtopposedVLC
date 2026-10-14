@@ -48,10 +48,10 @@ Controls.Popup {
                 id: row
                 required property int index
                 required property var model
-                checked: model.checked
+                checked: Boolean(model.checked)
                 width: options.width
                 height: VLCStyle.dp(46, VLCStyle.scale)
-                text: index === 0 ? qsTr("Disabled") : model.display
+                text: index === 0 ? qsTr("Disabled") : String(model.display || "")
                 Component.onCompleted: if (checked) root.selectedText = text
                 onCheckedChanged: if (checked) root.selectedText = text
                 onClicked: Player.audioVisualization.toggleIndex(index)
@@ -65,9 +65,9 @@ Controls.Popup {
                     Image {
                         Layout.preferredWidth: row.index === 0 ? 0 : 24; Layout.preferredHeight: 24
                         source: row.index === 0 ? "" : "qrc:///redesign/icons/" +
-                            (row.model.display.toLowerCase().includes("spectrometer") ? "spectrometer" :
-                             row.model.display.toLowerCase().includes("spectrum") ? "spectrum" :
-                             row.model.display.toLowerCase().includes("scope") ? "scope" : "waveform") + "/default.png"
+                            (String(row.model.display || "").toLowerCase().includes("spectrometer") ? "spectrometer" :
+                             String(row.model.display || "").toLowerCase().includes("spectrum") ? "spectrum" :
+                             String(row.model.display || "").toLowerCase().includes("scope") ? "scope" : "waveform") + "/default.png"
                     }
                     Text {
                         Layout.fillWidth: true; verticalAlignment: Text.AlignVCenter

@@ -15,7 +15,7 @@ import VLC.Dialogs
 Controls.Popup {
     id: root
     objectName: "toolbarEditorDialog"
-    parent: Controls.Overlay.overlay
+    parent: T.Overlay.overlay
     x: 0
     y: 0
     width: parent ? parent.width : 0
@@ -26,7 +26,7 @@ Controls.Popup {
     focus: true
     closePolicy: Controls.Popup.CloseOnEscape
     background: Item {}
-    Controls.Overlay.modal: Rectangle { color: "#a6000000" }
+    T.Overlay.modal: Rectangle { color: "#a6000000" }
 
     signal unload()
     property bool saved: false

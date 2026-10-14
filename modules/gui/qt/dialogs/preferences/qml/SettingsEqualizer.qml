@@ -148,7 +148,8 @@ ColumnLayout {
                                     anchors.bottom: parent.bottom
                                     width: parent.width
                                     height: bandSlider.visualPosition * parent.height
-                                    color: "#54300c"
+                                    color: Qt.colorEqual(VLCStyle.redesign.accent, "#D37918")
+                                           ? "#54300c" : Qt.darker(VLCStyle.redesign.accent, 2.5)
                                     radius: parent.radius
                                 }
                             }

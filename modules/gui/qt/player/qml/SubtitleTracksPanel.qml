@@ -6,7 +6,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Templates as T
-import QtQuick.Controls.Basic as Controls
+import QtQuick.Window
 
 import VLC.Dialogs
 import VLC.MainInterface
@@ -19,11 +19,12 @@ ColumnLayout {
     objectName: "subtitleTracksPanel"
     spacing: VLCStyle.dp(8, VLCStyle.scale)
     property var reveal: null
+    property var presets: null
     readonly property bool localMedia: Player.url.toString().startsWith("file://")
 
     SubtitleAssociationsDialog {
         id: associationsDialog
-        parent: Controls.Overlay.overlay
+        parent: root.Window.window ? root.Window.window.contentItem : null
     }
 
     Text {
@@ -103,7 +104,7 @@ ColumnLayout {
 
     SubtitleSyncTimeline {
         Layout.fillWidth: true
-        presets: SubtitleSeriesPreset
+        presets: root.presets
         reveal: root.reveal
     }
 

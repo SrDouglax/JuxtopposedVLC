@@ -37,6 +37,7 @@ FocusScope {
 
     //behave like a Page
     property var pagePrefix: []
+    property var subtitleSeriesPreset: null
 
     readonly property int positionSliderY: controlBar.y + controlBar.sliderY
 

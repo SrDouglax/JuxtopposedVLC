@@ -42,7 +42,7 @@ Item {
     id: root
 
     // Persist across library/player Loader changes so series choices follow playback.
-    readonly property var subtitleSeriesPreset: SubtitleSeriesPreset
+    SubtitleSeriesPreset { id: seriesSubtitlePreset }
 
     Accessible.role: Accessible.Client
     Accessible.name: qsTr("Main interface")
@@ -310,6 +310,9 @@ Item {
 
         Loader {
             id: viewLoader
+            onLoaded: {
+                if ("subtitleSeriesPreset" in item) item.subtitleSeriesPreset = seriesSubtitlePreset
+            }
 
             anchors.fill: parent
 

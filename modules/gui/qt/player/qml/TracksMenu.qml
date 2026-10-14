@@ -30,6 +30,7 @@ T.Popup {
     objectName: "tracksMenu"
 
     property int currentTab: 0
+    property var seriesPreset: null
     property bool previousGlobalShortcuts: true
     readonly property var trackTabs: [
         { title: qsTr("Video"), icon: "qrc:///redesign/track-video.png", activeIcon: "qrc:///redesign/track-video-active.png", tab: 2 },
@@ -135,6 +136,7 @@ T.Popup {
                 spacing: VLCStyle.dp(12, VLCStyle.scale)
 
                 SubtitleTracksPanel {
+                    presets: root.seriesPreset
                     visible: root.currentTab === 0
                     Layout.fillWidth: true
                     reveal: root.ensureVisible

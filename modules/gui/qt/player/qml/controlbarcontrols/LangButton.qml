@@ -76,6 +76,8 @@ RedesignIconButton {
             id: menu
 
             parent: root._parentItem
+            seriesPreset: root._parentItem && ("subtitleSeriesPreset" in root._parentItem)
+                          ? root._parentItem.subtitleSeriesPreset : null
 
             z: 1
 
