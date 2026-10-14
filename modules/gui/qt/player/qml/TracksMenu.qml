@@ -134,59 +134,10 @@ T.Popup {
                 width: scroll.width
                 spacing: VLCStyle.dp(12, VLCStyle.scale)
 
-                ColumnLayout {
+                SubtitleTracksPanel {
                     visible: root.currentTab === 0
                     Layout.fillWidth: true
-                    spacing: VLCStyle.dp(8, VLCStyle.scale)
-
-                    SectionTitle { text: qsTr("Embedded tracks") }
-                    TrackRow {
-                        objectName: "subtitleOffButton"
-                        Layout.fillWidth: true
-                        text: qsTr("Off")
-                        checked: {
-                            for (let i = 0; i < subtitleRows.count; ++i) {
-                                const row = subtitleRows.itemAt(i)
-                                if (row && row.checked)
-                                    return false
-                            }
-                            return true
-                        }
-                        onClicked: {
-                            for (let i = 0; i < subtitleRows.count; ++i) {
-                                const row = subtitleRows.itemAt(i)
-                                if (row && row.checked)
-                                    row.disable()
-                            }
-                        }
-                    }
-                    EmptyLabel {
-                        visible: Player.subtitleTracks.count === 0
-                        text: qsTr("No subtitle tracks in this media")
-                    }
-                    Repeater {
-                        id: subtitleRows
-                        model: Player.subtitleTracks
-                        delegate: TrackChoice {
-                            objectName: "subtitleTrack" + index
-                            Layout.fillWidth: true
-                            allowOff: true
-                        }
-                    }
-                    SectionDivider { }
-                    PanelButton {
-                        objectName: "addSubtitleButton"
-                        Layout.fillWidth: true
-                        text: qsTr("Add subtitle file…")
-                        onClicked: DialogsProvider.loadSubtitlesFile()
-                    }
-                    DelayControl {
-                        objectName: "subtitleDelayControl"
-                        Layout.fillWidth: true
-                        title: qsTr("Subtitle delay")
-                        value: Player.subtitleDelayMS
-                        onRequested: (ms) => Player.subtitleDelayMS = ms
-                    }
+                    reveal: root.ensureVisible
                 }
 
                 ColumnLayout {

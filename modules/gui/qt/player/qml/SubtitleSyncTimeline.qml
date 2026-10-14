@@ -14,6 +14,7 @@ ColumnLayout {
     id: root
     objectName: "subtitleSyncTimeline"
     property var presets: null
+    property var reveal: null
     spacing: VLCStyle.dp(12, VLCStyle.scale)
 
     DelayEstimator {
@@ -78,23 +79,22 @@ ColumnLayout {
         }
     }
 
-    RowLayout {
+    Flow {
         Layout.fillWidth: true
         spacing: VLCStyle.dp(8, VLCStyle.scale)
-        Controls.Button {
+        TimelineButton {
             objectName: "subtitleVoiceMark"
             text: estimator.isHeardTimeMarked ? qsTr("Voice marked") : qsTr("Mark voice heard")
             enabled: Player.isStarted
             onClicked: estimator.markHeardTime()
         }
-        Controls.Button {
+        TimelineButton {
             objectName: "subtitleTextMark"
             text: estimator.isSpottedTimeMarked ? qsTr("Text marked") : qsTr("Mark text seen")
             enabled: Player.isStarted
             onClicked: estimator.markSpottedTime()
         }
-        Item { Layout.fillWidth: true }
-        Controls.Button {
+        TimelineButton {
             objectName: "subtitleTimingReset"
             text: qsTr("Reset")
             enabled: Player.isStarted && Player.subtitleDelayMS !== 0
@@ -119,20 +119,22 @@ ColumnLayout {
                 font.family: VLCStyle.redesign.fontFamily
             }
             Controls.Label {
+                Layout.fillWidth: true
                 text: root.presets && root.presets.label ?
                       qsTr("Applies to episodes of %1").arg(root.presets.label) :
                       qsTr("Play a local episode to save its track and timing choices.")
                 color: VLCStyle.redesign.textSecondary
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+                elide: Text.ElideRight
             }
         }
-        Controls.Button {
+        TimelineButton {
             objectName: "subtitlePresetSave"
             text: qsTr("Save")
             enabled: root.presets && root.presets.seriesKey && Player.isStarted
             onClicked: root.presets.saveCurrent()
         }
-        Controls.Button {
+        TimelineButton {
             objectName: "subtitlePresetClear"
             text: qsTr("Remove")
             enabled: root.presets && root.presets.preset
@@ -146,5 +148,27 @@ ColumnLayout {
         color: VLCStyle.redesign.textSecondary
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
         wrapMode: Text.WordWrap
+    }
+
+    component TimelineButton: Controls.Button {
+        implicitHeight: VLCStyle.dp(34, VLCStyle.scale)
+        focusPolicy: Qt.StrongFocus
+        onActiveFocusChanged: if (activeFocus && root.reveal) root.reveal(this)
+        background: Rectangle {
+            color: parent.hovered || parent.activeFocus
+                   ? VLCStyle.redesign.controlHoverBackground : VLCStyle.redesign.controlBackground
+            border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : VLCStyle.redesign.border
+            radius: VLCStyle.dp(4, VLCStyle.scale)
+        }
+        contentItem: Controls.Label {
+            text: parent.text
+            color: parent.enabled ? VLCStyle.redesign.textPrimary : VLCStyle.redesign.textMuted
+            font.family: VLCStyle.redesign.fontFamily
+            font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            leftPadding: VLCStyle.dp(8, VLCStyle.scale)
+            rightPadding: VLCStyle.dp(8, VLCStyle.scale)
+        }
     }
 }
