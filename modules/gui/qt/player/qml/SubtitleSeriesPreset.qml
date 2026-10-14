@@ -42,6 +42,18 @@ Item {
     property bool audioApplied: false
     property bool subtitleApplied: false
 
+    // Associated files may add/select tracks after the first track list.
+    // Settle that initial selection without fighting later manual changes.
+    Timer {
+        id: trackSettle
+        interval: 180
+        onTriggered: {
+            root.audioApplied = false
+            root.subtitleApplied = false
+            root.tryApply()
+        }
+    }
+
     function selectedTrackName(model) {
         for (let i = 0; i < model.count; ++i) {
             const index = model.index(i, 0)
@@ -72,6 +84,7 @@ Item {
     }
 
     function refresh() {
+        trackSettle.stop()
         delayApplied = false
         audioApplied = false
         subtitleApplied = false
@@ -151,12 +164,26 @@ Item {
     }
     Connections {
         target: Player.audioTracks
-        function onCountChanged() { Qt.callLater(root.tryApply) }
-        function onDataChanged() { if (!root.audioApplied) Qt.callLater(root.tryApply) }
+        function onCountChanged() {
+            root.audioApplied = false
+            if (root.preset) trackSettle.restart()
+            Qt.callLater(root.tryApply)
+        }
+        function onDataChanged() {
+            if (trackSettle.running) trackSettle.restart()
+            if (!root.audioApplied) Qt.callLater(root.tryApply)
+        }
     }
     Connections {
         target: Player.subtitleTracks
-        function onCountChanged() { Qt.callLater(root.tryApply) }
-        function onDataChanged() { if (!root.subtitleApplied) Qt.callLater(root.tryApply) }
+        function onCountChanged() {
+            root.subtitleApplied = false
+            if (root.preset) trackSettle.restart()
+            Qt.callLater(root.tryApply)
+        }
+        function onDataChanged() {
+            if (trackSettle.running) trackSettle.restart()
+            if (!root.subtitleApplied) Qt.callLater(root.tryApply)
+        }
     }
 }
