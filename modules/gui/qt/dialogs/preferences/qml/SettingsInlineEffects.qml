@@ -111,13 +111,10 @@ ColumnLayout {
         filterId: "stereo_widen"
         title: qsTr("Stereo widening")
     }
-    VideoFilterSection {
+    SettingsPicture {
         Layout.fillWidth: true
         visible: root.category === "video" && videoEffects.transactionActive
                  && videoEffects.filterAvailable("adjust")
         effects: videoEffects
-        filterId: "adjust"
-        title: qsTr("Image adjustment")
-        expanded: true
     }
 }
