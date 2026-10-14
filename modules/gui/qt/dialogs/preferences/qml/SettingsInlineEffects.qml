@@ -63,8 +63,8 @@ ColumnLayout {
 
     Text {
         Layout.fillWidth: true
-        visible: root.category === "audio" || root.category === "video"
-        text: root.category === "audio" ? qsTr("Effects") : qsTr("Picture")
+        visible: root.category === "audio"
+        text: qsTr("Effects")
         color: VLCStyle.redesign.textPrimary
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
