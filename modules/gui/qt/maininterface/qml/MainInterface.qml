@@ -41,6 +41,9 @@ import VLC.PlayerControls
 Item {
     id: root
 
+    // Persist across library/player Loader changes so series choices follow playback.
+    readonly property var subtitleSeriesPreset: SubtitleSeriesPreset
+
     Accessible.role: Accessible.Client
     Accessible.name: qsTr("Main interface")
     AccessibleCompat.id: "mainInterface"

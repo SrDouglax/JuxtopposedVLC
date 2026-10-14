@@ -216,7 +216,8 @@ Item {
                      && !root.useSlider
             anchors.fill: parent
             text: root.settingValue === undefined || root.settingValue === null
-                  ? "" : String(root.settingValue)
+                  ? "" : root.settingType === "float"
+                  ? String(Number(Number(root.settingValue).toFixed(6))) : String(root.settingValue)
             selectByMouse: true
             inputMethodHints: root.settingType === "integer" || root.settingType === "float"
                               ? Qt.ImhFormattedNumbersOnly : Qt.ImhNone

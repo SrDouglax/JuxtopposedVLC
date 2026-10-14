@@ -38,7 +38,7 @@ ColumnLayout {
             Text {
                 Layout.fillWidth: true
                 text: root.expanded ? qsTr("Collapse Settings") : qsTr("Expand Settings")
-                color: VLCStyle.redesign.textMuted
+                color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             }

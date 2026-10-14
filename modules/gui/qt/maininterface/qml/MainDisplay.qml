@@ -37,11 +37,6 @@ FocusScope {
     // Properties
 
     property bool hasMiniPlayer: miniPlayer.visible
-    readonly property alias subtitleSeriesPreset: seriesSubtitlePreset
-
-    SubtitleSeriesPreset {
-        id: seriesSubtitlePreset
-    }
 
     // NOTE: The main view must be above the indexing bar and the mini player.
     property real displayMargin: (miniPlayer.visible ? height - miniPlayer.y : 0) +

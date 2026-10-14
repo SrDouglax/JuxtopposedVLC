@@ -50,7 +50,7 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr("Current output device")
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }
@@ -69,25 +69,25 @@ ColumnLayout {
                 leftPadding: VLCStyle.dp(12, VLCStyle.scale)
                 text: deviceRows.count === 0 ? qsTr("No selectable device available")
                       : root.selectedIndex < 0 ? qsTr("System default") : deviceBox.displayText
-                color: VLCStyle.redesign.textSecondary
+                color: VLCStyle.redesign.color("#969696", "#4d4d4d")
                 elide: Text.ElideRight
                 verticalAlignment: Text.AlignVCenter
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             }
             background: Rectangle {
-                color: VLCStyle.redesign.controlBackground
-                border.color: VLCStyle.redesign.border
+                color: VLCStyle.redesign.color("#191919", "#ababaa")
+                border.color: VLCStyle.redesign.color("#373737", "#8e8e8d")
                 radius: 4
             }
             delegate: ItemDelegate {
-                required property string display
+                required property var model
                 width: deviceBox.width
-                text: display
-                palette.text: VLCStyle.redesign.textPrimary
+                text: model.display
+                palette.text: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
                 background: Rectangle {
-                    color: highlighted ? VLCStyle.redesign.controlHoverBackground
-                                       : VLCStyle.redesign.controlBackground
+                    color: highlighted ? VLCStyle.redesign.color("#222222", "#9c9c9b")
+                                       : VLCStyle.redesign.color("#191919", "#ababaa")
                 }
             }
             popup: Popup {
@@ -102,8 +102,8 @@ ColumnLayout {
                     currentIndex: deviceBox.highlightedIndex
                 }
                 background: Rectangle {
-                    color: VLCStyle.redesign.controlBackground
-                    border.color: VLCStyle.redesign.border
+                    color: VLCStyle.redesign.color("#191919", "#ababaa")
+                    border.color: VLCStyle.redesign.color("#373737", "#8e8e8d")
                 }
             }
         }
@@ -112,7 +112,7 @@ ColumnLayout {
         Layout.fillWidth: true
         text: qsTr("Device changes affect only the current audio output. Apply keeps this selection while it remains active.")
         wrapMode: Text.WordWrap
-        color: VLCStyle.redesign.textMuted
+        color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
     }

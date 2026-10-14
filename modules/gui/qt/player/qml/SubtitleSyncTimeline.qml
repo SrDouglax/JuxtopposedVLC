@@ -32,13 +32,13 @@ ColumnLayout {
         Controls.Label {
             Layout.fillWidth: true
             text: qsTr("Subtitle timing")
-            color: VLCStyle.redesign.textPrimary
+            color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(15, VLCStyle.scale)
         }
         Controls.Label {
             text: (Player.subtitleDelayMS >= 0 ? "+" : "") + Player.subtitleDelayMS + qsTr(" ms")
-            color: VLCStyle.redesign.textSecondary
+            color: VLCStyle.redesign.color("#969696", "#4d4d4d")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
         }
@@ -61,13 +61,13 @@ ColumnLayout {
             width: timeline.availableWidth
             height: VLCStyle.dp(4, VLCStyle.scale)
             radius: height / 2
-            color: VLCStyle.redesign.seekBackground
+            color: VLCStyle.redesign.color("#090909", "#dedede")
             Rectangle {
                 x: parent.width / 2
                 width: VLCStyle.dp(1, VLCStyle.scale)
                 height: VLCStyle.dp(12, VLCStyle.scale)
                 anchors.verticalCenter: parent.verticalCenter
-                color: VLCStyle.redesign.textSecondary
+                color: VLCStyle.redesign.color("#969696", "#4d4d4d")
             }
         }
         handle: Rectangle {
@@ -106,7 +106,7 @@ ColumnLayout {
         }
     }
 
-    Rectangle { Layout.fillWidth: true; height: 1; color: VLCStyle.redesign.separator }
+    Rectangle { Layout.fillWidth: true; height: 1; color: VLCStyle.redesign.color("#222222", "#9c9c9b") }
 
     RowLayout {
         Layout.fillWidth: true
@@ -116,7 +116,7 @@ ColumnLayout {
             spacing: VLCStyle.dp(2, VLCStyle.scale)
             Controls.Label {
                 text: qsTr("Series preset")
-                color: VLCStyle.redesign.textPrimary
+                color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
                 font.family: VLCStyle.redesign.fontFamily
             }
             Controls.Label {
@@ -124,7 +124,7 @@ ColumnLayout {
                 text: root.presets && root.presets.label ?
                       qsTr("Applies to episodes of %1").arg(root.presets.label) :
                       qsTr("Play a local episode to save its track and timing choices.")
-                color: VLCStyle.redesign.textSecondary
+                color: VLCStyle.redesign.color("#969696", "#4d4d4d")
                 font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
                 elide: Text.ElideRight
             }
@@ -146,7 +146,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: root.presets && root.presets.status.length > 0
         text: root.presets ? root.presets.status : ""
-        color: VLCStyle.redesign.textSecondary
+        color: VLCStyle.redesign.color("#969696", "#4d4d4d")
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
         wrapMode: Text.WordWrap
     }
@@ -157,13 +157,13 @@ ColumnLayout {
         onActiveFocusChanged: if (activeFocus && root.reveal) root.reveal(this)
         background: Rectangle {
             color: parent.hovered || parent.activeFocus
-                   ? VLCStyle.redesign.controlHoverBackground : VLCStyle.redesign.controlBackground
-            border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : VLCStyle.redesign.border
+                   ? VLCStyle.redesign.color("#222222", "#9c9c9b") : VLCStyle.redesign.color("#191919", "#ababaa")
+            border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : VLCStyle.redesign.color("#373737", "#8e8e8d")
             radius: VLCStyle.dp(4, VLCStyle.scale)
         }
         contentItem: Controls.Label {
             text: parent.text
-            color: parent.enabled ? VLCStyle.redesign.textPrimary : VLCStyle.redesign.textMuted
+            color: parent.enabled ? VLCStyle.redesign.color("#EAEAEA", "#2e2e2e") : VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
             horizontalAlignment: Text.AlignHCenter

@@ -28,7 +28,7 @@ ColumnLayout {
         Text {
             Layout.fillWidth: true
             text: root.title
-            color: VLCStyle.redesign.textPrimary
+            color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(15, VLCStyle.scale)
             font.weight: Font.Medium

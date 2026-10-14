@@ -51,7 +51,7 @@ Controls.Popup {
                         verticalAlignment: Text.AlignVCenter
                     }
                     Image { width: 24; height: 24; anchors.verticalCenter: parent.verticalCenter
-                        source: "qrc:///redesign/icons/check/default.png"; visible: output.selectedIndex === row.index }
+                        source: "qrc:///redesign/icons/check/selected.png"; visible: output.selectedIndex === row.index }
                 }
             }
         }

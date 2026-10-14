@@ -6,6 +6,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Templates as T
+import QtQuick.Controls.Basic as Controls
 
 import VLC.Dialogs
 import VLC.MainInterface
@@ -22,13 +23,13 @@ ColumnLayout {
 
     SubtitleAssociationsDialog {
         id: associationsDialog
-        parent: g_mainDisplay
+        parent: Controls.Overlay.overlay
     }
 
     Text {
         Layout.fillWidth: true
         text: qsTr("Embedded tracks")
-        color: VLCStyle.redesign.textMuted
+        color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
     }
@@ -56,7 +57,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: Player.subtitleTracks.count === 0
         text: qsTr("No subtitle tracks in this media")
-        color: VLCStyle.redesign.textMuted
+        color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
         wrapMode: Text.WordWrap
@@ -73,7 +74,7 @@ ColumnLayout {
         }
     }
 
-    Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: VLCStyle.redesign.separator }
+    Rectangle { Layout.fillWidth: true; implicitHeight: 1; color: VLCStyle.redesign.color("#222222", "#9c9c9b") }
 
     ActionButton {
         objectName: "addSubtitleButton"
@@ -94,7 +95,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: !root.localMedia || !MainCtx.mediaLibraryAvailable
         text: qsTr("Library association needs a local media file and media library.")
-        color: VLCStyle.redesign.textMuted
+        color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
         wrapMode: Text.WordWrap
@@ -102,7 +103,7 @@ ColumnLayout {
 
     SubtitleSyncTimeline {
         Layout.fillWidth: true
-        presets: g_mainDisplay.subtitleSeriesPreset
+        presets: SubtitleSeriesPreset
         reveal: root.reveal
     }
 
@@ -113,9 +114,9 @@ ColumnLayout {
         onActiveFocusChanged: if (activeFocus && root.reveal) root.reveal(this)
         background: Rectangle {
             color: parent.checked ? VLCStyle.redesign.accentBackground
-                 : parent.hovered || parent.activeFocus ? VLCStyle.redesign.controlHoverBackground : "transparent"
+                 : parent.hovered || parent.activeFocus ? VLCStyle.redesign.color("#222222", "#9c9c9b") : "transparent"
             border.width: VLCStyle.dp(1, VLCStyle.scale)
-            border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : VLCStyle.redesign.border
+            border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : VLCStyle.redesign.color("#373737", "#8e8e8d")
             radius: VLCStyle.dp(4, VLCStyle.scale)
         }
         contentItem: Item {
@@ -136,7 +137,7 @@ ColumnLayout {
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 text: parent.parent.text
-                color: parent.parent.checked ? VLCStyle.redesign.accent : VLCStyle.redesign.textPrimary
+                color: parent.parent.checked ? VLCStyle.redesign.accent : VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                 elide: Text.ElideRight

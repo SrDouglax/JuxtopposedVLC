@@ -19,7 +19,7 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr("Equalizer")
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }
@@ -53,7 +53,7 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr("Equalizer preset")
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }
@@ -72,18 +72,18 @@ ColumnLayout {
             contentItem: Label {
                 leftPadding: 12
                 text: presetBox.displayText || qsTr("Custom")
-                color: VLCStyle.redesign.textPrimary
+                color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
                 verticalAlignment: Text.AlignVCenter
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             }
-            background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: 4 }
+            background: Rectangle { color: VLCStyle.redesign.color("#191919", "#ababaa"); radius: 4 }
             delegate: ItemDelegate {
                 width: presetBox.width
                 text: modelData.name
-                palette.text: VLCStyle.redesign.textPrimary
-                background: Rectangle { color: highlighted ? VLCStyle.redesign.controlHoverBackground
-                                                      : VLCStyle.redesign.controlBackground }
+                palette.text: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
+                background: Rectangle { color: highlighted ? VLCStyle.redesign.color("#222222", "#9c9c9b")
+                                                      : VLCStyle.redesign.color("#191919", "#ababaa") }
             }
             popup: Popup {
                 y: presetBox.height
@@ -91,7 +91,7 @@ ColumnLayout {
                 implicitHeight: Math.min(contentItem.implicitHeight, VLCStyle.dp(280, VLCStyle.scale))
                 padding: 0
                 contentItem: ListView { clip: true; implicitHeight: contentHeight; model: presetBox.popup.visible ? presetBox.delegateModel : null; currentIndex: presetBox.highlightedIndex }
-                background: Rectangle { color: VLCStyle.redesign.controlBackground; border.color: VLCStyle.redesign.border }
+                background: Rectangle { color: VLCStyle.redesign.color("#191919", "#ababaa"); border.color: VLCStyle.redesign.color("#373737", "#8e8e8d") }
             }
         }
     }
@@ -108,7 +108,7 @@ ColumnLayout {
                 text: root.expanded ? qsTr("Close Equalizer") : qsTr("Open Equalizer")
                 onClicked: root.expanded = !root.expanded
                 background: Item {}
-                contentItem: Label { text: parent.text; color: VLCStyle.redesign.textMuted; font.pixelSize: VLCStyle.dp(14, VLCStyle.scale) }
+                contentItem: Label { text: parent.text; color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b"); font.pixelSize: VLCStyle.dp(14, VLCStyle.scale) }
             }
             RowLayout {
                 Layout.fillWidth: true
@@ -165,13 +165,13 @@ ColumnLayout {
                             Layout.alignment: Qt.AlignHCenter
                             text: index === 0 ? qsTr("Preamp")
                                   : Math.round(Number(root.effects.frequencies[index - 1] || 0)) + qsTr(" Hz")
-                            color: VLCStyle.redesign.textMuted
+                            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
                             font.pixelSize: VLCStyle.dp(10, VLCStyle.scale)
                         }
                         Label {
                             Layout.alignment: Qt.AlignHCenter
                             text: Number(currentBand).toFixed(1) + qsTr(" dB")
-                            color: VLCStyle.redesign.textSecondary
+                            color: VLCStyle.redesign.color("#969696", "#4d4d4d")
                             font.pixelSize: VLCStyle.dp(10, VLCStyle.scale)
                         }
                     }
@@ -181,7 +181,7 @@ ColumnLayout {
     }
     RowLayout {
         Layout.fillWidth: true
-        Label { Layout.fillWidth: true; text: qsTr("Two-pass"); color: VLCStyle.redesign.textMuted; font.pixelSize: VLCStyle.dp(14, VLCStyle.scale) }
+        Label { Layout.fillWidth: true; text: qsTr("Two-pass"); color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b"); font.pixelSize: VLCStyle.dp(14, VLCStyle.scale) }
         Switch {
             id: twoPassSwitch
             Binding on checked { when: !twoPassSwitch.pressed; value: root.effects.twoPass }

@@ -29,7 +29,7 @@ ColumnLayout {
     Label {
         Layout.fillWidth: true
         text: qsTr("Diagnostics")
-        color: VLCStyle.redesign.textPrimary
+        color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
     }
@@ -39,7 +39,7 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr("Developer mode")
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }

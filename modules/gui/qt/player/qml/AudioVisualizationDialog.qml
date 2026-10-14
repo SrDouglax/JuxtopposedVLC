@@ -46,11 +46,11 @@ Controls.Popup {
             delegate: Controls.ItemDelegate {
                 id: row
                 required property int index
-                required property string display
-                required property bool checked
+                required property var model
+                checked: model.checked
                 width: options.width
                 height: VLCStyle.dp(46, VLCStyle.scale)
-                text: index === 0 ? qsTr("Disabled") : display
+                text: index === 0 ? qsTr("Disabled") : model.display
                 Component.onCompleted: if (checked) root.selectedText = text
                 onCheckedChanged: if (checked) root.selectedText = text
                 onClicked: Player.audioVisualization.toggleIndex(index)
@@ -65,9 +65,9 @@ Controls.Popup {
                         width: row.index === 0 ? 0 : 24; height: 24
                         anchors.verticalCenter: parent.verticalCenter
                         source: row.index === 0 ? "" : "qrc:///redesign/icons/" +
-                            (row.display.toLowerCase().includes("spectrometer") ? "spectrometer" :
-                             row.display.toLowerCase().includes("spectrum") ? "spectrum" :
-                             row.display.toLowerCase().includes("scope") ? "scope" : "waveform") + "/default.png"
+                            (row.model.display.toLowerCase().includes("spectrometer") ? "spectrometer" :
+                             row.model.display.toLowerCase().includes("spectrum") ? "spectrum" :
+                             row.model.display.toLowerCase().includes("scope") ? "scope" : "waveform") + "/default.png"
                     }
                     Text {
                         width: row.width - 78; height: parent.height; verticalAlignment: Text.AlignVCenter
@@ -75,7 +75,7 @@ Controls.Popup {
                         font.family: VLCStyle.redesign.fontFamily; font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                     }
                     Image { width: 24; height: 24; anchors.verticalCenter: parent.verticalCenter
-                        source: "qrc:///redesign/icons/check/default.png"; visible: row.checked }
+                        source: "qrc:///redesign/icons/check/selected.png"; visible: row.checked }
                 }
             }
             Text {

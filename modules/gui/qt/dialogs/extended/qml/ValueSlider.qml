@@ -29,7 +29,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Text {
             text: root.label
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             Layout.fillWidth: true
@@ -47,7 +47,7 @@ ColumnLayout {
                 anchors.leftMargin: VLCStyle.dp(12, VLCStyle.scale)
                 anchors.rightMargin: VLCStyle.dp(8, VLCStyle.scale)
                 verticalAlignment: TextInput.AlignVCenter
-                color: VLCStyle.redesign.textSecondary
+                color: VLCStyle.redesign.color("#969696", "#4d4d4d")
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
                 selectByMouse: true
@@ -67,7 +67,7 @@ ColumnLayout {
         Text {
             visible: !root.editable
             text: root.formatted(root.modelValue)
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }

@@ -26,7 +26,7 @@ ColumnLayout {
     Label {
         Layout.fillWidth: true
         text: qsTr("Last.fm")
-        color: VLCStyle.redesign.textPrimary
+        color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
     }
@@ -34,7 +34,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: !root.available
         text: qsTr("Last.fm is unavailable in this VLC installation.")
-        color: VLCStyle.redesign.textMuted
+        color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
     }
@@ -45,7 +45,7 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr("Submit played tracks to Last.fm")
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }
@@ -88,7 +88,7 @@ ColumnLayout {
             Label {
                 Layout.fillWidth: true
                 text: fieldRow.modelData.label
-                color: VLCStyle.redesign.textMuted
+                color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             }
@@ -96,15 +96,15 @@ ColumnLayout {
                 id: editor
                 objectName: "settings_" + fieldRow.modelData.key
                 Layout.preferredWidth: VLCStyle.dp(319, VLCStyle.scale)
-                color: VLCStyle.redesign.textPrimary
+                color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
                 selectByMouse: true
                 echoMode: fieldRow.modelData.key === "lastfm-password" ? TextInput.Password : TextInput.Normal
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                 onTextEdited: root.settingsModel.setValue(fieldRow.modelData.key, text)
                 background: Rectangle {
-                    color: VLCStyle.redesign.controlBackground
-                    border.color: VLCStyle.redesign.border
+                    color: VLCStyle.redesign.color("#191919", "#ababaa")
+                    border.color: VLCStyle.redesign.color("#373737", "#8e8e8d")
                     radius: 4
                 }
                 Component.onCompleted: {
@@ -119,7 +119,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: root.available
         text: qsTr("Last.fm connection changes take effect after restarting VLC.")
-        color: VLCStyle.redesign.textMuted
+        color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
         wrapMode: Text.WordWrap
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)

@@ -181,7 +181,6 @@ qml_modules += {
    'target' : 'player',
    'outdir' : 'VLC/Player',
    'sources': files(
-        '../../player/qml/SubtitleSeriesPreset.qml',
         '../../player/qml/SubtitleTracksPanel.qml',
 
         '../../player/qml/SubtitleSyncTimeline.qml',
@@ -216,6 +215,7 @@ qml_modules += {
        '../../player/qml/NavigationBox.qml',
    ),
    'singletons' : files(
+       '../../player/qml/SubtitleSeriesPreset.qml',
        '../../player/qml/PlayerControlbarControls.qml',
    )
 }

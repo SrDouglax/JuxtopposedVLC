@@ -26,7 +26,7 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr("Picture")
-            color: VLCStyle.redesign.textPrimary
+            color: VLCStyle.redesign.color("#EAEAEA", "#2e2e2e")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
         }
@@ -66,7 +66,7 @@ ColumnLayout {
             Label {
                 Layout.fillWidth: true
                 text: row.modelData.title
-                color: VLCStyle.redesign.textMuted
+                color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             }
@@ -113,17 +113,17 @@ ColumnLayout {
         Label {
             Layout.fillWidth: true
             text: qsTr("Reset picture")
-            color: VLCStyle.redesign.textMuted
+            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }
         Button {
             text: qsTr("Reset")
             onClicked: root.effects.resetDefaults("adjust")
-            background: Rectangle { color: VLCStyle.redesign.controlBackground; radius: 4 }
+            background: Rectangle { color: VLCStyle.redesign.color("#191919", "#ababaa"); radius: 4 }
             contentItem: Label {
                 text: parent.text
-                color: VLCStyle.redesign.textSecondary
+                color: VLCStyle.redesign.color("#969696", "#4d4d4d")
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 font.family: VLCStyle.redesign.fontFamily
