@@ -22,7 +22,7 @@ Dialog {
     property string targetKind: qsTr("To This File")
     readonly property bool readyToSave: {
         const rows = associations.sources
-        if (associations.busy || rows.length === 0 || associations.destinations.length === 0)
+        if (associations.busy || onlinePanel.busy || rows.length === 0 || associations.destinations.length === 0)
             return false
         for (let i = 0; i < rows.length; ++i) {
             if (rows[i].destination < 0)
@@ -77,6 +77,7 @@ Dialog {
     onRejected: associations.cancel()
     onClosed: {
         associations.cancel()
+        onlinePanel.clearCredentials()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
 
@@ -123,63 +124,32 @@ Dialog {
     contentItem: ColumnLayout {
         spacing: 0
 
-        RowLayout {
+        SubtitleSourceControls {
+            id: sourceControls
             Layout.fillWidth: true
             Layout.leftMargin: VLCStyle.dp(24, VLCStyle.scale)
             Layout.rightMargin: VLCStyle.dp(24, VLCStyle.scale)
             Layout.topMargin: VLCStyle.dp(12, VLCStyle.scale)
-            spacing: VLCStyle.dp(12, VLCStyle.scale)
+            associations: associations
+            initialTargetLabel: root.targetKind
+        }
 
-            Label {
-                Layout.minimumWidth: Math.min(VLCStyle.dp(200, VLCStyle.scale), root.width * 0.24)
-                Layout.preferredWidth: Layout.minimumWidth
-                Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
-                text: root.targetKind
-                color: "#d0d0d0"
-                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                verticalAlignment: Text.AlignVCenter
-                leftPadding: VLCStyle.dp(12, VLCStyle.scale)
-                background: Rectangle { color: "#151515"; radius: VLCStyle.dp(4, VLCStyle.scale) }
-            }
-
-            Button {
-                objectName: "subtitleChooseFilesButton"
-                Layout.minimumWidth: Math.min(VLCStyle.dp(200, VLCStyle.scale), root.width * 0.24)
-                Layout.preferredWidth: Layout.minimumWidth
-                Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
-                text: qsTr("From Computer")
-                enabled: !associations.busy
-                onClicked: associations.chooseFiles()
-                contentItem: Label {
-                    text: parent.text
-                    color: parent.enabled ? "#d0d0d0" : "#676767"
-                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                    verticalAlignment: Text.AlignVCenter
-                    leftPadding: VLCStyle.dp(12, VLCStyle.scale)
-                }
-                background: Rectangle { color: "#151515"; radius: VLCStyle.dp(4, VLCStyle.scale) }
-            }
-
-            Label {
-                Layout.fillWidth: true
-                Layout.minimumWidth: 0
-                Layout.preferredWidth: 0
-                Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
-                text: associations.destinations.length === 1
-                      ? associations.destinations[0].label
-                      : qsTr("%1 media file", "%1 media files", associations.destinations.length).arg(associations.destinations.length)
-                color: "#8f8f8f"
-                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                elide: Text.ElideMiddle
-                verticalAlignment: Text.AlignVCenter
-                leftPadding: VLCStyle.dp(12, VLCStyle.scale)
-                background: Rectangle { color: "#151515"; radius: VLCStyle.dp(4, VLCStyle.scale) }
-            }
+        OpenSubtitlesPanel {
+            id: onlinePanel
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.leftMargin: VLCStyle.dp(24, VLCStyle.scale)
+            Layout.rightMargin: VLCStyle.dp(24, VLCStyle.scale)
+            Layout.topMargin: VLCStyle.dp(20, VLCStyle.scale)
+            visible: sourceControls.online
+            associations: associations
+            onDownloadReady: sourceControls.originIndex = 0
         }
 
         ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            visible: !sourceControls.online
             Layout.topMargin: VLCStyle.dp(30, VLCStyle.scale)
             Layout.leftMargin: VLCStyle.dp(24, VLCStyle.scale)
             Layout.rightMargin: VLCStyle.dp(24, VLCStyle.scale)
@@ -283,7 +253,9 @@ Dialog {
             Layout.leftMargin: VLCStyle.dp(24, VLCStyle.scale)
             Layout.rightMargin: VLCStyle.dp(24, VLCStyle.scale)
             visible: associations.error.length > 0 || associations.sources.length === 0
-            text: associations.error.length > 0 ? associations.error : qsTr("Choose subtitle files from your computer.")
+            text: associations.error.length > 0 ? associations.error :
+                  sourceControls.originIndex === 1 ? qsTr("Enter a direct subtitle link above.") :
+                  qsTr("Choose subtitle files from your computer.")
             color: associations.error.length > 0 ? "#d37918" : "#8f8f8f"
             font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
             elide: Text.ElideRight

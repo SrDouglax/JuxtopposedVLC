@@ -17,6 +17,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QHash>
+#include <QNetworkReply>
 #include <QSet>
 
 #include <utility>
@@ -32,6 +33,11 @@ namespace {
 QString baseName(const QUrl& url)
 {
     return QFileInfo(url.toLocalFile()).completeBaseName().toCaseFolded();
+}
+
+QString baseName(const QString& filename)
+{
+    return QFileInfo(filename).completeBaseName().toCaseFolded();
 }
 
 QUrl fileUrl(const QVariant& value)
@@ -67,7 +73,8 @@ QVariantList MLSubtitleAssociations::sources() const
 {
     QVariantList list;
     for (const auto& source : m_sources)
-        list.push_back(QVariantMap{{"label", QFileInfo(source.url.toLocalFile()).fileName()},
+        list.push_back(QVariantMap{{"label", source.label.isEmpty() ?
+                                       QFileInfo(source.url.toLocalFile()).fileName() : source.label},
                                    {"url", source.url}, {"destination", source.destination},
                                    {"issue", source.issue}});
     return list;
@@ -84,11 +91,20 @@ void MLSubtitleAssociations::cancel()
     if (m_saving)
         return;
     ++m_revision;
+    ++m_targetRevision;
+    if (m_download)
+    {
+        m_download->abort();
+        m_download = nullptr;
+    }
     m_destinations.clear();
     m_sources.clear();
+    m_targets.clear();
+    m_selectedTarget = 0;
     m_error.clear();
     m_busy = false;
     emit changed();
+    emit targetsChanged();
 }
 
 void MLSubtitleAssociations::open(const MLItemId& target)
@@ -96,6 +112,12 @@ void MLSubtitleAssociations::open(const MLItemId& target)
     if (m_saving)
         return;
     cancel();
+    refreshTargets({target, {}, tr("This media")});
+    loadTarget(target);
+}
+
+void MLSubtitleAssociations::loadTarget(const MLItemId& target)
+{
     if (!m_ml || !target.isValid() ||
         (target.type != VLC_ML_PARENT_UNKNOWN && target.type != VLC_ML_PARENT_FOLDER &&
          target.type != VLC_ML_PARENT_PLAYLIST))
@@ -104,6 +126,11 @@ void MLSubtitleAssociations::open(const MLItemId& target)
         return;
     }
 
+    ++m_revision;
+    m_destinations.clear();
+    m_error.clear();
+    for (auto& source : m_sources)
+        source.destination = -1;
     m_busy = true;
     emit changed();
     const quint64 revision = m_revision;
@@ -165,6 +192,17 @@ void MLSubtitleAssociations::openUrl(const QUrl& target)
     if (m_saving)
         return;
     cancel();
+    refreshTargets({{}, target, tr("This file")});
+    loadUrlTarget(target);
+}
+
+void MLSubtitleAssociations::loadUrlTarget(const QUrl& target)
+{
+    ++m_revision;
+    m_destinations.clear();
+    m_error.clear();
+    for (auto& source : m_sources)
+        source.destination = -1;
     const QUrl url = fileUrl(target);
     if (url.isEmpty() || !QFileInfo(url.toLocalFile()).isFile())
     {
@@ -172,7 +210,7 @@ void MLSubtitleAssociations::openUrl(const QUrl& target)
         return;
     }
     m_destinations.push_back({0, url, QFileInfo(url.toLocalFile()).fileName()});
-    emit changed();
+    match();
 }
 
 void MLSubtitleAssociations::addFiles(const QVariantList& urls)
@@ -207,7 +245,7 @@ void MLSubtitleAssociations::addFiles(const QVariantList& urls)
             return;
         }
         seen.insert(url.toString(QUrl::FullyEncoded));
-        pending.push_back({url, -1, {}});
+        pending.push_back({url, -1, {}, info.fileName()});
     }
     for (const auto& source : pending)
         m_sources.push_back(source);
@@ -237,7 +275,7 @@ void MLSubtitleAssociations::match()
         if (source.destination >= 0)
             continue;
         source.issue.clear();
-        const auto matches = destinationsByName.value(baseName(source.url));
+        const auto matches = destinationsByName.value(baseName(source.label));
         if (matches.size() == 1)
             source.destination = matches.front();
         else if (m_destinations.size() == 1)

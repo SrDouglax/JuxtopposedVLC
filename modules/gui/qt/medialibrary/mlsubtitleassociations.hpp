@@ -19,6 +19,8 @@
 Q_MOC_INCLUDE("medialibrary/medialib.hpp")
 
 class MediaLib;
+class QNetworkAccessManager;
+class QNetworkReply;
 
 class MLSubtitleAssociations : public QObject
 {
@@ -28,6 +30,8 @@ class MLSubtitleAssociations : public QObject
     Q_PROPERTY(QVariantList sources READ sources NOTIFY changed)
     Q_PROPERTY(QString error READ error NOTIFY changed)
     Q_PROPERTY(bool busy READ busy NOTIFY changed)
+    Q_PROPERTY(QVariantList targets READ targets NOTIFY targetsChanged)
+    Q_PROPERTY(int selectedTarget READ selectedTarget NOTIFY targetsChanged)
 
 public:
     explicit MLSubtitleAssociations(QObject* parent = nullptr);
@@ -38,11 +42,16 @@ public:
     QVariantList sources() const;
     QString error() const { return m_error; }
     bool busy() const { return m_busy; }
+    QVariantList targets() const;
+    int selectedTarget() const { return m_selectedTarget; }
 
     Q_INVOKABLE void open(const MLItemId& target);
     Q_INVOKABLE void openUrl(const QUrl& target);
     Q_INVOKABLE void addFiles(const QVariantList& urls);
     Q_INVOKABLE void chooseFiles();
+    Q_INVOKABLE void addLink(const QUrl& url);
+    Q_INVOKABLE void addLinkWithName(const QUrl& url, const QString& filename);
+    Q_INVOKABLE void selectTarget(int index);
     Q_INVOKABLE void assign(int sourceIndex, int destinationIndex);
     Q_INVOKABLE void cancel();
     Q_INVOKABLE void save();
@@ -50,6 +59,7 @@ public:
 signals:
     void changed();
     void saved(int count);
+    void targetsChanged();
 
 private:
     struct Destination {
@@ -61,13 +71,27 @@ private:
         QUrl url;
         int destination = -1;
         QString issue;
+        QString label;
+    };
+    struct Target {
+        MLItemId id;
+        QUrl url;
+        QString label;
     };
 
     void setError(const QString& error);
     void match();
+    void loadTarget(const MLItemId& target);
+    void loadUrlTarget(const QUrl& target);
+    void refreshTargets(const Target& initial);
     QPointer<MediaLib> m_ml;
     QVector<Destination> m_destinations;
     QVector<Source> m_sources;
+    QVector<Target> m_targets;
+    int m_selectedTarget = 0;
+    quint64 m_targetRevision = 0;
+    QNetworkAccessManager* m_network = nullptr;
+    QNetworkReply* m_download = nullptr;
     QString m_error;
     bool m_busy = false;
     bool m_saving = false;
