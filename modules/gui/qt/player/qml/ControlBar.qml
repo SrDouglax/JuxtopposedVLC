@@ -367,6 +367,7 @@ T.Pane {
 
         PlayerControlLayout {
             id: playerControlLayout
+            inlineContentEnabled: root.availableWidth >= VLCStyle.dp(950, VLCStyle.scale)
 
             Layout.fillWidth: true
             Layout.fillHeight: true

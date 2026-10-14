@@ -74,6 +74,12 @@ Controls.Popup {
 
     contentItem: Item {
         id: scene
+        // ColorContext follows the visual QQuickItem tree. Popup itself is
+        // not an item, so its context cannot provide colors to these controls.
+        readonly property ColorContext colorContext: ColorContext {
+            palette: VLCStyle.palette
+            colorSet: ColorContext.Window
+        }
 
         // This strip sits over the actual player's control bar. Its editor
         // views are reparented here; no static screenshot or parallel model.

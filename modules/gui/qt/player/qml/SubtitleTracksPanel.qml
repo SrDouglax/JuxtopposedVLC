@@ -20,7 +20,21 @@ ColumnLayout {
     spacing: VLCStyle.dp(8, VLCStyle.scale)
     property var reveal: null
     property var presets: null
+    property int trackSelectionRevision: 0
     readonly property bool localMedia: Player.url.toString().startsWith("file://")
+
+    function tracksAreOff(revision) {
+        for (let i = 0; i < Player.subtitleTracks.count; ++i)
+            if (Player.subtitleTracks.data(Player.subtitleTracks.index(i, 0), Qt.CheckStateRole))
+                return false
+        return true
+    }
+    Connections {
+        target: Player.subtitleTracks
+        function onDataChanged() { ++root.trackSelectionRevision }
+        function onCountChanged() { ++root.trackSelectionRevision }
+        function onModelReset() { ++root.trackSelectionRevision }
+    }
 
     SubtitleAssociationsDialog {
         id: associationsDialog
@@ -39,12 +53,7 @@ ColumnLayout {
         objectName: "subtitleOffButton"
         Layout.fillWidth: true
         text: qsTr("Off")
-        checked: {
-            for (let i = 0; i < Player.subtitleTracks.count; ++i)
-                if (Player.subtitleTracks.data(Player.subtitleTracks.index(i, 0), Qt.CheckStateRole))
-                    return false
-            return true
-        }
+        checked: root.tracksAreOff(root.trackSelectionRevision)
         onClicked: {
             for (let i = 0; i < Player.subtitleTracks.count; ++i) {
                 const index = Player.subtitleTracks.index(i, 0)

@@ -78,7 +78,7 @@ Item {
 
                         const profile = MainCtx.controlbarProfileModel.currentModel
                         if (profile && profile.getModel(identifier).dirty)
-                            return _markDirty(text)
+                            return text + " *"
                         else
                             return text
                     }

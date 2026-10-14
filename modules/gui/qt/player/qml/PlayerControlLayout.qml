@@ -37,7 +37,8 @@ FocusScope {
     property int identifier: -1
 
     // A default profile with an empty center leaves room for the timeline.
-    readonly property Item inlineContentHost: (width >= VLCStyle.dp(950, VLCStyle.scale))
+    property bool inlineContentEnabled: false
+    readonly property Item inlineContentHost: inlineContentEnabled && loaderLeftRight.active
                                              ? (loaderLeftRight.item?.inlineContentHost ?? null) : null
     property Item inlineFocusItem: null
     readonly property Item inlineLeftItem: loaderLeftRight.item?.lastLeftControl ?? null
@@ -89,7 +90,7 @@ FocusScope {
         focus: active
 
         sourceComponent: RowLayout {
-            property alias inlineContentHost: inlineContentHost
+            property alias inlineContentHost: timelineHost
             readonly property Item lastLeftControl: leftRepeater.itemAt(leftRepeater.count - 1)
             readonly property Item firstRightControl: rightRepeater.itemAt(0)
 
@@ -133,7 +134,7 @@ FocusScope {
             }
 
             Item {
-                id: inlineContentHost
+                id: timelineHost
 
                 function containsVisibleItem(repeater) {
                     for (let i = 0; i < repeater.count; ++i) {

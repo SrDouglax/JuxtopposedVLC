@@ -99,6 +99,7 @@ ListView {
 
     readonly property ColorContext colorContext: ColorContext {
         id: theme
+        palette: VLCStyle.palette
         colorSet: ColorContext.View
     }
 

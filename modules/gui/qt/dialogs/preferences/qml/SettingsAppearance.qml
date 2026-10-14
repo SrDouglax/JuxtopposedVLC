@@ -16,6 +16,10 @@ Item {
     property color selectedAccent: VLCStyle.redesign.accent
     property color initialAccent: VLCStyle.redesign.accent
     readonly property bool dark: VLCStyle.palette.isDark
+    readonly property color selectedAccentBackground: Qt.colorEqual(selectedAccent, "#d37918")
+        ? (dark ? "#371f06" : "#f7e2c9")
+        : Qt.tint(dark ? "#0e0e0e" : "#dedede",
+                  Qt.rgba(selectedAccent.r, selectedAccent.g, selectedAccent.b, dark ? 0.25 : 0.35))
     readonly property bool dirty: selectedTheme !== initialTheme
                                   || selectedAccent.toString() !== initialAccent.toString()
 
@@ -104,7 +108,7 @@ Item {
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                 background: Rectangle {
                     color: root.selectedTheme === modelData.index
-                           ? (root.dark ? "#371f06" : "#f7e2c9")
+                           ? root.selectedAccentBackground
                            : (root.dark ? "#191919" : "#eeeeee")
                     border.color: root.dark ? "#232323" : "#cccccc"
                     radius: 3

@@ -42,20 +42,22 @@ ColumnLayout {
             objectName: "openSubtitlesQuery"
             Layout.fillWidth: true
             placeholderText: qsTr("Title or episode")
-            color: "#d0d0d0"
+            placeholderTextColor: VLCStyle.redesign.color("#969696", "#4d4d4d")
+            color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
             selectByMouse: true
             onAccepted: if (searchButton.enabled) searchButton.clicked()
-            background: Rectangle { color: "#151515"; radius: 4 }
+            background: Rectangle { color: VLCStyle.redesign.color("#151515", "#dedede"); radius: 4 }
         }
         Controls.TextField {
             id: languageField
             objectName: "openSubtitlesLanguage"
             Layout.preferredWidth: VLCStyle.dp(110, VLCStyle.scale)
             placeholderText: qsTr("Language code")
+            placeholderTextColor: VLCStyle.redesign.color("#969696", "#4d4d4d")
             text: "en"
-            color: "#d0d0d0"
+            color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
             selectByMouse: true
-            background: Rectangle { color: "#151515"; radius: 4 }
+            background: Rectangle { color: VLCStyle.redesign.color("#151515", "#dedede"); radius: 4 }
         }
         Controls.Button {
             id: searchButton
@@ -67,12 +69,12 @@ ColumnLayout {
                 service.search(queryField.text, languageField.text, apiKeyField.text)
             }
             background: Rectangle {
-                color: parent.hovered ? "#252525" : "#151515"
+                color: parent.hovered ? VLCStyle.redesign.color("#252525", "#929291") : VLCStyle.redesign.color("#151515", "#dedede")
                 radius: VLCStyle.dp(4, VLCStyle.scale)
             }
             contentItem: Controls.Label {
                 text: parent.text
-                color: parent.enabled ? "#d0d0d0" : "#676767"
+                color: parent.enabled ? VLCStyle.redesign.color("#d0d0d0", "#2e2e2e") : VLCStyle.redesign.color("#676767", "#7c7c7b")
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -87,36 +89,39 @@ ColumnLayout {
             objectName: "openSubtitlesApiKey"
             Layout.fillWidth: true
             placeholderText: qsTr("OpenSubtitles API key")
+            placeholderTextColor: VLCStyle.redesign.color("#969696", "#4d4d4d")
             echoMode: TextInput.Password
-            color: "#d0d0d0"
+            color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
             selectByMouse: true
-            background: Rectangle { color: "#151515"; radius: 4 }
+            background: Rectangle { color: VLCStyle.redesign.color("#151515", "#dedede"); radius: 4 }
         }
         Controls.TextField {
             id: usernameField
             objectName: "openSubtitlesUsername"
             Layout.fillWidth: true
             placeholderText: qsTr("Username")
-            color: "#d0d0d0"
+            placeholderTextColor: VLCStyle.redesign.color("#969696", "#4d4d4d")
+            color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
             selectByMouse: true
-            background: Rectangle { color: "#151515"; radius: 4 }
+            background: Rectangle { color: VLCStyle.redesign.color("#151515", "#dedede"); radius: 4 }
         }
         Controls.TextField {
             id: passwordField
             objectName: "openSubtitlesPassword"
             Layout.fillWidth: true
             placeholderText: qsTr("Password")
+            placeholderTextColor: VLCStyle.redesign.color("#969696", "#4d4d4d")
             echoMode: TextInput.Password
-            color: "#d0d0d0"
+            color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
             selectByMouse: true
-            background: Rectangle { color: "#151515"; radius: 4 }
+            background: Rectangle { color: VLCStyle.redesign.color("#151515", "#dedede"); radius: 4 }
         }
     }
 
     Controls.Label {
         Layout.fillWidth: true
         text: qsTr("Your credentials are used for this session only. Downloads use your OpenSubtitles quota.")
-        color: "#8f8f8f"
+        color: VLCStyle.redesign.color("#8f8f8f", "#7c7c7b")
         font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
         wrapMode: Text.WordWrap
     }
@@ -131,7 +136,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: service.error.length > 0 || (!service.busy && service.results.length === 0)
         text: service.error.length > 0 ? service.error : qsTr("Search OpenSubtitles to see available files.")
-        color: service.error.length > 0 ? "#d37918" : "#8f8f8f"
+        color: service.error.length > 0 ? "#d37918" : VLCStyle.redesign.color("#8f8f8f", "#7c7c7b")
         font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
         wrapMode: Text.WordWrap
     }
@@ -153,12 +158,12 @@ ColumnLayout {
             text: modelData.filename + " · " + modelData.language
             onClicked: root.selectedIndex = index
             background: Rectangle {
-                color: parent.highlighted ? "#252525" : parent.hovered ? "#1b1b1b" : "transparent"
+                color: parent.highlighted ? VLCStyle.redesign.color("#252525", "#929291") : parent.hovered ? VLCStyle.redesign.color("#1b1b1b", "#ababaa") : "transparent"
                 radius: VLCStyle.dp(4, VLCStyle.scale)
             }
             contentItem: Controls.Label {
                 text: parent.text
-                color: "#d0d0d0"
+                color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                 verticalAlignment: Text.AlignVCenter
                 elide: Text.ElideMiddle
@@ -179,7 +184,7 @@ ColumnLayout {
         }
         contentItem: Controls.Label {
             text: parent.text
-            color: parent.enabled ? VLCStyle.redesign.accent : "#676767"
+            color: parent.enabled ? VLCStyle.redesign.accent : VLCStyle.redesign.color("#676767", "#7c7c7b")
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
         }

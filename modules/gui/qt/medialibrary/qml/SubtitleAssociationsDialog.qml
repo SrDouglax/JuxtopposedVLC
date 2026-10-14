@@ -37,6 +37,7 @@ Dialog {
     }
 
     modal: true
+    z: 100
     focus: true
     property bool previousGlobalShortcuts: true
     onOpened: {
@@ -54,7 +55,7 @@ Dialog {
     font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
 
     background: Rectangle {
-        color: "#0e0e0e"
+        color: VLCStyle.redesign.color("#0e0e0e", "#c2c2c1")
         border.color: "#242424"
         radius: VLCStyle.dp(8, VLCStyle.scale)
     }
@@ -88,7 +89,7 @@ Dialog {
     }
 
     header: Rectangle {
-        color: "#0e0e0e"
+        color: VLCStyle.redesign.color("#0e0e0e", "#c2c2c1")
         implicitHeight: VLCStyle.dp(42, VLCStyle.scale)
 
         Label {
@@ -96,7 +97,7 @@ Dialog {
             anchors.leftMargin: VLCStyle.dp(24, VLCStyle.scale)
             anchors.verticalCenter: parent.verticalCenter
             text: qsTr("Add Subtitles")
-            color: "#8f8f8f"
+            color: VLCStyle.redesign.color("#8f8f8f", "#7c7c7b")
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }
 
@@ -113,7 +114,7 @@ Dialog {
             background: Item {}
             contentItem: Label {
                 text: parent.text
-                color: parent.enabled ? "#8f8f8f" : "#4c4c4c"
+                color: parent.enabled ? VLCStyle.redesign.color("#8f8f8f", "#7c7c7b") : "#4c4c4c"
                 font.pixelSize: VLCStyle.dp(24, VLCStyle.scale)
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -122,6 +123,10 @@ Dialog {
     }
 
     contentItem: ColumnLayout {
+        readonly property ColorContext colorContext: ColorContext {
+            palette: VLCStyle.palette
+            colorSet: ColorContext.Window
+        }
         spacing: 0
 
         SubtitleSourceControls {
@@ -189,12 +194,12 @@ Dialog {
                             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                             displayText: currentIndex < 0 ? qsTr("Choose media") : currentText
                             background: Rectangle {
-                                color: parent.hovered || parent.activeFocus ? "#151515" : "transparent"
+                                color: parent.hovered || parent.activeFocus ? VLCStyle.redesign.color("#151515", "#dedede") : "transparent"
                                 radius: VLCStyle.dp(4, VLCStyle.scale)
                             }
                             contentItem: Label {
                                 text: parent.displayText
-                                color: "#8f8f8f"
+                                color: VLCStyle.redesign.color("#8f8f8f", "#7c7c7b")
                                 font: parent.font
                                 elide: Text.ElideMiddle
                                 verticalAlignment: Text.AlignVCenter
@@ -228,7 +233,7 @@ Dialog {
                         Label {
                             Layout.preferredWidth: Math.min(VLCStyle.dp(280, VLCStyle.scale), root.width * 0.28)
                             text: modelData.label
-                            color: "#d0d0d0"
+                            color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
                             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                             elide: Text.ElideMiddle
                             verticalAlignment: Text.AlignVCenter
@@ -256,7 +261,7 @@ Dialog {
             text: associations.error.length > 0 ? associations.error :
                   sourceControls.originIndex === 1 ? qsTr("Enter a direct subtitle link above.") :
                   qsTr("Choose subtitle files from your computer.")
-            color: associations.error.length > 0 ? "#d37918" : "#8f8f8f"
+            color: associations.error.length > 0 ? "#d37918" : VLCStyle.redesign.color("#8f8f8f", "#7c7c7b")
             font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
             elide: Text.ElideRight
         }
@@ -275,7 +280,7 @@ Dialog {
             background: Item {}
             contentItem: Label {
                 text: parent.text
-                color: parent.enabled ? "#8f8f8f" : "#4c4c4c"
+                color: parent.enabled ? VLCStyle.redesign.color("#8f8f8f", "#7c7c7b") : "#4c4c4c"
                 font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                 verticalAlignment: Text.AlignVCenter
             }

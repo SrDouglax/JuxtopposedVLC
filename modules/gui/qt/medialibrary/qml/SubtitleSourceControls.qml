@@ -30,7 +30,8 @@ ColumnLayout {
         Widgets.ComboBoxExt {
             id: targetPicker
             objectName: "subtitleTargetPicker"
-            Layout.preferredWidth: Math.min(VLCStyle.dp(220, VLCStyle.scale), root.width * .27)
+            Layout.minimumWidth: VLCStyle.dp(140, VLCStyle.scale)
+            Layout.preferredWidth: VLCStyle.dp(220, VLCStyle.scale)
             Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
             model: root.associations.targets
             textRole: "label"
@@ -40,10 +41,10 @@ ColumnLayout {
             displayText: currentIndex === 0 ? root.initialTargetLabel :
                          currentIndex >= 0 ? model[currentIndex].kind + ": " + currentText : ""
             onActivated: (index) => root.associations.selectTarget(index)
-            background: Rectangle { color: "#151515"; radius: VLCStyle.dp(4, VLCStyle.scale) }
+            background: Rectangle { color: VLCStyle.redesign.color("#151515", "#dedede"); radius: VLCStyle.dp(4, VLCStyle.scale) }
             contentItem: Controls.Label {
                 text: parent.displayText
-                color: "#d0d0d0"
+                color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
                 font: parent.font
                 leftPadding: VLCStyle.dp(12, VLCStyle.scale)
                 verticalAlignment: Text.AlignVCenter
@@ -54,17 +55,18 @@ ColumnLayout {
         Widgets.ComboBoxExt {
             id: originPicker
             objectName: "subtitleOriginPicker"
-            Layout.preferredWidth: Math.min(VLCStyle.dp(220, VLCStyle.scale), root.width * .27)
+            Layout.minimumWidth: VLCStyle.dp(140, VLCStyle.scale)
+            Layout.preferredWidth: VLCStyle.dp(220, VLCStyle.scale)
             Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
             model: [qsTr("From Computer"), qsTr("From Link"), qsTr("From OpenSubtitles")]
             currentIndex: root.originIndex
             enabled: !root.associations.busy
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             onActivated: (index) => root.originIndex = index
-            background: Rectangle { color: "#151515"; radius: VLCStyle.dp(4, VLCStyle.scale) }
+            background: Rectangle { color: VLCStyle.redesign.color("#151515", "#dedede"); radius: VLCStyle.dp(4, VLCStyle.scale) }
             contentItem: Controls.Label {
                 text: parent.displayText
-                color: "#d0d0d0"
+                color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
                 font: parent.font
                 leftPadding: VLCStyle.dp(12, VLCStyle.scale)
                 verticalAlignment: Text.AlignVCenter
@@ -80,12 +82,12 @@ ColumnLayout {
             enabled: !root.associations.busy
             onClicked: root.associations.chooseFiles()
             background: Rectangle {
-                color: parent.hovered ? "#252525" : "#151515"
+                color: parent.hovered ? VLCStyle.redesign.color("#252525", "#929291") : VLCStyle.redesign.color("#151515", "#dedede")
                 radius: VLCStyle.dp(4, VLCStyle.scale)
             }
             contentItem: Controls.Label {
                 text: parent.text
-                color: parent.enabled ? "#d0d0d0" : "#676767"
+                color: parent.enabled ? VLCStyle.redesign.color("#d0d0d0", "#2e2e2e") : VLCStyle.redesign.color("#676767", "#7c7c7b")
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -98,7 +100,7 @@ ColumnLayout {
                   ? root.associations.destinations[0].label
                   : qsTr("%1 media file", "%1 media files", root.associations.destinations.length)
                         .arg(root.associations.destinations.length)
-            color: "#8f8f8f"
+            color: VLCStyle.redesign.color("#8f8f8f", "#7c7c7b")
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
             elide: Text.ElideMiddle
         }
@@ -114,12 +116,13 @@ ColumnLayout {
             Layout.fillWidth: true
             Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
             placeholderText: qsTr("Direct HTTPS link to a subtitle file")
-            color: "#d0d0d0"
+            placeholderTextColor: VLCStyle.redesign.color("#969696", "#4d4d4d")
+            color: VLCStyle.redesign.color("#d0d0d0", "#2e2e2e")
             selectByMouse: true
             onAccepted: if (addButton.enabled) addButton.clicked()
             background: Rectangle {
-                color: "#151515"
-                border.color: linkField.activeFocus ? VLCStyle.redesign.accent : "#252525"
+                color: VLCStyle.redesign.color("#151515", "#dedede")
+                border.color: linkField.activeFocus ? VLCStyle.redesign.accent : VLCStyle.redesign.color("#252525", "#929291")
                 radius: VLCStyle.dp(4, VLCStyle.scale)
             }
         }
@@ -130,12 +133,12 @@ ColumnLayout {
             enabled: !root.associations.busy && linkField.text.trim().length > 0
             onClicked: root.associations.addLink(linkField.text.trim())
             background: Rectangle {
-                color: parent.hovered ? "#252525" : "#151515"
+                color: parent.hovered ? VLCStyle.redesign.color("#252525", "#929291") : VLCStyle.redesign.color("#151515", "#dedede")
                 radius: VLCStyle.dp(4, VLCStyle.scale)
             }
             contentItem: Controls.Label {
                 text: parent.text
-                color: parent.enabled ? "#d0d0d0" : "#676767"
+                color: parent.enabled ? VLCStyle.redesign.color("#d0d0d0", "#2e2e2e") : VLCStyle.redesign.color("#676767", "#7c7c7b")
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
@@ -152,7 +155,7 @@ ColumnLayout {
         }
         Controls.Label {
             text: qsTr("Working on subtitles…")
-            color: "#8f8f8f"
+            color: VLCStyle.redesign.color("#8f8f8f", "#7c7c7b")
             font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
         }
     }
