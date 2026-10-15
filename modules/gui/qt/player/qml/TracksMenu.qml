@@ -119,20 +119,29 @@ C.Popup {
                     RowLayout {
                         visible: root.currentTab === 0
                         Layout.fillWidth: true
+                        spacing: VLCStyle.dp(16, VLCStyle.scale)
                         Text {
                             Layout.fillWidth: true
                             text: qsTr("External Tracks")
                             color: VLCStyle.redesign.color("#6b6b6b", "#4d4d4d")
                             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                         }
-                        C.Button {
+                        C.ToolButton {
+                            id: editExternal
                             objectName: "playerSubtitleTools"
                             Accessible.name: qsTr("Edit subtitles and series preset")
-                            flat: true
-                            implicitWidth: VLCStyle.dp(28, VLCStyle.scale)
-                            implicitHeight: VLCStyle.dp(28, VLCStyle.scale)
+                            Layout.preferredWidth: VLCStyle.dp(28, VLCStyle.scale)
+                            Layout.preferredHeight: VLCStyle.dp(28, VLCStyle.scale)
+                            padding: VLCStyle.dp(4, VLCStyle.scale)
+                            background: Rectangle {
+                                radius: VLCStyle.dp(4, VLCStyle.scale)
+                                color: editExternal.hovered || editExternal.visualFocus
+                                    ? VLCStyle.redesign.color("#202020", "#dedede") : "transparent"
+                            }
                             contentItem: Impl.IconImage {
                                 source: "qrc:///redesign/icons/edit/default.png"
+                                sourceSize: Qt.size(20, 20)
+                                fillMode: Image.PreserveAspectFit
                                 color: VLCStyle.redesign.color("#6b6b6b", "#4d4d4d")
                             }
                             enabled: Player.isStarted
@@ -142,9 +151,23 @@ C.Popup {
                                 subtitleTools.open();
                             }
                         }
-                        C.Button {
-                            text: "+"
-                            flat: true
+                        C.ToolButton {
+                            id: addExternal
+                            Accessible.name: qsTr("Add subtitles")
+                            Layout.preferredWidth: VLCStyle.dp(28, VLCStyle.scale)
+                            Layout.preferredHeight: VLCStyle.dp(28, VLCStyle.scale)
+                            padding: VLCStyle.dp(4, VLCStyle.scale)
+                            background: Rectangle {
+                                radius: VLCStyle.dp(4, VLCStyle.scale)
+                                color: addExternal.hovered || addExternal.visualFocus
+                                    ? VLCStyle.redesign.color("#202020", "#dedede") : "transparent"
+                            }
+                            contentItem: Impl.IconImage {
+                                source: "qrc:///redesign/icons/add/default.png"
+                                sourceSize: Qt.size(20, 20)
+                                fillMode: Image.PreserveAspectFit
+                                color: VLCStyle.redesign.color("#6b6b6b", "#4d4d4d")
+                            }
                             onClicked: DialogsProvider.loadSubtitlesFile()
                         }
                     }

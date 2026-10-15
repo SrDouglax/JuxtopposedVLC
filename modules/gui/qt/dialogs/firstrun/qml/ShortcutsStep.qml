@@ -6,6 +6,11 @@ import VLC.Style
 Item {
     id: root
     property var shortcuts: []
+    function keyLabel(sequence) {
+        return sequence.replace(/Left$/, "←").replace(/Right$/, "→")
+            .replace(/Up$/, "↑").replace(/Down$/, "↓")
+            .replace(/(^|\+)([a-z])$/, (match, prefix, letter) => prefix + letter.toUpperCase())
+    }
 
     Text {
         y: 66
@@ -29,7 +34,7 @@ Item {
 
     Controls.ScrollView {
         x: 62
-        y: 144
+        y: 156
         width: parent.width - 124
         height: 490
         clip: true
@@ -37,7 +42,7 @@ Item {
         contentWidth: availableWidth
         Column {
             width: parent.width
-            spacing: 14
+            spacing: 27
             Repeater {
                 model: Math.ceil(root.shortcuts.length / 2)
                 delegate: Row {
@@ -45,7 +50,7 @@ Item {
                     required property int index
                     width: parent.width
                     height: implicitHeight
-                    spacing: 38
+                    spacing: 120
                     Repeater {
                         model: 2
                         delegate: Item {
@@ -54,7 +59,7 @@ Item {
                             readonly property var shortcut: shortcutIndex < root.shortcuts.length ? root.shortcuts[shortcutIndex] : null
                             readonly property var sequences: shortcut
                                 ? shortcut.sequence.split("\t").filter(sequence => sequence.length > 0) : []
-                            width: (parent.width - 38) / 2
+                            width: (parent.width - 120) / 2
                             implicitHeight: Math.max(55, keycaps.implicitHeight + 12)
                             height: implicitHeight
                             visible: shortcut !== null
@@ -72,7 +77,7 @@ Item {
                                 id: keycaps
                                 anchors.right: parent.right
                                 anchors.verticalCenter: parent.verticalCenter
-                                width: parent.width * 0.56
+                                width: parent.width - 240
                                 spacing: 8
                                 Repeater {
                                     model: keycaps.parent.sequences
@@ -105,7 +110,7 @@ Item {
                                                 id: keyText
                                                 anchors.centerIn: parent
                                                 width: parent.width - 28
-                                                text: modelData
+                                                text: root.keyLabel(modelData)
                                                 color: "#c6c6c6"
                                                 font.family: VLCStyle.redesign.fontFamily
                                                 font.pixelSize: 15
@@ -118,8 +123,8 @@ Item {
                                                 hoverEnabled: true
                                                 acceptedButtons: Qt.NoButton
                                             }
-                                            Controls.ToolTip.visible: hover.containsMouse && keyText.truncated
-                                            Controls.ToolTip.text: modelData
+                                            Controls.ToolTip.visible: hover.containsMouse
+                                            Controls.ToolTip.text: keycaps.parent.shortcut.aliases || modelData
                                         }
                                     }
                                 }

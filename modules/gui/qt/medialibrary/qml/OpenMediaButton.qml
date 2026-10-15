@@ -57,13 +57,13 @@ Widgets.ButtonExt {
         id: menu
 
         actions: [
-            { text: qsTr("File…"), action: () => DialogsProvider.simpleOpenDialog() },
-            { text: qsTr("Folder…"), action: () => DialogsProvider.PLOpenDir() },
-            { text: qsTr("Network stream…"), action: () => DialogsProvider.openNetDialog() },
-            { text: qsTr("Disc…"), action: () => DialogsProvider.openDiscDialog() },
-            { text: qsTr("Capture device…"), action: () => DialogsProvider.openCaptureDialog() },
-            { text: qsTr("Convert…"), action: () => DialogsProvider.openAndTranscodingDialogs() },
-            { text: qsTr("Stream…"), action: () => DialogsProvider.openAndStreamingDialogs() }
+            { text: qsTr("File…"), icon: "file", action: () => DialogsProvider.simpleOpenDialog() },
+            { text: qsTr("Folder…"), icon: "folder", action: () => DialogsProvider.PLOpenDir() },
+            { text: qsTr("Network stream…"), icon: "streaming", action: () => DialogsProvider.openNetDialog() },
+            { text: qsTr("Disc…"), icon: "disc", action: () => DialogsProvider.openDiscDialog() },
+            { text: qsTr("Capture device…"), icon: "capture-device", action: () => DialogsProvider.openCaptureDialog() },
+            { text: qsTr("Convert…"), icon: "swap", action: () => DialogsProvider.openAndTranscodingDialogs() },
+            { text: qsTr("Stream…"), icon: "streaming", action: () => DialogsProvider.openAndStreamingDialogs() }
         ]
 
         onRequestData: (requestID, _) => setData(requestID, [])

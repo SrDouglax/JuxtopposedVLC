@@ -190,7 +190,9 @@ bool ConfigModel::normalize(const Entry &entry, const QVariant &value,
     } else {
         *normalized = value.toString();
     }
-    if (!entry.choices.isEmpty()) {
+    const bool rgb = entry.key.endsWith(QLatin1String("-color")) && entry.type == QLatin1String("integer");
+    if (rgb && (normalized->toLongLong() < 0 || normalized->toLongLong() > 0xffffff)) return false;
+    if (!entry.choices.isEmpty() && !rgb) {
         bool found = false;
         for (const QVariant &choice : entry.choices)
             if (choice.toMap().value(QStringLiteral("value")) == *normalized) {

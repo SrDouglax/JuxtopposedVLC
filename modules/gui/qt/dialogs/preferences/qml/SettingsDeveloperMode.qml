@@ -33,35 +33,13 @@ ColumnLayout {
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
     }
-    RowLayout {
+    SettingsOptionRow {
         Layout.fillWidth: true
-        implicitHeight: VLCStyle.dp(42, VLCStyle.scale)
-        Label {
-            Layout.fillWidth: true
-            text: qsTr("Developer mode")
-            color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
-            font.family: VLCStyle.redesign.fontFamily
-            font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-        }
-        Switch {
-            id: developerSwitch
-            objectName: "settingsDeveloperMode"
-            Binding on checked { when: !developerSwitch.pressed; value: root.selected }
-            onClicked: root.selected = checked
-            indicator: Rectangle {
-                implicitWidth: VLCStyle.dp(40, VLCStyle.scale)
-                implicitHeight: VLCStyle.dp(22, VLCStyle.scale)
-                radius: height / 2
-                color: developerSwitch.checked ? VLCStyle.redesign.accent : "#373737"
-                Rectangle {
-                    x: developerSwitch.checked ? parent.width - width - 3 : 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: VLCStyle.dp(16, VLCStyle.scale)
-                    height: width
-                    radius: width / 2
-                    color: "#eaeaea"
-                }
-            }
-        }
+        settingKey: "developer-mode"
+        label: qsTr("Developer mode")
+        help: qsTr("Show advanced interface diagnostics")
+        settingType: "boolean"
+        settingValue: root.selected
+        onCommit: value => root.selected = value
     }
 }

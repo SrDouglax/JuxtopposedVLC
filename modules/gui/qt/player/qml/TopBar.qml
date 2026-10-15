@@ -29,6 +29,7 @@ import VLC.Playlist
 import VLC.Widgets as Widgets
 import VLC.Menus as Menus
 import VLC.Util
+import VLC.Player
 
 FocusScope{
     id: root
@@ -69,6 +70,7 @@ FocusScope{
     // Aliases
 
     property alias resumeVisible: resumeDialog.visible
+    readonly property bool showResume: resumeVisible && !PlayerControlbarControls.editing
 
     property bool playlistVisible: false
 
@@ -77,6 +79,7 @@ FocusScope{
     signal togglePlaylistVisibility()
     signal requestLockUnlockAutoHide(bool lock)
     signal backRequested()
+    signal menuOpened(var menu)
 
     ///incomming signal to request all menu and popup to close
     signal forceUnlock()
@@ -139,8 +142,8 @@ FocusScope{
             //VLCStyle.redesign.topbarHeight is its initial value
             const lineHeight = Math.max(VLCStyle.redesign.topbarHeight, logoOrResume.implicitHeight)
 
-            centerTitleText.y = topMargin
-            centerTitleText.height = lineHeight
+            headerControls.y = topMargin
+            headerControls.height = lineHeight
 
             csdDecorations.height  = lineHeight
             csdDecorations.anchors.topMargin = topMargin
@@ -242,11 +245,11 @@ FocusScope{
         anchors.top: root.top
         anchors.leftMargin:  root._sideMargin
 
-        implicitWidth: resumeVisible ? resumeDialog.implicitWidth
+        implicitWidth: root.showResume ? resumeDialog.implicitWidth
                                      : logoGroup.implicitWidth
 
         implicitHeight: {
-            if (root.resumeVisible) {
+            if (root.showResume) {
                 // Only if there are multiple lines use `resumeDialog`'s implicit height, otherwise the video
                 // window may get resized by few pixels unnecessarily when `resumeDialog` is no longer visible.
                 if (resumeDialog.implicitHeight >= (logoGroup.implicitHeight + resumeDialog.baselineOffset))
@@ -266,51 +269,27 @@ FocusScope{
 
             anchors.fill: parent
 
-            visible: (root._showTopBar && root.resumeVisible === false)
+            visible: (root._showTopBar && !root.showResume)
 
             implicitHeight: VLCStyle.redesign.topbarHeight
-            implicitWidth: backBtn.implicitWidth + logo.implicitWidth + VLCStyle.margin_xxsmall
-
-            Widgets.IconToolButton {
-                id: backBtn
-                color: VLCStyle.redesign.color(enabled ? VLCStyle.redesign.textMuted : VLCStyle.redesign.textDisabled,
-                                               colorContext.fg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
-                backgroundColor: VLCStyle.redesign.color(hovered || down ? VLCStyle.redesign.controlHoverBackground : "transparent",
-                                                         colorContext.bg.primary, (colorContext.palette?.isDark ?? VLCStyle.darkPalette.isDark))
-                radius: VLCStyle.redesign.controlRadius
-
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-
-                objectName: "IconToolButton"
-                font.pixelSize: VLCStyle.redesign.iconSize
-                text: VLCIcons.back
-                description: qsTr("Back")
-
-                AccessibleCompat.id: "topBarBackButton"
-
-                focus: true
-
-                Navigation.parentItem: root
-                onClicked: root.backRequested()
-
-                onHoveredChanged: root.requestLockUnlockAutoHide(hovered)
-            }
+            implicitWidth: logo.implicitWidth
 
             Widgets.BannerCone {
                 id: logo
                 source: "qrc:///redesign/logo.svg"
 
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.left: backBtn.right
-                anchors.leftMargin: VLCStyle.margin_xxsmall
+                anchors.left: parent.left
 
                 color: VLCStyle.redesign.logoColor
             }
+
         }
 
         ResumeDialog {
             id: resumeDialog
+            opacity: PlayerControlbarControls.editing ? 0 : 1
+            enabled: !PlayerControlbarControls.editing
 
             anchors.fill: parent
             //add aditional margin so it align with menubar text when visible (see MenuBar.qml)
@@ -326,7 +305,7 @@ FocusScope{
 
             onHidden: {
                 if (activeFocus) {
-                    backBtn.forceActiveFocus()
+                    headerControls.forceActiveFocus()
                 }
             }
 
@@ -336,30 +315,62 @@ FocusScope{
         }
     }
 
-    Title {
-        id: centerTitleText
-        centerWithinBounds: true
-        leftLimit: logoOrResume.x + logoOrResume.width
-        rightLimit: root.showCSD ? csdDecorations.x : root.width
-        visible: root._showCenterText && !root.resumeVisible
-        enabled: visible
-        text: root.title || (Player.isStarted && Player.name.length ? Player.name : qsTr("VLC Media Player"))
-        Accessible.name: root.title || text
-        colorContext.palette: theme.palette
-    }
-
-    Title {
-        id: leftTitleText
-        anchors.left: parent.left
-        anchors.top: logoOrResume.bottom
-        anchors.leftMargin: root._sideMargin
-        width: root.textWidth - VLCStyle.margin_normal
-        visible: !root.pinControls && !root._showCenterText
-        enabled: visible
-        topPadding: VLCStyle.margin_large
-        leftPadding: logo.x
-        text: root.title
-        colorContext.palette: theme.palette
+    Loader {
+        id: headerControls
+        objectName: "playerHeaderControls"
+        anchors.left: logoOrResume.right
+        anchors.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
+        anchors.right: root.showCSD ? csdDecorations.left : parent.right
+        anchors.rightMargin: root._sideMargin
+        visible: root._showTopBar && !root.showResume
+        // The editor supplies its own editable header preview.
+        active: !PlayerControlbarControls.editing
+        sourceComponent: FocusScope {
+            id: headerLayout
+            readonly property PlayerControlbarModel model: MainCtx.controlbarProfileModel.currentModel
+                ?.getModel(MainCtx.hasEmbededVideo ? PlayerControlbarModel.VideoplayerHeader
+                                                  : PlayerControlbarModel.AudioplayerHeader) ?? null
+            Navigation.parentItem: root
+            Navigation.downItem: root.Navigation.downItem
+            // Header controls are a simple row, without the footer's flexible
+            // timeline layout. Keep each section's host stable across profiles.
+            Repeater {
+                model: 3
+                Row {
+                    id: section
+                    required property int index
+                    spacing: VLCStyle.dp(12, VLCStyle.scale)
+                    readonly property real available: index === 1
+                        ? Math.max(0, headerLayout.width - 2 * Math.max(leftWidth, rightWidth) - VLCStyle.dp(32, VLCStyle.scale))
+                        : headerLayout.width * 0.4
+                    readonly property real leftWidth: headerSections.itemAt(0)?.width ?? 0
+                    readonly property real rightWidth: headerSections.itemAt(2)?.width ?? 0
+                    width: Math.min(implicitWidth, available)
+                    height: headerLayout.height
+                    x: index === 0 ? 0 : index === 2 ? headerLayout.width - width
+                       : root.width / 2 - headerControls.x - width / 2
+                    clip: true
+                    ControlRepeater {
+                        id: headerRepeater
+                        compactHeader: true
+                        availableWidth: section.available
+                        availableHeight: section.height
+                        Navigation.parentItem: headerLayout
+                        model: ControlListFilter {
+                            sourceModel: section.index === 0 ? (headerLayout.model?.left ?? null)
+                                       : section.index === 1 ? (headerLayout.model?.center ?? null)
+                                                             : (headerLayout.model?.right ?? null)
+                            player: Player
+                            ctx: MainCtx
+                        }
+                        onRequestLockUnlockAutoHide: lock => root.requestLockUnlockAutoHide(lock)
+                        onMenuOpened: menu => root.menuOpened(menu)
+                        Component.onCompleted: root.forceUnlock.connect(headerRepeater.forceUnlock)
+                    }
+                }
+                id: headerSections
+            }
+        }
     }
 
     Loader {

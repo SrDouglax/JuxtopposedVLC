@@ -577,7 +577,7 @@ void DialogsProvider::openDiscDialog()
 }
 void DialogsProvider::openNetDialog()
 {
-    openDialog( OpenDialog::OPEN_NETWORK_TAB );
+    emit networkRequested();
 }
 void DialogsProvider::openCaptureDialog()
 {

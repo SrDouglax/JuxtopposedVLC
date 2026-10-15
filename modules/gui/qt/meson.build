@@ -417,6 +417,7 @@ if qt6_dep.found()
                 'util/vlctick.cpp',
                 'medialibrary/mlbasemodel.cpp',
                 'medialibrary/medialib.cpp',
+                'medialibrary/playlist_playback.cpp',
                 'medialibrary/mlthreadpool.cpp',
                 'playlist/playlist_controller.cpp',
                 'playlist/playlist_item.cpp',

@@ -1,5 +1,7 @@
 # M3 — cobertura estática de Settings, Onboarding e atalhos
 
+> Registro histórico. A revisão atual, as correções e as pendências de aceite estão em [parity.md](parity.md). As lacunas deste registro não devem ser tratadas como o estado atual sem consultar essa revisão.
+
 Estado examinado: checkout integrado `feat/m3` em `f201cd4af3` (sobre `a5db9f42c0`). Referências: 19 arquivos `Settings - *.png`, 11 `Onboarding*.png` e `Keyboard Shortcuts.png` em `build-m3/reference/export/`. Esta atualização confere código e exports, sem novo build, captura ou runtime; as provas nativas já existentes ficam em [m3.md](m3.md). “Ligado” significa binding ou ação para API real, condicionado ao build e à mídia/saída ativa; não afirma paridade de pixels nem execução de todo controle.
 
 ## Arquitetura e alcance comum

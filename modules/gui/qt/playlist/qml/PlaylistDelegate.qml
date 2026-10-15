@@ -187,6 +187,8 @@ T.Control {
 
             Widgets.ImageExt {
                 id: artwork
+                implicitWidth: VLCStyle.icon_playlistArt
+                implicitHeight: VLCStyle.icon_playlistArt
 
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit

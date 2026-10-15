@@ -12,6 +12,7 @@ vlc_modules += {
 freetype_deps = [freetype_dep, m_lib]
 freetype_srcs = files(
     'freetype/freetype.c',
+    'freetype/defaults.h',
     'freetype/platform_fonts.c',
     'freetype/text_layout.c',
     'freetype/ftcache.c',

@@ -36,24 +36,9 @@ class VLCMenu : public QMenu
     Q_OBJECT
 
 public:
-    explicit VLCMenu(qt_intf_t* p_intf) : QMenu()
-    {
-        assert(p_intf);
-        if (isWindow())
-        {
-            QVLCDialog::setWindowTransientParent(this, nullptr, p_intf);
-        }
-    }
-
-    explicit VLCMenu(const QString& title, qt_intf_t* p_intf) : VLCMenu(p_intf)
-    {
-        setTitle(title);
-    }
-
-    explicit VLCMenu(const QString &title, QWidget *parent) : QMenu(title, parent)
-    {
-        assert(parent); // use VLCMenu(qt_intf_t* p_intf) if parent is null pointer
-    }
+    explicit VLCMenu(qt_intf_t* p_intf);
+    explicit VLCMenu(const QString& title, qt_intf_t* p_intf);
+    explicit VLCMenu(const QString &title, QWidget *parent);
 };
 
 class VLCMenuBar : public QObject

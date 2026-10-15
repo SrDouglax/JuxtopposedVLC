@@ -10,6 +10,14 @@ import VLC.Style
 
 ColumnLayout {
     id: root
+    readonly property alias audioBridge: audioEffects
+    property var settingsModel
+    property int configRevision: 0
+    Connections {
+        target: root.settingsModel
+        function onDataChanged() { ++root.configRevision }
+        function onModelReset() { ++root.configRevision }
+    }
     property string category: ""
     property bool searchActive: false
     property bool audioDirty: false
@@ -22,6 +30,8 @@ ColumnLayout {
 
     AudioEffects {
         id: audioEffects
+        // Keep the Night-mode rollback point while category delegates reload.
+        property var nightSnapshot: null
         ctx: MainCtx
         onStateChanged: {
             if (!root.starting && transactionActive)
@@ -87,29 +97,35 @@ ColumnLayout {
                  && audioEffects.filterAvailable("equalizer")
         effects: audioEffects
     }
-    FilterSection {
+    SettingsOptionRow {
         Layout.fillWidth: true
-        visible: root.category === "audio" && audioEffects.transactionActive
-                 && audioEffects.filterAvailable("compressor")
-        effects: audioEffects
-        filterId: "compressor"
-        title: qsTr("Compressor")
+        visible: root.category === "audio"
+        settingKey: "spatial-audio-enabled"
+        label: qsTr("Spatial audio")
+        settingType: "boolean"
+        settingValue: { root.configRevision; return Number(root.settingsModel.valueFor("mix-mode")) >= 2 }
+        onCommit: value => root.settingsModel.setValue("mix-mode", value ? 2 : 0)
     }
-    FilterSection {
+    SettingsOptionRow {
         Layout.fillWidth: true
-        visible: root.category === "audio" && audioEffects.transactionActive
-                 && audioEffects.filterAvailable("spatializer")
-        effects: audioEffects
-        filterId: "spatializer"
-        title: qsTr("Spatial audio")
+        visible: root.category === "audio"
+        settingKey: "mix-mode"
+        label: qsTr("Spatial audio mode")
+        settingType: "integer"
+        settingValue: { root.configRevision; return Math.max(2, Number(root.settingsModel.valueFor("mix-mode"))) }
+        choices: (root.settingsModel.optionFor("mix-mode").choices || []).filter(choice => Number(choice.value) >= 2)
+            .map(choice => ({value: choice.value, label: Number(choice.value) === 2 ? qsTr("Headphone virtualization") : choice.label}))
+        onCommit: value => root.settingsModel.setValue("mix-mode", value)
     }
-    FilterSection {
+    SettingsOptionRow {
         Layout.fillWidth: true
-        visible: root.category === "audio" && audioEffects.transactionActive
-                 && audioEffects.filterAvailable("stereo_widen")
-        effects: audioEffects
-        filterId: "stereo_widen"
-        title: qsTr("Stereo widening")
+        visible: root.category === "audio"
+        settingKey: "stereo-widening"
+        label: qsTr("Stereo widening")
+        settingType: "boolean"
+        enabled: audioEffects.transactionActive && audioEffects.filterAvailable("stereo_widen")
+        settingValue: { audioEffects.bands; return audioEffects.filterEnabled("stereo_widen") }
+        onCommit: value => audioEffects.setFilterEnabled("stereo_widen", value)
     }
     SettingsPicture {
         Layout.fillWidth: true

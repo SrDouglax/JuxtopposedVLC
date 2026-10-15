@@ -69,6 +69,7 @@ Item {
         parent: root.parent
         anchors.centerIn: parent
         modal: true
+        width: Math.min(VLCStyle.dp(400, VLCStyle.scale), parent.width - VLCStyle.dp(32, VLCStyle.scale))
         title: qsTr("Clear playback history?")
         standardButtons: Dialog.Cancel | Dialog.Ok
         onAccepted: {

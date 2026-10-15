@@ -104,7 +104,7 @@ FocusScope {
             ControlRepeater {
                 id: leftRepeater
                 model: ControlListFilter {
-                    sourceModel: playerControlLayout.model.left
+                    sourceModel: playerControlLayout.model?.left ?? null
 
                     player: Player
                     ctx: MainCtx
@@ -158,7 +158,7 @@ FocusScope {
             ControlRepeater {
                 id: rightRepeater
                 model: ControlListFilter {
-                    sourceModel: playerControlLayout.model.right
+                    sourceModel: playerControlLayout.model?.right ?? null
 
                     player: Player
                     ctx: MainCtx
@@ -213,7 +213,7 @@ FocusScope {
             id: leftControlLayout
 
             model: ControlListFilter {
-                sourceModel: playerControlLayout.model.left
+                sourceModel: playerControlLayout.model?.left ?? null
 
                 player: Player
                 ctx: MainCtx
@@ -277,7 +277,7 @@ FocusScope {
             id: centerControlLayout
 
             model: ControlListFilter {
-                sourceModel: playerControlLayout.model.center
+                sourceModel: playerControlLayout.model?.center ?? null
 
                 player: Player
                 ctx: MainCtx
@@ -321,7 +321,7 @@ FocusScope {
             id: rightControlLayout
 
             model: ControlListFilter {
-                sourceModel: playerControlLayout.model.right
+                sourceModel: playerControlLayout.model?.right ?? null
 
                 player: Player
                 ctx: MainCtx

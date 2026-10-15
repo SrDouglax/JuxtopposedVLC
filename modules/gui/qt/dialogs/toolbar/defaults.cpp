@@ -110,7 +110,9 @@ decltype (ControlbarProfileModel::m_defaults)
                             {
                                 {
                                     ControlListModel::PREVIOUS_BUTTON,
+                                    ControlListModel::SKIP_BACK_15_BUTTON,
                                     ControlListModel::PLAY_BUTTON,
+                                    ControlListModel::SKIP_FW_15_BUTTON,
                                     ControlListModel::NEXT_BUTTON
                                 },
                                 {
@@ -119,8 +121,6 @@ decltype (ControlbarProfileModel::m_defaults)
                                 {
                                     ControlListModel::VOLUME,
                                     ControlListModel::EXTENDED_BUTTON,
-                                    ControlListModel::LANG_BUTTON,
-                                    ControlListModel::SETTINGS_BUTTON,
                                     ControlListModel::PLAYLIST_BUTTON
                                 }
                             }
@@ -437,3 +437,34 @@ decltype (ControlbarProfileModel::m_defaults)
             }
         };
 
+
+// Upgrade only the untouched old audio layout; preserve custom arrangements.
+void ControlbarProfileModel::upgradeAudioDefaults(ControlbarProfile *profile)
+{
+    using C = ControlListModel;
+    const auto audio = profile->getModelData(PlayerControlbarModel::Audioplayer);
+    const QVector<int> oldLeft = {C::PREVIOUS_BUTTON, C::PLAY_BUTTON, C::NEXT_BUTTON};
+    const QVector<int> oldRight = {C::VOLUME, C::EXTENDED_BUTTON, C::LANG_BUTTON,
+                                   C::SETTINGS_BUTTON, C::PLAYLIST_BUTTON};
+    if (audio[0] != oldLeft || !audio[1].isEmpty() || audio[2] != oldRight) return;
+    profile->setModelData(PlayerControlbarModel::Audioplayer, {{
+        {C::PREVIOUS_BUTTON, C::SKIP_BACK_15_BUTTON, C::PLAY_BUTTON,
+         C::SKIP_FW_15_BUTTON, C::NEXT_BUTTON}, {},
+        {C::VOLUME, C::EXTENDED_BUTTON, C::PLAYLIST_BUTTON}
+    }});
+    profile->resetDirty();
+}
+
+// Add header layouts only to profiles written before header editing existed.
+// An intentionally empty saved header is a valid customized layout.
+void ControlbarProfileModel::upgradeHeaderDefaults(ControlbarProfile *profile)
+{
+    using C = ControlListModel;
+    for (const auto identifier : {PlayerControlbarModel::VideoplayerHeader,
+                                 PlayerControlbarModel::AudioplayerHeader}) {
+        if (!profile->getModel(identifier))
+            profile->setModelData(identifier, {{{C::SOURCE_SIDEBAR_BUTTON, C::FOLDER_NAME_WIDGET},
+                                                {C::FILE_NAME_WIDGET}, {}}});
+    }
+    profile->resetDirty();
+}

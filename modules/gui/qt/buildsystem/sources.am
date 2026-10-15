@@ -123,6 +123,7 @@ libqt_plugin_la_SOURCES = \
 	maininterface/video_window_handler.hpp \
 	maininterface/windoweffects_module.hpp \
 	medialibrary/medialib.cpp \
+	medialibrary/playlist_playback.cpp \
 	medialibrary/medialib.hpp \
 	medialibrary/mlmediastore.cpp \
 	medialibrary/mlmediastore.hpp \
@@ -182,6 +183,7 @@ libqt_plugin_la_SOURCES = \
 	medialibrary/mlplaylist.cpp \
 	medialibrary/mlplaylist.hpp \
 	medialibrary/mlplaylistlistmodel.cpp \
+	medialibrary/playlist_actions.cpp \
 	medialibrary/mlplaylistlistmodel.hpp \
 	medialibrary/mlplaylistmedia.cpp \
 	medialibrary/mlplaylistmedia.hpp \
@@ -196,6 +198,7 @@ libqt_plugin_la_SOURCES = \
 	menus/qml_menu_wrapper.cpp \
 	menus/qml_menu_wrapper.hpp \
 	menus/menus.cpp menus/menus.hpp \
+	menus/style.cpp menus/menus.hpp \
 	network/addonsmodel.cpp \
 	network/addonsmodel.hpp \
 	network/mediatreelistener.cpp \
@@ -227,6 +230,7 @@ libqt_plugin_la_SOURCES = \
 	player/waveform.cpp player/waveform.hpp \
 	player/sleep_timer.cpp player/sleep_timer.hpp \
 	player/player_controller.cpp player/player_controller.hpp player/player_controller_p.hpp \
+	player/controls.cpp \
 	player/player_controlbar_model.cpp player/player_controlbar_model.hpp \
 	player/control_list_model.cpp player/control_list_model.hpp \
 	player/control_list_filter.cpp \
@@ -280,6 +284,8 @@ libqt_plugin_la_SOURCES = \
 	util/vlchotkeyconverter.cpp util/vlchotkeyconverter.hpp \
 	util/vlctick.cpp \
 	util/vlctick.hpp \
+	util/translator.hpp \
+	util/startup.hpp \
 	util/shared_input_item.hpp \
 	util/fast_gaussian_blur_template.h \
 	util/effects_image_provider.cpp \

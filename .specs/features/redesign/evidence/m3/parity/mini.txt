@@ -1,0 +1,15 @@
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE platform "xcb"
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE mini-native-window PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE title QPointF(6,729.625) QPointF(206,449.625)
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE title PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE video-corner-hover QPointF(206,449.625) QPointF(306,499.625)
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE video-corner-hover PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE video-play-button QPointF(306,499.625) QPointF(406,549.625)
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE video-play-button PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE video-next-button QPointF(406,549.625) QPointF(506,599.625)
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE video-next-button PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE drag-does-not-toggle-playback PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE queue-opens PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE queue-closes PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE play-button-click PASS
+[0000571870147c90] [qt] qt generic: (default) MINI-PROBE RESULT PASS

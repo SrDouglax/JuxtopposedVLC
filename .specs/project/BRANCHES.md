@@ -19,6 +19,6 @@ Builds, caches, perfis de execução e exports locais continuam fora do Git. O c
 
 ## Estado da entrega
 
-Centralizar o Git não encerra o aceite de M3. A fidelidade visual integral e Windows continuam pendentes, conforme [o registro de M3](../features/redesign/m3.md). O atalho **Audio effects** ainda abre `EffectsDialog` no centro; a referência fornecida mostra os efeitos dentro do painel lateral. Essa divergência está pendente de correção.
+A revisão de M3 está em [parity.md](../features/redesign/parity.md), com as correções e as evidências atuais. Os efeitos de áudio foram integrados ao painel do player. As divergências conhecidas dos estados revisados foram corrigidas e verificadas no Linux; igualdade pixel a pixel de todos os nodes e runtime Windows permanecem sem comprovação.
 
 O remoto `origin` aponta para [SrDouglax/JuxtopposedVLC](https://github.com/SrDouglax/JuxtopposedVLC). O remoto `upstream` aponta para [VideoLAN/VLC](https://github.com/videolan/vlc); publicar o redesign usa `origin`.

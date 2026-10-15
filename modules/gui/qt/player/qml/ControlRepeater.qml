@@ -19,9 +19,12 @@ import QtQuick
 import QtQuick.Layouts
 
 import VLC.MainInterface
+import VLC.Player
+import VLC.PlayerControls
 
 Repeater {
     id: repeater
+    property bool compactHeader: false
 
     property int alignment: Qt.AlignVCenter
 
@@ -59,10 +62,23 @@ Repeater {
         Layout.maximumWidth: Layout.fillWidth ? (item ? item.implicitWidth : -1) : -1
 
         Layout.minimumHeight: 0
-        Layout.maximumHeight: Math.min((item && item.implicitHeight <= 0) ? Number.MAX_VALUE : item.implicitHeight, repeater.availableHeight)
+        Layout.maximumHeight: Math.min((item && item.implicitHeight <= 0) ? Number.MAX_VALUE : (item?.implicitHeight ?? 0), repeater.availableHeight)
         Layout.fillHeight: true
 
         Layout.alignment: repeater.alignment
+
+        Binding on width {
+            when: repeater.compactHeader
+            value: Math.min(loader.item?.implicitWidth ?? 0, repeater.availableWidth)
+        }
+        Binding on height {
+            when: repeater.compactHeader
+            value: Math.min(loader.item?.implicitHeight ?? 0, repeater.availableHeight)
+        }
+        Binding on y {
+            when: repeater.compactHeader
+            value: (repeater.availableHeight - loader.height) / 2
+        }
 
         Binding on visible {
             delayed: true // this is important
@@ -93,6 +109,12 @@ Repeater {
         }
 
         onLoaded: {
+            if (repeater.compactHeader && model.id === ControlListModel.FILE_NAME_WIDGET) {
+                item.iconSource = ""
+                item.preferTitle = true
+            }
+            if (repeater.compactHeader && model.id === ControlListModel.FOLDER_NAME_WIDGET)
+                item.preferSourceName = true
             // control should not request focus if they are not enabled:
             item.focus = Qt.binding(function() { return item.enabled && item.visible })
 

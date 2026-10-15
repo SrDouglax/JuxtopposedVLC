@@ -1,0 +1,62 @@
+{
+  "branch": "fix/m3-parity",
+  "base": "4cbf799bd2",
+  "build": "PASS",
+  "qt_plugin_sha256": "4b7cc60b013aa021ea9584ff79ee7dea38d0958d6c82508e800cf3304db02e41",
+  "display": "private X11",
+  "renderer": "software",
+  "memory_gib": 2,
+  "swap": false,
+  "cpus": 1,
+  "windows": "deferred by agreement",
+  "full_visual_acceptance": false,
+  "visual_acceptance_scope": "Known composition gaps in the reviewed M3 screen families; not pixel equality for all 103 nodes and platforms",
+  "known_m3_screen_divergences": [],
+  "runs": {
+    "panels": {
+      "result": "PASS",
+      "checks": 143,
+      "log": "panels.txt"
+    },
+    "settings": {
+      "result": "PASS",
+      "checks": 46,
+      "log": "settings.txt"
+    },
+    "settings-150": {
+      "result": "PASS",
+      "checks": 46,
+      "log": "settings-150.txt"
+    },
+    "audit": {
+      "result": "PASS",
+      "checks": 88,
+      "log": "audit.txt"
+    },
+    "associations": {
+      "result": "PASS",
+      "checks": 19,
+      "log": "associations.txt"
+    },
+    "onboarding": {
+      "result": "PASS",
+      "checks": 31,
+      "log": "onboarding.txt"
+    }
+  },
+  "customization_stress": {
+    "result": "PASS",
+    "additional_cross_section_transfers": 8,
+    "log": "customization-stress.txt"
+  },
+  "night_mode": "native compressor preset; apply, previous-state restore and cancel PASS",
+  "subtitle_pixels": "actual FreeType rendering PASS at 360p and 720p",
+  "online_api": "native HTTPS integration against private fixture; no public account authentication",
+  "evidence_reuse": "Unchanged native components retain earlier passing proof. Final panels run covers queue shortcuts, track icons and zero-origin delay fill. Association spacing was tested separately after the integrated audit.",
+  "not_proved": [
+    "Windows build/runtime",
+    "RHI/GPU/HDR hardware",
+    "public OpenSubtitles account/quota",
+    "optional scrobbling and remote services"
+  ]
+}

@@ -209,39 +209,14 @@ MouseArea {
                 }
             }
 
-            Canvas {
-                anchors.fill: parent
-                visible: cover.GraphicsInfo.shaderType !== GraphicsInfo.RhiShader
-                onWidthChanged: requestPaint()
-                onHeightChanged: requestPaint()
-                onPaint: {
-                    const ctx = getContext("2d")
-                    ctx.clearRect(0, 0, width, height)
-                    ctx.fillStyle = VLCStyle.redesign.windowBackground
-                    const points = [[0, 0, 0], [width, 0, 90],
-                                    [width, height, 180], [0, height, 270]]
-                    for (const point of points) {
-                        const r = Math.min(cover.radius, width / 2, height / 2)
-                        ctx.save()
-                        ctx.translate(point[0], point[1])
-                        ctx.rotate(point[2] * Math.PI / 180)
-                        ctx.beginPath()
-                        ctx.moveTo(0, 0)
-                        ctx.lineTo(r, 0)
-                        ctx.arcTo(0, 0, 0, r, r)
-                        ctx.closePath()
-                        ctx.fill()
-                        ctx.restore()
-                    }
-                }
-            }
+
         }
 
         Widgets.SubtitleLabel {
             id: albumLabel
 
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: VLCStyle.margin_xxlarge
+            Layout.topMargin: VLCStyle.dp(76, VLCStyle.scale)
 
             Binding on visible {
                 delayed: true
@@ -249,38 +224,13 @@ MouseArea {
                 value: albumLabel.text.length > 0 && centerContent.height > (albumLabel.y + albumLabel.height)
             }
 
-            text: Player.title && Player.artist ? Player.title + " - " + Player.artist : ""
+            text: [Player.title || Player.name, Player.artist].filter(value => !!value).join(" - ")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(24, VLCStyle.scale)
             font.weight: Font.Medium
             horizontalAlignment: Text.AlignHCenter
             color: VLCStyle.redesign.color(VLCStyle.redesign.textSecondary, "#4d4d4d")
             Accessible.description: qsTr("Title and artist")
-
-            property bool componentCompleted: false
-
-            Component.onCompleted: {
-                componentCompleted = true
-            }
-        }
-
-        Widgets.MenuLabel {
-            id: artistLabel
-
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: VLCStyle.margin_small
-
-            Binding on visible {
-                delayed: true
-                when: artistLabel.componentCompleted
-                value: artistLabel.text.length > 0 && centerContent.height > (artistLabel.y + artistLabel.height)
-            }
-
-            text: Player.album
-            font.weight: Font.Normal
-            horizontalAlignment: Text.AlignHCenter
-            color: centerTheme.fg.primary
-            Accessible.description: qsTr("Album")
 
             property bool componentCompleted: false
 
@@ -359,10 +309,10 @@ MouseArea {
             Binding on visible {
                 delayed: true
                 when: audioControls.componentCompleted
-                value: Player.videoTracks.count === 0 && centerContent.height > (audioControls.y + audioControls.height)
+                value: musicView.lyricsLayoutActive && centerContent.height > (audioControls.y + audioControls.height)
             }
 
-            focus: true
+            focus: visible
             spacing: VLCStyle.margin_xxsmall
             Navigation.parentItem: playerRoot
             Navigation.upItem: topBarItem

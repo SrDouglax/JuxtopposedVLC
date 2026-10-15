@@ -36,6 +36,7 @@ NativeMenu {
     property string albumIdDataRole: "album_id"
 
     property bool showPlayAsAudioAction: false
+    property bool showLegacyActions: false
 
     property var subtitleDialog: null
     property Component subtitleDialogComponent: Component { SubtitleAssociationsDialog {} }
@@ -57,83 +58,38 @@ NativeMenu {
 
     // Settings
 
-    actions: [{
-            "text": qsTr("Play"),
-            "action": addAndPlay
-        }, {
-            "text": qsTr("Play as audio"),
-            "action": playAsAudio,
-            "visible": root.showPlayAsAudioAction
-        }, {
-            "text": qsTr("Play as album"),
-            "action": playAsAlbum,
-            "visible": root.showPlayAsAlbumAction &&
-                       (root.model instanceof MLAudioModel)
-        }, {
-            "text": qsTr("Enqueue"),
-            "action": enqueue
-        }, {
-            "text": qsTr("Enqueue as album"),
-            "action": enqueueAsAlbum,
-            "visible": root.showPlayAsAlbumAction &&
-                       (root.model instanceof MLAudioModel)
-        }, {
-            "text": qsTr("Add to favorites"),
-            "action": addFavorite,
-            "visible": _showAddFavorite
-        }, {
-            "text": qsTr("Remove from favorites"),
-            "action": removeFavorite,
-            "visible": _showRemoveFavorite
-        }, {
-            "text": (root.showPlayAsAudioAction ? qsTr("Add to a video-only playlist") : qsTr("Add to an audio-only playlist")),
-            "action": (root.showPlayAsAudioAction ? root.addToVideoOnlyPlaylist : root.addToAudioOnlyPlaylist)
-        }, {
-            "text": qsTr("Add to a playlist"),
-            "action": addToAPlaylist
-        }, {
-            "text": qsTr("Mark as seen"),
-            "action": markSeen,
-            "visible": _showSeen
-        }, {
-            "text": qsTr("Mark as unseen"),
-            "action": markUnseen,
-            "visible": _showUnseen
-        }, {
-            "text": qsTr("Open Containing Folder"),
-            "action": openContainingFolder,
-            "visible": _openContainingFolder
-        }, {
-            "text": qsTr("Delete"),
-            "action": deleteStream,
-            "visible": _deleteStream
-        }, {
-            "text": qsTr("Add subtitles…"),
-            "action": function(dataList) {
-                if (!root.subtitleDialog)
-                    root.subtitleDialog = root.subtitleDialogComponent.createObject(g_mainDisplay)
-                root.subtitleDialog.openFor(dataList[0][root.idDataRole])
-            },
-            "visible": function(dataList) { return root.showPlayAsAudioAction && dataList.length === 1 }
-        }, {
-            "text": qsTr("Information"),
-            "action": _signalShowInformation,
-            "visible": showInformationAvailable
-        },{
-            "text": qsTr("Delete File From System"),
-            "action": deleteFileFromSource,
-            "visible": _deleteFileFromSource
-        },{
-            "text": qsTr("Media Information"),
-            "action": function(dataList, options, indexes) {
-                DialogsProvider.mediaInfoDialog(dataList[0][idDataRole])
-            },
-            "visible": function(dataList, options, indexes) {
-                return (dataList.length === 1)
-                        && !(dataList[0][idDataRole].hasParent())
-            }
-        }
+    actions: [
+        { text: qsTr("Play"), icon: "play", action: addAndPlay },
+        { text: qsTr("Mark as Watched"), icon: "check", action: markSeen, visible: _showSeen },
+        { text: qsTr("Mark as Unwatched"), icon: "check", action: markUnseen, visible: _showUnseen },
+        { text: qsTr("Favorite"), icon: "favorite", action: addFavorite, visible: _showAddFavorite },
+        { text: qsTr("Remove from favorites"), icon: "favorite", action: removeFavorite, visible: _showRemoveFavorite },
+        { text: qsTr("Stream"), icon: "streaming", action: function(data) { DialogsProvider.streamingDialog(data.map(item => item.mrl), true) }, visible: hasMediaUrls },
+        { text: qsTr("Convert"), icon: "swap", action: function(data) { DialogsProvider.streamingDialog(data.map(item => item.mrl), false) }, visible: hasMediaUrls },
+        { text: qsTr("Add to Queue"), icon: "queue", action: enqueue },
+        { text: qsTr("Add to Playlist"), icon: "playlist", action: addToAPlaylist },
+        { text: qsTr("Show in File Explorer"), icon: "folder", action: openContainingFolder, visible: _openContainingFolder },
+        { text: qsTr("Go to Source"), icon: "next", action: function(data) { Qt.openUrlExternally(data[0].mrl) }, visible: function(data) { return data.length === 1 && data[0].mrl && !String(data[0].mrl).startsWith("file:") } },
+        { text: qsTr("Add Subtitle Tracks"), icon: "subtitles", action: function(data) {
+            if (!root.subtitleDialog) root.subtitleDialog = root.subtitleDialogComponent.createObject(g_mainDisplay)
+            root.subtitleDialog.audioTracks = false
+            root.subtitleDialog.openFor(data[0][root.idDataRole])
+          }, visible: function(data) { return root.showPlayAsAudioAction && data.length === 1 } },
+        { text: qsTr("Add Audio Tracks"), icon: "audio", action: function(data) {
+            if (!root.subtitleDialog) root.subtitleDialog = root.subtitleDialogComponent.createObject(g_mainDisplay)
+            root.subtitleDialog.audioTracks = true
+            root.subtitleDialog.openFor(data[0][root.idDataRole])
+          }, visible: function(data) { return root.showPlayAsAudioAction && data.length === 1 } },
+        { text: qsTr("Properties & Metadata"), icon: "info", action: function(data) { DialogsProvider.mediaInfoDialog(data[0][idDataRole]) }, visible: function(data) { return data.length === 1 && !data[0][idDataRole].hasParent() } },
+        { text: qsTr("Play as audio"), icon: "audio", action: playAsAudio, visible: root.showLegacyActions && root.showPlayAsAudioAction },
+        { text: qsTr("Play as album"), icon: "audio", action: playAsAlbum, visible: root.showLegacyActions && root.showPlayAsAlbumAction && root.model instanceof MLAudioModel },
+        { text: qsTr("Enqueue as album"), icon: "queue", action: enqueueAsAlbum, visible: root.showLegacyActions && root.showPlayAsAlbumAction && root.model instanceof MLAudioModel },
+        { text: qsTr("Information"), icon: "info", action: _signalShowInformation, visible: showInformationAvailable },
+        { text: qsTr("Delete"), icon: "remove", action: deleteStream, visible: _deleteStream },
+        { text: qsTr("Delete File From System"), icon: "remove", action: deleteFileFromSource, visible: root.showLegacyActions && _deleteFileFromSource }
     ]
+    function hasMediaUrls(data) { return data.length > 0 && data.every(item => !!item.mrl) }
+
 
     // Events
 

@@ -21,6 +21,7 @@
 
 // MediaLibrary includes
 #include "mlbasemodel.hpp"
+#include <QUrl>
 
 // Forward declarations
 struct vlc_medialibrary_t;
@@ -70,7 +71,7 @@ public:
     explicit MLPlaylistListModel(QObject * parent = nullptr);
 
 public: // Interface
-    Q_INVOKABLE void create(const QString & name, const QVariantList& initialItems);
+    Q_INVOKABLE void create(const QString & name, const QVariantList& initialItems, const QUrl& cover = {});
 
     Q_INVOKABLE void append(const MLItemId & playlistId, const QVariantList & ids);
 
@@ -90,12 +91,14 @@ public: // QAbstractItemModel reimplementation
                         int role = Qt::DisplayRole) const override;
 
 protected: // MLBaseModel implementation
+    vlc_ml_sorting_criteria_t nameToCriteria(QByteArray name) const override;
     QVariant itemRoleData(const MLItem* item, int role = Qt::DisplayRole) const override;
 
     std::unique_ptr<MLListCacheLoader> createMLLoader() const override;
 
 private: // Functions
     QString getCover(const MLPlaylist* playlist) const;
+    QString customCover(qint64 id) const;
 
     void endTransaction();
 
@@ -105,6 +108,7 @@ private: // MLBaseModel implementation
     void onVlcMlEvent(const MLEvent & event) override;
 
 signals:
+    void creationFinished(bool success);
     void coverSizeChanged   ();
     void coverDefaultChanged();
     void coverPrefixChanged ();

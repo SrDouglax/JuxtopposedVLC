@@ -305,32 +305,35 @@ QVariantList OnboardingController::activeShortcuts() const
     if (!m_ctx)
         return result;
 
-    struct Shortcut { const char* key; const char* action; };
+    struct Shortcut { const char* first; const char* second; const char* action; };
     static const Shortcut shortcuts[] = {
-        {"key-play-pause", QT_TR_NOOP("Play / Pause")},
-        {"key-jump-short", QT_TR_NOOP("Seek backward")},
-        {"key-jump+short", QT_TR_NOOP("Seek forward")},
-        {"key-prev", QT_TR_NOOP("Previous item")},
-        {"key-next", QT_TR_NOOP("Next item")},
-        {"key-frame-previous", QT_TR_NOOP("Previous frame")},
-        {"key-frame-next", QT_TR_NOOP("Next frame")},
-        {"key-subtitle-track", QT_TR_NOOP("Cycle subtitle track")},
-        {"key-audio-track", QT_TR_NOOP("Cycle audio track")},
-        {"key-toggle-fullscreen", QT_TR_NOOP("Toggle fullscreen")},
-        {"key-vol-up", QT_TR_NOOP("Increase volume")},
-        {"key-vol-down", QT_TR_NOOP("Decrease volume")},
-        {"key-snapshot", QT_TR_NOOP("Take a snapshot")},
-        {"key-record", QT_TR_NOOP("Record")},
+        {"key-play-pause", nullptr, QT_TR_NOOP("Play / Pause")},
+        {"key-jump-short", "key-jump+short", QT_TR_NOOP("Seek Backward / Forward")},
+        {"key-prev", "key-next", QT_TR_NOOP("Previous / Next Item")},
+        {"key-frame-previous", "key-frame-next", QT_TR_NOOP("Previous / Next Frame")},
+        {"key-subtitle-track", nullptr, QT_TR_NOOP("Cycle Subtitle Track")},
+        {"key-audio-track", nullptr, QT_TR_NOOP("Cycle Audio Track")},
+        {"key-toggle-fullscreen", nullptr, QT_TR_NOOP("Toggle Fullscreen")},
+        {"key-vol-up", "key-vol-down", QT_TR_NOOP("Increase / Decrease Volume")},
+        {nullptr, "Q", QT_TR_NOOP("Show / Hide Queue")},
+        {nullptr, "Ctrl+L", QT_TR_NOOP("Show / Hide File Browser")},
+        {"key-snapshot", nullptr, QT_TR_NOOP("Take a Snapshot")},
+        {"key-record", nullptr, QT_TR_NOOP("Record")},
     };
-
     for (const Shortcut& shortcut : shortcuts) {
-        char* const configured = config_GetPsz(shortcut.key);
-        const QString sequence = configured ? QString::fromUtf8(configured) : QString();
-        std::free(configured);
-        if (!sequence.isEmpty())
-            result.append(QVariantMap{{"action", tr(shortcut.action)},
-                                      {"sequence", sequence},
-                                      {"configKey", QString::fromLatin1(shortcut.key)}});
+        QStringList primary, aliases;
+        if (!shortcut.first) primary.append(QString::fromLatin1(shortcut.second));
+        else for (const char* key : {shortcut.first, shortcut.second}) {
+            if (!key) continue;
+            char* const configured = config_GetPsz(key);
+            const QStringList sequences = configured ? QString::fromUtf8(configured).split(QLatin1Char('\t'), Qt::SkipEmptyParts) : QStringList{};
+            std::free(configured);
+            primary.append(sequences.isEmpty() ? tr("Unassigned") : sequences.front());
+            aliases.append(sequences);
+        }
+        result.append(QVariantMap{{"action", tr(shortcut.action)},
+                                  {"sequence", primary.join(QLatin1Char('\t'))},
+                                  {"aliases", aliases.join(QStringLiteral(" / "))}});
     }
     return result;
 }

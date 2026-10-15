@@ -6,6 +6,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import VLC.Style
+import VLC.Player
 
 ColumnLayout {
     id: root
@@ -23,29 +24,12 @@ ColumnLayout {
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         }
-        Switch {
+        PanelToggle {
             id: enabledSwitch
             objectName: "settingsEqualizerEnabled"
             Accessible.name: qsTr("Equalizer")
-            Binding on checked {
-                when: !enabledSwitch.pressed
-                value: { root.effects.bands; return root.effects.filterEnabled("equalizer") }
-            }
-            onClicked: root.effects.setFilterEnabled("equalizer", checked)
-            indicator: Rectangle {
-                implicitWidth: VLCStyle.dp(40, VLCStyle.scale)
-                implicitHeight: VLCStyle.dp(22, VLCStyle.scale)
-                radius: height / 2
-                color: enabledSwitch.checked ? VLCStyle.redesign.accent : "#373737"
-                Rectangle {
-                    x: enabledSwitch.checked ? parent.width - width - 3 : 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: VLCStyle.dp(16, VLCStyle.scale)
-                    height: width
-                    radius: width / 2
-                    color: "#eaeaea"
-                }
-            }
+            checked: { root.effects.bands; return root.effects.filterEnabled("equalizer") }
+            onClicked: if (root.effects.begin()) root.effects.setFilterEnabled("equalizer", checked)
         }
     }
     RowLayout {
@@ -61,14 +45,27 @@ ColumnLayout {
             id: presetBox
             objectName: "settingsEqualizerPreset"
             Layout.preferredWidth: VLCStyle.dp(319, VLCStyle.scale)
-            model: root.effects.presets
+            model: [{id: "", name: qsTr("None")}, {id: "__custom__", name: qsTr("Custom")}].concat(root.effects.presets)
             textRole: "name"
             valueRole: "id"
             currentIndex: {
-                const index = root.effects.presets.findIndex(p => p.id === root.effects.preset)
-                return index
+                root.effects.bands
+                if (!root.effects.filterEnabled("equalizer")) return 0
+                if (!root.effects.preset) return 1
+                return Math.max(1, model.findIndex(p => p.id === root.effects.preset))
             }
-            onActivated: (index) => root.effects.setPreset(root.effects.presets[index].id)
+            onActivated: index => {
+                if (!root.effects.begin()) return
+                if (index === 0) root.effects.setFilterEnabled("equalizer", false)
+                else if (index === 1 || root.effects.setPreset(model[index].id)) root.effects.setFilterEnabled("equalizer", true)
+            }
+            indicator: Image {
+                x: presetBox.width - width - 10
+                y: (presetBox.height - height) / 2
+                width: VLCStyle.dp(18, VLCStyle.scale)
+                height: width
+                source: "qrc:///redesign/icons/chevron-down/default.png"
+            }
             contentItem: Label {
                 leftPadding: 12
                 text: presetBox.displayText || qsTr("Custom")
@@ -122,7 +119,7 @@ ColumnLayout {
                         required property int index
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        spacing: VLCStyle.dp(6, VLCStyle.scale)
+                        spacing: VLCStyle.dp(16, VLCStyle.scale)
                         readonly property real currentBand: index === 0 ? root.effects.preamp
                                                              : Number(root.effects.bands[index - 1] || 0)
                         Slider {
@@ -143,11 +140,11 @@ ColumnLayout {
                                 width: VLCStyle.dp(14, VLCStyle.scale)
                                 height: bandSlider.height
                                 radius: width / 2
-                                color: "#0e0e0e"
+                                color: VLCStyle.redesign.color("#090909", "#dedede")
                                 Rectangle {
                                     anchors.bottom: parent.bottom
                                     width: parent.width
-                                    height: bandSlider.visualPosition * parent.height
+                                    height: (1 - bandSlider.visualPosition) * parent.height
                                     color: Qt.colorEqual(VLCStyle.redesign.accent, "#D37918")
                                            ? "#54300c" : Qt.darker(VLCStyle.redesign.accent, 2.5)
                                     radius: parent.radius
@@ -165,13 +162,28 @@ ColumnLayout {
                         Label {
                             Layout.alignment: Qt.AlignHCenter
                             text: index === 0 ? qsTr("Preamp")
-                                  : Math.round(Number(root.effects.frequencies[index - 1] || 0)) + qsTr(" Hz")
+                                  : Number(root.effects.frequencies[index - 1]) >= 1000
+                                    ? (Number(root.effects.frequencies[index - 1]) / 1000) + " kHz"
+                                    : Math.round(Number(root.effects.frequencies[index - 1] || 0)) + " Hz"
                             color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
-                            font.pixelSize: VLCStyle.dp(10, VLCStyle.scale)
+                            font.family: VLCStyle.redesign.fontFamily
+                            font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
                         }
-                        Label {
+                        TextField {
                             Layout.alignment: Qt.AlignHCenter
+                            Layout.preferredWidth: VLCStyle.dp(61, VLCStyle.scale)
+                            Layout.preferredHeight: VLCStyle.dp(32, VLCStyle.scale)
                             text: Number(currentBand).toFixed(1) + qsTr(" dB")
+                            selectByMouse: true
+                            horizontalAlignment: Text.AlignHCenter
+                            onEditingFinished: {
+                                const value = parseFloat(text)
+                                if (Number.isFinite(value) && value >= -20 && value <= 20) {
+                                    if (index === 0) root.effects.setPreamp(value)
+                                    else root.effects.setBand(index - 1, value)
+                                }
+                            }
+                            background: Rectangle { color: VLCStyle.redesign.color("#090909", "#dedede"); radius: 4 }
                             color: VLCStyle.redesign.color("#969696", "#4d4d4d")
                             font.pixelSize: VLCStyle.dp(10, VLCStyle.scale)
                         }
@@ -183,24 +195,10 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Label { Layout.fillWidth: true; text: qsTr("Two-pass"); color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b"); font.pixelSize: VLCStyle.dp(14, VLCStyle.scale) }
-        Switch {
+        PanelToggle {
             id: twoPassSwitch
-            Binding on checked { when: !twoPassSwitch.pressed; value: root.effects.twoPass }
+            checked: root.effects.twoPass
             onClicked: root.effects.setTwoPass(checked)
-            indicator: Rectangle {
-                implicitWidth: VLCStyle.dp(40, VLCStyle.scale)
-                implicitHeight: VLCStyle.dp(22, VLCStyle.scale)
-                radius: height / 2
-                color: twoPassSwitch.checked ? VLCStyle.redesign.accent : "#373737"
-                Rectangle {
-                    x: twoPassSwitch.checked ? parent.width - width - 3 : 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: VLCStyle.dp(16, VLCStyle.scale)
-                    height: width
-                    radius: width / 2
-                    color: "#eaeaea"
-                }
-            }
         }
     }
 }

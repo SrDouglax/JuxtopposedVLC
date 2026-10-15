@@ -30,11 +30,12 @@ PlayerPanelButton {
     iconSource: "qrc:///redesign/queue.svg"
     id: playlistBtn
 
+    property int initialTab: 0
     text: VLCIcons.playlist
     signal requestLockUnlockAutoHide(bool lock)
     onClicked: {
         if (menu.visible) menu.close()
-        else { playlistBtn.positionPopup(menu); menu.open() }
+        else { menu.currentTab = initialTab; playlistBtn.positionPopup(menu); menu.open() }
     }
     checked: menu.visible
 

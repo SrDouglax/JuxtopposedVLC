@@ -1,0 +1,19 @@
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE forms-native-window PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-reference-form-opens PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-reference-dimensions PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-fields-present PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-invalid-url-disabled PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-multiple-urls-enabled PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE form-click-in-window PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-save-closes PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-playlist-has-two-real-items PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE playlist-reference-form-loads PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE playlist-fields-and-drop-present PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE playlist-drop-adds-real-file PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE playlist-title-file-cover-enable-save PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE form-click-in-window PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE playlist-creation-closes-after-result PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE playlist-real-item-and-cover-in-model PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE form-click-in-window PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE network-stream-reaches-native-player PASS
+[000058b15764bbc0] [qt] qt generic: (default) MINI-PROBE FORMS RESULT PASS

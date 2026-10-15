@@ -23,6 +23,7 @@ import QtQml.Models
 
 
 import VLC.Player
+import VLC.PlayerControls
 import VLC.Widgets as Widgets
 import VLC.Style
 
@@ -38,6 +39,8 @@ T.Control {
 
     readonly property int controlId: model.id
     property ListView dndView: null
+    Component.onCompleted: { if (dndView) dndView.controlWidthsChanged() }
+    onWidthChanged: { if (dndView) dndView.controlWidthsChanged() }
 
     readonly property bool dragActive: contentItem.target.Drag.active
     property alias dropArea: dropArea
@@ -79,15 +82,26 @@ T.Control {
                 const action = drag.target.Drag.drop()
                 if (action === Qt.IgnoreAction)
                     control.visible = true
+                loader.parent = control.contentItem
                 removeInfoRectVisible = false
                 root.dragStopped(controlId)
             }
         }
 
         onPressed: (mouse) => {
-            const pos = mapToItem(control.contentItem.target.parent, mouseX, mouseY)
+            // Reparent before MouseArea records the drag origin. Changing the
+            // visual parent in Drag.start() otherwise teleports the control.
+            const pos = mapToItem(root, mouseX, mouseY)
+            loader.parent = root
             control.contentItem.target.y = pos.y + VLCStyle.dragDelta
             control.contentItem.target.x = pos.x + VLCStyle.dragDelta
+        }
+        onReleased: {
+            if (!drag.active) loader.parent = control.contentItem
+        }
+        onCanceled: {
+            loader.Drag.cancel()
+            loader.parent = control.contentItem
         }
     }
 
@@ -155,17 +169,24 @@ T.Control {
         Loader {
             id: loader
 
-            parent: Drag.active ? root : control.contentItem
+            parent: control.contentItem
 
             anchors.fill: (parent === control.contentItem) ? parent : undefined
 
             source: PlayerControlbarControls.control(model.id).source
 
             Drag.source: control
+            Drag.hotSpot: Qt.point(-VLCStyle.dragDelta, -VLCStyle.dragDelta)
 
             onLoaded: {
                 item.paintOnly = true
                 item.enabled = false
+                if (dndView.compactHeader && controlId === ControlListModel.FILE_NAME_WIDGET) {
+                    item.iconSource = ""
+                    item.preferTitle = true
+                }
+                if (dndView.compactHeader && controlId === ControlListModel.FOLDER_NAME_WIDGET)
+                    item.preferSourceName = true
             }
         }
     }

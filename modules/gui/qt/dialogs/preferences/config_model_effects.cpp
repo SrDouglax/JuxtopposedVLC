@@ -10,6 +10,8 @@
 #include "dialogs/extended/audio_effects.hpp"
 #include "dialogs/extended/video_effects.hpp"
 #include "maininterface/mainctx.hpp"
+#include "player/player_controller.hpp"
+#include "util/renderer_manager.hpp"
 
 bool ConfigModel::applyWithEffects(AudioEffects *audio, VideoEffects *video)
 {
@@ -69,6 +71,8 @@ bool ConfigModel::applyWithEffects(AudioEffects *audio, VideoEffects *video)
     }
     if (audio) audio->finalizeConfiguration();
     if (video) video->finalizeConfiguration();
+    if (values.contains("qt-cast-discovery") && !values.value("qt-cast-discovery").toBool())
+        m_ctx->getIntf()->p_mainPlayerController->getRendererManager()->StopScan();
     for (int i : changed) {
         m_entries[i].current = m_entries[i].staged;
         notifyEntry(i);

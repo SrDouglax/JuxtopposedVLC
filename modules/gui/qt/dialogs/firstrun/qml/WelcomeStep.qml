@@ -24,7 +24,7 @@ Item {
         width: parent.width
         y: 286
         text: qsTr("Welcome to VLC!")
-        color: "#eaeaea"
+        color: VLCStyle.redesign.color("#eaeaea", "#222222")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: 32
         font.weight: Font.Light
@@ -37,7 +37,7 @@ Item {
         wrapMode: Text.WordWrap
         lineHeight: 1.75
         text: qsTr("VLC is a free and open source cross-platform multimedia player and framework that plays most multimedia files as well as DVDs, Audio CDs, VCDs, and various streaming protocols.")
-        color: "#969696"
+        color: VLCStyle.redesign.color("#969696", "#494949")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: 16
         font.weight: Font.Light
@@ -46,7 +46,7 @@ Item {
         x: (parent.width - 595) / 2
         y: 500
         text: qsTr("Choose a media folder to get started with")
-        color: "#8f8f8f"
+        color: VLCStyle.redesign.color("#8f8f8f", "#494949")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: 14
     }
@@ -55,9 +55,9 @@ Item {
         y: 532
         width: 471
         height: 36
-        color: "#090909"
+        color: VLCStyle.redesign.color("#090909", "#eeeeee")
         border.width: 2
-        border.color: "#191919"
+        border.color: VLCStyle.redesign.color("#191919", "#cccccc")
         radius: 6
         Text {
             anchors.fill: parent
@@ -67,7 +67,7 @@ Item {
             elide: Text.ElideMiddle
             text: root.folderUrl && root.folderUrl.toString() !== ""
                   ? decodeURIComponent(root.folderUrl.toString().replace(/^file:\/\//, "")) : qsTr("No folder selected")
-            color: "#c6c6c6"
+            color: VLCStyle.redesign.color("#c6c6c6", "#292929")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: 16
         }
@@ -80,39 +80,5 @@ Item {
         objectName: "onboardingBrowseFolder"
         text: qsTr("Browse")
         onClicked: root.browseRequested()
-    }
-    Controls.CheckBox {
-        id: onlineConsent
-        x: (parent.width - 595) / 2
-        y: 592
-        width: 595
-        checked: root.metadataNetworkAccess
-        text: qsTr("Allow online metadata and cover art lookup")
-        font.family: VLCStyle.redesign.fontFamily
-        font.pixelSize: 14
-        onToggled: root.consentRequested(checked)
-        indicator: Rectangle {
-            x: 0
-            anchors.verticalCenter: parent.verticalCenter
-            width: 18
-            height: 18
-            radius: 4
-            color: onlineConsent.checked ? VLCStyle.redesign.accent : "#090909"
-            border.color: onlineConsent.checked ? VLCStyle.redesign.accent : "#555555"
-            Text {
-                anchors.centerIn: parent
-                text: "✓"
-                visible: onlineConsent.checked
-                color: "#161616"
-                font.pixelSize: 13
-            }
-        }
-        contentItem: Text {
-            leftPadding: 29
-            text: onlineConsent.text
-            font: onlineConsent.font
-            color: "#969696"
-            verticalAlignment: Text.AlignVCenter
-        }
     }
 }

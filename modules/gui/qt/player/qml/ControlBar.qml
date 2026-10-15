@@ -19,6 +19,7 @@
 import QtQuick
 import QtQuick.Templates as T
 import QtQuick.Layouts
+import QtQuick.Window
 import QtQml.Models
 
 
@@ -176,7 +177,7 @@ T.Pane {
 
                 text: {
                     const length = Player.length
-                    return Player.time.formatHMS(length.isSubSecond() ? VLCTick.SubSecondFormattedAsMS : 0)
+                    return VLCStyle.redesign.formatTime(Player.time)
                 }
                 color: VLCStyle.redesign.color(VLCStyle.redesign.textMuted, theme.fg.primary, theme.palette?.isDark ?? VLCStyle.darkPalette.isDark)
                 font: timeTextMetrics.font
@@ -202,8 +203,8 @@ T.Pane {
                 readonly property bool showRemainingTime: (MainCtx.showRemainingTime && Player.remainingTime.valid())
 
                 text: showRemainingTime
-                      ? "-" + Player.remainingTime.formatHMS()
-                      : Player.length.formatHMS()
+                      ? "-" + VLCStyle.redesign.formatTime(Player.remainingTime)
+                      : VLCStyle.redesign.formatTime(Player.length)
                 color: mediaTime.color
                 font: timeTextMetrics.font
                 horizontalAlignment: Text.AlignHCenter
@@ -368,7 +369,9 @@ T.Pane {
 
         PlayerControlLayout {
             id: playerControlLayout
-            inlineContentEnabled: root.availableWidth >= VLCStyle.dp(950, VLCStyle.scale)
+            // The window width is independent of the timeline's reparenting
+            // and implicit size, including during compact/wide transitions.
+            inlineContentEnabled: (root.Window.window ? root.Window.window.width : 0) >= VLCStyle.dp(950, VLCStyle.scale)
 
             Layout.fillWidth: true
             Layout.fillHeight: true

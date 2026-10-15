@@ -29,7 +29,7 @@ Widgets.IconToolButton {
     enabled: Player.seekable
 
     text: VLCIcons.skip_for
-    onClicked: Player.jumpFwd()
+    onClicked: Player.jumpSeconds(10)
     description: qsTr("Step forward")
 
     AccessibleCompat.id: "skipForwardButton"

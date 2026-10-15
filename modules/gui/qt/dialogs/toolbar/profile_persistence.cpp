@@ -176,6 +176,8 @@ bool ControlbarProfileModel::reload()
             ptrNewProfile->resetDirty(); // Newly loaded model can not be dirty
         }
 
+        upgradeAudioDefaults(ptrNewProfile);
+        upgradeHeaderDefaults(ptrNewProfile);
         profiles.append(ptrNewProfile);
     }
 

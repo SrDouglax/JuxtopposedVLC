@@ -49,6 +49,7 @@ FocusScope {
 
             for (let i = 0; i < count; ++i) {
                 const item = repeater.itemAt(i)
+                if (!item) continue
 
                 if (item.Layout.minimumWidth < 0)
                     size += item.implicitWidth
@@ -69,6 +70,7 @@ FocusScope {
 
             for (let i = 0; i < count; ++i) {
                 const item = repeater.itemAt(i)
+                if (!item) continue
                 maximumWidth += item.implicitWidth
             }
 
@@ -111,7 +113,7 @@ FocusScope {
 
     Navigation.navigable: {
         for (let i = 0; i < repeater.count; ++i) {
-            const item = repeater.itemAt(i).item
+            const item = repeater.itemAt(i)?.item
 
             if (item && item.focus) {
                 return true

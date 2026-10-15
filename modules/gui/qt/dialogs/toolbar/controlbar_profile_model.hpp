@@ -127,6 +127,8 @@ private:
 
 private:
     void insertDefaults();
+    static void upgradeAudioDefaults(ControlbarProfile *profile);
+    static void upgradeHeaderDefaults(ControlbarProfile *profile);
 
     QString generateUniqueName(const QString& name);
 

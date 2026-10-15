@@ -127,5 +127,6 @@ void MLSubtitleAssociations::addLinkWithName(const QUrl& url, const QString& fil
             if (source.url == local)
                 source.label = name;
         match();
+        if (m_error.isEmpty()) emit linkReady();
     });
 }

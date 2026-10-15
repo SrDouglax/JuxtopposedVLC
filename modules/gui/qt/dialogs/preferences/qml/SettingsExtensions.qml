@@ -21,9 +21,7 @@ Column {
         id: addons
         ctx: MainCtx
         typeFilter: ServicesDiscoveryModel.TYPE_NONE
-        stateFilter: installedOnly.checked
-                     ? ServicesDiscoveryModel.STATE_INSTALLED
-                     : ServicesDiscoveryModel.STATE_NONE
+        stateFilter: ServicesDiscoveryModel.STATE_NONE
         searchPattern: searchField.text
     }
 
@@ -183,38 +181,6 @@ Column {
             enabled: root.selectedAddon && root.selectedAddon.manageable
                      && root.selectedAddon.state === ServicesDiscoveryModel.STATE_INSTALLED
             onClicked: addons.removeService(addonsView.currentIndex)
-        }
-    }
-
-    CheckBox {
-        id: installedOnly
-        objectName: "settingsInstalledOnly"
-        text: qsTr("Installed only")
-        checked: false
-        onCheckedChanged: addonsView.currentIndex = -1
-        indicator: Rectangle {
-            x: 2
-            y: (installedOnly.height - height) / 2
-            width: 17
-            height: 17
-            radius: 3
-            color: installedOnly.checked ? "#371f06" : (root.dark ? "#181818" : "#fafafa")
-            border.color: installedOnly.activeFocus ? VLCStyle.redesign.accent
-                                                  : (root.dark ? "#555555" : "#aaaaaa")
-            Label {
-                anchors.centerIn: parent
-                text: installedOnly.checked ? "✓" : ""
-                color: VLCStyle.redesign.accent
-                font.pixelSize: 13
-            }
-        }
-        contentItem: Label {
-            text: installedOnly.text
-            color: root.dark ? "#a0a0a0" : "#444444"
-            font.family: VLCStyle.redesign.fontFamily
-            font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
-            leftPadding: installedOnly.indicator.width + installedOnly.spacing
-            verticalAlignment: Text.AlignVCenter
         }
     }
 

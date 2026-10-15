@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 #include "videosurface.hpp"
+#include <vlc_configuration.h>
 
 #include <QSGRectangleNode>
 #include <QThreadPool>
@@ -84,7 +85,7 @@ void VideoSurfaceProvider::onMouseReleased(int vlcButton)
 
 void VideoSurfaceProvider::onMouseDoubleClick(int vlcButton)
 {
-    if (m_voutWindow)
+    if (m_voutWindow && config_GetInt("qt-double-click-action") == 0)
         vlc_window_ReportMouseDoubleClick(m_voutWindow, vlcButton);
 }
 

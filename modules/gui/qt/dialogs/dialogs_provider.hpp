@@ -221,7 +221,7 @@ public slots:
     void prefsDialog();
     void nativePrefsDialog();
     void nativeEffectsDialog(int page = 0);
-    void playerMenuDialog(QObject* source = nullptr);
+    void playerMenuDialog(QObject* source = nullptr, int page = -1);
     void sleepTimerDialog();
     void audioVisualizationDialog();
     void hdrOutputDialog();
@@ -298,7 +298,8 @@ public:
 
 signals:
     void preferencesRequested();
-    void playerMenuRequested(QObject* source);
+    void networkRequested();
+    void playerMenuRequested(QObject* source, int page);
     void playerMenuVisibleChanged();
     void sleepTimerRequested();
     void audioVisualizationRequested();

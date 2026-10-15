@@ -25,37 +25,69 @@
 #include <vlc_common.h>
 #include "player.h"
 #include "misc/variables.h"
+#include <vlc_configuration.h>
+#include <vlc_url.h>
+#include "history_filter.h"
+
+static bool history_excluded(struct vlc_player_input *input, const input_item_t *item)
+{
+    if (!item || !config_FindConfig("qt-history-exclude")) return false;
+    char *patterns = var_InheritString(input->thread, "qt-history-exclude");
+    if (!patterns || !*patterns) { free(patterns); return false; }
+    char *decoded = vlc_uri_decode_duplicate(item->psz_uri);
+    bool excluded = vlc_player_history_Matches(decoded ? decoded : item->psz_uri, patterns);
+    free(decoded);
+    free(patterns);
+    return excluded;
+}
+
+static void AddMlSlave(input_item_t *item, const char *uri, enum slave_type type)
+{
+    bool exists = false;
+    vlc_mutex_lock(&item->lock);
+    for (int j = 0; j < item->i_slaves; ++j)
+        if (!strcmp(item->pp_slaves[j]->psz_uri, uri)) { exists = true; break; }
+    vlc_mutex_unlock(&item->lock);
+    if (exists) return;
+    input_item_slave_t *slave = input_item_slave_New(uri, type, SLAVE_PRIORITY_USER);
+    if (slave && input_item_AddSlave(item, slave) != VLC_SUCCESS)
+        input_item_slave_Delete(slave);
+}
 
 static void
-vlc_player_input_AddMlSlaves(input_item_t* item, const vlc_ml_media_t* media)
+vlc_player_input_AddMlSlaves(vlc_medialibrary_t *ml, input_item_t *item,
+                            const vlc_ml_media_t *media)
 {
-    if (!media->p_files)
-        return;
+    if (media->p_files)
+        for (size_t i = 0; i < media->p_files->i_nb_items; ++i)
+        {
+            const vlc_ml_file_t *file = &media->p_files->p_items[i];
+            if ((file->i_type != VLC_ML_FILE_TYPE_SUBTITLE && file->i_type != VLC_ML_FILE_TYPE_SOUNDTRACK)
+                || !file->psz_mrl || !file->b_present || !file->b_external) continue;
+            AddMlSlave(item, file->psz_mrl, file->i_type == VLC_ML_FILE_TYPE_SOUNDTRACK
+                                            ? SLAVE_TYPE_GENERIC : SLAVE_TYPE_SPU);
+        }
 
-    for (size_t i = 0; i < media->p_files->i_nb_items; ++i)
+    // Shared files use native per-media metadata because the ML File table
+    // rejects an external MRL already owned by a different library entry.
+    char *payload = NULL;
+    const char header[] = "#vlc-redesign-tracks:1\n";
+    if (vlc_ml_media_get_playback_state(ml, media->i_id,
+            VLC_ML_PLAYBACK_STATE_APP_SPECIFIC, &payload) != VLC_SUCCESS || !payload)
+    { free(payload); return; }
+    if (strncmp(payload, header, sizeof(header) - 1) || strlen(payload) > 2 * 1024 * 1024)
+    { free(payload); return; }
+    char *line = payload + sizeof(header) - 1;
+    while (line && *line)
     {
-        const vlc_ml_file_t* file = &media->p_files->p_items[i];
-        if (file->i_type != VLC_ML_FILE_TYPE_SUBTITLE || !file->psz_mrl ||
-            !file->b_present || !file->b_external)
-            continue;
-
-        bool exists = false;
-        vlc_mutex_lock(&item->lock);
-        for (int j = 0; j < item->i_slaves; ++j)
-            if (!strcmp(item->pp_slaves[j]->psz_uri, file->psz_mrl))
-            {
-                exists = true;
-                break;
-            }
-        vlc_mutex_unlock(&item->lock);
-        if (exists)
-            continue;
-
-        input_item_slave_t* slave = input_item_slave_New(file->psz_mrl, SLAVE_TYPE_SPU,
-                                                         SLAVE_PRIORITY_USER);
-        if (slave && input_item_AddSlave(item, slave) != VLC_SUCCESS)
-            input_item_slave_Delete(slave);
+        char *next = strchr(line, '\n');
+        if (next) *next++ = '\0';
+        if ((line[0] == 'a' || line[0] == 's') && line[1] == '\t'
+            && !strncmp(line + 2, "file:", 5))
+            AddMlSlave(item, line + 2, line[0] == 'a' ? SLAVE_TYPE_GENERIC : SLAVE_TYPE_SPU);
+        line = next;
     }
+    free(payload);
 }
 
 void
@@ -80,7 +112,11 @@ vlc_player_input_RestoreMlStates(struct vlc_player_input* input, bool force_pos)
     if (!media)
         return;
     if (!input->started)
-        vlc_player_input_AddMlSlaves(item, media);
+        vlc_player_input_AddMlSlaves(ml, item, media);
+    if (history_excluded(input, item)) {
+        vlc_ml_release(media);
+        return;
+    }
     if (media->i_type != VLC_ML_MEDIA_TYPE_VIDEO ||
         vlc_ml_media_get_all_playback_pref(ml, media->i_id,
                                            &input->ml.states) != VLC_SUCCESS)
@@ -215,6 +251,7 @@ vlc_player_UpdateMLStates(vlc_player_t *player, struct vlc_player_input* input)
     input_item_t* item = input_GetItem(input->thread);
     if (!item)
         return;
+    if (history_excluded(input, item)) return;
     vlc_ml_media_t* media = vlc_ml_get_media_by_mrl(ml, item->psz_uri);
     if (!media)
     {

@@ -25,6 +25,7 @@ import VLC.MainInterface
 import VLC.Style
 import VLC.Widgets as Widgets
 import VLC.Util
+import VLC.Player
 import VLC.PlayerControls
 
 Item {
@@ -33,6 +34,7 @@ Item {
     // The editor remains the sole owner of its drag views. In the in-player
     // dialog, only their visual parent moves to the player's bottom strip.
     property Item previewHost: null
+    property Item headerPreviewHost: null
 
     property bool dragActive: !!_viewThatContainsDrag || buttonDragItem.Drag.active
 
@@ -56,12 +58,16 @@ Item {
         Controls.TabBar {
             id: bar
             z: 1
+            visible: !root.previewHost
+            currentIndex: root.previewHost && !Player.hasVideoOutput ? 1 : 0
 
             background: Rectangle {
                 color: VLCStyle.redesign.color("#0e0e0e", theme.bg.primary)
             }
 
-            readonly property int currentIdentifier: currentItem ? currentItem.identifier : -1
+            readonly property int currentIdentifier: root.previewHost
+                ? (Player.hasVideoOutput ? PlayerControlbarModel.Videoplayer : PlayerControlbarModel.Audioplayer)
+                : (currentItem ? currentItem.identifier : -1)
 
             Repeater {
                 model: PlayerListModel.model
@@ -120,6 +126,12 @@ Item {
 
                 delegate: RowLayout {
                     id: layout
+                    readonly property bool header: identifier === PlayerControlbarModel.VideoplayerHeader
+                                                || identifier === PlayerControlbarModel.AudioplayerHeader
+                    readonly property bool selected: bar.currentIdentifier === identifier
+                        || (!!root.headerPreviewHost && identifier === (MainCtx.hasEmbededVideo
+                            ? PlayerControlbarModel.VideoplayerHeader : PlayerControlbarModel.AudioplayerHeader))
+                    parent: header && root.headerPreviewHost ? root.headerPreviewHost : previewArea
 
                     // can't use StackLayout or change visibility
                     // because there is a bug with the dragging
@@ -127,10 +139,10 @@ Item {
                     // is set to false, so instead use stacking
                     // and width/height to show the current view
                     clip: true
-                    z: bar.currentIdentifier === identifier ? 0 : -1
-                    width: bar.currentIdentifier === identifier ? parent.width : 0
-                    height: bar.currentIdentifier === identifier ? parent.height : 0
-                    visible: root.dragActive || (bar.currentIdentifier === identifier)
+                    z: selected ? 0 : -1
+                    width: selected ? parent.width : 0
+                    height: selected ? parent.height : 0
+                    visible: root.dragActive || selected
 
                     readonly property int identifier: modelData.identifier
                     readonly property PlayerControlbarModel model: {
@@ -181,6 +193,7 @@ Item {
 
                             Layout.fillHeight: true
                             Layout.fillWidth: {
+                                if (root.previewHost) return index === 1
                                 if (count === 0) {
                                     for (let i = 0; i < repeater.count; ++i) {
                                         const item = repeater.itemAt(i)
@@ -192,7 +205,10 @@ Item {
                                 return true
                             }
 
-                            Layout.minimumWidth: (!!item && item.visible && item.count <= 0) ? Math.max(leftMetric.width,
+                            Layout.preferredWidth: root.previewHost && index !== 1 && item
+                                ? Math.min(item.controlsWidth + VLCStyle.dp(16, VLCStyle.scale), layout.width * 0.45) : -1
+                            Layout.minimumWidth: root.previewHost ? (index === 1 ? VLCStyle.dp(80, VLCStyle.scale) : 0)
+                                : (!!item && item.visible && item.count <= 0) ? Math.max(leftMetric.width,
                                                                                                       centerMetric.width,
                                                                                                       rightMetric.width) * 1.25
                                                                                              : 0
@@ -203,10 +219,38 @@ Item {
                                 color: VLCStyle.redesign.color("#151515", theme.bg.primary)
 
                                 border.color: VLCStyle.redesign.color("#373737", theme.border)
-                                border.width: VLCStyle.border
+                                border.width: 0
                                 border.pixelAligned: (radius < Number.EPSILON)
 
                                 property alias count: dndView.count
+                                readonly property real controlsWidth: dndView.controlsWidth
+
+                                RowLayout {
+                                    anchors.fill: parent
+                                    anchors.margins: VLCStyle.dp(8, VLCStyle.scale)
+                                    spacing: VLCStyle.dp(8, VLCStyle.scale)
+                                    visible: !!root.previewHost && !layout.header && index === 1 && dndView.count === 0
+                                    Text {
+                                        text: VLCStyle.redesign.formatTime(Player.time)
+                                        color: VLCStyle.redesign.textMuted
+                                        font.family: VLCStyle.redesign.fontFamily
+                                        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                                    }
+                                    SliderBar {
+                                        Layout.fillWidth: true
+                                        Layout.fillHeight: true
+                                        redesign: true
+                                        barHeight: VLCStyle.dp(32, VLCStyle.scale)
+                                        value: Player.position
+                                        enabled: false
+                                    }
+                                    Text {
+                                        text: VLCStyle.redesign.formatTime(Player.length)
+                                        color: VLCStyle.redesign.textMuted
+                                        font.family: VLCStyle.redesign.fontFamily
+                                        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
+                                    }
+                                }
 
                                 Connections {
                                     target: root
@@ -232,6 +276,9 @@ Item {
                                     anchors.rightMargin: spacing
 
                                     model: repeater.getModel(index)
+                                    centered: !!root.previewHost && index === 1
+                                    compactHeader: layout.header
+                                    spacing: layout.header ? VLCStyle.dp(12, VLCStyle.scale) : VLCStyle.margin_xsmall
 
                                     // controls in the center view can not have
                                     // extra width
@@ -265,11 +312,11 @@ Item {
         Rectangle {
             Layout.fillHeight: true
             Layout.fillWidth: true
-            Layout.topMargin: VLCStyle.margin_xxsmall
+            Layout.topMargin: root.previewHost ? VLCStyle.dp(20, VLCStyle.scale) : VLCStyle.margin_xxsmall
 
-            color: VLCStyle.redesign.color("#151515", buttonList.colorContext.bg.primary)
+            color: VLCStyle.redesign.color("#0e0e0e", buttonList.colorContext.bg.primary)
             border.color: VLCStyle.redesign.color("#222222", theme.border)
-            border.width: VLCStyle.border
+            border.width: 0
             border.pixelAligned: (radius < Number.EPSILON)
 
             ColumnLayout {
@@ -277,7 +324,8 @@ Item {
 
                 Widgets.MenuCaption {
                     Layout.margins: VLCStyle.margin_xxsmall
-                    text: qsTr("Available controls — drag into a player section to add; drag a placed control here to remove")
+                    visible: false
+                    text: ""
                     color: VLCStyle.redesign.color("#969696", buttonList.colorContext.fg.primary)
                 }
 
@@ -286,7 +334,7 @@ Item {
 
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.margins: VLCStyle.margin_xxsmall
+                    Layout.margins: root.previewHost ? 0 : VLCStyle.margin_xxsmall
 
                     Component.onCompleted: {
                         controlDragStarted.connect(root.dragStarted)
@@ -299,10 +347,19 @@ Item {
 
     EditorDummyButton {
         id: buttonDragItem
+        property url iconSource: ""
+        Drag.hotSpot: Qt.point(-VLCStyle.dragDelta, -VLCStyle.dragDelta)
 
         visible: Drag.active
-        color: theme.fg.primary
+        color: iconSource.toString().length ? "transparent" : theme.fg.primary
         opacity: 0.75
+        Image {
+            anchors.centerIn: parent
+            width: VLCStyle.dp(24, VLCStyle.scale)
+            height: width
+            source: buttonDragItem.iconSource
+            visible: source.toString().length > 0
+        }
 
         x: -1
         y: -1

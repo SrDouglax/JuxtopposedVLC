@@ -101,6 +101,38 @@ FocusScope {
         lockUnlockAutoHide(_controlsUnderVideo)
     }
 
+    // A queue shortcut also works when its button was removed from the profile.
+    Connections {
+        target: PlayerControlbarControls
+        function onToggleQueueRequested() {
+            if (!rootPlayer.visible) return
+            function findButton(item) {
+                if (item.visible && item.enabled && item.description === qsTr("Play Queue") && item.initialTab === 0) return item
+                const children = item.children
+                for (let i = 0; children && i < children.length; ++i) {
+                    const found = findButton(children[i])
+                    if (found) return found
+                }
+                return null
+            }
+            const button = findButton(rootPlayer)
+            if (button) button.clicked()
+            else if (shortcutQueue.visible) shortcutQueue.close()
+            else shortcutQueue.open()
+        }
+    }
+    NavigationMenu {
+        id: shortcutQueue
+        objectName: "shortcutQueueMenu"
+        parent: rootPlayer
+        width: Math.min(VLCStyle.dp(400, VLCStyle.scale), rootPlayer.width)
+        height: Math.min(VLCStyle.dp(940, VLCStyle.scale), Math.max(0, controlBar.y - VLCStyle.dp(16, VLCStyle.scale)))
+        x: Math.max(0, rootPlayer.width - width - VLCStyle.dp(20, VLCStyle.scale))
+        y: Math.max(0, controlBar.y - height - VLCStyle.dp(8, VLCStyle.scale))
+        onOpened: rootPlayer.lockUnlockAutoHide(true)
+        onClosed: rootPlayer.lockUnlockAutoHide(false)
+    }
+
     // Functions
 
     function lockUnlockAutoHide(lock) {
@@ -370,6 +402,7 @@ FocusScope {
         }
 
         onTogglePlaylistVisibility: playlistVisibility.togglePlaylistVisibility()
+        onMenuOpened: menu => controlBar.applyMenu(menu)
 
         onRequestLockUnlockAutoHide: (lock) => {
             rootPlayer.lockUnlockAutoHide(lock)
@@ -415,10 +448,8 @@ FocusScope {
 
         anchors {
             // NOTE: When the controls are pinned we display the playqueue under the topBar.
-            top: (rootPlayer._controlsUnderVideo) ? topBar.bottom
-                                                  : parent.top
-
-            right: parent.right
+            top: topBar.bottom
+            left: parent.left
             bottom: parent.bottom
 
             bottomMargin: parent.height - rootPlayer.positionSliderY
@@ -474,94 +505,10 @@ FocusScope {
             }
         }
 
-        sourceComponent: PlaylistPane {
-            id: playlistView
-
-            property real maximumWidth: (rootPlayer.width + playlistView.rightPadding) / 2
-
-            implicitWidth: Helpers.clamp(MainCtx.playqueuePanel.width
-                                 , playlistView.minimumWidth
-                                 , playlistView.maximumWidth)
-            height: playlistpopup.height
-
-            useAcrylic: false
-            focus: true
-
-            wheelEnabled: true
-
-            rightPadding: VLCStyle.applicationHorizontalMargin
-            topPadding:  {
-                if (rootPlayer._controlsUnderVideo)
-                    return VLCStyle.margin_normal
-                else
-                    // NOTE: We increase the padding accordingly to avoid overlapping the TopBar.
-                    return topBar.reservedHeight
-            }
-            bottomPadding: 0
-
-            background: Rectangle {
-                color: windowTheme.bg.primary.alpha(0.8)
-            }
-
-            view.fadingEdge.pixelAlignedForDPR: !controlBar.visible
-
-            Navigation.parentItem: rootPlayer
-            Navigation.upItem: topBar
-            Navigation.downItem: Player.isInteractive ? toggleControlBarButton : controlBar
-            Navigation.leftAction: closePlaylist
-            Navigation.cancelAction: closePlaylist
-
-            function closePlaylist() {
+        sourceComponent: LibraryPane {
+            onCloseRequested: {
                 playlistVisibility.togglePlaylistVisibility()
-                if (audioControls.visible)
-                    audioControls.forceActiveFocus()
-                else
-                    controlBar.forceActiveFocus()
-            }
-
-
-            Widgets.HorizontalResizeHandle {
-                id: resizeHandle
-
-                property bool _inhibitMainCtxUpdate: false
-
-                parent: playlistView
-
-                anchors {
-                    top: parent.top
-                    bottom: parent.bottom
-                    left: parent.left
-                }
-
-                atRight: false
-                currentWidth: playlistpopup.width
-
-                maximumWidth: playlistView.maximumWidth
-                minimumWidth: playlistView.minimumWidth
-
-                onRequestedWidthChanged: {
-                    if (!_inhibitMainCtxUpdate)
-                        MainCtx.playqueuePanel.width = requestedWidth
-                }
-
-                Component.onCompleted:  _updateFromMainCtx()
-
-                function _updateFromMainCtx() {
-                    if (requestedWidth === MainCtx.playqueuePanel.width)
-                        return
-
-                    _inhibitMainCtxUpdate = true
-                    requestedWidth = MainCtx.playqueuePanel.width
-                    _inhibitMainCtxUpdate = false
-                }
-
-                Connections {
-                    target: MainCtx.playqueuePanel
-
-                    function onWidthChanged() {
-                        resizeHandle._updateFromMainCtx()
-                    }
-                }
+                controlBar.forceActiveFocus()
             }
         }
     }

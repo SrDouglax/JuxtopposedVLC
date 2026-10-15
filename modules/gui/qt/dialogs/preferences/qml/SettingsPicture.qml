@@ -17,8 +17,8 @@ ColumnLayout {
         { id: "saturation", title: qsTr("Saturation") },
         { id: "gamma", title: qsTr("Gamma") }
     ]
-    readonly property var parameters: effects.parameters("adjust")
-    spacing: VLCStyle.dp(11, VLCStyle.scale)
+    readonly property var parameters: { effects.revision; return effects.parameters("adjust") }
+    spacing: VLCStyle.dp(8, VLCStyle.scale)
     visible: effects.filterAvailable("adjust")
 
     RowLayout {
@@ -30,30 +30,7 @@ ColumnLayout {
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
         }
-        Switch {
-            id: enabledSwitch
-            objectName: "settingsPictureEnabled"
-            Accessible.name: qsTr("Enable picture adjustments")
-            Binding on checked {
-                when: !enabledSwitch.pressed
-                value: { root.effects.revision; return root.effects.filterEnabled("adjust") }
-            }
-            onClicked: root.effects.setFilterEnabled("adjust", checked)
-            indicator: Rectangle {
-                implicitWidth: VLCStyle.dp(40, VLCStyle.scale)
-                implicitHeight: VLCStyle.dp(22, VLCStyle.scale)
-                radius: height / 2
-                color: enabledSwitch.checked ? VLCStyle.redesign.accent : "#373737"
-                Rectangle {
-                    x: enabledSwitch.checked ? parent.width - width - 3 : 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: VLCStyle.dp(16, VLCStyle.scale)
-                    height: width
-                    radius: width / 2
-                    color: "#eaeaea"
-                }
-            }
-        }
+
     }
     Repeater {
         model: root.adjustments
@@ -61,7 +38,8 @@ ColumnLayout {
             id: row
             required property var modelData
             Layout.fillWidth: true
-            implicitHeight: VLCStyle.dp(32, VLCStyle.scale)
+            Layout.minimumHeight: VLCStyle.dp(34, VLCStyle.scale)
+            Layout.preferredHeight: Layout.minimumHeight
             readonly property var parameter: root.parameters.find(p => p.id === modelData.id)
             Label {
                 Layout.fillWidth: true
@@ -81,19 +59,19 @@ ColumnLayout {
                     when: !adjustmentSlider.pressed
                     value: { root.effects.revision; return Number(root.effects.parameterValue(row.modelData.id)) }
                 }
-                onMoved: root.effects.setParameter(row.modelData.id, value)
+                onMoved: if (root.effects.setFilterEnabled("adjust", true)) root.effects.setParameter(row.modelData.id, value)
                 background: Rectangle {
                     x: adjustmentSlider.leftPadding
                     y: adjustmentSlider.topPadding + (adjustmentSlider.availableHeight - height) / 2
                     width: adjustmentSlider.availableWidth
                     height: VLCStyle.dp(12, VLCStyle.scale)
                     radius: height / 2
-                    color: "#0e0e0e"
+                    color: VLCStyle.redesign.color("#090909", "#ababaa")
                     Rectangle {
                         width: adjustmentSlider.visualPosition * parent.width
                         height: parent.height
                         radius: parent.radius
-                        color: "#54300c"
+                        color: VLCStyle.redesign.accentBackground
                     }
                 }
                 handle: Rectangle {
@@ -119,6 +97,8 @@ ColumnLayout {
         }
         Button {
             text: qsTr("Reset")
+            Layout.preferredWidth: VLCStyle.dp(100, VLCStyle.scale)
+            Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
             onClicked: root.effects.resetDefaults("adjust")
             background: Rectangle { color: VLCStyle.redesign.color("#191919", "#ababaa"); radius: 4 }
             contentItem: Label {

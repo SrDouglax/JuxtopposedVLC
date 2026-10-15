@@ -53,6 +53,7 @@ public:
     Q_INVOKABLE void addToPlaylist(const QUrl& mrl, const QStringList &options = {});
     Q_INVOKABLE void addToPlaylist(const QVariantList& itemIdList, const QStringList &options = {});
 
+    Q_INVOKABLE void playFromPlaylist(const MLItemId &itemId, const MLItemId &playlistId);
     Q_INVOKABLE void addAndPlay(const MLItemId &itemId, const QStringList &options = {});
     Q_INVOKABLE void addAndPlay(const QString& mrl, const QStringList &options = {});
     Q_INVOKABLE void addAndPlay(const QUrl& mrl, const QStringList &options = {});

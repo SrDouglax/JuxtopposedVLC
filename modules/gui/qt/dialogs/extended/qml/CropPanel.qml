@@ -14,7 +14,7 @@ Rectangle {
     property bool verticalLinked: false
     property bool horizontalLinked: false
     implicitHeight: content.implicitHeight + VLCStyle.dp(32, VLCStyle.scale)
-    color: "#1B1B1B"
+    color: VLCStyle.redesign.color("#1B1B1B", "#dedede")
     radius: VLCStyle.dp(6, VLCStyle.scale)
 
     function updateCrop(side, pixels) {

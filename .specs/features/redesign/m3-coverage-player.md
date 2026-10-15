@@ -1,5 +1,7 @@
 # M3 — cobertura estática de player, biblioteca, efeitos e componentes
 
+> Registro histórico. A revisão atual, as correções e as pendências de aceite estão em [parity.md](parity.md). As lacunas deste registro não devem ser tratadas como o estado atual sem consultar essa revisão.
+
 Estado examinado: checkout integrado `feat/m3` em `f201cd4af341e2f9332cbb2d0e441da8d6b5d296` (inclui `a5db9f42c0` e a correção Off `afedc938b1`). Referências: `build-m3/reference/export/manifest.json`, seus PNGs e `.specs/features/redesign/reference/inventory.json`. Os primeiros 103 nomes dos dois inventários coincidem, na mesma ordem, após retirar o sufixo numérico do PNG; por isso os IDs abaixo são associações inequívocas. `Components.png` e `Designs.png` não possuem node ID nesse inventário. Esta atualização estreita revisou bindings/caminhos novos contra o fonte; não executou build, player, captura integrada ou comparação de pixels. “Implementado” significa caminho de código ligado a API real, não paridade visual nem sucesso nativo. Os 19 Settings, 11 Onboarding e `Keyboard Shortcuts.png` já constam em `m3-coverage-settings.md` e não se repetem aqui.
 
 ## Telas de player e biblioteca

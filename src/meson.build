@@ -176,6 +176,7 @@ libvlccore_sources_base = files(
     'player/vout.c',
     'player/osd.c',
     'player/medialib.c',
+    'player/history_filter.h',
     'player/metadata.c',
     'clock/input_clock.h',
     'clock/clock.h',

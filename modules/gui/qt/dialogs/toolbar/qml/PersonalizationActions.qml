@@ -8,6 +8,7 @@ import VLC.Style
 Column {
     id: root
     objectName: "personalizationActions"
+    property bool showProfiles: true
     property var profileModel: MainCtx.controlbarProfileModel
     signal customizeRequested()
     width: 320
@@ -15,12 +16,13 @@ Column {
 
     Controls.ItemDelegate {
         id: profileButton
+        visible: root.showProfiles
         objectName: "openProfilesAction"
         width: parent.width
         height: 48
         background: Rectangle {
             radius: 6
-            color: profileButton.hovered || profilesMenu.opened ? "#252525" : "transparent"
+            color: profileButton.hovered || profilesMenu.opened ? VLCStyle.redesign.color("#252525", "#dddddd") : "transparent"
         }
         contentItem: Row {
             spacing: 12
@@ -30,7 +32,7 @@ Column {
                 text: qsTr("Profile (%1)").arg(root.profileModel.currentModel
                                             ? root.profileModel.currentModel.name : qsTr("None"))
                 elide: Text.ElideRight
-                color: "#969696"
+                color: VLCStyle.redesign.color("#969696", "#494949")
                 font.family: VLCStyle.redesign.fontFamily
                 font.pixelSize: 16
                 verticalAlignment: Text.AlignVCenter
@@ -60,11 +62,11 @@ Column {
         height: 48
         background: Rectangle {
             radius: 6
-            color: customizeButton.hovered ? "#252525" : "transparent"
+            color: customizeButton.hovered ? VLCStyle.redesign.color("#252525", "#dddddd") : "transparent"
         }
         contentItem: Text {
             text: qsTr("Customize player")
-            color: "#969696"
+            color: VLCStyle.redesign.color("#969696", "#494949")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: 16
             verticalAlignment: Text.AlignVCenter

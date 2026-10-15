@@ -22,6 +22,7 @@ import QtQuick.Layouts
 
 
 import VLC.Player
+import VLC.PlayerControls
 import VLC.Style
 import VLC.Widgets as Widgets
 import VLC.Util
@@ -33,16 +34,34 @@ GridView {
     clip: true
 
     T.ScrollBar.vertical: Widgets.ScrollBarExt { }
-    model: PlayerControlbarControls.controlList.length
+    readonly property var catalog: {
+        const order = [
+            ControlListModel.WIDGET_SPACER, ControlListModel.DIVIDER_WIDGET, ControlListModel.PLAYBACK_SPEED_BUTTON,
+            ControlListModel.SKIP_FW_BUTTON, ControlListModel.SKIP_BACK_BUTTON, ControlListModel.SKIP_FW_15_BUTTON,
+            ControlListModel.SKIP_BACK_15_BUTTON, ControlListModel.STOP_BUTTON, ControlListModel.LOOP_BUTTON,
+            ControlListModel.RANDOM_BUTTON, ControlListModel.RECORD_BUTTON, ControlListModel.SNAPSHOT_BUTTON,
+            ControlListModel.PLAYER_SWITCH_BUTTON, ControlListModel.HDR_BUTTON, ControlListModel.ZOOM_WIDGET,
+            ControlListModel.SOURCE_SIDEBAR_BUTTON, ControlListModel.QUIT_BUTTON, ControlListModel.SETTINGS_BUTTON,
+            ControlListModel.HOME_BUTTON, ControlListModel.ARTWORK_INFO, ControlListModel.FILE_NAME_WIDGET,
+            ControlListModel.ARTIST_NAME_WIDGET, ControlListModel.FOLDER_NAME_WIDGET, ControlListModel.PLAYLIST_NAME_WIDGET,
+            ControlListModel.INFO_BUTTON, ControlListModel.REPLAY_BUTTON, ControlListModel.CHAPTERS_BUTTON,
+            ControlListModel.FAVORITE_BUTTON, ControlListModel.BOOKMARK_BUTTON, ControlListModel.BOOKMARKS_BUTTON,
+            ControlListModel.PLAYLISTS_BUTTON
+        ]
+        const controls = PlayerControlbarControls.controlList
+        return order.map(id => controls.find(entry => entry.id === id)).filter(entry => !!entry)
+    }
+    model: catalog.length
 
     currentIndex: -1
     highlightFollowsCurrentItem: false
 
     // Nine controls fit the 1048px reference dialog; narrower windows retain
     // usable drag targets instead of clipping columns.
-    cellWidth: Math.max(VLCStyle.dp(94, VLCStyle.scale),
+    cellWidth: width >= VLCStyle.dp(990, VLCStyle.scale) ? VLCStyle.dp(110, VLCStyle.scale)
+               : Math.max(VLCStyle.dp(94, VLCStyle.scale),
                         Math.floor(width / Math.max(1, Math.floor(width / VLCStyle.dp(108, VLCStyle.scale)))))
-    cellHeight: VLCStyle.dp(108, VLCStyle.scale)
+    cellHeight: VLCStyle.dp(120, VLCStyle.scale)
 
     boundsBehavior: Flickable.StopAtBounds
 
@@ -93,7 +112,9 @@ GridView {
             if (isFromList())
                 return
 
-            drop.source.dndView.model.remove(drop.source.DelegateModel.itemsIndex)
+            const sourceModel = drop.source.dndView.model
+            const sourceIndex = drop.source.DelegateModel.itemsIndex
+            Qt.callLater(() => sourceModel.remove(sourceIndex))
             drop.accept(Qt.MoveAction)
         }
     }
@@ -154,7 +175,7 @@ GridView {
 
         drag.smoothed: false
 
-        readonly property int mIndex: PlayerControlbarControls.controlList[model.index].id
+        readonly property int mIndex: root.catalog[model.index].id
 
         readonly property ColorContext colorContext: ColorContext {
             colorSet: ColorContext.Item
@@ -164,7 +185,8 @@ GridView {
             if (drag.active) {
                 root.controlDragStarted(mIndex)
 
-                buttonDragItem.text = PlayerControlbarControls.controlList[model.index].label
+                buttonDragItem.iconSource = root.catalog[model.index].icon || ""
+                buttonDragItem.text = root.catalog[model.index].label
                 buttonDragItem.Drag.source = this
                 buttonDragItem.Drag.start()
 
@@ -209,23 +231,30 @@ GridView {
                     Layout.alignment: Qt.AlignHCenter
                     Layout.topMargin: VLCStyle.dp(8, VLCStyle.scale)
                     color: "transparent"
-                    border.width: VLCStyle.dp(1, VLCStyle.scale)
-                    border.color: VLCStyle.redesign.color("#6b6b6b", colorContext.border)
+                    Canvas {
+                        anchors.fill: parent
+                        onPaint: {
+                            const ctx = getContext("2d")
+                            ctx.clearRect(0, 0, width, height)
+                            ctx.strokeStyle = VLCStyle.redesign.color("#6b6b6b", "#777777")
+                            ctx.setLineDash([3, 3]); ctx.strokeRect(0.5, 0.5, width - 1, height - 1)
+                        }
+                    }
 
                     Image {
                         anchors.centerIn: parent
                         width: VLCStyle.dp(24, VLCStyle.scale)
                         height: width
-                        source: PlayerControlbarControls.controlList[model.index].icon || ""
+                        source: root.catalog[model.index].icon || ""
                         fillMode: Image.PreserveAspectFit
                         visible: source.toString().length > 0
                     }
 
                     EditorDummyButton {
-                        visible: !PlayerControlbarControls.controlList[model.index].icon
+                        visible: !root.catalog[model.index].icon && root.catalog[model.index].id !== ControlListModel.WIDGET_SPACER
                         anchors.centerIn: parent
                         color: VLCStyle.redesign.color("#969696", colorContext.fg.primary)
-                        text: PlayerControlbarControls.controlList[model.index].label
+                        text: root.catalog[model.index].label
                         font.pixelSize: VLCStyle.dp(23, VLCStyle.scale)
                     }
                 }
@@ -238,7 +267,11 @@ GridView {
                     elide: Text.ElideRight
                     font.family: VLCStyle.redesign.fontFamily
                     font.pixelSize: VLCStyle.redesign.fontNormal
-                    text: PlayerControlbarControls.controlList[model.index].text
+                    text: [ControlListModel.SKIP_FW_BUTTON, ControlListModel.SKIP_BACK_BUTTON,
+                           ControlListModel.SKIP_FW_15_BUTTON, ControlListModel.SKIP_BACK_15_BUTTON,
+                           ControlListModel.SOURCE_SIDEBAR_BUTTON, ControlListModel.PLAYLIST_NAME_WIDGET]
+                            .includes(root.catalog[model.index].id)
+                          ? root.catalog[model.index].text.replace(" ", "\n") : root.catalog[model.index].text
                     wrapMode: Text.WordWrap
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignTop

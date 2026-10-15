@@ -17,6 +17,7 @@ ColumnLayout {
     property real modelValue: 0
     property int decimals: 1
     property bool editable: false
+    property bool showValue: true
     signal edited(real value)
 
     function formatted(value) {
@@ -39,7 +40,7 @@ ColumnLayout {
             width: VLCStyle.dp(136, VLCStyle.scale)
             height: VLCStyle.dp(32, VLCStyle.scale)
             radius: VLCStyle.dp(4, VLCStyle.scale)
-            color: "#0E0E0E"
+            color: VLCStyle.redesign.color("#090909", "#eeeeee")
             visible: root.editable
             TextInput {
                 id: numericInput
@@ -65,7 +66,7 @@ ColumnLayout {
             }
         }
         Text {
-            visible: !root.editable
+            visible: !root.editable && root.showValue
             text: root.formatted(root.modelValue)
             color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
@@ -93,12 +94,12 @@ ColumnLayout {
             width: slider.availableWidth
             height: VLCStyle.dp(16, VLCStyle.scale)
             radius: VLCStyle.dp(6, VLCStyle.scale)
-            color: "#090909"
+            color: VLCStyle.redesign.color("#090909", "#ababaa")
             Rectangle {
                 width: Math.max(0, slider.visualPosition * parent.width)
                 height: parent.height
                 radius: parent.radius
-                color: "#503012"
+                color: VLCStyle.redesign.accentBackground
             }
         }
         handle: Rectangle {

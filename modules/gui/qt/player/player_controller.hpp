@@ -153,6 +153,8 @@ public:
     Q_PROPERTY(bool canRestorePlayback READ canRestorePlayback NOTIFY playbackRestoreQueried FINAL)
 
     // meta
+    Q_PROPERTY(QString playlistName READ getPlaylistName NOTIFY inputChanged FINAL)
+    Q_PROPERTY(QString playlistId READ getPlaylistId NOTIFY inputChanged FINAL)
     Q_PROPERTY(QString title READ getTitle NOTIFY currentMetaChanged FINAL)
     Q_PROPERTY(QString artist READ getArtist NOTIFY currentMetaChanged FINAL)
     Q_PROPERTY(QString album READ getAlbum NOTIFY currentMetaChanged FINAL)
@@ -241,6 +243,7 @@ public slots:
     void jumpFwd();
     void jumpBwd();
     void jumpTime( VLCTime i_time );
+    void jumpSeconds(int seconds);
     void jumpToPos( double );
     void frameNext();
     void framePrev();
@@ -295,6 +298,8 @@ public:
     vlc_player_t * getPlayer() const;
 
     input_item_t *getInput() const;
+    QString getPlaylistName() const;
+    QString getPlaylistId() const;
 
     SharedVOutThread getVout();
     VOutThreadList getVouts() const;

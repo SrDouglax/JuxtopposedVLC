@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls.Basic as Controls
+import QtQuick.Templates as T
 
 import VLC.Dialogs
 import VLC.MainInterface
@@ -10,6 +11,24 @@ Controls.Popup {
     objectName: "profilesMenu"
     property var profileModel: MainCtx.controlbarProfileModel
     property string switchError: ""
+
+    function createNewProfile() {
+        const prompt = DialogsProvider.getTextDialog(null, qsTr("Profile Name"),
+            qsTr("Please enter the new profile name:"), qsTr("Profile %1").arg(profileModel.count + 1))
+        if (!prompt.ok || !prompt.text.trim().length) return
+        const editor = newProfileEditor.createObject(root.T.Overlay.overlay,
+            {newProfileName: prompt.text.trim()})
+        if (!editor) return
+        root.close()
+        editor.open()
+    }
+    Component {
+        id: newProfileEditor
+        ToolbarEditorDialog {
+            id: draftEditor
+            onUnload: draftEditor.destroy()
+        }
+    }
 
     width: 264
     height: Math.min(profileModel.count, 6) * 48 + 61
@@ -136,9 +155,7 @@ Controls.Popup {
                 }
             }
             onClicked: {
-                root.close()
-                // The existing editor owns creation, cloning, Save, and Cancel.
-                DialogsProvider.showToolbarEditorDialog()
+                root.createNewProfile()
             }
         }
     }

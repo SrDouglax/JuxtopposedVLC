@@ -17,6 +17,12 @@ C.Popup {
     property alias audioEffects: audioEffects
     property alias config: config
     property bool previousGlobalShortcuts: true
+    property bool revealEffects: false
+    Timer {
+        id: effectsScroll
+        interval: 100
+        onTriggered: root.reveal(root.currentTab === 1 ? videoPage.effectsHeading : audioPage.effectsHeading)
+    }
     readonly property var tabModel: [{
             "title": qsTr("Playback"),
             "icon": "qrc:///redesign/icons/playback/default.png",
@@ -63,6 +69,19 @@ C.Popup {
     function writeDefault(key, value) {
         return config.setValue(key, value) && config.apply();
     }
+    function reveal(item) {
+        const flick = scroll.contentItem
+        if (!flick || !flick.contentItem || !item) return
+        const top = item.mapToItem(flick.contentItem, 0, 0).y
+        flick.contentY = Math.max(0, Math.min(top, flick.contentHeight - flick.height))
+    }
+    function showEffects(page) {
+        currentTab = page
+        revealEffects = true
+        const tab = page === 1 ? videoPage : audioPage
+        tab.expanded = true
+    }
+    onCurrentTabChanged: if (scroll.contentItem) scroll.contentItem.contentY = 0
     function resetCurrent() {
         if (currentTab === 0)
             Player.rate = 1;
@@ -89,8 +108,10 @@ C.Popup {
         if (audioEffects.activeAudio)
             audioEffects.begin();
         tabs.focusCurrent();
+        if (revealEffects) effectsScroll.restart();
     }
     onClosed: {
+        revealEffects = false;
         // Keep playback edits; only the preset action writes effect defaults.
         videoEffects.finalizeConfiguration();
         audioEffects.finalizeConfiguration();
@@ -137,11 +158,13 @@ C.Popup {
                         menu: root
                     }
                     MenuVideo {
+                        id: videoPage
                         Layout.fillWidth: true
                         visible: root.currentTab === 1
                         menu: root
                     }
                     MenuAudio {
+                        id: audioPage
                         Layout.fillWidth: true
                         visible: root.currentTab === 2
                         menu: root

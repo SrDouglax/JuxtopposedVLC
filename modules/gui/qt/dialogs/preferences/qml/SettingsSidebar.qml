@@ -34,7 +34,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: root.dark ? "#151515" : "#f2f2f2"
+        color: root.dark ? "#191919" : "#f2f2f2"
         radius: 6
     }
 
@@ -53,9 +53,10 @@ Item {
             Repeater {
                 model: root.entries
                 delegate: Item {
+                    required property int index
                     required property var modelData
                     width: categoryList.width
-                    height: VLCStyle.dp(46, VLCStyle.scale)
+                    height: VLCStyle.dp(modelData.kind === "heading" && index > 0 ? 34 : 46, VLCStyle.scale)
                     visible: modelData.kind === "heading"
                              || modelData.key === "extensions"
                              || root.availableCategories.indexOf(modelData.key) >= 0
@@ -73,6 +74,7 @@ Item {
                     }
 
                     Button {
+                        objectName: "settingsCategory_" + modelData.key
                         visible: modelData.kind !== "heading"
                         enabled: modelData.key === "extensions"
                                  || root.availableCategories.indexOf(modelData.key) >= 0

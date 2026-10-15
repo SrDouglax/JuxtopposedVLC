@@ -1,0 +1,41 @@
+{
+  "result": "PASS",
+  "renderer": "native VLC transcoder + FreeType",
+  "glyphs": {
+    "640x360-32": {
+      "box": [
+        213,
+        323,
+        427,
+        346
+      ],
+      "width": 214,
+      "height": 23
+    },
+    "640x360-64": {
+      "box": [
+        106,
+        299,
+        534,
+        346
+      ],
+      "width": 428,
+      "height": 47
+    },
+    "1280x720-32": {
+      "box": [
+        533,
+        669,
+        747,
+        692
+      ],
+      "width": 214,
+      "height": 23
+    }
+  },
+  "em_sizes": [
+    32,
+    64
+  ],
+  "proof": "Doubling the configured pixel size doubles visible glyph height; the same pixel size stays constant across video resolutions."
+}

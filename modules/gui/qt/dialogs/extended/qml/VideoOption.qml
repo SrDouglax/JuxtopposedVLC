@@ -12,6 +12,7 @@ ColumnLayout {
     id: root
     required property var effects
     required property var option
+    property bool showLabel: true
     readonly property var currentValue: {
         effects.revision
         return effects.parameterValue(option.id)
@@ -22,7 +23,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: (option.type === "float" || option.type === "integer")
                  && option.minimum !== undefined && option.maximum !== undefined
-        label: option.name
+        label: root.showLabel ? option.name : ""
         from: option.minimum === undefined ? 0 : option.minimum
         to: option.maximum === undefined ? 1 : option.maximum
         modelValue: Number(root.currentValue)
@@ -46,7 +47,7 @@ ColumnLayout {
             width: VLCStyle.dp(116, VLCStyle.scale)
             height: VLCStyle.dp(32, VLCStyle.scale)
             radius: VLCStyle.dp(4, VLCStyle.scale)
-            color: "#0E0E0E"
+            color: VLCStyle.redesign.color("#090909", "#eeeeee")
             TextInput {
                 id: unboundedInput
                 anchors.fill: parent
@@ -103,6 +104,7 @@ ColumnLayout {
         Layout.fillWidth: true
         visible: option.type === "color"
         Text {
+            visible: root.showLabel
             text: root.option.name
             Layout.fillWidth: true
             color: VLCStyle.redesign.textMuted
@@ -113,7 +115,7 @@ ColumnLayout {
             width: VLCStyle.dp(130, VLCStyle.scale)
             height: VLCStyle.dp(32, VLCStyle.scale)
             radius: VLCStyle.dp(4, VLCStyle.scale)
-            color: "#0E0E0E"
+            color: VLCStyle.redesign.color("#090909", "#eeeeee")
             RowLayout {
                 anchors.fill: parent
                 anchors.margins: VLCStyle.dp(6, VLCStyle.scale)
@@ -151,7 +153,7 @@ ColumnLayout {
         rightPadding: VLCStyle.dp(12, VLCStyle.scale)
         onClicked: choicePopup.open()
         Accessible.name: root.option.name
-        background: Rectangle { color: "#0E0E0E"; radius: VLCStyle.dp(5, VLCStyle.scale) }
+        background: Rectangle { color: VLCStyle.redesign.color("#090909", "#eeeeee"); radius: VLCStyle.dp(5, VLCStyle.scale) }
         contentItem: RowLayout {
             Text {
                 Layout.fillWidth: true

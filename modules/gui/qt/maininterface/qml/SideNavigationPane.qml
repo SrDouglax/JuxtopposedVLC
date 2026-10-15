@@ -33,6 +33,9 @@ T.Pane {
     property int safeAreaRightMargin: 0
     property bool useAcrylic: true
     property bool delegateShowText: true
+    property int rowHeight: VLCStyle.dp(38, VLCStyle.scale)
+    property bool flatBackground: false
+    property bool highlightCurrent: true
     property alias model: navigationModel
     readonly property int minimumWidth: VLCStyle.expandNavigationPaneWidth
 
@@ -87,6 +90,7 @@ T.Pane {
     background: Rectangle {
         color: VLCStyle.redesign.color(VLCStyle.redesign.windowBackground, theme.bg.primary)
         Rectangle {
+            visible: !root.flatBackground
             anchors.fill: parent
             anchors.margins: VLCStyle.margin_xsmall
             radius: VLCStyle.redesign.controlRadius
@@ -117,7 +121,7 @@ T.Pane {
                 navigationUri: uri
                 navigationDepth: depth
                 width: ListView.view.width
-                height: VLCStyle.dp(38, VLCStyle.scale)
+                height: root.rowHeight
                 leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(root.delegateShowText ? 24 + depth * 16 : 8, VLCStyle.scale)
                 rightPadding: root.safeAreaRightMargin + VLCStyle.margin_small
                 leftInset: root.safeAreaLeftMargin + VLCStyle.dp(8, VLCStyle.scale)
@@ -128,7 +132,7 @@ T.Pane {
                 text: modelData.title
                 showText: root.delegateShowText
                 enabled: !modelData.library || MainCtx.mediaLibraryAvailable
-                checked: index === listView.currentIndex
+                checked: root.highlightCurrent && index === listView.currentIndex
                 onClicked: {
                     root.itemClicked(uri, this)
                     listView.currentIndex = index
@@ -140,7 +144,7 @@ T.Pane {
         SideNavigationDelegate {
             id: addItem
             Layout.fillWidth: true
-            Layout.preferredHeight: VLCStyle.dp(38, VLCStyle.scale)
+            Layout.preferredHeight: root.rowHeight
             leftPadding: root.safeAreaLeftMargin + VLCStyle.dp(root.delegateShowText ? 24 : 8, VLCStyle.scale)
             rightPadding: root.safeAreaRightMargin
             leftInset: root.safeAreaLeftMargin + VLCStyle.dp(8, VLCStyle.scale)

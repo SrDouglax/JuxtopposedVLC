@@ -16,6 +16,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 import QtQuick
+import QtQuick.Window
 import QtQuick.Templates as T
 import QtQml.Models
 
@@ -26,6 +27,7 @@ import VLC.Widgets as Widgets
 
 ListView {
     id: playerBtnDND
+    objectName: "toolbarEditorDropView"
 
     spacing: VLCStyle.margin_xsmall
     orientation: Qt.Horizontal
@@ -40,6 +42,39 @@ ListView {
     property alias scrollBar: scrollBar
 
     property bool extraWidthAvailable: true
+    property bool centered: false
+    property bool compactHeader: false
+    property int layoutRevision: 0
+    function controlWidthsChanged() { ++layoutRevision }
+    cacheBuffer: VLCStyle.dp(2048, VLCStyle.scale)
+    readonly property real controlsWidth: {
+        layoutRevision
+        let total = 0
+        for (let i = 0; i < count; ++i) {
+            const control = itemAtIndex(i)
+            total += control ? control.width : VLCStyle.dp(32, VLCStyle.scale)
+        }
+        return total + Math.max(0, count - 1) * spacing
+    }
+    property real centerOffset: 0
+    function updateCenterOffset() {
+        const viewport = playerBtnDND.Window.window?.contentItem
+        if (!centered || !count || !viewport) { centerOffset = 0; if (centered) contentX = 0; return }
+        const origin = mapToItem(viewport, 0, 0).x
+        centerOffset = Math.max(0, Math.min(width - controlsWidth,
+            viewport.width / 2 - origin - controlsWidth / 2))
+        contentX = -centerOffset
+    }
+    // Resolve after layout, outside the header's own implicit-size binding.
+    onControlsWidthChanged: Qt.callLater(updateCenterOffset)
+    onWidthChanged: Qt.callLater(updateCenterOffset)
+    onXChanged: Qt.callLater(updateCenterOffset)
+    onCenteredChanged: Qt.callLater(updateCenterOffset)
+    Component.onCompleted: Qt.callLater(updateCenterOffset)
+    header: Item {
+        implicitHeight: playerBtnDND.height
+        implicitWidth: playerBtnDND.centerOffset
+    }
 
     T.ScrollBar.horizontal: Widgets.ScrollBarExt {
         id: scrollBar
@@ -92,7 +127,11 @@ ListView {
         } else {
             // moving between sections or views
             playerBtnDND.model.insert(destIndex, {"id" : drag.source.controlId})
-            drag.source.dndView.model.remove(drag.source.DelegateModel.itemsIndex)
+            // Finish Drag.drop() and reparent its loader before destroying
+            // the source delegate still used by the current drag handler.
+            const sourceModel = drag.source.dndView.model
+            const sourceIndex = drag.source.DelegateModel.itemsIndex
+            Qt.callLater(() => sourceModel.remove(sourceIndex))
             drag.accept(Qt.MoveAction)
         }
     }

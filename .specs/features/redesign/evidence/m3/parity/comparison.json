@@ -1,0 +1,671 @@
+{
+  "archive_sha256": "e031eebbb6a7689bb36f0137a535a579625f2725ed0cfd90b957a5f05178f87e",
+  "method": "Manual comparison of corresponding native captures and supplied export, combined with native interaction/value assertions. This is not automated pixel equality.",
+  "scope": "M3 reviewed screen families",
+  "groups": [
+    {
+      "family": "Settings",
+      "references": [
+        {
+          "name": "Settings - global.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "d6249c31380865ee0e62758ec8e3e4c16b8bad0602ef38f7079004d9c3fb6b7c"
+        },
+        {
+          "name": "Settings - global-1.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "a3527e85e3c167bbf89bd0e5fc2cceb4c8a7ec559306eaf49beade3fa79220b8"
+        },
+        {
+          "name": "Settings - interface.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "e9c1d06f78429cc6f36974aad38ec5c30e526202bcf402c43a766e2c8642a533"
+        },
+        {
+          "name": "Settings - interface-1.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "e9c1d06f78429cc6f36974aad38ec5c30e526202bcf402c43a766e2c8642a533"
+        },
+        {
+          "name": "Settings - privacy.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "92c8a830c4736a6182f98122e216882e35f9506a26f8f90a0d5f5d379454ca48"
+        },
+        {
+          "name": "Settings - playback.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "c4c2f08a4d631f82f33e2d5a234c000da40a18325b78175e53cf887cd70fc92f"
+        },
+        {
+          "name": "Settings - playback-1.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "e017a2c5b9cf31434a904530a8efca956a82b43786aea95924faba12d62a860c"
+        },
+        {
+          "name": "Settings - video.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "3264fe388feb5142fc1db3e007957666416b6473d2cb07a7c08aa9e542f55d8e"
+        },
+        {
+          "name": "Settings - video-1.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "3264fe388feb5142fc1db3e007957666416b6473d2cb07a7c08aa9e542f55d8e"
+        },
+        {
+          "name": "Settings - audio.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "781d2fbd6505ce23eb706b1548222b58b0cbd2eae9869bbda4c0f2fd46fc26e9"
+        },
+        {
+          "name": "Settings - audio-1.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "ffa932cb9fe1bac5f93a23dcea95076e4217a06c5f742fb0e2b8d0be7ffbf5a5"
+        },
+        {
+          "name": "Settings - subtitles.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "2c3ebaf075541d98ab4cc1f4cd1e566ccdad257d604f28046bf4fccc8a2fbe38"
+        },
+        {
+          "name": "Settings - subtitles-1.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "2c3ebaf075541d98ab4cc1f4cd1e566ccdad257d604f28046bf4fccc8a2fbe38"
+        },
+        {
+          "name": "Settings - controls.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "a1554f45624ba493dec7c34cee6c12fc4ed69f2d21a5aeba2b650b970c70164d"
+        },
+        {
+          "name": "Settings - library.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "3899864391f439ddc20d0700e3c6f9b2e008cfa226e26bf336951702ed7db281"
+        },
+        {
+          "name": "Settings - network.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "851caeec3d1512ad51dbbd91e315fc6c41d1b56a8932eb82438885b1aaec8c6a"
+        },
+        {
+          "name": "Settings - performance.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "1091519391daaedffb2734c07a24c224c699322626e1b53d26d199e3465cfc11"
+        },
+        {
+          "name": "Settings - recording.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "f158e362d90760733a235dfdb9ecaa663bcc15f8df24d3d529c489172a717124"
+        },
+        {
+          "name": "Settings - extensions.png",
+          "size": [
+            1078,
+            895
+          ],
+          "sha256": "1668709a279e72b6e801c2a1e10387720230932c2b243bdaba51d6ffe9d03154"
+        }
+      ],
+      "captures": [
+        "settings-audio-bottom.png",
+        "settings-audio.png",
+        "settings-controls-bottom.png",
+        "settings-controls.png",
+        "settings-extensions.png",
+        "settings-general-advanced-150.png",
+        "settings-general-advanced-bottom-150.png",
+        "settings-general-advanced.png",
+        "settings-general.png",
+        "settings-interface-bottom.png",
+        "settings-interface.png",
+        "settings-library.png",
+        "settings-light.png",
+        "settings-network.png",
+        "settings-performance-advanced-150.png",
+        "settings-performance-advanced-bottom-150.png",
+        "settings-performance-advanced.png",
+        "settings-performance.png",
+        "settings-playback-bottom.png",
+        "settings-playback.png",
+        "settings-privacy.png",
+        "settings-recording.png",
+        "settings-subtitle-pixels.png",
+        "settings-subtitles-bottom.png",
+        "settings-subtitles.png",
+        "settings-video-bottom.png",
+        "settings-video.png"
+      ],
+      "checks": [
+        "settings.txt",
+        "settings-150.txt"
+      ],
+      "limits": [
+        "Native device/module lists and saved values vary. Disabled capability controls are retained."
+      ]
+    },
+    {
+      "family": "Onboarding",
+      "references": [
+        {
+          "name": "Onboarding.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "0f1ef2e4bbef45ed55e67050db6d397b78c01863c249901b1bb57d70d46ddaae"
+        },
+        {
+          "name": "Onboarding-1.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "9980c9772f25e2c14371b6858e9b68398af986f12eddba9f3c15358ac78231e1"
+        },
+        {
+          "name": "Onboarding-2.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "f623c8cc4f74a32101864cb25d36d152b0becfa1beea89ce42afa2aaf3e7af64"
+        },
+        {
+          "name": "Onboarding-3.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "5317f2f021669ac1f969ecafd301016bf1b11027dae7d9fbf5e4c568113410ca"
+        },
+        {
+          "name": "Onboarding-4.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "08b0d500b10da83888a46392d13d4292bc4f72eea18f96b51818ceca43c4ec8e"
+        },
+        {
+          "name": "Onboarding-5.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "67205a348f3f1730ec93a971eb18e0300f018e94daf9ff8444075037f1335949"
+        },
+        {
+          "name": "Onboarding-6.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "672f2cfb98da24725f7b5980086769c5f541f724c18c95f3a3d6ed92dd03ebe9"
+        },
+        {
+          "name": "Onboarding-7.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "f7f50b5d69006d95af5cd3fb8e2c993be93a1871e1f1a4893a7c907d5d31b5df"
+        },
+        {
+          "name": "Onboarding-8.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "aab0681bbb8fb1662b7ec46f0f568c3dc716e6569f28b0e14d4a5c6e4ab352df"
+        },
+        {
+          "name": "Onboarding-9.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "7209742f0b695ff9510396f009fe12cc6c92f21f7b4693750c18408978f1ec4c"
+        },
+        {
+          "name": "Onboarding-10.png",
+          "size": [
+            1114,
+            783
+          ],
+          "sha256": "d98c170f3e9e0dbd4e77dc6527bda51f9bee13bf7902b537d016849169d55399"
+        }
+      ],
+      "captures": [
+        "onboarding-shortcuts.png",
+        "onboarding-theme-0.png",
+        "onboarding-theme-1.png",
+        "onboarding-theme-2.png",
+        "onboarding-theme-3.png",
+        "onboarding-theme-4.png",
+        "onboarding-theme-5.png",
+        "onboarding-theme-6.png",
+        "onboarding-theme-7.png",
+        "onboarding-theme-8.png",
+        "onboarding-welcome.png"
+      ],
+      "checks": [
+        "onboarding.txt"
+      ],
+      "limits": [
+        "Key labels reflect native bindings; screenshot text depends on locale."
+      ]
+    },
+    {
+      "family": "Customization",
+      "references": [
+        {
+          "name": "Player - customize.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "9679fb31c11df4eaaaceb035cc334289205c4e9cfd7cc2a01de4c45e527cb325"
+        },
+        {
+          "name": "Player - customize-1.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "41a45cd5e0e5a9db9d5fd1caf2dba590950d14efeaefdd4fdcdb6a7915e92d9a"
+        },
+        {
+          "name": "Player - customize-2.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "f18fa21da02b64cdaf83c5ff2d893edb4608f1880c0f982bead3721aa7f30f67"
+        },
+        {
+          "name": "Player - customize-3.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "7dbc375e1d2ef63647e2278d7473fa3c3afe5654bc8933886e9e58eba6fa76e3"
+        },
+        {
+          "name": "Player - customize-4.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "0b4ae57a6c7520d7f990f34dac8aed617ae07b5dd1a94223f7801d48138322bd"
+        },
+        {
+          "name": "Player - customize-5.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "f49ecf04c17a7df32c0aa860f07853feca5e9aa7e92cdb3211d6d98e555b1f5d"
+        },
+        {
+          "name": "Player - customize-6.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "003551de6b32596aa0cd073c67ed2b42654933f62997c2e3f2ad7eed63409ba9"
+        },
+        {
+          "name": "Player - customize-7.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "ad80b0fabdae845ac217506cb5382825ccc8444cce56668100ac6ae1b56a6546"
+        },
+        {
+          "name": "Player - customize-8.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "916ee12813b1bb0f2271e2652b51b25fbd6ae45ffd8ff9f50a0f3c675abc31b8"
+        }
+      ],
+      "captures": [
+        "customization-center.png",
+        "customization-drag.png",
+        "customization-header-moved.png",
+        "customization-header-popup.png",
+        "customization-hover.png",
+        "customization-sidebar.png",
+        "customization.png"
+      ],
+      "checks": [
+        "audit.txt",
+        "customization-stress.txt"
+      ],
+      "limits": [
+        "Captures sample the drag sequence; gesture assertions cover add, reorder, transfer, remove, cancel and persistence."
+      ]
+    },
+    {
+      "family": "Music",
+      "references": [
+        {
+          "name": "Player - Music.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "99d78abe4fe640f72ddabbc4d7a1043076d712ff153ede08208cc0f6bd74c1ad"
+        },
+        {
+          "name": "Player - Music-1.png",
+          "size": [
+            1920,
+            1080
+          ],
+          "sha256": "493afb0bf52d04974882cd83da1e7d381cbbdb4ccb5ea86a29cad008c37de70e"
+        }
+      ],
+      "captures": [
+        "music.png",
+        "music-library.png",
+        "music-library-grid.png"
+      ],
+      "checks": [
+        "audit.txt"
+      ],
+      "limits": [
+        "Fixture artwork, titles and actual PCM waveform differ from design sample media."
+      ]
+    },
+    {
+      "family": "Track associations",
+      "references": [
+        {
+          "name": "Add Subtitles to Playlist/Folder.png",
+          "size": [
+            1078,
+            830
+          ],
+          "sha256": "93f06f81799349575d350709241403ea44e46381c845ed22ed182faa4970ab23"
+        },
+        {
+          "name": "Add Subtitles to Playlist/Folder-1.png",
+          "size": [
+            1078,
+            830
+          ],
+          "sha256": "93f06f81799349575d350709241403ea44e46381c845ed22ed182faa4970ab23"
+        },
+        {
+          "name": "Add Subtitles to Playlist/Folder-2.png",
+          "size": [
+            1078,
+            830
+          ],
+          "sha256": "6488e7023c78531beb12db590716f6c2a7f23b42f18e68362d40ae79e65134df"
+        },
+        {
+          "name": "Add Subtitles to Playlist/Folder-3.png",
+          "size": [
+            1078,
+            830
+          ],
+          "sha256": "0e4db543c271d0285ca3d515120aa0a7eea80c0df04edd8b794f20767b40e190"
+        }
+      ],
+      "captures": [
+        "subtitle-computer.png",
+        "subtitle-folder.png",
+        "subtitle-link.png",
+        "subtitle-search.png",
+        "subtitle-account.png",
+        "audio-association.png"
+      ],
+      "checks": [
+        "associations.txt",
+        "audit.txt"
+      ],
+      "limits": [
+        "Private HTTPS fixture verifies native API behavior; public account authentication and quota are unproved."
+      ]
+    },
+    {
+      "family": "Player panels and effects",
+      "references": [
+        {
+          "name": "Controls.png",
+          "size": [
+            1960,
+            11139
+          ],
+          "sha256": "b484ba5080c68351fab09bafcf1a78eb461b93997dd05bbc4e041ebaffdd1d34"
+        },
+        {
+          "name": "Audio - Compressor Settings.png",
+          "size": [
+            400,
+            821
+          ],
+          "sha256": "639bd6484b8acbc39c54afa294b0358a289132ba2761f4b7a46015c490e88664"
+        },
+        {
+          "name": "Audio - Spatializer Settings.png",
+          "size": [
+            400,
+            821
+          ],
+          "sha256": "f36eac56b76b73877426303aa70aa441d148f69d6bb9e7a94c3b9aae4ca1a756"
+        }
+      ],
+      "captures": [
+        "player-settings.png",
+        "effects-audio.png",
+        "effects-small.png",
+        "player-tracks.png",
+        "player-tracks-small.png",
+        "player-audio-delay.png",
+        "player-subtitle-delay.png",
+        "player-audio-negative-delay.png",
+        "player-subtitle-negative-delay.png"
+      ],
+      "checks": [
+        "panels.txt"
+      ],
+      "limits": [
+        "Selected captures cover corresponding visible fragments. No assertion of pixel equality for every expanded effect, dropdown or hover state."
+      ]
+    },
+    {
+      "family": "Contexts and forms",
+      "references": [
+        {
+          "name": "Open network stream.png",
+          "size": [
+            1078,
+            661
+          ],
+          "sha256": "233dad765673ded9010d4c8c9e5bf2993138552c499b8d672deb5b700b50ea55"
+        },
+        {
+          "name": "new playlist.png",
+          "size": [
+            743,
+            619
+          ],
+          "sha256": "813c38a1822157395e8f5560cf35c7882b1f3cdc9770cb03ddbf79984f53459c"
+        },
+        {
+          "name": "context menu.png",
+          "size": [
+            295,
+            326
+          ],
+          "sha256": "45d362f739dfd95c315d318cfad9a3b5b1e1bb5f9940a1ecc404877a014927c4"
+        },
+        {
+          "name": "folder context menu.png",
+          "size": [
+            295,
+            326
+          ],
+          "sha256": "079edd3363398b0527cd78fc377b6655d53c79d4981ea52fcf5e4fa8601b943e"
+        },
+        {
+          "name": "file context menu.png",
+          "size": [
+            295,
+            614
+          ],
+          "sha256": "b215d4c0bd3c78d50f3a6841fe453c44281df4f117a512ffbe1265f4e8f728e1"
+        },
+        {
+          "name": "playlist context menu.png",
+          "size": [
+            295,
+            422
+          ],
+          "sha256": "2a37c67a6b24068d685b6e1e50bb0e9a16271cde5633087a05bb96a557a95a9c"
+        }
+      ],
+      "captures": [
+        "player-context.png",
+        "library-context.png",
+        "network.png",
+        "playlist.png"
+      ],
+      "checks": [
+        "audit.txt",
+        "forms.txt"
+      ],
+      "limits": [
+        "Context actions depend on native selection and capabilities. Existing unchanged forms proof is reused."
+      ]
+    }
+  ],
+  "capture_sha256": {
+    "audio-association.png": "c5b136d5bd0ee8e82b3fa1dcc96edfa02b92fdd763b20958cf19c37cb8b6719e",
+    "customization-center.png": "addf79f8c761c208c79601662467a7805f8c93e95ba6d91ddffe12dfd21bda81",
+    "customization-drag.png": "a562f6a267eaf6c50596e7f542d13f3f5b071118920431be96457020ee822662",
+    "customization-header-moved.png": "0b254bf18c4addc760d801917420107fe404171fda43d038f83dc25b0991e565",
+    "customization-header-popup.png": "c17cc2c7b5163206c2e69d191eaa7e6df1eb53ee41ff8f6f3b3631452fca6aa3",
+    "customization-hover.png": "b6c0bc153db968d84fa24d929b68f3e0446d00932183ffed95cfe7538d26a373",
+    "customization-sidebar.png": "c899f732d032f728fe6d49088fa804aa5030b0972b0eafe5c807ba7bc3caf87f",
+    "customization.png": "cd67b4a85e4fca0742f9a60ff00539e592f116569a24259f57eff3ec4e55f71d",
+    "effects-audio.png": "138bdf13b20f087388a1d32820c0f06a16ea5ba3f71d0840939186b76776cce8",
+    "effects-small.png": "3539249c4eaba5e2859a16d9d40d8c300f393a64cbd48d9c00ef5c308f43bbca",
+    "library-context.png": "6368e09a1ffec0e681883f6ba5afbad5da7ec54f13c2d12702bbd91ad5c06e5c",
+    "music-library-grid.png": "6044c45af65ce0cc3ba228facd03b38dbc7a91ea89a171a444d16f09ed0da6ac",
+    "music-library.png": "7daffc57b315812c7f14267fe0fcaeb595684fe2396f179aa4bec4df2cc2196b",
+    "music.png": "0c71de6865c58cc0f4076c02c8a24d8f99d1c330a0f13e21e354ea05ae13b075",
+    "network.png": "a8a327b1a5eb992df06becb8697daf750bb16f20b9b1a45ee052576a6aea2c1b",
+    "onboarding-shortcuts.png": "04718c0cda1e6a7e90deb96f5844fdfca18db17ca0d7cfbfda05bc0e3d5f8668",
+    "onboarding-theme-0.png": "52022a0a1265ff968b3eaf5149a19fc810de18290a20941c2b388df3ec516b64",
+    "onboarding-theme-1.png": "72b6800500220ccc5c54f12e86c3aad74787c5588511ca21003224938b788dc7",
+    "onboarding-theme-2.png": "c54bd0c46146c8c485219b14bcd448fc02a4765a228ae03d9983819cc3c4c679",
+    "onboarding-theme-3.png": "d902c4eab29fed634bc002b3851fd426a92e294334e827da91d7ad28f1f6d3c3",
+    "onboarding-theme-4.png": "1076fe667b0f7d8441d49e172061f638fc228fc09509ce265145a1abf8a950d9",
+    "onboarding-theme-5.png": "218a562222b2344f469734e7e6a5d45fc622db137c50996bbd14a2589de81a0c",
+    "onboarding-theme-6.png": "10dfcd1d50a02b93ca17c6111d445ec7ddec64618c8558cb79674a2efb718c9f",
+    "onboarding-theme-7.png": "e33789fc8c68708bc3c5becba0b3cf21968bb1f80c66b48fdf0d8f8e850afefc",
+    "onboarding-theme-8.png": "d510eb9ecfafd5d653f7c9f2813078ebbf1ad603449838b8e4e06aaf0d0446dc",
+    "onboarding-welcome.png": "403bbded963e42c76bab29ecd1e51ba4a4dd7a69ff565fa81054737e8c2e8a58",
+    "player-audio-delay.png": "1ac2e5ea35e056b74c21e144b7d7e3a7f35e3775420ad59b179ee85ec5ee9082",
+    "player-audio-negative-delay.png": "d9c9b08b568e4c2163c3f3f962f677459f4d8cd452d829c7f7c13c0e0c1e825f",
+    "player-context.png": "c6792184abdaaf817b93862d34ae40dde86f92c76c57223194f88251af1b3dc3",
+    "player-settings.png": "5bc4b747ad4fd939a6dc253c8f825227bb0dccd8badef3e0aabaa09982477ada",
+    "player-subtitle-delay.png": "2d21a2e855bbef86272558b6ae39bbeb32510aa3c28c6c6eee038e9998a9cbb7",
+    "player-subtitle-negative-delay.png": "40209c4a48e674c0c498da4048593281586ddfc10d8958d8fb439f423548a6c3",
+    "player-tracks-small.png": "473fee48e03dabb37dbeb5260d292417e2bf5f1bfb1e75a1b890965024cfee1e",
+    "player-tracks.png": "c0e7efa1c5c5d5228f3c5710a963f3033b0d1e262d100668604307dbd339ac40",
+    "playlist.png": "2b830084a41e610f899a8e03e8384c854317284fbd4bdc0c7fc339d378f193f8",
+    "settings-audio-bottom.png": "c64ddfa21d1e1b13c8a7fd964059e6ee385146c82300239eb8036b6738835932",
+    "settings-audio.png": "cada86c7e3503567eb29132e2ba98f7aeb61a4572dcb27a13ed77bc9334a8ffa",
+    "settings-controls-bottom.png": "a6a141f28b8aff771ee03d4a9e67b94099cfa3555cf206d738a1d45d5f06caa2",
+    "settings-controls.png": "cc716e54438dc59782a9ff69752b6764a3c2744a346333b96f9f4f6715bfa5ff",
+    "settings-extensions.png": "e34a606f3069a5a59b4fc47a728ff01b853752b623269aaa7d4928354a97331e",
+    "settings-general-advanced-150.png": "63ad36b689458cff5ec7f9ea5b579c2c985aa53ce31026867bcacb296cc629cb",
+    "settings-general-advanced-bottom-150.png": "a637365d01daca958f0a7ff7bea29e225fb66d95ba31f15d6a15496acc225016",
+    "settings-general-advanced.png": "9d3f783cee03f329cbbef5d22696d92124ff0c6149b8c80020b00e1a34286fb5",
+    "settings-general.png": "9469baa8376645c55db6b8e09d9b1cf22df2565ce87a4b001321d86ec5ec1d97",
+    "settings-interface-bottom.png": "34b3bf3c759f3c65704bddb421f4051438aa302f083c27be9fe4290846b15546",
+    "settings-interface.png": "ba1b2880a013e80cf0373106d7a28c453a03e68d914492e1637349dd833f3f6f",
+    "settings-library.png": "03115a28b65c8adead016d594e6d26867cc778623a24c4f978fdc251e9bc367e",
+    "settings-light.png": "6cb060f7f5c6277f9979508e2ac3d775d2109d7c0b2f945f6e934de3e43f805c",
+    "settings-network.png": "49b8d19aabd3e147c425056a34dea3ab9319c4e27888b18756db9d6c849f424f",
+    "settings-performance-advanced-150.png": "753f7db369172b0552fa61408e54c70021fb04d904f5abff129acd067be07a78",
+    "settings-performance-advanced-bottom-150.png": "feea3d11fc61ff3d664ead2216b37d9362697bba906af6fe61e441ce57f52bca",
+    "settings-performance-advanced.png": "59adbc45dd9847d90888f037dd3acf0c4ff7d618ec41d8a79b6b3750a73e3013",
+    "settings-performance.png": "2980efcdf4e95d24f56099dcf50f9fa6765cb701cd1111b6d8b6bc76f5ca15c9",
+    "settings-playback-bottom.png": "2d51092a4e492d924630287e1991bf83abf570cc46404d98970376a23e852959",
+    "settings-playback.png": "0d56e7f2556419c2a02f8d96a50ad8c13def1ff4350454210d073f4939c3922d",
+    "settings-privacy.png": "5e54acc48b489f9879ed280a69ad95ab4068a51afdc7511124366619898b75fa",
+    "settings-recording.png": "9035207047884dbd0d8e55ad5c4c6a741006db21268fb7e368f1d3def0cfb5d7",
+    "settings-subtitle-pixels.png": "434547c0009baf2f89bad7c35185f3f4e376963d89d47efa6b3fb71608c131a2",
+    "settings-subtitles-bottom.png": "942ae0c2e6b44bd7c01605027e781bac06f8d53b6ab822852d9726683850b0ca",
+    "settings-subtitles.png": "db5b9f004ea58c1bba646a478a8dd30730998f3a61b023c7f4b15b337ea3c8a6",
+    "settings-video-bottom.png": "6ef4b1be13de93e0f7d2d42a58fc44b572bf80dc9c2b7e093a17eceef053aa52",
+    "settings-video.png": "93e8646b88591469b0abed7b5042b95a046e2b7e9e07cc66c6c5a2a0f18df95b",
+    "subtitle-account.png": "16cb5ea5d5658f07d25abdcb802bffd986b1678e77e2d51c28f63373e0e04d0f",
+    "subtitle-computer.png": "1740a00a73aa01a8eef3897fee4999fbeeb6ee1e4d1abf3ed9d06d25ed9a74e4",
+    "subtitle-folder.png": "ad0ae2f66710611c8cb5cfe123a6b9d93e217df33f6683957e9fab8f977d5158",
+    "subtitle-link.png": "f891c20c39ac7fe357a27ae0be2c01a72efef8f3d585aedf7a0e827ed3aa9997",
+    "subtitle-search.png": "568e83bfea4d06636f82e47b531abb346b0a3d31cbbcb07eb5b4f83a63f3c985",
+    "video-library.png": "74e515c1903d7a6f913833484ccf7822f944452843186fa93b10cf48abc13ef8"
+  }
+}

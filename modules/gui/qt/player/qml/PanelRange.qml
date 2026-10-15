@@ -40,6 +40,8 @@ ColumnLayout {
         to: root.maximum
         stepSize: root.step
         value: root.value
+        readonly property real fillOrigin: from < 0 && to > 0
+            ? (mirrored ? to : -from) / (to - from) : 0
         onMoved: root.edited(value)
         implicitHeight: VLCStyle.dp(16, VLCStyle.scale)
         background: Rectangle {
@@ -50,7 +52,9 @@ ColumnLayout {
             radius: VLCStyle.dp(4, VLCStyle.scale)
             color: VLCStyle.redesign.color("#090909", "#dedede")
             Rectangle {
-                width: slider.visualPosition * parent.width
+                objectName: "panelRangeFill"
+                x: Math.min(slider.fillOrigin, slider.visualPosition) * parent.width
+                width: Math.abs(slider.visualPosition - slider.fillOrigin) * parent.width
                 height: parent.height
                 radius: VLCStyle.dp(4, VLCStyle.scale)
                 color: VLCStyle.redesign.accentBackground

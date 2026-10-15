@@ -14,7 +14,7 @@ ColumnLayout {
     required property string filterId
     property bool expanded: false
     property var items: []
-    spacing: VLCStyle.dp(12, VLCStyle.scale)
+    spacing: 0
 
     function refresh() { items = effects.parameters(filterId).filter(p => p.type === "float") }
     Component.onCompleted: refresh()
@@ -31,7 +31,11 @@ ColumnLayout {
         focusPolicy: Qt.StrongFocus
         Accessible.name: root.expanded ? qsTr("Collapse settings") : qsTr("Expand settings")
         onClicked: root.expanded = !root.expanded
-        background: Rectangle { color: "#1B1B1B"; radius: VLCStyle.dp(6, VLCStyle.scale) }
+        background: Rectangle {
+            color: VLCStyle.redesign.color(root.expanded ? "#1B1B1B" : "#090909", "#dedede")
+            radius: VLCStyle.dp(6, VLCStyle.scale)
+            Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: root.expanded ? parent.radius : 0; color: parent.color }
+        }
         contentItem: RowLayout {
             anchors.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
             anchors.rightMargin: VLCStyle.dp(16, VLCStyle.scale)
@@ -57,8 +61,9 @@ ColumnLayout {
         Layout.fillWidth: true
         implicitHeight: settings.implicitHeight + VLCStyle.dp(32, VLCStyle.scale)
         radius: VLCStyle.dp(6, VLCStyle.scale)
-        color: "#1B1B1B"
+        color: VLCStyle.redesign.color("#1B1B1B", "#dedede")
         visible: root.expanded
+        Rectangle { anchors.top: parent.top; width: parent.width; height: parent.radius; color: parent.color }
         ColumnLayout {
             id: settings
             anchors.left: parent.left

@@ -10,7 +10,7 @@ import VLC.Style
 
 Item {
     id: root
-    implicitHeight: VLCStyle.dp(210, VLCStyle.scale)
+    implicitHeight: VLCStyle.dp(180, VLCStyle.scale)
     property int selectedTheme: 0
     property int initialTheme: 0
     property color selectedAccent: VLCStyle.redesign.accent
@@ -20,7 +20,7 @@ Item {
         ? (dark ? "#371f06" : "#f7e2c9")
         : Qt.tint(dark ? "#0e0e0e" : "#dedede",
                   Qt.rgba(selectedAccent.r, selectedAccent.g, selectedAccent.b, dark ? 0.25 : 0.35))
-    readonly property bool dirty: selectedTheme !== initialTheme
+    readonly property bool dirty: language.dirty || selectedTheme !== initialTheme
                                   || selectedAccent.toString() !== initialAccent.toString()
 
     readonly property var themeChoices: [
@@ -33,6 +33,7 @@ Item {
     OnboardingController { id: themeBridge; ctx: MainCtx }
 
     function begin() {
+        language.begin()
         themeBridge.begin()
         initialTheme = themeBridge.themeIndex
         selectedTheme = initialTheme
@@ -51,11 +52,13 @@ Item {
     }
 
     function resetDefaults() {
+        language.resetDefaults()
         chooseTheme(0)
         chooseAccent("#D37918")
     }
 
     function cancel() {
+        language.cancel()
         themeBridge.cancel()
         selectedTheme = initialTheme
         selectedAccent = initialAccent
@@ -63,6 +66,7 @@ Item {
     }
 
     function save() {
+        language.save()
         themeBridge.acceptTheme()
         MainCtx.setSettingValue("redesign/accent", selectedAccent.toString())
         initialTheme = selectedTheme
@@ -78,8 +82,9 @@ Item {
     }
 
     SettingsLanguageAction {
+        id: language
         width: parent.width
-        y: VLCStyle.dp(34, VLCStyle.scale)
+        y: VLCStyle.dp(40, VLCStyle.scale)
     }
 
     Label {
@@ -88,13 +93,13 @@ Item {
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(119, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(92, VLCStyle.scale)
     }
 
     Row {
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(105, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(84, VLCStyle.scale)
         spacing: 2
         Repeater {
             model: root.themeChoices
@@ -131,13 +136,13 @@ Item {
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(164, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(138, VLCStyle.scale)
     }
 
     Row {
         anchors.right: parent.right
         anchors.top: parent.top
-        anchors.topMargin: VLCStyle.dp(156, VLCStyle.scale)
+        anchors.topMargin: VLCStyle.dp(132, VLCStyle.scale)
         spacing: 7
         Repeater {
             model: root.accentChoices

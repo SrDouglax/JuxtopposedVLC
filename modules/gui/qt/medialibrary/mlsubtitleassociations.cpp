@@ -30,6 +30,30 @@
 #include "qt.hpp"
 
 namespace {
+// The ML File table cannot attach one external MRL to several media.
+// Keep shared associations in the native per-media extension metadata instead.
+// Unknown extension payloads are preserved, never overwritten.
+bool saveSharedTrack(vlc_medialibrary_t *ml, int64_t mediaId,
+                     const QByteArray &mrl, int fileType)
+{
+    ml_unique_ptr<vlc_ml_media_t> owner(vlc_ml_get_media_by_mrl(ml, mrl.constData()));
+    if (!owner) return false;
+    char *value = nullptr;
+    if (vlc_ml_media_get_playback_state(ml, mediaId, VLC_ML_PLAYBACK_STATE_APP_SPECIFIC, &value) != VLC_SUCCESS)
+        { free(value); return false; }
+    QByteArray payload(value ? value : "");
+    free(value);
+    const QByteArray header("#vlc-redesign-tracks:1\n");
+    if (payload.isEmpty()) payload = header;
+    if (!payload.startsWith(header) || payload.size() > 2 * 1024 * 1024) return false;
+    const QByteArray line = (fileType == VLC_ML_FILE_TYPE_SOUNDTRACK ? "a\t" : "s\t") + mrl;
+    if (payload.split('\n').contains(line)) return true;
+    if (payload.size() + line.size() + 1 > 2 * 1024 * 1024) return false;
+    payload += line + '\n';
+    return vlc_ml_media_set_playback_state(ml, mediaId, VLC_ML_PLAYBACK_STATE_APP_SPECIFIC,
+                                           payload.constData()) == VLC_SUCCESS;
+}
+
 QString baseName(const QUrl& url)
 {
     return QFileInfo(url.toLocalFile()).completeBaseName().toCaseFolded();
@@ -76,7 +100,7 @@ QVariantList MLSubtitleAssociations::sources() const
         list.push_back(QVariantMap{{"label", source.label.isEmpty() ?
                                        QFileInfo(source.url.toLocalFile()).fileName() : source.label},
                                    {"url", source.url}, {"destination", source.destination},
-                                   {"issue", source.issue}});
+                                   {"issue", source.issue}, {"selected", source.selected}});
     return list;
 }
 
@@ -239,9 +263,9 @@ void MLSubtitleAssociations::addFiles(const QVariantList& urls)
         }
         enum slave_type type;
         const QByteArray path = QFile::encodeName(info.fileName());
-        if (!input_item_slave_GetType(path.constData(), &type) || type != SLAVE_TYPE_SPU)
+        if (!input_item_slave_GetType(path.constData(), &type) || type != (m_audioTracks ? SLAVE_TYPE_GENERIC : SLAVE_TYPE_SPU))
         {
-            setError(tr("Unsupported subtitle file: %1").arg(info.fileName()));
+            setError((m_audioTracks ? tr("Unsupported audio file: %1") : tr("Unsupported subtitle file: %1")).arg(info.fileName()));
             return;
         }
         seen.insert(url.toString(QUrl::FullyEncoded));
@@ -253,10 +277,19 @@ void MLSubtitleAssociations::addFiles(const QVariantList& urls)
     match();
 }
 
+void MLSubtitleAssociations::setAudioTracks(bool audio)
+{
+    if (m_busy || m_audioTracks == audio) return;
+    m_audioTracks = audio;
+    m_sources.clear();
+    m_error.clear();
+    emit changed();
+}
+
 void MLSubtitleAssociations::chooseFiles()
 {
-    const auto urls = QFileDialog::getOpenFileUrls(nullptr, tr("Choose subtitle files"), {},
-                                                  tr("Subtitle files (*.srt *.ass *.ssa *.sub *.vtt *.ttml *.smi);;All files (*)"),
+    const auto urls = QFileDialog::getOpenFileUrls(nullptr, m_audioTracks ? tr("Choose audio tracks") : tr("Choose subtitle files"), {},
+                                                  m_audioTracks ? tr("Audio files (*.mp3 *.aac *.m4a *.ac3 *.dts *.flac *.ogg *.wav *.wma);;All files (*)") : tr("Subtitle files (*.srt *.ass *.ssa *.sub *.vtt *.ttml *.smi);;All files (*)"),
                                                   nullptr, QFileDialog::Options(), {"file"});
     QVariantList values;
     for (const auto& url : urls)
@@ -299,31 +332,48 @@ void MLSubtitleAssociations::assign(int sourceIndex, int destinationIndex)
     emit changed();
 }
 
+void MLSubtitleAssociations::setSourceSelected(int index, bool selected)
+{
+    if (m_busy || index < 0 || index >= m_sources.size()) return;
+    m_sources[index].selected = selected;
+    m_error.clear();
+    emit changed();
+}
+
 void MLSubtitleAssociations::save()
 {
     if (!m_ml || m_busy || m_destinations.isEmpty() || m_sources.isEmpty())
     {
-        setError(tr("Choose a destination and at least one subtitle file."));
+        setError(tr("Choose a destination and at least one track file."));
         return;
     }
+    bool hasSelection = false;
     for (const auto& source : m_sources)
     {
+        if (!source.selected) continue;
+        hasSelection = true;
         if (source.destination < 0 || source.destination >= m_destinations.size())
         {
-            setError(tr("Choose a destination for every subtitle file."));
+            setError(tr("Choose a destination for every track file."));
             return;
         }
         if (!QFileInfo(source.url.toLocalFile()).isReadable())
         {
-            setError(tr("A subtitle file is no longer readable: %1").arg(source.url.fileName()));
+            setError(tr("A track file is no longer readable: %1").arg(source.url.fileName()));
             return;
         }
+    }
+
+    if (!hasSelection) {
+        setError(tr("Select at least one track file."));
+        return;
     }
 
     struct Assignment { int64_t id; QByteArray mediaMrl; QByteArray subtitleMrl; };
     QVector<Assignment> assignments;
     for (const auto& source : m_sources)
     {
+        if (!source.selected) continue;
         const auto& destination = m_destinations[source.destination];
         assignments.push_back({destination.id,
                                destination.url.toString(QUrl::FullyEncoded).toUtf8(),
@@ -335,16 +385,17 @@ void MLSubtitleAssociations::save()
     m_error.clear();
     emit changed();
     const quint64 revision = m_revision;
+    const auto fileType = m_audioTracks ? VLC_ML_FILE_TYPE_SOUNDTRACK : VLC_ML_FILE_TYPE_SUBTITLE;
     struct Context { int saved = 0; QString error; };
     m_ml->runOnMLThread<Context>(this,
-        [assignments](vlc_medialibrary_t* ml, Context& ctx) {
+        [assignments, fileType](vlc_medialibrary_t* ml, Context& ctx) {
             for (const auto& assignment : assignments)
             {
                 const QUrl subtitle = QUrl::fromEncoded(assignment.subtitleMrl);
                 const QFileInfo file(subtitle.toLocalFile());
                 if (!subtitle.isLocalFile() || !file.isFile() || !file.isReadable())
                 {
-                    ctx.error = QObject::tr("A subtitle file is missing or unreadable: %1")
+                    ctx.error = QObject::tr("A track file is missing or unreadable: %1")
                                     .arg(file.fileName());
                     return;
                 }
@@ -366,16 +417,17 @@ void MLSubtitleAssociations::save()
                     for (size_t i = 0; i < media->p_files->i_nb_items; ++i)
                     {
                         const auto& file = media->p_files->p_items[i];
-                        if (file.i_type == VLC_ML_FILE_TYPE_SUBTITLE && file.psz_mrl &&
+                        if (file.i_type == fileType && file.psz_mrl &&
                             assignment.subtitleMrl == file.psz_mrl)
                             exists = true;
                     }
                 if (exists)
                     continue;
                 if (vlc_ml_media_add_external_mrl(ml, media->i_id,
-                        assignment.subtitleMrl.constData(), VLC_ML_FILE_TYPE_SUBTITLE) != VLC_SUCCESS)
+                        assignment.subtitleMrl.constData(), fileType) != VLC_SUCCESS
+                    && !saveSharedTrack(ml, media->i_id, assignment.subtitleMrl, fileType))
                 {
-                    ctx.error = QObject::tr("Could not save subtitle association for %1.")
+                    ctx.error = QObject::tr("Could not save track association for %1.")
                                     .arg(QUrl::fromEncoded(assignment.mediaMrl).fileName());
                     break;
                 }

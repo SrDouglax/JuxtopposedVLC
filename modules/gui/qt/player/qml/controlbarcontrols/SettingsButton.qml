@@ -28,6 +28,6 @@ PlayerPanelButton {
     text: VLCIcons.settings
     description: qsTr("Player settings")
     AccessibleCompat.id: "playerSettingsButton"
-    checked: DialogsProvider.playerMenuVisible
+    checked: panelOpen
     onClicked: DialogsProvider.playerMenuDialog(root)
 }

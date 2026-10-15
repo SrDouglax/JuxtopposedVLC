@@ -51,6 +51,14 @@ C.Popup {
         ctx: MainCtx
     }
     contentItem: ColumnLayout {
+        // Unhandled Q closes the queue while playback shortcuts are frozen.
+        // Text editors consume their own key events before they reach here.
+        Keys.onPressed: event => {
+            if (event.key === Qt.Key_Q && event.modifiers === Qt.NoModifier) {
+                event.accepted = true
+                root.close()
+            }
+        }
         spacing: 0
         PanelTabs {
             id: tabs

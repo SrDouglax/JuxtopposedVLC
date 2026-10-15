@@ -1,0 +1,12 @@
+{
+  "recorded": [
+    [
+      "file:///work/build-m3/history-probe/fixtures/history-included.mkv",
+      0.025062289088964462,
+      -1,
+      1791994231
+    ]
+  ],
+  "excluded_media_rows": 0,
+  "result": "PASS"
+}

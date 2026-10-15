@@ -9,11 +9,18 @@
 #include <QTimer>
 #include <QtTest/QTest>
 #include <QDebug>
+#include <QProcess>
 #include <thread>
 #include <chrono>
 #include <functional>
 
+void runFormsProbe(QQuickWindow*, QQuickItem*);
+void runSettingsProbe(QQuickWindow*, QQuickItem*);
+bool runAssociationsProbe(QQuickWindow*, QQuickItem*);
+void runAuditProbe(QQuickWindow*, QQuickItem*);
+void runOnboardingProbe(QQuickWindow*, QQuickItem*);
 static QQuickWindow *view;
+static QWindow *interfaceWindow;
 static QQuickItem *mini, *video;
 static bool failed = false;
 static void check(bool ok, const char *name) {
@@ -33,7 +40,11 @@ static void drag(QPoint start, QPoint delta, const char *name) {
     check((mini->position() - before - QPointF(delta)).manhattanLength() < 5, name);
 }
 static void panels() {
-    view->showMaximized(); QTest::qWait(600);
+    QQmlExpression nativeWindow(qmlContext(mini), mini, "MainCtx.intfMainWindow");
+    interfaceWindow = qobject_cast<QWindow*>(nativeWindow.evaluate().value<QObject*>());
+    check(interfaceWindow != nullptr, "native-interface-window");
+    if (!interfaceWindow) { QCoreApplication::quit(); return; }
+    interfaceWindow->showMaximized(); QTest::qWait(600);
     QQmlExpression expression(qmlContext(mini), mini, "MainCtx.playerView = true; MainCtx.pinVideoControls = true; MainPlaylistController.play()");
     expression.evaluate();
     if(expression.hasError())qWarning()<<expression.error();
@@ -50,6 +61,17 @@ static void panels() {
     };
     auto click = [](QQuickItem *item) {
         QQuickWindowPrivate::get(view)->polishItems();
+        // Reach clipped fields through their real scroll viewport. Clicking an
+        // offscreen item's scene position would instead dismiss the popup.
+        for (auto ancestor = item->parentItem(); ancestor; ancestor = ancestor->parentItem()) {
+            if (!ancestor->property("contentY").isValid()) continue;
+            const auto bounds = item->mapRectToItem(ancestor, item->boundingRect());
+            double y = ancestor->property("contentY").toDouble();
+            if (bounds.top() < 0) y += bounds.top();
+            else if (bounds.bottom() > ancestor->height()) y += bounds.bottom() - ancestor->height();
+            ancestor->setProperty("contentY", qBound(0.0, y, qMax(0.0, ancestor->property("contentHeight").toDouble() - ancestor->height())));
+            QQuickWindowPrivate::get(view)->polishItems();
+        }
         const auto p = item->mapToScene(QPointF(item->width()/2, item->height()/2)).toPoint();
         QTest::mouseMove(view, p, 100);
         QTest::mouseClick(view, Qt::LeftButton, Qt::NoModifier, p, 100);
@@ -67,17 +89,17 @@ static void panels() {
         auto content = qobject_cast<QQuickItem*>(popup->property("contentItem").value<QObject*>());
         std::function<QQuickItem*(QQuickItem*)> visit = [&](QQuickItem *item)->QQuickItem* {
             if (!item) return nullptr;
-            if (item->objectName() == name) return item;
+            if (item->objectName() == name && item->isVisible()) return item;
             for (auto child : item->childItems()) if (auto found = visit(child)) return found;
             return nullptr;
         };
         return visit(content);
     };
-    const char *descriptions[] = {"Player settings", "Languages and tracks", "Play Queue"};
-    const char *names[] = {"playerSettingsMenu", "tracksMenu", "playerNavigationMenu"};
+    const char *descriptions[] = {"Player settings", "Languages and tracks", "Play Queue", "Audio effects"};
+    const char *names[] = {"playerSettingsMenu", "tracksMenu", "playerNavigationMenu", "playerSettingsMenu"};
     for (int size = 0; size < 2; ++size) {
-        if (size) { view->showNormal(); QTest::qWait(600); view->resize(720,540); QTest::qWait(600); check(view->size()==QSize(720,540),"small-window-size"); QQuickWindowPrivate::get(view)->polishItems(); QTest::qWait(100); }
-        for (int i = 0; i < 3; ++i) {
+        if (size) { interfaceWindow->showNormal(); QTest::qWait(600); interfaceWindow->resize(720,540); QTest::qWait(600); check(view->size()==QSize(720,540),"small-window-size"); QQuickWindowPrivate::get(view)->polishItems(); QTest::qWait(100); }
+        for (int i = 0; i < 4; ++i) {
             auto button = find(descriptions[i]);
             check(button != nullptr, descriptions[i]);
             if (!button) continue;
@@ -89,6 +111,20 @@ static void panels() {
             check(popup && popup->property("visible").toBool(), "panel-opens");
             check(button->property("checked").toBool(), "icon-active");
             if (popup) {
+                if (i == 3) {
+                    check(popup->property("currentTab").toInt() == 2, "effects-opens-audio-tab");
+                    auto eq = named(popup, "playerEqualizer");
+                    check(eq && eq->property("expanded").toBool(), "effects-equalizer-expanded");
+                    auto heading = named(popup, "playerAudioEffectsHeading");
+                    if (heading) {
+                        auto parent = qobject_cast<QQuickItem*>(popup->property("parent").value<QObject*>());
+                        const auto top = parent->mapToScene(QPointF(popup->property("x").toDouble(), popup->property("y").toDouble())).y();
+                        const auto y = heading->mapToScene(QPointF()).y();
+                        check(y >= top + 48 && y <= top + 80, "effects-scroll-reveals-filters");
+                    } else check(false, "effects-heading-present");
+                    auto settings = find("Player settings");
+                    check(settings && !settings->property("checked").toBool(), "effects-only-source-icon-active");
+                }
                 auto parent = qobject_cast<QQuickItem*>(popup->property("parent").value<QObject*>());
                 if (parent) {
                     auto origin = parent->mapToScene(QPointF(popup->property("x").toDouble(),popup->property("y").toDouble()));
@@ -148,8 +184,15 @@ static void panels() {
                             auto delay = named(popup, name);
                             check(delay != nullptr, "delay-control-present");
                             if (delay) {
+                                auto fill = delay->findChild<QQuickItem*>("panelRangeFill");
+                                check(fill && fill->width() < 1, "delay-zero-has-no-fill");
                                 QMetaObject::invokeMethod(delay, "edited", Q_ARG(double, 0.5)); QTest::qWait(150);
                                 check(evaluate(popup,tabIndex==2?"Player.audioDelayMS === 500":"Player.subtitleDelayMS === 500").toBool(), "delay-updates-core");
+                                check(fill && qAbs(fill->x()-fill->parentItem()->width()/2) < 1 && fill->width() > 0, "positive-delay-fills-from-zero");
+                                QMetaObject::invokeMethod(delay, "edited", Q_ARG(double, -4.0)); QTest::qWait(150);
+                                check(evaluate(popup,tabIndex==2?"Player.audioDelayMS === -4000":"Player.subtitleDelayMS === -4000").toBool(), "negative-delay-updates-core");
+                                check(fill && qAbs(fill->x()+fill->width()-fill->parentItem()->width()/2) < 1 && fill->width() > 0, "negative-delay-fills-to-zero");
+                                view->grabWindow().save(qEnvironmentVariable("MINI_PROBE_IMAGE")+QString("-delay-negative-%1.png").arg(tabIndex));
                                 QMetaObject::invokeMethod(delay, "edited", Q_ARG(double, 0.0));
                             }
                             if (tabIndex == 3) {
@@ -198,10 +241,42 @@ static void panels() {
             check(!button->property("checked").toBool(), "outside-clears-icon");
         }
     }
+    auto queue = find("Play Queue");
+    QProcess::execute("xdotool", {"key", "--clearmodifiers", "q"}); QTest::qWait(200);
+    check(queue && queue->property("checked").toBool(), "queue-keyboard-shortcut-opens-native-panel");
+    QProcess::execute("xdotool", {"key", "--clearmodifiers", "q"}); QTest::qWait(200);
+    check(queue && !queue->property("checked").toBool(), "queue-keyboard-shortcut-closes-native-panel");
+    if (queue) {
+        QQmlExpression removeQueue(qmlContext(queue), queue,
+            "Qt.callLater(() => MainCtx.controlbarProfileModel.currentModel.getModel(0).right.clear())");
+        removeQueue.evaluate(); QTest::qWait(300);
+        QProcess::execute("xdotool", {"key", "--clearmodifiers", "q"}); QTest::qWait(200);
+        auto fallback = view->contentItem()->findChild<QObject*>("shortcutQueueMenu");
+        check(fallback && fallback->property("visible").toBool(), "queue-shortcut-works-with-button-removed");
+        if (fallback) {
+            QQmlExpression bounds(qmlContext(fallback), fallback, "y + height <= controlBar.y - 8 && x >= 0");
+            check(bounds.evaluate().toBool(), "queue-shortcut-fallback-stays-above-entire-footer");
+            QProcess::execute("xdotool", {"key", "--clearmodifiers", "q"}); QTest::qWait(200);
+            check(!fallback->property("visible").toBool(), "queue-shortcut-fallback-second-key-closes");
+            QQmlExpression restore(qmlContext(fallback), fallback, "MainCtx.controlbarProfileModel.reload()");
+            restore.evaluate(); QTest::qWait(200);
+        }
+    }
     qInfo() << "MINI-PROBE PANELS RESULT" << (failed?"FAIL":"PASS");
     QMetaObject::invokeMethod(QCoreApplication::instance(), "quit", Qt::QueuedConnection);
 }
+void runGeometryProbe(QQuickItem *context);
 static void run() {
+    if (qEnvironmentVariableIsSet("MINI_PROBE_GEOMETRY_PHASE")) { runGeometryProbe(mini); return; }
+    if (qEnvironmentVariableIsSet("MINI_PROBE_AUDIT")) { runAuditProbe(view, mini); return; }
+    if (qEnvironmentVariableIsSet("MINI_PROBE_FORMS")) { runFormsProbe(view, mini); return; }
+    if (qEnvironmentVariableIsSet("MINI_PROBE_ASSOCIATIONS")) {
+        const bool ok = runAssociationsProbe(view, mini);
+        qInfo() << "MINI-PROBE ASSOCIATIONS RESULT" << (ok ? "PASS" : "FAIL");
+        QCoreApplication::quit(); return;
+    }
+    if (qEnvironmentVariableIsSet("MINI_PROBE_ONBOARDING")) { runOnboardingProbe(view, mini); return; }
+    if (qEnvironmentVariableIsSet("MINI_PROBE_SETTINGS")) { runSettingsProbe(view, mini); return; }
     if (qEnvironmentVariableIsSet("MINI_PROBE_PANELS")) { panels(); return; }
     qInfo() << "MINI-PROBE platform" << QGuiApplication::platformName();
     auto evaluate = [](const QString &code) {
@@ -210,6 +285,12 @@ static void run() {
         if (expression.hasError()) qWarning() << expression.error();
         return result;
     };
+    interfaceWindow = qobject_cast<QWindow*>(evaluate("MainCtx.intfMainWindow").value<QObject*>());
+    check(interfaceWindow != nullptr, "mini-native-window");
+    if (!interfaceWindow) { QCoreApplication::quit(); return; }
+    interfaceWindow->showMaximized();
+    QTest::qWait(600);
+    QQuickWindowPrivate::get(view)->polishItems();
     evaluate("MainPlaylistController.pause()");
     QTest::qWait(300);
     auto state = evaluate("Player.playingState");

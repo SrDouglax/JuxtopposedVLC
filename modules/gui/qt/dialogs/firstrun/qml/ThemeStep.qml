@@ -193,7 +193,7 @@ Item {
 
     Row {
         y: 278
-        spacing: 46
+        spacing: 32
         anchors.horizontalCenter: parent.horizontalCenter
         Repeater {
             model: [
@@ -203,23 +203,23 @@ Item {
             ]
             delegate: Item {
                 required property var modelData
-                width: 110
+                width: 124
                 height: 160
                 Rectangle {
                     x: 0
                     y: 0
-                    width: 110
-                    height: 110
-                    radius: 22
+                    width: 124
+                    height: 124
+                    radius: 24
                     color: "transparent"
                     border.width: root.themeIndex === modelData.index ? 4 : 0
                     border.color: root.accent
                     Rectangle {
-                        x: 11
-                        y: 11
-                        width: 88
-                        height: 88
-                        radius: 11
+                        x: 12
+                        y: 12
+                        width: 100
+                        height: 100
+                        radius: 12
                         color: modelData.index === 1 ? "#b0b0b0" : "#202020"
                         clip: true
                         Canvas {
@@ -230,8 +230,11 @@ Item {
                                 context.fillStyle = "#b0b0b0"
                                 context.beginPath()
                                 context.moveTo(width * 0.17, 0)
-                                context.lineTo(width, 0)
-                                context.lineTo(width, height)
+                                const r = parent.radius
+                                context.lineTo(width - r, 0)
+                                context.quadraticCurveTo(width, 0, width, r)
+                                context.lineTo(width, height - r)
+                                context.quadraticCurveTo(width, height, width - r, height)
                                 context.closePath()
                                 context.fill()
                             }
@@ -251,6 +254,7 @@ Item {
                     anchors.fill: parent
                     background: Item {}
                     contentItem: Item {}
+                    objectName: "onboardingTheme_" + modelData.index
                     Accessible.name: modelData.title
                     onClicked: root.themeRequested(modelData.index)
                 }
@@ -288,6 +292,7 @@ Item {
                     background: Item {}
                     contentItem: Item {}
                     Accessible.name: qsTr("Accent color %1").arg(index + 1)
+                    objectName: "onboardingAccent_" + index
                     onClicked: root.accentRequested(modelData)
                 }
             }

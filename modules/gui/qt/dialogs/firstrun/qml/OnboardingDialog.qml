@@ -12,7 +12,7 @@ Controls.Popup {
     modal: true
     focus: true
     padding: 0
-    closePolicy: Controls.Popup.NoAutoClose
+    closePolicy: controller.busy ? Controls.Popup.NoAutoClose : Controls.Popup.CloseOnEscape
     anchors.centerIn: parent
     width: Math.min(1090, parent ? parent.width - 24 : 1090)
     height: Math.min(759, parent ? parent.height - 24 : 759)
@@ -59,11 +59,7 @@ Controls.Popup {
         }
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
-    Keys.onEscapePressed: event => {
-        event.accepted = true
-        if (!controller.busy)
-            root.close()
-    }
+
 
     background: Rectangle {
         radius: 14

@@ -11,7 +11,8 @@ ColumnLayout {
     id: root
     required property var menu
     readonly property var effects: menu.audioEffects
-    property bool expanded: false
+    property alias expanded: equalizer.expanded
+    property alias effectsHeading: effectsHeading
     property bool previewWasPaused: false
     property string previewUrl: ""
     spacing: VLCStyle.dp(20, VLCStyle.scale)
@@ -122,6 +123,8 @@ ColumnLayout {
         color: VLCStyle.redesign.color("#222222", "#8e8e8d")
     }
     Text {
+        id: effectsHeading
+        objectName: "playerAudioEffectsHeading"
         text: qsTr("Filters")
         color: VLCStyle.redesign.color("#8f8f8f", "#4d4d4d")
         font.family: VLCStyle.redesign.fontFamily
@@ -159,17 +162,12 @@ ColumnLayout {
                 root.effects.setFilterEnabled("equalizer", true);
         }
     }
-    PanelAction {
-        Layout.fillWidth: true
-        arrow: root.expanded ? "chevron-down" : "chevron-right"
-        text: root.expanded ? qsTr("Collapse Settings") : qsTr("Expand Settings")
-        onClicked: root.expanded = !root.expanded
-        palette.buttonText: "#8f8f8f"
-    }
     EqualizerPanel {
+        id: equalizer
+        objectName: "playerEqualizer"
         Layout.fillWidth: true
-        visible: root.expanded
         effects: root.effects
+        embedded: true
     }
     PanelField {
         Layout.fillWidth: true
@@ -183,6 +181,21 @@ ColumnLayout {
                 if (root.effects.begin())
                     root.effects.setTwoPass(checked);
             }
+        }
+    }
+    Repeater {
+        model: [
+            { id: "compressor", title: qsTr("Compressor") },
+            { id: "spatializer", title: qsTr("Spatializer") },
+            { id: "stereo_widen", title: qsTr("Stereo Widener") }
+        ]
+        FilterSection {
+            required property var modelData
+            Layout.fillWidth: true
+            effects: root.effects
+            filterId: modelData.id
+            title: modelData.title
+            enabled: root.effects.activeAudio
         }
     }
 }

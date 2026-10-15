@@ -83,6 +83,8 @@ extern "C" char **environ;
 #endif
 
 #include "qt.hpp"
+#include "util/translator.hpp"
+#include "util/startup.hpp"
 
 #include "player/player_controller.hpp"    /* THEMIM destruction */
 #include "playlist/playlist_controller.hpp" /* THEMPL creation */
@@ -346,6 +348,9 @@ static const char *const compositor_user[] = {
 };
 
 /**********************************************************************/
+static const int doubleClickValues[] = {0, 1};
+static const char* const doubleClickLabels[] = {N_("Toggle fullscreen"), N_("None")};
+
 vlc_module_begin ()
     set_shortname( "Qt" )
     set_description( N_("Qt interface") )
@@ -383,6 +388,15 @@ vlc_module_begin ()
 
     add_bool( "qt-video-autoresize", true, KEEPSIZE_TEXT,
               KEEPSIZE_LONGTEXT )
+    add_bool("qt-remember-window-position", true, N_("Remember window size and position"),
+             N_("Restore and save the main window size and position between launches."))
+    add_bool("qt-reverse-wheel", false, N_("Reverse scroll direction"),
+             N_("Reverse the scroll wheel actions on player controls and video."))
+    add_string("qt-history-exclude", "", N_("Never remember items matching"),
+               N_("Filename or URL patterns separated by semicolons. Use * for any text and ? for one character."))
+    add_integer("qt-double-click-action", 0, N_("Double click on the video"), nullptr)
+        change_integer_list(doubleClickValues, doubleClickLabels)
+
     add_bool( "qt-name-in-title", true, TITLE_TEXT,
               TITLE_LONGTEXT )
     add_bool( "qt-fs-controller", true, QT_FULLSCREEN_TEXT,
@@ -428,6 +442,7 @@ vlc_module_begin ()
                nullptr )
 
     add_bool( "qt-pin-controls", false, QT_PIN_CONTROLS_TEXT, QT_PIN_CONTROLS_LONGTEXT )
+    add_bool("qt-cast-discovery", true, N_("Discover cast devices"), nullptr)
 
 
     add_obsolete_bool( "qt-advanced-pref" ) /* since 4.0.0 */
@@ -453,6 +468,8 @@ vlc_module_begin ()
               QT_BGCONE_EXPANDS_LONGTEXT )
 
     add_bool( "qt-icon-change", true, ICONCHANGE_TEXT, ICONCHANGE_LONGTEXT )
+
+    add_integer_with_range("qt-startup-volume", 100, 0, 300, N_("Startup volume (percent)"), nullptr)
 
     add_integer_with_range( "qt-max-volume", 125, 60, 300, VOLUME_MAX_TEXT, nullptr)
 
@@ -547,27 +564,6 @@ static inline void triggerQuit()
         }, Qt::QueuedConnection);
 }
 
-class Translator : public QTranslator
-{
-public:
-    explicit Translator(QObject* parent) : QTranslator(parent) { }
-
-    bool isEmpty() const override { return false; };
-
-    QString translate(const char *context,
-                      const char *sourceText,
-                      const char *disambiguation = nullptr,
-                      int n = -1) const override
-    {
-        Q_UNUSED(context);
-
-        const char* text = (n >= 0 && disambiguation != nullptr) ? vlc_ngettext(sourceText, disambiguation, n)
-                                                                 : vlc_gettext(sourceText);
-
-        assert(text);
-        return QString::fromUtf8(text);
-    }
-};
 
 /*****************************************************************************
  * Module callbacks
@@ -912,12 +908,7 @@ static void *Thread( void *obj )
     QApplication app( argc, argv );
     app.setProperty("initialStyle", app.style()->name());
 
-    {
-        // Install custom translator:
-        const auto translator = new Translator(&app);
-        const auto ret = QCoreApplication::installTranslator(translator);
-        assert(ret);
-    }
+
 
     /* Ctrl+Q, or more specifically Command+Q on MacOS is going
      * through the NSApplication/NSApplicationDelegate selector
@@ -977,6 +968,8 @@ static void *Thread( void *obj )
             QSettings::NativeFormat,
 #endif
             QSettings::UserScope, "vlc", "vlc-qt-interface" );
+
+    installInterfaceTranslator(&app, *p_intf->mainSettings);
 
     // It is guaranteed that the returned format is supported, if a format is returned.
     static const auto createCompatibleOpenGLFormat = []() -> std::optional<QSurfaceFormat> {
@@ -1289,6 +1282,7 @@ static void *Thread( void *obj )
     /* Initialize the Dialog Provider and the Main Input Manager */
     DialogsProvider::getInstance( p_intf );
     p_intf->p_mainPlayerController = new PlayerController(p_intf);
+    initializeStartupVolume(p_intf);
     p_intf->p_mainPlaylistController = new vlc::playlist::PlaylistController(p_intf->p_playlist);
 
     std::optional playlistModelRecoveryAgent = std::unique_ptr<ModelRecoveryAgent>();

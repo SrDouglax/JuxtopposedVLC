@@ -1,0 +1,20 @@
+subtitle-association-native-loads PASS
+subtitle-file-mapping-ready PASS
+subtitle-single-file-uses-selectable-list PASS
+subtitle-no-selection-disables-save PASS
+subtitle-native-save-rejects-empty-selection PASS
+subtitle-selection-restores-save PASS
+subtitle-online-panel-loaded PASS
+subtitle-native-https-search-loads-results PASS
+subtitle-online-save-enabled-for-selection PASS
+subtitle-save-opens-account-above-dialog PASS
+subtitle-online-save-starts-native-download PASS
+subtitle-target-locked-during-download PASS
+subtitle-online-save-waits-for-file-and-native-association PASS
+subtitle-online-close-clears-session-credentials PASS
+audio-file-mapping-ready PASS
+audio-association-saved-in-native-library PASS
+subtitle-indexed-folder-target-available PASS
+subtitle-folder-matching-uses-native-destinations PASS
+saved-external-audio-track-loads-in-player PASS
+ASSOCIATIONS RESULT PASS

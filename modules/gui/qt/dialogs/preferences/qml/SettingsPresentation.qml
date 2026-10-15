@@ -10,8 +10,10 @@ function entry(key, fallback) {
         "file-logging": [qsTr("Diagnostics"), qsTr("Save a log")],
         "logfile": [qsTr("Diagnostics"), qsTr("Log file"), "savefile"],
         "log-verbose": [qsTr("Diagnostics"), qsTr("Log details")],
-        "stats": [qsTr("Advanced Options"), qsTr("Collect statistics")],
+        "logmode": [qsTr("Advanced Options"), qsTr("Log format")],
+        "stats": [qsTr("Advanced Options"), qsTr("Collect playback statistics")],
         "embedded-video": [qsTr("Window"), qsTr("Play video inside main window")],
+        "qt-remember-window-position": [qsTr("Window"), qsTr("Remember window size and position")],
         "qt-video-autoresize": [qsTr("Window"), qsTr("Resize window to fit video")],
         "qt-fullscreen-screennumber": [qsTr("Window"), qsTr("Open fullscreen on")],
         "qt-opacity": [qsTr("Window"), qsTr("Window opacity"), "slider"],
@@ -22,11 +24,14 @@ function entry(key, fallback) {
         "qt-pause-minimized": [qsTr("Window"), qsTr("Pause video when minimized")],
         "qt-name-in-title": [qsTr("Window"), qsTr("Show media title in window title")],
         "qt-titlebar": [qsTr("Window"), qsTr("Show window title bar")],
-        "qt-fs-controller": [qsTr("Window"), qsTr("Show controls in fullscreen")],
-        "qt-pin-controls": [qsTr("Window"), qsTr("Keep video controls visible")],
+        "qt-fs-controller": [qsTr("Playback Controls"), qsTr("Show controls in fullscreen")],
+        "qt-minimal-view": [qsTr("Playback Controls"), qsTr("Start in compact mode")],
+        "qt-pin-controls": [qsTr("Playback Controls"), qsTr("Auto-hide the controls")],
+        "mouse-hide-timeout": [qsTr("Playback Controls"), qsTr("Hide after (milliseconds)"), "slider"],
         "save-recentplay": [qsTr("History"), qsTr("Save recently played items")],
         "restore-playback-pos": [qsTr("History"), qsTr("Remember the playback position")],
         "restore-playback-states": [qsTr("History"), qsTr("Restore playback settings")],
+        "qt-history-exclude": [qsTr("History"), qsTr("Never remember items matching")],
         "metadata-network-access": [qsTr("Network"), qsTr("Fetch titles and cover art from the internet")],
         "lastfm-username": [qsTr("Network"), qsTr("Last.fm username")],
         "lastfm-password": [qsTr("Network"), qsTr("Last.fm password"), "password"],
@@ -45,12 +50,13 @@ function entry(key, fallback) {
         "play-and-stop": [qsTr("Order"), qsTr("Stop after each item")],
         "start-paused": [qsTr("Order"), qsTr("Start paused")],
         "play-and-pause": [qsTr("Order"), qsTr("Pause on the last frame of each item")],
+        "input-fast-seek": [qsTr("Seeking"), qsTr("Seek precisely")],
         "playlist-cork": [qsTr("Startup"), qsTr("Pause during audio communication")],
         "video": [qsTr("Output"), qsTr("Enable video")],
         "fullscreen": [qsTr("Output"), qsTr("Start videos in fullscreen")],
         "disable-screensaver": [qsTr("Output"), qsTr("Stop the screensaver during playback")],
         "video-wallpaper": [qsTr("Output"), qsTr("Play video as desktop wallpaper")],
-        "video-on-top": [qsTr("Output"), qsTr("Keep video above other windows")],
+        "video-on-top": [qsTr("Advanced Options"), qsTr("Keep video above other windows")],
         "deinterlace": [qsTr("Deinterlacing"), qsTr("Deinterlacing")],
         "deinterlace-mode": [qsTr("Deinterlacing"), qsTr("Method")],
         "aspect-ratio": [qsTr("Framing"), qsTr("Aspect ratio")],
@@ -60,7 +66,7 @@ function entry(key, fallback) {
         "aout": [qsTr("Output"), qsTr("Audio output module")],
         "qt-max-volume": [qsTr("Volume"), qsTr("Maximum volume"), "slider"],
         "stereo-mode": [qsTr("Output"), qsTr("Speaker setup")],
-        "mix-mode": [qsTr("Output"), qsTr("Spatial audio and mixing mode")],
+        "mix-mode": [qsTr("Effects"), qsTr("Spatial audio and mixing mode")],
         "gain": [qsTr("Volume"), qsTr("Output gain"), "slider"],
         "mmdevice-volume": [qsTr("Volume"), qsTr("Windows startup volume when not remembering last volume")],
         "volume-save": [qsTr("Volume"), qsTr("Remember last volume")],
@@ -83,23 +89,27 @@ function entry(key, fallback) {
         "freetype-outline-thickness": [qsTr("Appearance"), qsTr("Outline thickness")],
         "freetype-outline-color": [qsTr("Appearance"), qsTr("Outline color")],
         "freetype-outline-opacity": [qsTr("Appearance"), qsTr("Outline opacity"), "opacity"],
-        "freetype-shadow-opacity": [qsTr("Appearance"), qsTr("Shadow opacity"), "opacity"],
+        "freetype-shadow-opacity": [qsTr("Appearance"), qsTr("Shadow"), "shadow"],
         "freetype-shadow-color": [qsTr("Appearance"), qsTr("Shadow color")],
+        "http-port": [qsTr("Remotes"), qsTr("Port")],
+        "http-password": [qsTr("Remotes"), qsTr("Password"), "password"],
         "hotkeys-y-wheel-mode": [qsTr("Mouse"), qsTr("Vertical wheel action")],
         "hotkeys-x-wheel-mode": [qsTr("Mouse"), qsTr("Horizontal wheel action")],
         "extrashort-jump-size": [qsTr("Skip Amounts"), qsTr("Very short skip (seconds)")],
         "short-jump-size": [qsTr("Skip Amounts"), qsTr("Short skip (seconds)")],
         "medium-jump-size": [qsTr("Skip Amounts"), qsTr("Medium skip (seconds)")],
         "long-jump-size": [qsTr("Skip Amounts"), qsTr("Long skip (seconds)")],
-        "mouse-pause-policy": [qsTr("Mouse"), qsTr("Pause on click")],
+        "mouse-pause-policy": [qsTr("Mouse"), qsTr("Single click on the video")],
+        "qt-double-click-action": [qsTr("Mouse"), qsTr("Double click on the video")],
+        "qt-reverse-wheel": [qsTr("Mouse"), qsTr("Reverse scroll direction")],
         "mouse-events": [qsTr("Mouse"), qsTr("Handle clicks in video")],
-        "media-library": [qsTr("Library"), qsTr("Enable media library")],
-        "auto-preparse": [qsTr("Library"), qsTr("Read media information automatically")],
-        "recursive": [qsTr("Folders"), qsTr("Scan subfolders")],
-        "show-hiddenfiles": [qsTr("Folders"), qsTr("Show hidden files")],
-        "one-instance": [qsTr("Opening Media"), qsTr("Use one VLC window")],
-        "one-instance-when-started-from-file": [qsTr("Opening Media"), qsTr("Use one window for files opened outside VLC")],
-        "playlist-enqueue": [qsTr("Opening Media"), qsTr("Add new files to the playlist in single-window mode")],
+        "media-library": [qsTr("Metadata & Artwork"), qsTr("Enable media library")],
+        "auto-preparse": [qsTr("Advanced Options"), qsTr("Read media information automatically")],
+        "recursive": [qsTr("Opening Files"), qsTr("Scan subfolders")],
+        "show-hiddenfiles": [qsTr("Opening Files"), qsTr("Show hidden files")],
+        "one-instance": [qsTr("Opening Files"), qsTr("Use one VLC window")],
+        "one-instance-when-started-from-file": [qsTr("Opening Files"), qsTr("Use one window for files opened outside VLC")],
+        "playlist-enqueue": [qsTr("Opening Files"), qsTr("Add new files to the playlist in single-window mode")],
         "file-caching": [qsTr("Buffering"), qsTr("Local files")],
         "disc-caching": [qsTr("Buffering"), qsTr("Discs")],
         "network-caching": [qsTr("Buffering"), qsTr("Network streams")],
@@ -110,14 +120,20 @@ function entry(key, fallback) {
         "gnutls-system-trust": [qsTr("Security"), qsTr("Trust system certificates")],
         "gnutls-priorities": [qsTr("Security"), qsTr("TLS priority string")],
         "hw-dec": [qsTr("Decoding"), qsTr("Hardware decoding")],
-        "drop-late-frames": [qsTr("Decoding"), qsTr("Drop late frames")],
-        "clock-jitter": [qsTr("Clock"), qsTr("Clock jitter")],
-        "high-priority": [qsTr("System"), qsTr("High process priority")],
+        "drop-late-frames": [qsTr("Smooth Playback"), qsTr("Drop late frames")],
+        "clock-jitter": [qsTr("Developer"), qsTr("Clock jitter")],
+        "high-priority": [qsTr("Smooth Playback"), qsTr("High process priority")],
         "postproc-q": [qsTr("Decoding"), qsTr("Post-processing quality")],
         "avcodec-skiploopfilter": [qsTr("Decoding"), qsTr("Skip H.264 loop filter")],
         "avcodec-threads": [qsTr("Decoding"), qsTr("Decoding threads")],
-        "clock-synchro": [qsTr("Clock"), qsTr("Clock synchronization")],
-        "cr-average": [qsTr("Clock"), qsTr("Clock reference averaging")],
+        "clock-synchro": [qsTr("Developer"), qsTr("Clock synchronization")],
+        "cr-average": [qsTr("Developer"), qsTr("Clock reference averaging")],
+        "codec": [qsTr("Developer"), qsTr("Decoder"), "custom-choice"],
+        "encoder": [qsTr("Developer"), qsTr("Encoder")],
+        "qt-cast-discovery": [qsTr("Casting"), qsTr("Discover cast devices")],
+        "sout-chromecast-conversion-quality": [qsTr("Casting"), qsTr("Cast quality")],
+        "sout-x264-preset": [qsTr("Streaming"), qsTr("Encoding preset")],
+        "sout-x264-tune": [qsTr("Streaming"), qsTr("Tuning")],
         "input-record-path": [qsTr("Recording"), qsTr("Recording folder"), "directory"],
         "input-record-native": [qsTr("Recording"), qsTr("Record in native format")],
         "sout-display": [qsTr("Streaming"), qsTr("Display stream locally")],
@@ -126,10 +142,30 @@ function entry(key, fallback) {
         "sout-spu": [qsTr("Streaming"), qsTr("Include subtitles")]
     }
     const item = items[key]
-    const advanced = key === "verbose" || key === "stats"
-    const hidden = ["lastfm-username", "lastfm-password", "scrobbler-url", "extraintf", "control"].includes(key)
+    const advanced = ["restore-playback-states", "ipv4-timeout", "freetype-outline-opacity", "freetype-shadow-color", "verbose", "logmode", "stats", "aout", "mix-mode", "audio-language", "auto-preparse", "video-on-top", "snapshot-format", "snapshot-preview", "codec", "encoder", "clock-synchro", "clock-jitter", "cr-average", "qt-opacity", "qt-auto-raise", "qt-start-minimized", "qt-pause-minimized", "start-paused", "gain", "audio-time-stretch", "sub-delay", "sub-autodetect-path", "subsdec-formatted", "subsdelay-factor", "mouse-events"].includes(key)
+    const hidden = ["http-proxy", "http-proxy-pwd", "intf", "skins2-last", "freetype-absolute-size", "loop", "play-and-exit", "lastfm-username", "lastfm-password", "scrobbler-url", "extraintf", "control", "norm-max-level", "qt-startup-volume", "mmdevice-volume"].includes(key)
     return item ? { section: item[0], label: item[1], editor: item[2] || "", advanced: advanced, hidden: hidden }
-                : { section: qsTr("More options"), label: fallback, editor: "", advanced: false, hidden: false }
+                : { section: qsTr("More options"), label: fallback, editor: "", advanced: advanced, hidden: hidden }
+}
+function choices(key, nativeChoices) {
+    if (key === "codec")
+        return [{value: "any", label: qsTr("Automatic")}].concat((nativeChoices || []).filter(choice => choice.value !== "any"))
+    const values = {
+        "postproc-q": [0,1,2,3,4,5,6],
+        "aspect-ratio": ["", "16:9", "16:10", "4:3", "5:4", "1:1", "21:9", "2.35:1"],
+        "sub-autodetect-fuzzy": [4, 3, 2, 1],
+        "sub-language": ["", "en", "pt", "es", "fr", "de", "it", "ja", "zh", "ko"],
+        "audio-language": ["", "en", "pt", "es", "fr", "de", "it", "ja", "zh", "ko"],
+        "menu-language": ["", "en", "pt", "es", "fr", "de", "it", "ja", "zh", "ko"]
+    }
+    const labels = {
+        "postproc-q": [qsTr("Off"), "1", "2", "3", "4", "5", "6"],
+        "aspect-ratio": [qsTr("Automatic")],
+        "sub-autodetect-fuzzy": [qsTr("Exact title"), qsTr("Title with extra characters"), qsTr("Title anywhere in the name"), qsTr("Any subtitle in the folder")]
+    }
+    if (!values[key]) return nativeChoices
+    const languages = [qsTr("System language"), qsTr("English"), qsTr("Portuguese"), qsTr("Spanish"), qsTr("French"), qsTr("German"), qsTr("Italian"), qsTr("Japanese"), qsTr("Chinese"), qsTr("Korean")]
+    return values[key].map((value, index) => ({value, label: key.endsWith("-language") ? languages[index] : (labels[key][index] || String(value))}))
 }
 
 }

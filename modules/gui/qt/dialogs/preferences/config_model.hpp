@@ -53,7 +53,11 @@ public:
 
     Q_INVOKABLE bool setValue(const QString &key, const QVariant &value);
     Q_INVOKABLE bool setDirectoryUrl(const QString &key, const QUrl &url);
+    Q_INVOKABLE bool setFileUrl(const QString &key, const QUrl &url);
     Q_INVOKABLE QVariant valueFor(const QString &key) const;
+    Q_INVOKABLE QVariantMap optionFor(const QString &key) const;
+    Q_INVOKABLE QVariantList screenChoices() const;
+    Q_INVOKABLE bool moduleAvailable(const QString &name) const;
     Q_INVOKABLE bool hasOption(const QString &key) const;
     Q_INVOKABLE bool audioscrobblerAvailable() const;
     Q_INVOKABLE bool audioscrobblerEnabled() const;

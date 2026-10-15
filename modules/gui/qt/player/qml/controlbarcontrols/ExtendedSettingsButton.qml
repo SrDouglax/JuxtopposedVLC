@@ -23,15 +23,18 @@ import VLC.Style
 import VLC.Dialogs
 import VLC.Util
 
-RedesignIconButton {
+PlayerPanelButton {
     iconSource: "qrc:///redesign/equalizer.svg"
     id: extdSettingsBtn
 
     text: VLCIcons.effect_filter
 
     description: qsTr("Audio effects")
+    signal requestLockUnlockAutoHide(bool lock)
+    checked: panelOpen
+    onCheckedChanged: requestLockUnlockAutoHide(checked)
 
     AccessibleCompat.id: "extendedSettingsButton"
 
-    onClicked: DialogsProvider.extendedDialog()
+    onClicked: DialogsProvider.playerMenuDialog(extdSettingsBtn, 2)
 }

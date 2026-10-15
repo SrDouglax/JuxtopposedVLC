@@ -15,7 +15,7 @@ Rectangle {
     signal edited(int pixels)
     implicitHeight: VLCStyle.dp(36, VLCStyle.scale)
     radius: VLCStyle.dp(5, VLCStyle.scale)
-    color: "#0E0E0E"
+    color: VLCStyle.redesign.color("#090909", "#eeeeee")
     objectName: "crop-" + side
 
     RowLayout {

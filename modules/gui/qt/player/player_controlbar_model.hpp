@@ -51,7 +51,9 @@ public:
     enum PlayerIdentifier {
         Videoplayer = 0,
         Audioplayer,
-        Miniplayer
+        Miniplayer,
+        VideoplayerHeader,
+        AudioplayerHeader
     };
     Q_ENUM(PlayerIdentifier)
     // This enum is iterated through QMetaEnum, and

@@ -12,7 +12,8 @@ ColumnLayout {
     id: root
     required property var effects
     property bool expanded: false
-    spacing: VLCStyle.dp(12, VLCStyle.scale)
+    property bool embedded: false
+    spacing: 0
 
     T.Button {
         id: accordion
@@ -23,7 +24,11 @@ ColumnLayout {
         focusPolicy: Qt.StrongFocus
         Accessible.name: root.expanded ? qsTr("Collapse equalizer settings") : qsTr("Expand equalizer settings")
         onClicked: root.expanded = !root.expanded
-        background: Rectangle { color: "#1B1B1B"; radius: VLCStyle.dp(6, VLCStyle.scale) }
+        background: Rectangle {
+            color: VLCStyle.redesign.color(root.expanded ? "#1B1B1B" : "#090909", "#dedede")
+            radius: VLCStyle.dp(6, VLCStyle.scale)
+            Rectangle { anchors.bottom: parent.bottom; width: parent.width; height: root.expanded ? parent.radius : 0; color: parent.color }
+        }
         contentItem: RowLayout {
             anchors.leftMargin: VLCStyle.dp(16, VLCStyle.scale)
             anchors.rightMargin: VLCStyle.dp(16, VLCStyle.scale)
@@ -49,8 +54,9 @@ ColumnLayout {
         Layout.fillWidth: true
         implicitHeight: settings.implicitHeight + VLCStyle.dp(32, VLCStyle.scale)
         radius: VLCStyle.dp(6, VLCStyle.scale)
-        color: "#1B1B1B"
+        color: VLCStyle.redesign.color("#1B1B1B", "#dedede")
         visible: root.expanded
+        Rectangle { anchors.top: parent.top; width: parent.width; height: parent.radius; color: parent.color }
 
         ColumnLayout {
             id: settings
@@ -58,10 +64,11 @@ ColumnLayout {
             anchors.right: parent.right
             anchors.top: parent.top
             anchors.margins: VLCStyle.dp(16, VLCStyle.scale)
-            spacing: VLCStyle.dp(18, VLCStyle.scale)
+            spacing: VLCStyle.dp(28, VLCStyle.scale)
 
             T.Button {
                 id: presetButton
+                visible: !root.embedded
                 Layout.fillWidth: true
                 implicitHeight: VLCStyle.dp(42, VLCStyle.scale)
                 leftPadding: VLCStyle.dp(12, VLCStyle.scale)
@@ -69,7 +76,7 @@ ColumnLayout {
                 focusPolicy: Qt.StrongFocus
                 Accessible.name: qsTr("Equalizer preset")
                 onClicked: presetsPopup.open()
-                background: Rectangle { color: "#0E0E0E"; radius: VLCStyle.dp(5, VLCStyle.scale) }
+                background: Rectangle { color: VLCStyle.redesign.color("#090909", "#eeeeee"); radius: VLCStyle.dp(5, VLCStyle.scale) }
                 contentItem: RowLayout {
                     anchors.leftMargin: VLCStyle.dp(12, VLCStyle.scale)
                     anchors.rightMargin: VLCStyle.dp(12, VLCStyle.scale)
@@ -123,6 +130,7 @@ ColumnLayout {
             }
 
             RowLayout {
+                visible: !root.embedded
                 Layout.fillWidth: true
                 T.CheckBox {
                     id: twoPass

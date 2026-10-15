@@ -1,76 +1,46 @@
-/****************************************************************************
- * Copyright (C) 2026 VLC authors and VideoLAN
- * SPDX-License-Identifier: GPL-2.0-or-later
- ****************************************************************************/
+/* Copyright (C) 2026 VLC authors and VideoLAN. GPL version 2 or later. */
 import QtQuick
-import QtQuick.Controls
-import VLC.Dialogs
 import VLC.MainInterface
+import VLC.Player
 import VLC.Style
 
 Item {
     id: root
     objectName: "interfaceLanguageAction"
-    implicitHeight: VLCStyle.dp(58, VLCStyle.scale)
-    readonly property bool isWindows: MainCtx.osName === MainCtx.Windows
-    readonly property bool dark: VLCStyle.palette.isDark
-
-    Label {
+    implicitHeight: VLCStyle.dp(46, VLCStyle.scale)
+    property string selectedLanguage: ""
+    property string initialLanguage: ""
+    readonly property bool dirty: selectedLanguage !== initialLanguage
+    function begin() {
+        initialLanguage = String(MainCtx.settingValue("redesign/interface-language", ""))
+        selectedLanguage = initialLanguage
+    }
+    function save() {
+        MainCtx.setSettingValue("redesign/interface-language", selectedLanguage)
+        initialLanguage = selectedLanguage
+    }
+    function cancel() { selectedLanguage = initialLanguage }
+    function resetDefaults() { selectedLanguage = "" }
+    Text {
         anchors.left: parent.left
-        anchors.top: parent.top
-        anchors.topMargin: 7
+        anchors.verticalCenter: parent.verticalCenter
         text: qsTr("Interface language")
-        color: root.dark ? "#969696" : "#444444"
+        color: VLCStyle.redesign.color("#969696", "#494949")
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
     }
-
-    Button {
-        id: languageButton
-        objectName: "nativeLanguagePreferences"
-        visible: root.isWindows
+    PanelCombo {
         anchors.right: parent.right
-        anchors.top: parent.top
-        width: VLCStyle.dp(320, VLCStyle.scale)
+        anchors.verticalCenter: parent.verticalCenter
+        width: Math.min(VLCStyle.dp(318, VLCStyle.scale), parent.width * 0.46)
         height: VLCStyle.dp(34, VLCStyle.scale)
-        text: qsTr("Choose in Preferences")
-        onClicked: DialogsProvider.nativePrefsDialog()
-        background: Rectangle {
-            color: root.dark ? "#181818" : "#eeeeee"
-            border.color: root.dark ? "#2b2b2b" : "#cccccc"
-            radius: 4
-        }
-        contentItem: Label {
-            text: parent.text
-            color: root.dark ? "#aaaaaa" : "#444444"
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font.family: VLCStyle.redesign.fontFamily
-            font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-        }
-    }
-
-    Label {
-        visible: !root.isWindows
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.topMargin: 7
-        text: qsTr("System language (%1)").arg(Qt.locale().name)
-        color: root.dark ? "#8c8c8c" : "#555555"
-        font.family: VLCStyle.redesign.fontFamily
-        font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-    }
-
-    Label {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        text: root.isWindows
-              ? qsTr("Restart VLC after changing the interface language.")
-              : qsTr("VLC follows the system language. Restart VLC after changing your system language.")
-        color: root.dark ? "#696969" : "#666666"
-        font.family: VLCStyle.redesign.fontFamily
-        font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
-        elide: Text.ElideRight
+        objectName: "interfaceLanguageChoice"
+        model: [qsTr("System language (%1)").arg(Qt.locale().name), "English"]
+        currentIndex: root.selectedLanguage === "en" ? 1 : 0
+        onActivated: index => root.selectedLanguage = index === 1 ? "en" : ""
+        hoverEnabled: true
+        // The gettext-backed system language and English source strings are
+        // both available without downloading or manufacturing translations.
+        Accessible.description: qsTr("Restart VLC to change the interface language")
     }
 }

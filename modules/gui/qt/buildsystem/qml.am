@@ -10,16 +10,23 @@ libqml_module_dialogs_a_QML = \
 	dialogs/preferences/qml/SettingsPicture.qml \
 	dialogs/preferences/qml/SettingsLastfm.qml \
 	dialogs/preferences/qml/SettingsDeveloperMode.qml \
+	dialogs/preferences/qml/SettingsWindowState.qml \
+	dialogs/preferences/qml/SettingsShortcuts.qml \
+	dialogs/preferences/qml/SettingsRemote.qml \
+	dialogs/preferences/qml/SettingsSkin.qml \
 	dialogs/preferences/qml/SettingsAudioOutput.qml \
 	player/qml/AudioVisualizationDialog.qml \
 	player/qml/HdrOutputDialog.qml \
 	dialogs/dialogs/qml/CustomDialog.qml \
+	dialogs/dialogs/qml/FormDialog.qml \
+	dialogs/dialogs/qml/NetworkDialog.qml \
 	dialogs/firstrun/qml/WelcomeStep.qml \
 	dialogs/firstrun/qml/OnboardingButton.qml \
 	dialogs/firstrun/qml/ThemeStep.qml \
 	dialogs/firstrun/qml/OnboardingDialog.qml \
 	dialogs/firstrun/qml/ShortcutsStep.qml \
 	dialogs/preferences/qml/SettingsAppearance.qml \
+	dialogs/preferences/qml/SettingsAdvanced.qml \
 	dialogs/preferences/qml/SettingsSidebar.qml \
 	dialogs/preferences/qml/ShortcutsDialog.qml \
 	dialogs/preferences/qml/SettingsOptionList.qml \
@@ -33,6 +40,11 @@ libqml_module_dialogs_a_QML = \
 	dialogs/preferences/qml/SettingsExtensions.qml \
 	dialogs/preferences/qml/SettingsDialog.qml \
 	dialogs/preferences/qml/SettingsOptionRow.qml \
+	dialogs/preferences/qml/SettingsComposite.qml \
+	dialogs/preferences/qml/SettingsCapabilities.qml \
+	dialogs/preferences/qml/SettingsStartupVolume.qml \
+	dialogs/preferences/qml/SettingsLoudness.qml \
+	dialogs/preferences/qml/SettingsSubtitleSize.qml \
 	dialogs/toolbar/qml/PlayerMenu.qml \
 	player/qml/SleepTimerMenu.qml \
 	dialogs/dialogs/qml/SetupDialogs.qml \
@@ -41,6 +53,9 @@ libqml_module_dialogs_a_QML = \
 	dialogs/extended/qml/CropInput.qml \
 	dialogs/extended/qml/CropPanel.qml \
 	dialogs/extended/qml/VideoEffectsPanel.qml \
+	dialogs/extended/qml/EffectsSection.qml \
+	dialogs/extended/qml/VideoEssential.qml \
+	dialogs/extended/qml/VideoColors.qml \
 	dialogs/extended/qml/EffectsDialog.qml \
 	dialogs/extended/qml/EqualizerPanel.qml \
 	dialogs/extended/qml/FilterPanel.qml \
@@ -95,6 +110,8 @@ libqml_module_medialibrary_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_medialibrary_a_QML = \
 	medialibrary/qml/SubtitleSourceControls.qml \
 	medialibrary/qml/OpenSubtitlesPanel.qml \
+	medialibrary/qml/SubtitleFileList.qml \
+	medialibrary/qml/OpenSubtitlesAccount.qml \
 	medialibrary/qml/ArtistTopBanner.qml \
 	medialibrary/qml/AudioGridItem.qml \
 	medialibrary/qml/HomeDisplay.qml \
@@ -199,6 +216,7 @@ libqml_module_player_a_QML = \
 	player/qml/LibraryMiniPlayer.qml \
 	player/qml/PIPPlayer.qml \
 	player/qml/MusicView.qml \
+	player/qml/LibraryPane.qml \
 	player/qml/AudioContent.qml \
 	player/qml/ArtworkBackdrop.qml \
 	player/qml/TouchWheelHandler.qml \
@@ -252,6 +270,16 @@ libqml_module_playercontrols_a_CXXFLAGS = $(libqt_plugin_la_CXXFLAGS)
 libqml_module_playercontrols_a_CPPFLAGS = $(libqt_plugin_la_CPPFLAGS)
 libqml_module_playercontrols_a_QML = \
 	player/qml/controlbarcontrols/MetadataText.qml \
+	player/qml/controlbarcontrols/SkipForward15Button.qml \
+	player/qml/controlbarcontrols/SkipBack15Button.qml \
+	player/qml/controlbarcontrols/HomeButton.qml \
+	player/qml/controlbarcontrols/FolderNameWidget.qml \
+	player/qml/controlbarcontrols/PlaylistNameWidget.qml \
+	player/qml/controlbarcontrols/ReplayButton.qml \
+	player/qml/controlbarcontrols/ChaptersButton.qml \
+	player/qml/controlbarcontrols/BookmarksButton.qml \
+	player/qml/controlbarcontrols/PlaylistsButton.qml \
+	player/qml/controlbarcontrols/SidebarButton.qml \
 	player/qml/controlbarcontrols/FileNameWidget.qml \
 	player/qml/controlbarcontrols/ArtistNameWidget.qml \
 	player/qml/controlbarcontrols/DurationWidget.qml \

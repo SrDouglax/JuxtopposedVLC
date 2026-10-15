@@ -28,6 +28,8 @@
 
 #include <vlc_common.h>
 #include <vlc_renderer_discovery.h>
+#include <vlc_variables.h>
+#include <vlc_interface.h>
 #include <vlc_player.h>
 #include <vlc_cxx_helpers.hpp>
 
@@ -393,6 +395,7 @@ bool RendererManager::useRenderer() const
 void RendererManager::StartScan()
 {
     Q_D(RendererManager);
+    if (!var_InheritBool(d->p_intf->intf, "qt-cast-discovery")) return;
     if( d->m_stop_scan_timer.isActive() )
         return;
 

@@ -33,6 +33,8 @@ FocusScope {
     property alias popup: popup
     property real maxSearchFieldWidth: Number.MAX_VALUE
     property alias buttonWidth: iconButton.implicitWidth
+    function clear() { textField.clear(); root.searchPattern = "" }
+
     property string searchPattern
     property alias regexButtonToggled: regexToggleButton.checked
     property alias caseSensitiveButtonToggled: caseSensitiveToggleButton.checked

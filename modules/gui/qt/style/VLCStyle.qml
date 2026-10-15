@@ -82,6 +82,12 @@ QtObject {
         readonly property int volumeHeight: MainCtx.dp(28, vlc_style.scale)
         readonly property int timeWidth: MainCtx.dp(76, vlc_style.scale)
 
+        function formatTime(time) {
+            if (!time || !time.valid()) return "--:--:--"
+            const text = time.formatHMS(0)
+            return time.isSubHour() ? "00:" + text : text
+        }
+
         function color(darkValue, fallback, isDark = vlc_style.palette.isDark) {
             if (isDark) return darkValue
             if (Qt.colorEqual(darkValue, accent)) return accent

@@ -15,6 +15,7 @@ SliderBar {
 
     Waveform {
         id: analysis
+        objectName: "waveformAnalysis"
         source: Player.videoTracks.count === 0 ? Player.url : ""
         durationSeconds: Player.length.toSeconds()
     }

@@ -20,13 +20,17 @@ Item {
             ? sourceButton.panelTop : root.height - VLCStyle.dp(80, VLCStyle.scale)
         function updatePosition() {
             if (sourceButton) { sourceButton.positionPopup(playerMenu); return }
+            height = Math.max(0, Math.min(VLCStyle.dp(preferredHeight, VLCStyle.scale), controlsTop - VLCStyle.dp(16, VLCStyle.scale)))
             x = root.mapToItem(parent, Math.max(0, root.width - width - VLCStyle.dp(20, VLCStyle.scale)), 0).x
             y = sourceButton ? sourceButton.offsetY(height)
                              : Math.max(0, controlsTop - height - VLCStyle.dp(8, VLCStyle.scale))
         }
         width: Math.min(VLCStyle.dp(400, VLCStyle.scale), root.width)
         onHeightChanged: if (visible) updatePosition()
-        onVisibleChanged: DialogsProvider.setRedesignDialogVisible("playerMenu", visible)
+        onVisibleChanged: {
+            if (sourceButton) sourceButton.panelOpen = visible
+            DialogsProvider.setRedesignDialogVisible("playerMenu", visible)
+        }
     }
     SleepTimerMenu { id: timerMenu; parent: root; anchors.centerIn: parent; timerController: sleepTimer }
     AudioVisualizationDialog { id: visualization; parent: root; anchors.centerIn: parent }
@@ -43,25 +47,28 @@ Item {
             if (!loader.item.visible) loader.item.open()
         }
     }
+    function togglePlayerMenu(source, page) {
+        const sameSource = playerMenu.sourceButton === source
+        if (playerMenu.visible) {
+            playerMenu.close()
+            if (sameSource) return
+        }
+        playerMenu.sourceButton = source
+        if (page >= 0) playerMenu.showEffects(page)
+        playerMenu.updatePosition()
+        playerMenu.open()
+        Qt.callLater(playerMenu.updatePosition)
+    }
     Component.onCompleted: { PlayerPanelState.player = Player; if (setupState.needsSetup) Qt.callLater(() => show(setup)) }
     Connections {
         target: DialogsProvider
         function onPreferencesRequested() { root.show(preferences) }
+        function onNetworkRequested() { root.show(network) }
         function onSetupRequested() { if (!setup.item || !setup.item.visible) root.show(setup) }
         function onEffectsRequested(page) {
-            effects.requestedTab = page
-            if (effects.item) effects.item.switchTab(page)
-            root.show(effects)
+            root.togglePlayerMenu(null, page === 1 ? 1 : 2)
         }
-        function onPlayerMenuRequested(source) {
-            if (playerMenu.visible) playerMenu.close()
-            else {
-                playerMenu.sourceButton = source
-                playerMenu.updatePosition()
-                playerMenu.open()
-                Qt.callLater(playerMenu.updatePosition)
-            }
-        }
+        function onPlayerMenuRequested(source, page) { root.togglePlayerMenu(source, page) }
         function onSleepTimerRequested() { timerMenu.open() }
         function onAudioVisualizationRequested() { visualization.open() }
         function onHdrOutputRequested() { hdr.open() }
@@ -84,12 +91,10 @@ Item {
         onLoaded: { item.parent = root; item.openSettings("general") }
     }
     Loader {
-        id: effects
-        property int requestedTab: 0
-        anchors.fill: parent
+        id: network
         active: false
-        source: "qrc:/qt/qml/VLC/Dialogs/EffectsDialog.qml"
-        onLoaded: { item.parent = root; item.currentTab = requestedTab; item.open() }
+        source: "qrc:/qt/qml/VLC/Dialogs/NetworkDialog.qml"
+        onLoaded: item.open()
     }
     Connections {
         target: setup.item
@@ -98,9 +103,5 @@ Item {
     Connections {
         target: preferences.item
         function onVisibleChanged() { DialogsProvider.setRedesignDialogVisible("prefsDialog", preferences.item.visible) }
-    }
-    Connections {
-        target: effects.item
-        function onVisibleChanged() { DialogsProvider.setRedesignDialogVisible("extendedDialog", effects.item.visible) }
     }
 }

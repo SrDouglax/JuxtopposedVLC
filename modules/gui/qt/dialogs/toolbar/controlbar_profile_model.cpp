@@ -461,6 +461,7 @@ ControlbarProfile *ControlbarProfileModel::generateProfileFromStyle(const Style 
         {
             const auto ptrNewProfile = new ControlbarProfile();
             ptrNewProfile->injectModel(i.modelData);
+            upgradeHeaderDefaults(ptrNewProfile);
             ptrNewProfile->setName(i.name);
             ptrNewProfile->resetDirty(); // default profiles should not be dirty initially
             return ptrNewProfile;

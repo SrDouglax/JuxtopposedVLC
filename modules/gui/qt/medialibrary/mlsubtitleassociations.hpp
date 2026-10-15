@@ -25,6 +25,7 @@ class QNetworkReply;
 class MLSubtitleAssociations : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool audioTracks READ audioTracks WRITE setAudioTracks NOTIFY changed)
     Q_PROPERTY(MediaLib* ml READ ml WRITE setMl)
     Q_PROPERTY(QVariantList destinations READ destinations NOTIFY changed)
     Q_PROPERTY(QVariantList sources READ sources NOTIFY changed)
@@ -36,6 +37,8 @@ class MLSubtitleAssociations : public QObject
 public:
     explicit MLSubtitleAssociations(QObject* parent = nullptr);
 
+    bool audioTracks() const { return m_audioTracks; }
+    void setAudioTracks(bool audio);
     MediaLib* ml() const;
     void setMl(MediaLib* ml);
     QVariantList destinations() const;
@@ -53,6 +56,7 @@ public:
     Q_INVOKABLE void addLinkWithName(const QUrl& url, const QString& filename);
     Q_INVOKABLE void selectTarget(int index);
     Q_INVOKABLE void assign(int sourceIndex, int destinationIndex);
+    Q_INVOKABLE void setSourceSelected(int index, bool selected);
     Q_INVOKABLE void cancel();
     Q_INVOKABLE void save();
 
@@ -60,6 +64,7 @@ signals:
     void changed();
     void saved(int count);
     void targetsChanged();
+    void linkReady();
 
 private:
     struct Destination {
@@ -72,6 +77,7 @@ private:
         int destination = -1;
         QString issue;
         QString label;
+        bool selected = true;
     };
     struct Target {
         MLItemId id;
@@ -84,6 +90,7 @@ private:
     void loadTarget(const MLItemId& target);
     void loadUrlTarget(const QUrl& target);
     void refreshTargets(const Target& initial);
+    bool m_audioTracks = false;
     QPointer<MediaLib> m_ml;
     QVector<Destination> m_destinations;
     QVector<Source> m_sources;

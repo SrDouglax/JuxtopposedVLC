@@ -11,6 +11,7 @@ import VLC.MainInterface
 import VLC.Widgets as Widgets
 import VLC.Style
 import VLC.Dialogs
+import VLC.Player
 
 Controls.Popup {
     id: root
@@ -28,9 +29,22 @@ Controls.Popup {
     background: Item {}
     T.Overlay.modal: Rectangle { color: "#a6000000" }
 
+    // Editing includes controls reparented onto the player strip. Escape
+    // belongs to this modal session even when that strip has keyboard focus.
+    Shortcut {
+        sequence: "Escape"
+        context: Qt.ApplicationShortcut
+        enabled: root.opened
+        onActivated: root.close()
+    }
+
     signal unload()
     property bool saved: false
+    property string newProfileName: ""
+    property int initialProfileCount: 0
     property bool previousGlobalShortcuts: true
+    property bool previousPlayerView: false
+    property bool ownsEditorSession: false
     readonly property ColorContext colorContext: ColorContext {
         palette: VLCStyle.palette
         colorSet: ColorContext.Window
@@ -38,17 +52,32 @@ Controls.Popup {
 
     onOpened: {
         saved = false
+        previousPlayerView = MainCtx.playerView
+        ownsEditorSession = true
+        PlayerControlbarControls.editing = true
+        MainCtx.playerView = true
         previousGlobalShortcuts = MainCtx.useGlobalShortcuts
         MainCtx.useGlobalShortcuts = false
         // Retain the current profile as the rollback point for Cancel/Escape.
         MainCtx.controlbarProfileModel.save(false)
+        initialProfileCount = MainCtx.controlbarProfileModel.rowCount()
+        if (newProfileName.length) {
+            MainCtx.controlbarProfileModel.cloneSelectedProfile(newProfileName)
+            MainCtx.controlbarProfileModel.setSelectedProfile(initialProfileCount)
+        }
         closeButton.forceActiveFocus(Qt.PopupFocusReason)
     }
     onClosed: {
         if (!saved)
             MainCtx.controlbarProfileModel.reload()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
+        ownsEditorSession = false
+        PlayerControlbarControls.editing = false
+        MainCtx.playerView = previousPlayerView
         unload()
+    }
+    Component.onDestruction: {
+        if (ownsEditorSession) PlayerControlbarControls.editing = false
     }
 
     function saveEditor() {
@@ -57,20 +86,6 @@ Controls.Popup {
         saved = true
         close()
     }
-
-    function newProfile(createProfile) {
-        const count = MainCtx.controlbarProfileModel.rowCount()
-        const dialog = DialogsProvider.getTextDialog(null,
-                                                     qsTr("Profile Name"),
-                                                     qsTr("Please enter the new profile name:"),
-                                                     qsTr("Profile %1").arg(count + 1))
-        if (!dialog.ok)
-            return
-        createProfile(dialog.text)
-        MainCtx.controlbarProfileModel.selectedProfile = count
-    }
-
-    function markedName(name, dirty) { return dirty ? name + " *" : name }
 
     contentItem: Item {
         id: scene
@@ -83,6 +98,18 @@ Controls.Popup {
 
         // This strip sits over the actual player's control bar. Its editor
         // views are reparented here; no static screenshot or parallel model.
+        Rectangle {
+            id: headerDropHost
+            objectName: "toolbarEditorHeaderDropHost"
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.leftMargin: VLCStyle.dp(44, VLCStyle.scale)
+            anchors.rightMargin: VLCStyle.dp(152, VLCStyle.scale)
+            height: VLCStyle.redesign.topbarHeight
+            color: VLCStyle.redesign.color("#1b1b1b", root.colorContext.bg.primary)
+        }
+
         Rectangle {
             id: playerDropHost
             objectName: "toolbarEditorPlayerDropHost"
@@ -99,14 +126,28 @@ Controls.Popup {
             id: panel
             objectName: "toolbarEditorPanel"
             width: Math.min(VLCStyle.dp(1048, VLCStyle.scale), scene.width - VLCStyle.dp(32, VLCStyle.scale))
-            height: Math.min(VLCStyle.dp(624, VLCStyle.scale),
+            height: Math.min(VLCStyle.dp(656, VLCStyle.scale),
                              scene.height - playerDropHost.height - VLCStyle.dp(32, VLCStyle.scale))
             x: (scene.width - width) / 2
             y: Math.max(VLCStyle.dp(16, VLCStyle.scale),
-                        (scene.height - playerDropHost.height - height) / 2)
-            radius: VLCStyle.dp(8, VLCStyle.scale)
+                        (scene.height - playerDropHost.height - height) / 2 + VLCStyle.dp(4, VLCStyle.scale))
+            radius: VLCStyle.dp(16, VLCStyle.scale)
             color: VLCStyle.redesign.color("#0e0e0e", root.colorContext.bg.primary)
             border.color: VLCStyle.redesign.color("#242424", root.colorContext.border)
+
+            Rectangle {
+                width: parent.width
+                height: VLCStyle.dp(94, VLCStyle.scale)
+                radius: parent.radius
+                color: VLCStyle.redesign.color("#090909", "#eeeeee")
+                Rectangle {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    height: VLCStyle.dp(16, VLCStyle.scale)
+                    color: parent.color
+                }
+            }
 
             MouseArea { anchors.fill: parent; acceptedButtons: Qt.AllButtons }
 
@@ -132,6 +173,10 @@ Controls.Popup {
                         description: qsTr("Cancel and close")
                         text: VLCIcons.clear
                         onClicked: root.close()
+                        Keys.onEscapePressed: event => {
+                            root.close()
+                            event.accepted = true
+                        }
                     }
                 }
 
@@ -139,7 +184,8 @@ Controls.Popup {
                     Layout.fillWidth: true
                     Layout.leftMargin: VLCStyle.dp(20, VLCStyle.scale)
                     Layout.rightMargin: VLCStyle.dp(20, VLCStyle.scale)
-                    Layout.preferredHeight: VLCStyle.dp(38, VLCStyle.scale)
+                    Layout.preferredHeight: VLCStyle.dp(46, VLCStyle.scale)
+                    topPadding: VLCStyle.dp(13, VLCStyle.scale)
                     wrapMode: Text.WordWrap
                     text: qsTr("Drag controls onto the player bar to add or reorder them. Drag them back here to remove.")
                     color: VLCStyle.redesign.color("#747474", root.colorContext.fg.secondary)
@@ -147,68 +193,15 @@ Controls.Popup {
                     font.pixelSize: VLCStyle.redesign.fontNormal
                 }
 
-                RowLayout {
-                    Layout.fillWidth: true
-                    Layout.leftMargin: VLCStyle.dp(20, VLCStyle.scale)
-                    Layout.rightMargin: VLCStyle.dp(20, VLCStyle.scale)
-                    Layout.preferredHeight: VLCStyle.dp(42, VLCStyle.scale)
-                    spacing: VLCStyle.margin_xsmall
-                    Text {
-                        text: qsTr("Profile")
-                        color: VLCStyle.redesign.color("#969696", root.colorContext.fg.primary)
-                        font.family: VLCStyle.redesign.fontFamily
-                        font.pixelSize: VLCStyle.redesign.fontNormal
-                    }
-                    Widgets.ComboBoxExt {
-                        id: profilePicker
-                        objectName: "toolbarEditorProfile"
-                        Layout.preferredWidth: VLCStyle.dp(230, VLCStyle.scale)
-                        Layout.minimumHeight: VLCStyle.combobox_height_normal
-                        model: MainCtx.controlbarProfileModel
-                        currentIndex: MainCtx.controlbarProfileModel.selectedProfile
-                        onCurrentIndexChanged: MainCtx.controlbarProfileModel.selectedProfile = currentIndex
-                        displayText: {
-                            const profile = MainCtx.controlbarProfileModel.currentModel
-                            return profile ? root.markedName(profile.name, profile.dirty) : qsTr("No profile")
-                        }
-                        delegate: T.ItemDelegate {
-                            width: profilePicker.width
-                            contentItem: Text {
-                                text: root.markedName(model.name, model.dirty)
-                                color: profilePicker.color
-                                font: profilePicker.font
-                                elide: Text.ElideRight
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                        }
-                        Accessible.name: qsTr("Profiles")
-                    }
-                    Widgets.IconToolButton {
-                        description: qsTr("Clone selected profile")
-                        text: VLCIcons.ic_fluent_document_copy_24_regular
-                        onClicked: root.newProfile(MainCtx.controlbarProfileModel.cloneSelectedProfile)
-                    }
-                    Widgets.IconToolButton {
-                        description: qsTr("New profile")
-                        text: VLCIcons.ic_fluent_document_add_24_regular
-                        onClicked: root.newProfile(MainCtx.controlbarProfileModel.newProfile)
-                    }
-                    Widgets.IconToolButton {
-                        description: qsTr("Delete selected profile")
-                        text: VLCIcons.del
-                        onClicked: MainCtx.controlbarProfileModel.deleteSelectedProfile()
-                    }
-                    Item { Layout.fillWidth: true }
-                }
-
                 ToolbarEditor {
                     id: toolbarEditor
                     objectName: "toolbarEditorContents"
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.leftMargin: VLCStyle.dp(12, VLCStyle.scale)
-                    Layout.rightMargin: VLCStyle.dp(12, VLCStyle.scale)
+                    Layout.leftMargin: VLCStyle.dp(22, VLCStyle.scale)
+                    Layout.rightMargin: VLCStyle.dp(20, VLCStyle.scale)
                     previewHost: playerDropHost
+                    headerPreviewHost: headerDropHost
                 }
 
                 RowLayout {
@@ -253,17 +246,19 @@ Controls.Popup {
                         Layout.preferredWidth: VLCStyle.dp(100, VLCStyle.scale)
                         Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
                         text: qsTr("Save")
+                        enabled: !!MainCtx.controlbarProfileModel.currentModel?.dirty
+                                 || MainCtx.controlbarProfileModel.count !== root.initialProfileCount
                         activeFocusOnTab: true
                         onClicked: root.saveEditor()
                         background: Rectangle {
                             radius: VLCStyle.redesign.controlRadius
-                            color: parent.down ? Qt.lighter(VLCStyle.redesign.accentBackground, 1.15)
+                            color: !parent.enabled ? "#1b1b1b" : parent.down ? Qt.lighter(VLCStyle.redesign.accentBackground, 1.15)
                                                : VLCStyle.redesign.accentBackground
                             border.color: parent.activeFocus ? VLCStyle.redesign.focusColor : "transparent"
                         }
                         contentItem: Text {
                             text: parent.text
-                            color: VLCStyle.redesign.accent
+                            color: parent.enabled ? VLCStyle.redesign.accent : "#747474"
                             font.family: VLCStyle.redesign.fontFamily
                             font.pixelSize: VLCStyle.redesign.fontNormal
                             horizontalAlignment: Text.AlignHCenter

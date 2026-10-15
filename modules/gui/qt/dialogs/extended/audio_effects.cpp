@@ -29,7 +29,7 @@
 #include <vlc_variables.h>
 
 namespace {
-const QStringList filters = {"equalizer", "compressor", "spatializer", "stereo_widen"};
+const QStringList filters = {"equalizer", "compressor", "spatializer", "stereo_widen", "normvol"};
 const QStringList compressor = {"compressor-rms-peak", "compressor-attack", "compressor-release",
                                 "compressor-threshold", "compressor-ratio", "compressor-knee",
                                 "compressor-makeup-gain"};
@@ -123,6 +123,7 @@ bool AudioEffects::filterAvailable(const QString& filter) const
 
 QStringList AudioEffects::optionNames(const QString& filter)
 {
+    if (filter == "normvol") return {"norm-max-level"};
     if (filter == "equalizer") return equalizer;
     if (filter == "compressor") return compressor;
     if (filter == "spatializer") return spatializer;
@@ -343,7 +344,11 @@ bool AudioEffects::setParameter(const QString& name, double value)
 {
     if (!validOption(name) || config_GetType(name.toUtf8().constData()) != VLC_VAR_FLOAT)
         return fail(tr("Unknown audio effect parameter."));
-    return writeValue(name, value);
+    if (!writeValue(name, value)) return false;
+    // normvol reads its target when constructed; reload only this filter.
+    if (name == "norm-max-level" && filterEnabled("normvol"))
+        return setFilterEnabled("normvol", false) && setFilterEnabled("normvol", true);
+    return true;
 }
 
 bool AudioEffects::setFilterEnabled(const QString& filter, bool enabled)

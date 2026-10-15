@@ -11,7 +11,8 @@ ColumnLayout {
     id: root
     required property var menu
     readonly property var effects: menu.videoEffects
-    property bool expanded: false
+    property alias expanded: videoFilters.expanded
+    property alias effectsHeading: effectsHeading
     spacing: VLCStyle.dp(20, VLCStyle.scale)
     Text {
         text: qsTr("Defaults")
@@ -172,6 +173,7 @@ ColumnLayout {
         color: VLCStyle.redesign.color("#222222", "#8e8e8d")
     }
     Text {
+        id: effectsHeading
         text: qsTr("Filters")
         color: VLCStyle.redesign.color("#8f8f8f", "#4d4d4d")
         font.family: VLCStyle.redesign.fontFamily
@@ -183,16 +185,10 @@ ColumnLayout {
         font.family: VLCStyle.redesign.fontFamily
         font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
     }
-    PanelAction {
-        Layout.fillWidth: true
-        arrow: root.expanded ? "chevron-down" : "chevron-right"
-        text: root.expanded ? qsTr("Collapse Settings") : qsTr("Expand Settings")
-        onClicked: root.expanded = !root.expanded
-        palette.buttonText: "#8f8f8f"
-    }
     VideoEffectsPanel {
+        id: videoFilters
+        showEssentialLabel: false
         Layout.fillWidth: true
-        visible: root.expanded
         effects: root.effects
     }
 }

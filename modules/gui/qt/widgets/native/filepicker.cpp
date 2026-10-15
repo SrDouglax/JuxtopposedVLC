@@ -42,6 +42,20 @@ QUrl FilePicker::chooseFolder(const QString& title)
                                                  QFileDialog::ShowDirsOnly, {"file"});
 }
 
+QUrl FilePicker::chooseImage(const QString& title)
+{
+    const ShortcutGuard guard(m_ctx);
+    return QFileDialog::getOpenFileUrl(nullptr, title, {},
+                                       QStringLiteral("Images (*.png *.jpg *.jpeg *.webp *.bmp)"),
+                                       nullptr, QFileDialog::Options(), {"file"});
+}
+
+QUrl FilePicker::chooseFile(const QString& title, const QString& filter)
+{
+    const ShortcutGuard guard(m_ctx);
+    return QFileDialog::getOpenFileUrl(nullptr, title, {}, filter, nullptr, QFileDialog::Options(), {"file"});
+}
+
 QString FilePicker::chooseSaveFile(const QString& title, const QString& initialFile)
 {
     const ShortcutGuard guard(m_ctx);

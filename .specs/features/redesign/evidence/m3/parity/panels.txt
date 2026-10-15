@@ -1,0 +1,160 @@
+native-interface-window PASS
+Player settings PASS
+viewport Player settings QVariant(double, 1920) QVariant(double, 1080)
+panel-opens PASS
+icon-active PASS
+panel playerSettingsMenu QPointF(1500,78) QSizeF(400, 940) QSize(1920, 1080) barTop QVariant(double, 1026)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+settings-tab-present PASS
+settings-tab-active PASS
+speed-control-present PASS
+speed-updates-core PASS
+statistics-toggle PASS
+statistics-from-core PASS
+timeline-from-srt PASS
+settings-tab-present PASS
+settings-tab-active PASS
+choice-field-width PASS
+choice-dropdown-opens PASS
+choice-dropdown-has-native-rows PASS
+choice-escape-keeps-settings-open PASS
+flip-controls-available PASS
+flip-updates-core PASS
+flip-reset PASS
+settings-tab-present PASS
+settings-tab-active PASS
+delay-control-present PASS
+delay-zero-has-no-fill PASS
+delay-updates-core PASS
+positive-delay-fills-from-zero PASS
+negative-delay-updates-core PASS
+negative-delay-fills-to-zero PASS
+settings-tab-present PASS
+settings-tab-active PASS
+delay-control-present PASS
+delay-zero-has-no-fill PASS
+delay-updates-core PASS
+positive-delay-fills-from-zero PASS
+negative-delay-updates-core PASS
+negative-delay-fills-to-zero PASS
+disabled-tracks-show-none PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+Languages and tracks PASS
+viewport Languages and tracks QVariant(double, 1920) QVariant(double, 1080)
+panel-opens PASS
+icon-active PASS
+panel tracksMenu QPointF(1500,518) QSizeF(400, 500) QSize(1920, 1080) barTop QVariant(double, 1026)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+subtitle-tools-accessible PASS
+subtitle-tools-active-icon PASS
+subtitle-tools-toggle-closes PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+Play Queue PASS
+viewport Play Queue QVariant(double, 1920) QVariant(double, 1080)
+panel-opens PASS
+icon-active PASS
+panel playerNavigationMenu QPointF(1500,78) QSizeF(400, 940) QSize(1920, 1080) barTop QVariant(double, 1026)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+navigation-tab PASS
+navigation-tab PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+Audio effects PASS
+viewport Audio effects QVariant(double, 1920) QVariant(double, 1080)
+panel-opens PASS
+icon-active PASS
+effects-opens-audio-tab PASS
+effects-equalizer-expanded PASS
+effects-scroll-reveals-filters PASS
+effects-only-source-icon-active PASS
+panel playerSettingsMenu QPointF(1500,78) QSizeF(400, 940) QSize(1920, 1080) barTop QVariant(double, 1026)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+small-window-size PASS
+Player settings PASS
+viewport Player settings QVariant(double, 720) QVariant(double, 540)
+panel-opens PASS
+icon-active PASS
+panel playerSettingsMenu QPointF(300,8) QSizeF(400, 452) QSize(720, 540) barTop QVariant(double, 468)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+settings-tab-present PASS
+settings-tab-active PASS
+settings-tab-present PASS
+settings-tab-active PASS
+settings-tab-present PASS
+settings-tab-active PASS
+settings-tab-present PASS
+settings-tab-active PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+Languages and tracks PASS
+viewport Languages and tracks QVariant(double, 720) QVariant(double, 540)
+panel-opens PASS
+icon-active PASS
+panel tracksMenu QPointF(300,8) QSizeF(400, 452) QSize(720, 540) barTop QVariant(double, 468)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+Play Queue PASS
+viewport Play Queue QVariant(double, 720) QVariant(double, 540)
+panel-opens PASS
+icon-active PASS
+panel playerNavigationMenu QPointF(300,8) QSizeF(400, 452) QSize(720, 540) barTop QVariant(double, 468)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+navigation-tab PASS
+navigation-tab PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+Audio effects PASS
+viewport Audio effects QVariant(double, 720) QVariant(double, 540)
+panel-opens PASS
+icon-active PASS
+effects-opens-audio-tab PASS
+effects-equalizer-expanded PASS
+effects-scroll-reveals-filters PASS
+effects-only-source-icon-active PASS
+panel playerSettingsMenu QPointF(300,8) QSizeF(400, 452) QSize(720, 540) barTop QVariant(double, 468)
+rendered-content-above-bar PASS
+panel-in-bounds-above-entire-bar PASS
+panel-right-aligned PASS
+second-click-closes-icon PASS
+second-click-closes-popup PASS
+escape-clears-icon PASS
+outside-clears-icon PASS
+queue-keyboard-shortcut-opens-native-panel PASS
+queue-keyboard-shortcut-closes-native-panel PASS
+queue-shortcut-works-with-button-removed PASS
+queue-shortcut-fallback-stays-above-entire-footer PASS
+queue-shortcut-fallback-second-key-closes PASS
+PANELS RESULT PASS

@@ -12,10 +12,12 @@ import VLC.Style
 
 ColumnLayout {
     id: root
+    required property var settingsModel
+    property int revision: 0
     property int selectedIndex: -1
     readonly property bool dirty: preview.dirty
     readonly property string error: preview.lastError
-    spacing: VLCStyle.dp(5, VLCStyle.scale)
+    spacing: 0
 
     function begin() {
         if (!preview.active && preview.begin()) selectedIndex = preview.currentIndex()
@@ -45,11 +47,33 @@ ColumnLayout {
         target: Player.audioDevices
         function onModelReset() { root.selectedIndex = -1 }
     }
+    Connections {
+        target: root.settingsModel
+        function onDataChanged() { ++root.revision }
+        function onModelReset() { ++root.revision }
+    }
+    Label {
+        Layout.fillWidth: true
+        Layout.preferredHeight: VLCStyle.dp(28, VLCStyle.scale)
+        text: qsTr("Output")
+        color: VLCStyle.redesign.color("#d2d2d2", "#252525")
+        font.family: VLCStyle.redesign.fontFamily
+        font.pixelSize: VLCStyle.dp(16, VLCStyle.scale)
+    }
+    SettingsOptionRow {
+        Layout.fillWidth: true
+        settingKey: "audio"
+        label: qsTr("Enable audio")
+        settingType: "boolean"
+        settingValue: { root.revision; return root.settingsModel.valueFor("audio") }
+        onCommit: value => root.settingsModel.setValue("audio", value)
+    }
     RowLayout {
+        Layout.preferredHeight: VLCStyle.dp(46, VLCStyle.scale)
         Layout.fillWidth: true
         Label {
             Layout.fillWidth: true
-            text: qsTr("Current output device")
+            text: qsTr("Output device")
             color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
             font.family: VLCStyle.redesign.fontFamily
             font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
@@ -57,13 +81,21 @@ ColumnLayout {
         ComboBox {
             id: deviceBox
             objectName: "settingsOutputDevice"
-            Layout.preferredWidth: VLCStyle.dp(319, VLCStyle.scale)
+            Layout.preferredWidth: VLCStyle.dp(320, VLCStyle.scale)
+            Layout.preferredHeight: VLCStyle.dp(34, VLCStyle.scale)
             enabled: preview.active && deviceRows.count > 0
             model: Player.audioDevices
             textRole: "display"
             Binding { target: deviceBox; property: "currentIndex"; value: root.selectedIndex; when: !deviceBox.popup.visible }
             onActivated: (index) => {
                 if (preview.preview(index, textAt(index))) root.selectedIndex = index
+            }
+            indicator: Image {
+                x: deviceBox.width - width - 10
+                y: (deviceBox.height - height) / 2
+                width: VLCStyle.dp(18, VLCStyle.scale)
+                height: width
+                source: "qrc:///redesign/icons/chevron-down/default.png"
             }
             contentItem: Label {
                 leftPadding: VLCStyle.dp(12, VLCStyle.scale)
@@ -108,12 +140,13 @@ ColumnLayout {
             }
         }
     }
-    Label {
+    SettingsOptionRow {
         Layout.fillWidth: true
-        text: qsTr("Device changes affect only the current audio output. Apply keeps this selection while it remains active.")
-        wrapMode: Text.WordWrap
-        color: VLCStyle.redesign.color("#8F8F8F", "#7c7c7b")
-        font.family: VLCStyle.redesign.fontFamily
-        font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+        settingKey: "stereo-mode"
+        label: qsTr("Speaker setup")
+        settingType: "integer"
+        settingValue: { root.revision; return root.settingsModel.valueFor("stereo-mode") }
+        choices: root.settingsModel.optionFor("stereo-mode").choices || []
+        onCommit: value => root.settingsModel.setValue("stereo-mode", value)
     }
 }

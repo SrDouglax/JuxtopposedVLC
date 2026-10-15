@@ -31,16 +31,16 @@ Dialog {
     readonly property bool dark: VLCStyle.palette.isDark
     readonly property bool appearanceDirty: appearance.dirty
     readonly property bool hasChanges: config.dirty || appearanceDirty
-                                       || inlineEffects.dirty || developerMode.dirty || audioOutput.dirty
+                                       || inlineEffects.dirty || developerMode.dirty || audioOutput.dirty || windowSettings.dirty
 
     readonly property var titles: ({
-        extensions: qsTr("VLC Addons"),
+        extensions: qsTr("Add-ons & Scripts"),
         general: qsTr("Global Settings"), interface: qsTr("Interface Settings"),
-        privacy: qsTr("Privacy Settings"), controls: qsTr("Controls Settings"),
-        playback: qsTr("Playback Settings"), video: qsTr("Video Settings"),
-        audio: qsTr("Audio Settings"), subtitles: qsTr("Subtitles Settings"),
-        library: qsTr("Library Settings"), network: qsTr("Network Connections & Security"),
-        performance: qsTr("Performance Settings"), recording: qsTr("Recording Settings")
+        privacy: qsTr("Privacy Settings"), controls: qsTr("Mouse, Keyboard & Remote Controls"),
+        playback: qsTr("Playback Preferences"), video: qsTr("Video Defaults"),
+        audio: qsTr("Audio Defaults"), subtitles: qsTr("Subtitle Defaults"),
+        library: qsTr("Playlists, Folders & Files"), network: qsTr("Network Connections & Security"),
+        performance: qsTr("Performance Settings"), recording: qsTr("Recording, Casting & Streaming Out")
     })
 
     function openSettings(category) {
@@ -59,6 +59,7 @@ Dialog {
     }
 
     function saveSettings() {
+        if (!hasChanges && !profileError) { saved = true; close(); return }
         if (profileError) { persistProfileAndClose(); return }
         if (!audioOutput.canApply()) return
         if (!config.applyWithEffects(inlineEffects.audioForSave(), inlineEffects.videoForSave())) {
@@ -72,6 +73,7 @@ Dialog {
         inlineEffects.clearDirty()
         appearance.save()
         developerMode.save()
+        windowSettings.save()
         saved = true
         persistProfileAndClose()
     }
@@ -84,6 +86,7 @@ Dialog {
         config.reload()
         appearance.begin()
         developerMode.begin()
+        windowSettings.begin()
         lastfm.begin()
         advancedExpanded = false
         inlineEffects.beginForCurrentCategory()
@@ -94,12 +97,14 @@ Dialog {
             config.cancel()
             appearance.cancel()
             developerMode.cancel()
+            windowSettings.cancel()
         }
         inlineEffects.cancel()
         audioOutput.cancel()
         MainCtx.useGlobalShortcuts = previousGlobalShortcuts
     }
     ShortcutsDialog { id: shortcutsDialog; parent: root.parent }
+    SettingsWindowState { id: windowSettings; settingsModel: config }
 
     ConfigModel {
         id: config
@@ -173,7 +178,7 @@ Dialog {
                 anchors.verticalCenter: parent.verticalCenter
                 width: VLCStyle.dp(32, VLCStyle.scale)
                 height: width
-                onClicked: root.reject()
+                onClicked: root.saveSettings()
                 background: Item {}
                 contentItem: Image {
                     anchors.centerIn: parent
@@ -214,9 +219,9 @@ Dialog {
             anchors.right: parent.right
             anchors.rightMargin: VLCStyle.dp(24, VLCStyle.scale)
             anchors.top: topbar.bottom
-            anchors.topMargin: VLCStyle.dp(29, VLCStyle.scale)
-            anchors.bottom: footer.top
-            anchors.bottomMargin: 8
+            anchors.topMargin: VLCStyle.dp(25, VLCStyle.scale)
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: VLCStyle.dp(24, VLCStyle.scale)
             contentHeight: contentColumn.implicitHeight
             clip: true
             boundsBehavior: Flickable.StopAtBounds
@@ -224,7 +229,7 @@ Dialog {
 
             Column {
                 id: contentColumn
-                width: contentFlick.width - (contentFlick.contentHeight > contentFlick.height ? 12 : 0)
+                width: contentFlick.width
                 spacing: VLCStyle.dp(11, VLCStyle.scale)
 
                 SettingsAppearance {
@@ -242,9 +247,23 @@ Dialog {
                     visible: root.selectedCategory === "extensions" && !searchField.text.length
                     settingsModel: config
                 }
+                SettingsSkin {
+                    width: parent.width
+                    visible: root.selectedCategory === "interface" && !searchField.text.length
+                    settingsModel: config
+                }
+
+                SettingsShortcuts {
+                    width: parent.width
+                    visible: root.selectedCategory === "controls" && !searchField.text.length
+                    onEditRequested: shortcutsDialog.open()
+                    onResetRequested: shortcutsDialog.openReset()
+                }
+
                 SettingsOptionList {
                     id: optionList
-                    visible: !extensions.visible
+                    windowState: windowSettings
+                    visible: !extensions.visible && !(root.selectedCategory === "audio" && !searchField.text.length)
                     width: parent.width
                     settingsModel: config
                     category: root.selectedCategory
@@ -255,6 +274,24 @@ Dialog {
                                    ? qsTr("Output")
                                    : root.selectedCategory === "general" && !searchField.text.length
                                      ? qsTr("Startup") : ""
+                }
+
+                SettingsCapabilities {
+                    width: parent.width
+                    settingsModel: config
+                    category: root.selectedCategory
+                    visible: !searchField.text.length && root.selectedCategory === "performance"
+                }
+
+                SettingsOptionRow {
+                    width: parent.width
+                    visible: root.selectedCategory === "general" && !searchField.text.length && !config.hasOption("qt-updates-notif")
+                    settingKey: "updates-unavailable"
+                    label: qsTr("Check for updates automatically")
+                    settingType: "boolean"
+                    settingValue: false
+                    enabled: false
+                    help: qsTr("This VLC build does not include the automatic updater")
                 }
 
                 SettingsDeveloperMode {
@@ -279,6 +316,7 @@ Dialog {
 
                 SettingsAudioOutput {
                     id: audioOutput
+                    settingsModel: config
                     width: parent.width
                     visible: root.selectedCategory === "audio" && !searchField.text.length
                 }
@@ -290,10 +328,12 @@ Dialog {
                     category: root.selectedCategory
                     filterMode: "basic"
                     excludedSection: qsTr("Output")
+                    audioEffects: inlineEffects.audioBridge
                 }
 
                 SettingsInlineEffects {
                     id: inlineEffects
+                    settingsModel: config
                     width: parent.width
                     category: root.selectedCategory
                     searchActive: searchField.text.length > 0
@@ -324,6 +364,7 @@ Dialog {
                              && !developerMode.visible
                              && !lastfm.visible
                              && !inlineEffects.visible && !extensions.visible
+                             && !welcomeSetupAction.visible
                     text: searchField.text.length > 0
                           ? qsTr("No matching settings")
                           : qsTr("No settings are available for this category on this VLC installation")
@@ -338,8 +379,12 @@ Dialog {
                 Button {
                     id: advancedButton
                     objectName: "settingsAdvancedOptions"
-                    visible: root.selectedCategory === "general" && !searchField.text.length
-                             && advancedOptions.availableCount > 0
+                    visible: !searchField.text.length && (advancedOptions.availableCount > 0
+                             || ["recording", "extensions"].includes(root.selectedCategory))
+                    enabled: advancedOptions.availableCount > 0
+                    ToolTip.text: qsTr("No additional options are available in this VLC build")
+                    ToolTip.visible: !enabled && advancedHover.hovered
+                    HoverHandler { id: advancedHover }
                     width: parent.width
                     height: VLCStyle.dp(38, VLCStyle.scale)
                     text: root.advancedExpanded ? qsTr("Advanced Options  ⌄")
@@ -360,141 +405,68 @@ Dialog {
                     id: advancedOptions
                     width: parent.width
                     visible: advancedButton.visible && root.advancedExpanded
-                             && developerMode.selected
+                             && !referenceAdvanced.supportedCategory
+                             && (root.selectedCategory !== "general" || developerMode.selected)
                     settingsModel: config
                     category: root.selectedCategory
                     filterMode: "advanced"
                 }
 
-                Label {
-                    visible: advancedButton.visible && root.advancedExpanded
-                             && !developerMode.selected
+                SettingsAdvanced {
+                    id: referenceAdvanced
                     width: parent.width
-                    text: qsTr("Enable Developer mode to edit advanced diagnostics.")
-                    color: VLCStyle.redesign.textMuted
-                    font.pixelSize: VLCStyle.dp(13, VLCStyle.scale)
+                    visible: advancedButton.visible && root.advancedExpanded && supportedCategory
+                    settingsModel: config
+                    category: root.selectedCategory
+                    editingEnabled: root.selectedCategory !== "general" || developerMode.selected
+                }
+
+                SettingsOptionRow {
+                    width: parent.width
+                    visible: advancedOptions.visible && root.selectedCategory === "subtitles"
+                             && config.hasOption("freetype-shadow-opacity")
+                    settingKey: "freetype-shadow-opacity"
+                    label: qsTr("Shadow opacity")
+                    settingType: "integer"
+                    editorKind: "opacity"
+                    minimum: 0
+                    maximum: 255
+                    settingValue: { optionList.revision; return config.valueFor(settingKey) }
+                    onCommit: value => config.setValue(settingKey, value)
                 }
 
                 PersonalizationActions {
                     width: Math.min(320, parent.width)
                     visible: root.selectedCategory === "interface" && !searchField.text.length
+                    showProfiles: false
                     onCustomizeRequested: {
                         root.reject()
                         DialogsProvider.showToolbarEditorDialog()
                     }
                 }
                 ActionButton {
-                    visible: root.selectedCategory === "general" && !searchField.text.length
+                    id: welcomeSetupAction
+                    visible: root.selectedCategory === "general" && searchField.text.length > 0
+                             && qsTr("Welcome setup").toLowerCase().includes(searchField.text.toLowerCase())
                     text: qsTr("Welcome setup")
                     onClicked: { root.reject(); DialogsProvider.firstRunDialog() }
                 }
 
-                ActionButton {
-                    visible: root.selectedCategory === "controls"
-                    width: parent.width
-                    text: qsTr("Keyboard shortcuts")
-                    onClicked: shortcutsDialog.open()
-                }
-                ActionButton {
-                    visible: root.selectedCategory === "controls" && !searchField.text.length
-                    width: parent.width
-                    text: qsTr("Reset all keyboard shortcuts")
-                    onClicked: shortcutsDialog.openReset()
-                }
+
             }
         }
 
-        Rectangle {
-            id: footer
+        Label {
+            visible: config.error.length > 0 || audioOutput.error.length > 0 || root.profileError.length > 0 || inlineEffects.error.length > 0
             anchors.left: sidebar.right
-            anchors.leftMargin: VLCStyle.dp(32, VLCStyle.scale)
             anchors.right: parent.right
-            anchors.rightMargin: VLCStyle.dp(24, VLCStyle.scale)
             anchors.bottom: parent.bottom
-            height: VLCStyle.dp(63, VLCStyle.scale)
-            color: "transparent"
-            Rectangle { anchors.left: parent.left; anchors.right: parent.right; height: 1; color: root.dark ? "#242424" : "#d6d6d6" }
-
-            Label {
-                id: errorLabel
-                visible: config.error.length > 0 || audioOutput.error.length > 0
-                         || root.profileError.length > 0
-                anchors.left: resetButton.right
-                anchors.leftMargin: 10
-                anchors.right: cancelButton.left
-                anchors.rightMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
-                text: root.profileError || audioOutput.error || config.error
-                color: "#e7a466"
-                elide: Text.ElideRight
-                font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
-            }
-
-            Button {
-                id: resetButton
-                objectName: "settingsReset"
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Reset category")
-                font.family: VLCStyle.redesign.fontFamily
-                font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                enabled: !searchField.text.length && root.selectedCategory !== "extensions"
-                onClicked: {
-                    config.resetCategory()
-                    if (root.selectedCategory === "general")
-                        appearance.resetDefaults()
-                    if (root.selectedCategory === "general")
-                        developerMode.resetDefaults()
-                    if (root.selectedCategory === "privacy")
-                        lastfm.begin()
-                    if (root.selectedCategory === "audio")
-                        audioOutput.reset()
-                }
-                background: Rectangle { color: root.dark ? "#1a1a1a" : "#e9e9e9"; radius: 3 }
-                contentItem: Label { text: parent.text; font: parent.font; color: root.dark ? "#999999" : "#444444"; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-            }
-            Button {
-                id: applyButton
-                objectName: "settingsApply"
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
-                width: VLCStyle.dp(88, VLCStyle.scale)
-                text: qsTr("Apply")
-                enabled: root.hasChanges || !!root.profileError
-                onClicked: root.saveSettings()
-                background: Rectangle {
-                    color: applyButton.enabled ? (root.dark ? "#371f06" : "#f7e2c9")
-                                               : (root.dark ? "#242424" : "#eeeeee")
-                    radius: 3
-                }
-                contentItem: Label {
-                    text: parent.text
-                    color: applyButton.enabled ? VLCStyle.redesign.accent
-                                               : (root.dark ? "#666666" : "#999999")
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: VLCStyle.redesign.fontFamily
-                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                }
-            }
-            Button {
-                id: cancelButton
-                objectName: "settingsCancel"
-                anchors.right: applyButton.left
-                anchors.rightMargin: 10
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("Cancel")
-                onClicked: root.reject()
-                background: Rectangle { color: root.dark ? "#1a1a1a" : "#e9e9e9"; radius: 3 }
-                contentItem: Label {
-                    text: parent.text
-                    color: root.dark ? "#aaaaaa" : "#444444"
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                    font.family: VLCStyle.redesign.fontFamily
-                    font.pixelSize: VLCStyle.dp(14, VLCStyle.scale)
-                }
-            }
+            anchors.margins: VLCStyle.dp(24, VLCStyle.scale)
+            text: root.profileError || audioOutput.error || inlineEffects.error || config.error
+            color: VLCStyle.redesign.accent
+            wrapMode: Text.WordWrap
+            font.pixelSize: VLCStyle.dp(12, VLCStyle.scale)
+            Accessible.role: Accessible.AlertMessage
         }
     }
 }

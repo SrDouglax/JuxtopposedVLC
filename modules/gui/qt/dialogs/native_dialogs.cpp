@@ -107,7 +107,7 @@ void DialogsProvider::nativePrefsDialog()
     }
 }
 
-void DialogsProvider::playerMenuDialog(QObject* source) { emit playerMenuRequested(source); }
+void DialogsProvider::playerMenuDialog(QObject* source, int page) { emit playerMenuRequested(source, page); }
 bool DialogsProvider::playerMenuVisible() const { return m_redesignDialogs.contains("playerMenu"); }
 void DialogsProvider::sleepTimerDialog() { emit sleepTimerRequested(); }
 void DialogsProvider::audioVisualizationDialog() { emit audioVisualizationRequested(); }
